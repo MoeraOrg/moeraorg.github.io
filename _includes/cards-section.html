@@ -1,0 +1,215 @@
+{% if site.cards_title %}
+    {% assign cards_title = site.cards_title %}
+{% else %}
+    {% assign cards_title = 'Getting started is easy!'; %}
+{% endif %}
+
+{% if site.description %}
+    {% assign description = site.description %}
+{% else %}
+    {% assign description = 'Welcome to prettyDocs. This landing page is an example of how you can use a card view to present segments of your documentation. You can customise the icon fonts based on your needs.'; %}
+{% endif %}
+
+{% if site.download_url %}
+    {% assign download_url = site.download_url %}                    
+{% else %}
+    {% assign download_url = 'https://themes.3rdwavemedia.com/bootstrap-templates/startup/prettydocs-free-bootstrap-theme-for-developers-and-startups/' %}
+{% endif %}
+
+{% if site.card_start_title %}
+    {% assign card_start_title = site.card_start_title %}                    
+{% else %}
+    {% assign card_start_title = 'Quick Start' %}
+{% endif %}
+
+{% if site.card_start_intro %}
+    {% assign card_start_intro = site.card_start_intro %}                    
+{% else %}
+    {% assign card_start_intro = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' %}
+{% endif %}
+
+{% if site.card_start_link %}
+    {% assign card_start_link = site.card_start_link %}                    
+{% else %}
+    {% assign card_start_link = 'start' %}
+{% endif %}
+
+{% if site.card_components_title %}
+    {% assign card_components_title = site.card_components_title %}                    
+{% else %}
+    {% assign card_components_title = 'Components' %}
+{% endif %}
+
+{% if site.card_components_intro %}
+    {% assign card_components_intro = site.card_components_intro %}                    
+{% else %}
+    {% assign card_components_intro = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' %}
+{% endif %}
+
+{% if site.card_components_link %}
+    {% assign card_components_link = site.card_components_link %}                    
+{% else %}
+    {% assign card_components_link = 'components' %}
+{% endif %}
+
+{% if site.card_charts_title %}
+    {% assign card_charts_title = site.card_charts_title %}                    
+{% else %}
+    {% assign card_charts_title = 'Charts' %}
+{% endif %}
+
+{% if site.card_charts_intro %}
+    {% assign card_charts_intro = site.card_charts_intro %}                    
+{% else %}
+    {% assign card_charts_intro = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' %}
+{% endif %}
+
+{% if site.card_charts_link %}
+    {% assign card_charts_link = site.card_charts_link %}                    
+{% else %}
+    {% assign card_charts_link = 'charts' %}
+{% endif %}
+
+{% if site.card_faqs_title %}
+    {% assign card_faqs_title = site.card_faqs_title %}                    
+{% else %}
+    {% assign card_faqs_title = 'FAQs' %}
+{% endif %}
+
+{% if site.card_faqs_intro %}
+    {% assign card_faqs_intro = site.card_faqs_intro %}                    
+{% else %}
+    {% assign card_faqs_intro = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' %}
+{% endif %}
+
+{% if site.card_faqs_link %}
+    {% assign card_faqs_link = site.card_faqs_link %}                    
+{% else %}
+    {% assign card_faqs_link = 'faqs' %}
+{% endif %}
+
+{% if site.card_showcase_title %}
+    {% assign card_showcase_title = site.card_showcase_title %}                    
+{% else %}
+    {% assign card_showcase_title = 'Showcase' %}
+{% endif %}
+
+{% if site.card_showcase_intro %}
+    {% assign card_showcase_intro = site.card_showcase_intro %}                    
+{% else %}
+    {% assign card_showcase_intro = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' %}
+{% endif %}
+
+{% if site.card_showcase_link %}
+    {% assign card_showcase_link = site.card_showcase_link %}                    
+{% else %}
+    {% assign card_showcase_link = 'showcase' %}
+{% endif %}
+
+{% if site.card_license_title %}
+    {% assign card_license_title = site.card_license_title %}                    
+{% else %}
+    {% assign card_license_title = 'License' %}
+{% endif %}
+
+{% if site.card_license_intro %}
+    {% assign card_license_intro = site.card_license_intro %}                    
+{% else %}
+    {% assign card_license_intro = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' %}
+{% endif %}
+
+{% if site.card_license_link %}
+    {% assign card_license_link = site.card_license_link %}                    
+{% else %}
+    {% assign card_license_link = 'license' %}
+{% endif %}
+
+
+<section class="cards-section text-center">
+    <div class="container">
+        <h2 class="title">{{ cards_title }}</h2>
+        <div class="intro">
+            <p>{{ description }} </p>
+            <div class="cta-container">
+                {% if site.download_button != false %}
+                    <a class="btn btn-primary btn-cta" href="{{ download_url }}" target="_blank"><i class="fas fa-cloud-download-alt"></i> Download Now</a>
+                {% endif %}
+            </div><!--//cta-container-->
+        </div><!--//intro-->
+        <div id="cards-wrapper" class="cards-wrapper row">
+            {% if site.card_start != false %}
+            <div class="item item-green col-lg-4 col-6">
+                <div class="item-inner">
+                    <div class="icon-holder">
+                        <i class="icon fa fa-paper-plane"></i>
+                    </div><!--//icon-holder-->
+                    <h3 class="title">{{ card_start_title }}</h3>
+                    <p class="intro">{{ card_start_intro }}</p>
+                    <a class="link" href="{{ card_start_link | prepend: site.baseurl }}"><span></span></a>
+                </div><!--//item-inner-->
+            </div><!--//item-->
+            {% endif %}
+            {% if site.card_components != false %}
+            <div class="item item-pink item-2 col-lg-4 col-6">
+                <div class="item-inner">
+                    <div class="icon-holder">
+                        <span aria-hidden="true" class="icon icon_puzzle_alt"></span>
+                    </div><!--//icon-holder-->
+                    <h3 class="title">{{ card_components_title }}</h3>
+                    <p class="intro">{{ card_components_intro }}</p>
+                    <a class="link" href="{{ card_components_link | prepend: site.baseurl }}"><span></span></a>
+                </div><!--//item-inner-->
+            </div><!--//item-->
+            {% endif %}
+            {% if site.card_charts != false %}
+            <div class="item item-blue col-lg-4 col-6">
+                <div class="item-inner">
+                    <div class="icon-holder">
+                        <span aria-hidden="true" class="icon icon_datareport_alt"></span>
+                    </div><!--//icon-holder-->
+                    <h3 class="title">{{ card_charts_title }}</h3>
+                    <p class="intro">{{ card_charts_intro }}</p>
+                    <a class="link" href="{{ card_charts_link | prepend: site.baseurl }}"><span></span></a>
+                </div><!--//item-inner-->
+            </div><!--//item-->
+            {% endif %}
+            {% if site.card_faqs != false %}
+            <div class="item item-purple col-lg-4 col-6">
+                <div class="item-inner">
+                    <div class="icon-holder">
+                        <span aria-hidden="true" class="icon icon_lifesaver"></span>
+                    </div><!--//icon-holder-->
+                    <h3 class="title">{{ card_faqs_title }}</h3>
+                    <p class="intro">{{ card_faqs_intro }}</p>
+                    <a class="link" href="{{ card_faqs_link | prepend: site.baseurl }}"><span></span></a>
+                </div><!--//item-inner-->
+            </div><!--//item-->
+            {% endif %}
+            {% if site.card_showcase != false %}
+            <div class="item item-primary col-lg-4 col-6">
+                <div class="item-inner">
+                    <div class="icon-holder">
+                        <span aria-hidden="true" class="icon icon_genius"></span>
+                    </div><!--//icon-holder-->
+                    <h3 class="title">{{ card_showcase_title }}</h3>
+                    <p class="intro">{{ card_showcase_intro }}</p>
+                    <a class="link" href="{{ card_showcase_link | prepend: site.baseurl }}"><span></span></a>
+                </div><!--//item-inner-->
+            </div><!--//item-->
+            {% endif %}
+            {% if site.card_license != false %}
+            <div class="item item-orange col-lg-4 col-6">
+                <div class="item-inner">
+                    <div class="icon-holder">
+                        <span aria-hidden="true" class="icon icon_gift"></span>
+                    </div><!--//icon-holder-->
+                    <h3 class="title">{{ card_license_title }}</h3>
+                    <p class="intro">{{ card_license_intro }}</p>
+                    <a class="link" href="{{ card_license_link | prepend: site.baseurl }}"><span></span></a>
+                </div><!--//item-inner-->
+            </div><!--//item-->
+            {% endif %}
+        </div><!--//cards-->
+        
+    </div><!--//container-->
+</section><!--//cards-section-->

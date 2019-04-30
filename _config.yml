@@ -1,4 +1,5 @@
-remote_theme: maiconpinto/jekyll-theme-prettydocs
+sass:
+  sass_dir: _sass
 
 title: Moera
 branding: <img src="assets/images/logo-c-128.png">
