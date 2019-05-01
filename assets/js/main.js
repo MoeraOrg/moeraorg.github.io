@@ -1,12 +1,5 @@
 $(document).ready(function() {
 	
-    /* ===== Stickyfill ===== */
-    /* Ref: https://github.com/wilddeer/stickyfill */
-    // Add browser support to position: sticky
-    var elements = $('.sticky');
-    Stickyfill.add(elements);
-  
-    
     /* Hack related to: https://github.com/twbs/bootstrap/issues/10236 */
     $(window).on('load resize', function() {
         $(window).trigger('scroll'); 
