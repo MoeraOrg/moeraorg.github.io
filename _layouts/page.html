@@ -1,16 +1,15 @@
-{% if page.color != null %}
-    {% assign color = page.color | prepend: 'body-' %}
-{% else %}
-    {% assign color = '' %}
-{% endif %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ site.title | prepend: " - " | prepend: page.title }}</title>
+    {% if page.title %}
+        <title>{{ site.title | prepend: " - " | prepend: page.title }}</title>
+    {% else %}
+        <title>{{ site.title }}</title>
+    {% endif %}
     {% include preamble.html %}
 </head>
 
-<body class="{{ color }}">
+<body class="{{ page.body_class }}">
     <div class="page-wrapper">
         
         {{ content }}

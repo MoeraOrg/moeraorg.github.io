@@ -1,0 +1,19 @@
+<!-- ******Header****** -->
+<header class="header text-center">
+    <div class="container">
+        <div class="branding">
+            <img src="assets/images/logo-c-128.png" width="217" height="118">
+        </div><!--//branding-->
+        <div class="tagline">
+            {% if site.tagline %}
+            {{ site.tagline }}
+            {% endif %}
+        </div><!--//tagline-->
+
+        {% if site.socials != false %}
+        <div class="social-container">
+            <a class="btn btn-success" href="https://github.com/{{ site.github_username }}" data-size="large" aria-label="View on GitHub">View on GitHub &rarr;</a>
+        </div><!--//social-container-->
+        {% endif %}
+    </div><!--//container-->
+</header><!--//header-->
