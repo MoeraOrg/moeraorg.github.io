@@ -2,9 +2,5 @@ sass:
   sass_dir: _sass
 
 title: Moera
-branding: <img src="assets/images/logo-c-128.png">
 tagline: Decentralized Social Network
-socials: true
 github_username: MoeraOrg
-social_twitter: false
-social_facebook: false
