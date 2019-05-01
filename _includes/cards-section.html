@@ -1,5 +1,6 @@
 <section class="cards-section text-center">
     <div class="container">
+        {% if site.tryit_link != false %}
         <h2 class="title">Try it!</h2>
         <div class="intro">
             <div class="row justify-content-center">
@@ -9,9 +10,10 @@
                 </div>
             </div>
             <div class="cta-container">
-                <a class="btn btn-primary btn-cta" href="{{ download_url }}" target="_blank"><i class="fas fa-flask"></i> Try Now</a>
+                <a class="btn btn-primary btn-cta" href="{{ site.tryit_link }}" target="_blank"><i class="fas fa-flask"></i> Try Now</a>
             </div><!--//cta-container-->
         </div><!--//intro-->
+        {% endif %}
         <div id="cards-wrapper" class="cards-wrapper row">
             {% if site.card_overview_link != false %}
             <div class="item item-green col-lg-4 col-6">
