@@ -6,7 +6,8 @@ $(document).ready(function() {
     });
 
     /* Activate scrollspy menu */
-    $('body').scrollspy({target: '#doc-menu', offset: 100});
+    // FIXME activation removes "nav-link active" class even if scrollto class is not set on the item
+    // $('body').scrollspy({target: '#doc-menu', offset: 100});
     
     /* Smooth scrolling */
 	$('a.scrollto').on('click', function(e){
