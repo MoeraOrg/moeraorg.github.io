@@ -57,16 +57,49 @@ But everything has a price. And placing all your content (very valuable
 for you) on a centralized platform has many drawbacks that are inherent
 to centralized systems.
 
-**Censorship.**
+**Censorship.** Even if the platform wants to preserve the freedom of
+speech, it is vulnerable to pressure from governments, organized groups
+of users (that threaten to leave the platform), advertisers and its own
+employees. The platforms begins to provide rules of conduct and
+censorship that seems reasonable at the beginning, but quckly goes out
+of control. Theoretical ability to filter the content becomes
+responsibility and refusal is punished. The worst is that it is
+practically impossible to censor tens of millions of active users. It
+requires hiring of the large number of human censors or using the
+"intellectual" software with a lot of false positives. This leads to
+banning innocent people, fade of humour and sarcasm, manifestation of
+political bias and mob rule. The platform becomes boring and
+frustrating.
 
-**End of life.**
+**End of life.** The owner may decide to close the platform at any
+moment, if it does not produce enough revenue. And often there are no
+alternatives in the market to migrate to. Even if the service is very
+important to you, you will not be able to prolong its life, even by with
+payment.
+
+**Vendor lock-in.** There is no easy way to migrate your data from the
+platform, if it does not fit your needs, even if alternatives are
+available.
+
+**Limited access.** Your data is a profitable resource for the platform,
+it does not want to share it with anybody else. Display of your data in
+other websites and applications is explicitly prohibited by platform's
+rules meaning you cannot create an alternative viewer that better suits
+your needs. Automated access to your data via APIs is very limited. You
+cannot get a link to an image from your gallery and insert it into your
+blog - these links are temporary. Your public content is not indexed by
+search engines and not viewable by anybody who isn't logged in. If you
+already have a website, you cannot make your content accessible from
+within the platform (i.e. by implementing some API) - you need to copy
+all your data to the platform and synchronize all updates. You cannot
+merge comments at the platform with comments outside it.
 
 **Lack of features.**
 
-**Vendor lock-in.**
-
-**Limited access.**
-
 **Annoying ads.**
 
-**Feed composition.**
+**No control what to read.**
+
+**No control how to read.**
+
+**No privacy.**
