@@ -17,6 +17,8 @@ to use centralized services for this purpose: forums, portals, blogging
 platforms and so on. Comparing to the handcrafted home pages, the
 platforms have many advantages.
 
+#### Advantages
+
 **Ease of use.** No more tricky HTML/CSS formatting and server
 programming. You enter the text - and it becomes published, in a second.
 You can concentrate on the content and leave programming to programmers.
@@ -57,6 +59,8 @@ But everything has a price. And placing all your content (very valuable
 for you) on a centralized platform has many drawbacks that are inherent
 to centralized systems.
 
+#### Drawbacks
+
 **Censorship.** Even if the platform wants to preserve the freedom of
 speech, it is vulnerable to pressure from governments, organized groups
 of users (that threaten to leave the platform), advertisers and its own
@@ -94,12 +98,53 @@ within the platform (i.e. by implementing some API) - you need to copy
 all your data to the platform and synchronize all updates. You cannot
 merge comments at the platform with comments outside it.
 
-**Lack of features.**
+**Lack of features.** Why big centralized platforms lack many useful
+features, updates are rare and mostly cosmetic? In centralized systems
+all innovations happen in the center. To be implemented, the feature
+must be scalable to millions of users, must be understood and acceptable
+by any audience, must have potential to increase profits. Every change
+in a large-scale system takes thousands of man-hours of programmers,
+testers and designers. A feature that is needed only by several hundreds
+of thousands of users has zero chance to be implemented.
 
-**Annoying ads.**
+**Annoying ads.** If the platform makes profit from advertising, you
+will see ads and sponsored posts everywhere. It will exploit any chance
+to grab your attention and will block any measures to filter ads out.
+You attention is what they sell.
 
-**No control what to read.**
+**No control what to read.** Your friends usually write more posts than
+you can read. So "smart friend feed" with filtering, grouping and even
+AI-driven feed composition is a good thing. But without possibility to
+tune the composition algorithm manually the user gets the feed filled
+with the posts from few most popular friends, children and cat photos
+and endless political flamewars, that always get a lot of likes and
+comments. More than that, the platform administrators may tweak the
+algorithm in the way they prefer - to show more ads, to punish posts of
+competitors and posts with links that bring users out of the platform,
+to rise attention to particular topic or political opinion. Somebody,
+not you decide what you should read.
 
-**No control how to read.**
+**No control how to read.** The platform, its web UI and mobile
+application are coupled together. You cannot create an application with
+simplified or richer interface, or presenting the same data in a
+different way. Why you need to repost you Instagram photos to Facebook,
+why not just create an application that presents your Facebook albums in
+Instagram way? Why you cannot use the same account as Dropbox-like file
+storage? Why you are forced to update and use a new redesigned
+application, if you like the old one more? 
 
-**No privacy.**
+**No privacy.** Social networks try to collect a maximum amount of data
+on you, even if you didn't plan to share it with anyone. Your contact
+list, geolocation, private messages and much more are collected and
+stored for selling them to advertisers or to... who knows. You are
+forced to use your real name for the account and cannot use more than
+one account. You cannot be anonymous and cannot even read someone's
+public posts anonymously. You virtual life must be intertwined with your
+real life, even if you don't want to. If you regret about your online
+behavior after a decade, you will not be able to throw everything away
+and to start with a clean slate.
+
+Is it possible to create a decentralized social network that will not
+have the problems of centralization, but will preserve its good
+qualities? We will try to find a solution on the following pages. I
+call it Moera.
