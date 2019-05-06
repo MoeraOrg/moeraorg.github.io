@@ -59,13 +59,14 @@ with a web browser and the server returns data in HTML format that the
 browser knows to display.
 
 The Moera node implements Moera node protocol (REST API). User connects
-to it with the Moera client (which is a web browser with
-[add-on](/overview/extension.html) or a separate application on mobile)
-and the server returns social network data in a structured form that the
-client knows to display.
+to it with the Moera client (which is a web browser with [add-on][1] or
+a separate application on mobile) and the server returns social network
+data in a structured form that the client knows to display.
 
 But, for backward compatibility, if user connects with a Moera-capable
 browser to a site that does not provide Moera API, it will show the
 regular HTML interface. And other way around, if user connects with a
 regular web browser to a Moera-capable site, it will show the fallback
 Web UI described above.
+
+[1]: /overview/extension.html
