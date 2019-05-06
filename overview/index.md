@@ -42,7 +42,7 @@ etc.
 
 **Link friends.** Tag them on photos and mention in comments.
 
-**Friend feed.** You can subscribe to your friends' updates and see
+**Newsfeed.** You can subscribe to your friends' updates and see
 everything they publish on one page.
 
 **Notifications.** Never miss a comment or a birthday.
