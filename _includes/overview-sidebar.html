@@ -1,8 +1,10 @@
 <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
     <div id="doc-nav" class="doc-nav">
         <nav id="doc-menu" class="nav doc-menu flex-column sticky">
-            <a class="nav-link {% if page.name == "index.md" %}active{% endif %}" href="index.html">Centralized vs. Decentralized</a>
-            <a class="nav-link {% if page.name == "node.md" %}active{% endif %}" href="node.html">Node</a>
+            {% for link in site.data.overview_nav %}
+                {% capture file_name %}{{ link.name }}.md{% endcapture %}
+                <a class="nav-link {% if page.name == file_name %}active{% endif %}" href="{{ link.name }}.html">{{ link.title }}</a>
+            {% endfor %}
         </nav><!--//doc-menu-->
     </div>
 </div>
