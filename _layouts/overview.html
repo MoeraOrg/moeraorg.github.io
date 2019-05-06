@@ -15,6 +15,11 @@ layout: page
 
                     {{ content }}
 
+                    {% if page.next %}
+                    <div class="text-center">
+                        <a class="btn btn-primary" href="/overview/{{ page.next }}.html">Next &rarr;</a>
+                    </div>
+                    {% endif %}
                 </div><!--//content-inner-->
             </div><!--//doc-content-->
 

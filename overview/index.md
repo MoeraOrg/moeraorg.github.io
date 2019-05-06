@@ -2,6 +2,7 @@
 layout: overview
 title: Centralized vs. Decentralized
 body_class: body-green
+next: node
 ---
 
 # Centralized vs. Decentralized
