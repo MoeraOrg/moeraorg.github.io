@@ -29,24 +29,24 @@ node signs it end sends to the recipient.
 The whole process is as follows:
 
 1. Alice starts the client.
-2. Alice enters the URL of the home node, her login and password.
+2. Alice enters the URL of her home node, her login and password.
 3. The client authorizes on the home node with login and password and
    gets the authorization token. This token is stored on the client side
    and used in all interactions with the home node.
 4. Alice opens Bob's node with the client, writes a comment and clicks
    "Send".
-5. The client sends the comment to the home node.
+5. The client sends the comment to Alice's home node.
 6. The home node signs the comment with Alice's signing key and sends it
    to the Bob's node.
-7. The Bob's node gets Alice's public key from the public database and
+7. Bob's node gets Alice's public key from the public database and
    verifies her signature. Also it checks whether Alice has a permission
    to leave comments under Bob's posts.
-8. The Bob's node publishes the comment together with Alice's signature.
-9. Carol opens the Bob's node with her client and reads Alice's comment.
-10. The Carol's client gets Alice's public key from the public database
-    and verifies her signature.
-11. The Carol's client notifies Carol that the comment was indeed
-    written by Alice.
+8. Bob's node publishes the comment together with Alice's signature.
+9. Carol opens Bob's node with her client and reads Alice's comment.
+10. Carol's client gets Alice's public key from the public database and
+    verifies her signature.
+11. Carol's client notifies Carol that the comment was indeed written by
+    Alice.
 
 (steps 2-3 may be skipped, if the client already has the authorization
 token)
