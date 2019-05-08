@@ -2,6 +2,7 @@
 layout: overview
 title: Authorization
 body_class: body-green
+next: naming
 ---
 
 # Authorization
