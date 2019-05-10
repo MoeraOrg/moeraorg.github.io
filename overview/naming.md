@@ -88,6 +88,30 @@ The generation number is increased in one of two cases:
 
 ## Signing key invalidation
 
+The private signing key must always be present on the home node to be
+able to sign messages. What to do, if due to some security breach it is
+stolen?
+
+If the updating key is not stored in the computer, it will be safe. The
+owner can use it to change the signing key in the blockchain. From that
+moment the old signing key will be invalid, messages signed with it will
+no longer be accepted (but for older messages the signature will still
+be considered correct).
+
+More than that, the owner may set the date of the key invalidation *in
+the past*. In this case, even if the intruder had a chance to perform
+some operations (post messages, delete them etc.) before the hack was
+revealed, these operations may be undone.
+
+Nodes should be aware of this possibility. For every name they deal with
+\- to validate signature, give access or collect information - they
+should subscribe to notifications to know if the corresponding key have
+been changed. They should store enough information to undo the
+operations that can be undone - content of deleted messages, previous
+versions of the edited ones and so on. We limit the undo feature to up
+to 1 week in the past. It will be enough for most cases and will not
+require nodes to store too much of extra data or follow too many names.
+
 ## Recap of the consensus rules
 
 ## Naming servers 
