@@ -139,9 +139,9 @@ conditions is false:
 
 Note that inclusion of the transaction into the blockchain takes time.
 If *activation date* is set to the current time, it may be in the past
-at the moment the transaction will be included into the blockchain. To
-avoid the transaction invalidation for this reason, it is recommended to
-set *activation date* in the future.
+at the moment when the transaction is being included into the
+blockchain. To avoid the transaction invalidation for this reason, it is
+recommended to set *activation date* in the future.
 
 ## Naming servers 
 
