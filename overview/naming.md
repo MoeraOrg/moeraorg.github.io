@@ -120,8 +120,7 @@ maximal length etc.)
 A transaction is considered invalid if and only if at least one of these
 conditions is false:
 
-* There were no transactions with *name* or the latest transaction with
-  *name* is more than 1 year old, and:
+* There were no transactions with *name*, and:
   1. *Generation* is not 0.
   2. Signing key *activation date* is in the past.
 * The latest transaction with *name* is more than 1 year old, and:
