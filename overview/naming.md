@@ -2,6 +2,7 @@
 layout: overview
 title: Naming
 body_class: body-green
+next: cheaper-names
 ---
 
 # Naming
@@ -36,9 +37,9 @@ possible without knowledge of a key. This key we call *updating key*.
 The private updating key is used very rarely - only when it is needed to
 make changes in the naming database. Keeping it on a computer is
 unnecessary and poses a security risk. Instead of this, we display the
-key to the user in a human-readable form (as a sequence of 24 English
-words) and encourage to write it down on a piece of paper and keep the
-paper somewhere in a secure place.
+key to the user in a human-readable form ([as a sequence of 24 English
+words][4]) and encourage to write it down on a piece of paper and keep
+the paper somewhere in a secure place.
 
 ![Updating key in a human-readable form][2]
 
@@ -56,7 +57,7 @@ automatically the names that are not needed.
 ## Generation
 
 Ability to transfer the name from one owner to another creates a problem
-with the signatures. If the name <tt>superman</tt> was used by Bob and
+with the signatures. If the name <code>bond</code> was used by Bob and
 then taken by Dave, it is not possible to distinguish between the old
 Bob's comment and the new Dave's comment - they both are signed with the
 same name and both signatures are valid. (It would be incorrect to
@@ -65,10 +66,10 @@ because Bob really wrote these old comments.)
 
 To solve this problem we introduce a concept of *generation* of the
 name. Bob owned the zeroth generation of the name,
-<tt>superman<sub>0</sub></tt> and Dave owned the first generation of it,
-<tt>superman<sub>1</sub></tt>. When we write the name without noting the
-generation (<tt>superman</tt>), we always have in mind the latest
-generation of it.
+<code>bond<sub>0</sub></code> and Dave owned the first generation of
+it, <code>bond<sub>1</sub></code>. When we write the name without
+noting the generation (<code>bond</code>), we always have in mind
+the latest generation of it.
 
 The generation number is increased in one of two cases:
 
@@ -179,3 +180,4 @@ example:
 [1]: https://www.coindesk.com/information/what-is-blockchain-technology
 [2]: /assets/images/Updating-Key-Words.png
 [3]: /overview/notifications.html
+[4]: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
