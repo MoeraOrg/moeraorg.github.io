@@ -70,4 +70,4 @@ regular HTML interface. And other way around, if user connects with a
 regular web browser to a Moera-capable site, it will show the fallback
 Web UI described above.
 
-[1]: /overview/extension.html
+[1]: /overview/browser-extension.html

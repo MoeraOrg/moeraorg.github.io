@@ -74,7 +74,7 @@ The generation number is increased in one of two cases:
 
 1. When the name was released and registered again without signing the
    transaction by the old updating key. Note that the generation number
-   is not increased, if the transaction was signed with the old updating
+   is not increased if the transaction was signed with the old updating
    key, even if 1 year has been passed and the name has been released.
    This may happen if the old owner forgot to prolong the name in time,
    but the name wasn't taken over by anybody else and the old owner
@@ -84,7 +84,7 @@ The generation number is increased in one of two cases:
 2. When the owner voluntarily transfers the name to somebody else before
    1 year have been passed. In this case the owner still have to sign
    the transaction with his updating key, but marks the transaction as
-   "transfer of ownership".
+   "transfer of ownership" by passing an increased generation number.
 
 ## Signing key invalidation
 
@@ -105,8 +105,8 @@ revealed, these operations may be undone.
 
 Nodes should be aware of this possibility. For every name they deal with
 \- to validate signature, give access or collect information - they
-should subscribe to notifications to know if the corresponding key have
-been changed. They should store enough information to undo the
+should subscribe to [notifications][3] to know if the corresponding key
+have been changed. They should store enough information to undo the
 operations that can be undone - content of deleted messages, previous
 versions of the edited ones and so on. We limit the undo feature to up
 to 1 week in the past. It will be enough for most cases and will not
@@ -164,5 +164,19 @@ signing keys and to verify signatures on the client side.
 
 ## Node URL
 
+For every registered name we also store in the blockchain the URL of the
+node this name is assigned to. This information has many uses, for
+example:
+
+* If you know the registered name, you may enter it into a Moera client
+  and go immediately to the desired node. No search is needed.
+* If a node should be [notified][3] (for example, somebody replied to
+  your comment somewhere), the notifier can easily get the node URL by
+  the name.
+* When a client connects to some node, the node reports its registered
+  name to the client. The client may easily verify this information by
+  comparing the node URL to the URL obtained from a naming server.
+
 [1]: https://www.coindesk.com/information/what-is-blockchain-technology
 [2]: /assets/images/Updating-Key-Words.png
+[3]: /overview/notifications.html
