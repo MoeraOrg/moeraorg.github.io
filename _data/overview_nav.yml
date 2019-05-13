@@ -12,3 +12,9 @@
 
 - name: cheaper-names
   title: Cheaper Names
+
+- name: notifications
+  title: Notifications
+
+- name: newsfeed
+  title: Newsfeed
