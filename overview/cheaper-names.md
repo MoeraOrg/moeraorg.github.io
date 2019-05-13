@@ -95,10 +95,9 @@ simplifies the naming system a lot.
 Every user has a public signing key, which is long and nearly random.
 Hash of this key in an encoded form (for example, [bech32][1]-encoded)
 may be used as a *surrogate name* (`0c5xw7kv`). In practice, it will be
-enough to use first 8 characters of the encoded key - it will give about
-1 trillion of variants and probability of collision will be low enough.
-Even if a collision occurs, it will be easily resolvable by adding
-another character or two.
+enough to display first 8 characters of the encoded key to the user - it
+will give about 1 trillion variants and probability of collision will be
+low enough. Internally though the whole hash should be used.
 
 We don't need to keep a central storage for surrogate names. The
 algoritm of publishing and usage of such names is as follows:
@@ -116,9 +115,20 @@ algoritm of publishing and usage of such names is as follows:
 5. Each naming server that receives the information asks the node to
    prove the ownership of the key. If the proof is received, the naming
    server repeats the steps 3-4.
-6. When the surrogate name is used, nodes and clients query any naming
+6. The node must refresh the surrogate name periodically. If is not
+   refreshed for more than 1 day, the record is deleted. This prevents
+   unused names to point to URLs where the node was located in the past,
+   but now there is a some unrelated site located. When the surrogate
+   name is refreshed, the node URL may be changed.
+7. When the surrogate name is used, nodes and clients query any naming
    server for the information related to it, as they usually do with any
-   name.
+   name. The search by the shortened form of a surrogate name should
+   also work.
+8. When the owner writes a post or comment using his surrogate name, he
+   must include the full public key into it. This will allow to verify
+   the signature even after the name is deleted from naming servers.
+9. When a new naming server is installed, it must query from other
+   naming servers data about all registered surrogate names.
 
 The surrogate names are coupled with the corresponding signing key. If
 the signing key is compromised, there is no ability to invalidate the
