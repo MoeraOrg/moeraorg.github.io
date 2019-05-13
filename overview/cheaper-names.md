@@ -85,6 +85,12 @@ will be `https://omer.levi.family/~passover-5779/`. The name
 need to resolve `omer-levi` first, get the corresponding node URL and
 construct the URL of the subordinate node using the well-known rules.
 
+Note that the subordinate name does not have a separate signing key (its
+signing key is the same as the signing key of the senior name), so this
+mechanism cannot be used to create user accounts. But it is useful for
+groups, events etc. where each member writes under his own name and
+nobody writes under the name of the group.
+
 ## Surrogate names
 
 If you don't need a human-readable name, you can use random sequences of

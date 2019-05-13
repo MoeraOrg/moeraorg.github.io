@@ -66,10 +66,10 @@ because Bob really wrote these old comments.)
 
 To solve this problem we introduce a concept of *generation* of the
 name. Bob owned the zeroth generation of the name,
-<code>bond<sub>0</sub></code> and Dave owned the first generation of
-it, <code>bond<sub>1</sub></code>. When we write the name without
-noting the generation (<code>bond</code>), we always have in mind
-the latest generation of it.
+<code>bond<sub>0</sub></code> and Dave owned the first generation of it,
+<code>bond<sub>1</sub></code>. When we write the name without mentioning
+the generation (<code>bond</code>), we always have in mind the latest
+generation of it.
 
 The generation number is increased in one of two cases:
 
