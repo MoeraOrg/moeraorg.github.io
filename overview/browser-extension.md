@@ -2,6 +2,7 @@
 layout: overview
 title: Browser Extension
 body_class: body-green
+next: permissions
 ---
 
 # Browser Extension
@@ -84,9 +85,26 @@ To make both real and virtual pages work, we do the following:
 
 The table summarises what response the node should send for each URL.
 
-|              | `/contact-us.html` | `/moera/profile` |
-|--------------|--------------------|------------------|
-|No extension  | HTML page          | Redirect to `/contact-us.html` |
-|With extension| Empty page, `X-Moera` points to `/moera/profile` (content replaced by client)|Empty page, `X-Moera` (content replaced by client)|
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th><code class="highlighter-rouge">/contact-us.html</code></th>
+      <th><code class="highlighter-rouge">/moera/profile</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No extension</td>
+      <td>HTML page</td>
+      <td>Redirect to <code class="highlighter-rouge">/contact-us.html</code></td>
+    </tr>
+    <tr>
+      <td>With extension</td>
+      <td>Empty page, <code class="highlighter-rouge">X-Moera</code> points to <code class="highlighter-rouge">/moera/profile</code> (content replaced by client)</td>
+      <td>Empty page, <code class="highlighter-rouge">X-Moera</code> (content replaced by client)</td>
+    </tr>
+  </tbody>
+</table>
 
 [1]: /overview/node.html

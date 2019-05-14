@@ -21,3 +21,6 @@
 
 - name: browser-extension
   title: Browser Extension
+
+- name: permissions
+  title: Permissions
