@@ -88,19 +88,19 @@ The table summarises what response the node should send for each URL.
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>&nbsp;</th>
-      <th><code class="highlighter-rouge">/contact-us.html</code></th>
-      <th><code class="highlighter-rouge">/moera/profile</code></th>
+      <th class="col-2">&nbsp;</th>
+      <th class="col-5"><code class="highlighter-rouge">/contact-us.html</code></th>
+      <th class="col-5"><code class="highlighter-rouge">/moera/profile</code></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>No extension</td>
+      <th>No extension</th>
       <td>HTML page</td>
       <td>Redirect to <code class="highlighter-rouge">/contact-us.html</code></td>
     </tr>
     <tr>
-      <td>With extension</td>
+      <th>With extension</th>
       <td>Empty page, <code class="highlighter-rouge">X-Moera</code> points to <code class="highlighter-rouge">/moera/profile</code> (content is replaced by client)</td>
       <td>Empty page, <code class="highlighter-rouge">X-Moera</code> (content is replaced by client)</td>
     </tr>
