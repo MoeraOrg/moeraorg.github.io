@@ -2,6 +2,7 @@
 layout: overview
 title: Newsfeed
 body_class: body-green
+next: browser-extension
 ---
 
 # Newsfeed
