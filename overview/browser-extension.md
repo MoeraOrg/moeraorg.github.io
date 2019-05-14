@@ -101,8 +101,8 @@ The table summarises what response the node should send for each URL.
     </tr>
     <tr>
       <td>With extension</td>
-      <td>Empty page, <code class="highlighter-rouge">X-Moera</code> points to <code class="highlighter-rouge">/moera/profile</code> (content replaced by client)</td>
-      <td>Empty page, <code class="highlighter-rouge">X-Moera</code> (content replaced by client)</td>
+      <td>Empty page, <code class="highlighter-rouge">X-Moera</code> points to <code class="highlighter-rouge">/moera/profile</code> (content is replaced by client)</td>
+      <td>Empty page, <code class="highlighter-rouge">X-Moera</code> (content is replaced by client)</td>
     </tr>
   </tbody>
 </table>
