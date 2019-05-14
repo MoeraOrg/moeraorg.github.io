@@ -50,8 +50,11 @@ Node REST API may be implemented (fully or partially) by any existing
 website, making its content available for reading and commenting with
 Moera client, for reposting to other nodes in Moera network, for adding
 to the newsfeed etc. The site becomes part of the social network without
-need to copy every post, having comments in different places and hiring
-a separate person to support this.
+the need to copy every post, to have comments in different places and to
+hire a separate person to maintain this. It is possible to distribute a
+Moera REST API implementation as a plugin for popular content management
+systems (Wordpress, Joomla etc.), so any site using a CMS may be
+converted to Moera node in one click.
 
 You can think about this as a backward-compatible "upgrade" of the Web.
 
