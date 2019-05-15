@@ -52,7 +52,7 @@ everything they publish on one page.
 place. Create local communities with rules and moderation. Invite your
 friends to a barbecue.
 
-**Security.** Give view and editing rights for your posts for different
+**Security.** Give view and editing rights for your posts to various
 groups of users. Block spam and unpleasant persons.
 
 But everything has a price. And placing all your content (very valuable
@@ -146,5 +146,5 @@ and to start with a clean slate.
 
 Is it possible to create a decentralized social network that will not
 have the problems of centralization, but will preserve its good
-qualities? We will try to find a solution on the following pages. I
-call it Moera.
+qualities? We will try to find a solution on the following pages. I call
+it *Moera*.
