@@ -1,14 +1,14 @@
 ---
 layout: overview
-title: Authorization
+title: Authentication
 body_class: body-green
 next: naming
 ---
 
-# Authorization
+# Authentication
 
 To add, edit or remove publications on your own node (we will call it
-*home node* by analogy with homepage) you need to authorize with any
+*home node* by analogy with homepage) you need to authenticate with any
 mechanism of your choice - login and password is the simplest one.
 
 But for other nodes such a simple mechanism does not fit. You cannot
@@ -31,9 +31,9 @@ The whole process is as follows:
 
 1. Alice starts the client.
 2. Alice enters the URL of her home node, her login and password.
-3. The client authorizes on the home node with login and password and
-   gets the authorization token. This token is stored on the client side
-   and used in all interactions with the home node.
+3. The client authenticates on the home node with login and password and
+   gets the authentication token. This token is stored on the client
+   side and used in all interactions with the home node.
 4. Alice opens Bob's node with the client, writes a comment and clicks
    "Send".
 5. The client sends the comment to Alice's home node.
@@ -49,16 +49,17 @@ The whole process is as follows:
 11. Carol's client notifies Carol that the comment was indeed written by
     Alice.
 
-(steps 2-3 may be skipped, if the client already has the authorization
+(steps 2-3 may be skipped, if the client already has the authentication
 token)
 
 Note steps 10-11. In a decentralized network we do not trust Bob that he
 doesn't write fake comments on Alice's behalf. The cryptographic
 signature gives us proof instead of trust.
 
-Also note that reading public content is possible without authorization.
-There are no cookies that would be sent automatically on every request.
-You may stay anonymous as long as you want.
+Also note that reading public content is possible without
+authentication. There are no cookies that would be sent automatically on
+every request. You may stay anonymous as long as you want. You can even
+use Tor to hide you IP.
 
 Anonymous postings are also allowed, if the node decides to accept them.
 Or the node may receive a signed posting, check author's permissions and

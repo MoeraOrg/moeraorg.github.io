@@ -35,7 +35,7 @@ achieve this goal.
 
 Many Moera features depend on an established connection with the home
 node. The user must sign into the home node with his credentials; the
-node returns the authorization token that has to be used in all
+node returns the authentication token that has to be used in all
 subsequent interactions with the home node.
 
 It's pretty obvious that we cannot use browser cookies to pass this
