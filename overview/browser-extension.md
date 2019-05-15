@@ -107,4 +107,61 @@ The table summarises what response the node should send for each URL.
   </tbody>
 </table>
 
+## Standalone approach
+
+Why at all we need this browser extension? Why we cannot create a
+regular web application, put it on some website and let users to open it
+and use as Moera web client, without installing anything into the
+browser? It would be must easier and user-friendly.
+
+Yes, it is possible, at least theoretically. But we need to solve two
+problems that arise:
+
+* **Discovery.** When you visit some site, you don't know whether it
+  supports Moera. Even if somehow you find out, you will need to open
+  the Moera client and enter the same address into it.
+* **Links.** You cannot just copy the address in the address bar and
+  send it to you friend, because this address points to your web client,
+  but your friend may use some other client. You need a way to get a
+  client-independent link and make them open your friend's preferred web
+  client when entered in a browser.
+
+The first problem may be solved by the site itself by displaying the
+Moera logo somewhere with a client-independent Moera link to the site.
+Which brings us again to the second problem.
+
+To solve the second problem we can establish a special host for Moera
+redirections, let's call it `r.moera.org`. Then, the algorithm is
+as following:
+
+1. Each user must go to `r.moera.org` and enter the URL of his
+   preferred Moera web client there. For example,
+   `https://client.moera.net`. It is saved in cookies.
+2. When somebody wants to share a link to some post, he must use a
+   special "Copy Link to Post" button provided by his client. The link
+   will be in the form
+   `https://redirect.moera.org/roxxon.corp/posts/42`.
+3. When the friend receives the link and enters it into a browser,
+   `r.moera.org` will take the client URL from the cookies and will make
+   redirection to `https://client.moera.net/roxxon.corp/posts/42`.
+
+With this approach, users must take care not to share the links that
+appear in the address bar. But experience has shown that they will
+continue to do that. This will cause frustration when the receiver
+clicks the link and it is opened in an unfamiliar client. It may even
+lead to security issues, if the receiver enters login/password of his
+home node in this client.
+
+Besides not so smooth UI, this solution creates the central point of
+failure: `r.moera.org` that must be highly-available and handle a lot of
+traffic. Also, if the web client is built into the browser extension, it
+loads faster, cannot be mutated and do not create a traffic from the
+website, where the client is located in the scheme described above.
+
+The browser extension may also have other features that improve user
+experience.
+
+But, although I strongly recommend to use the browser extension, the
+standalone approach is likely to be implemented in some form anyway.
+
 [1]: /overview/node.html
