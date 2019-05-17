@@ -1,10 +1,10 @@
 ---
 layout: overview
-title: Why it is called Moera?
+title: Why is it called Moera?
 body_class: body-green
 ---
 
-# Why it is called Moera?
+# Why is it called Moera?
 
 ![Moerae][1]
  
