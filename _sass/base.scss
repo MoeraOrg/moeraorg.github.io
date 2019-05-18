@@ -14,7 +14,7 @@ html, body {
 .page-wrapper {
     min-height: 100%;
     /* equal to footer height */
-    margin-bottom: -50px; 
+    margin-bottom: -50px;
     &:after {
         content: "";
         display: block;
@@ -35,7 +35,7 @@ a {
     @include transition (all 0.4s ease-in-out);
     &:hover {
         text-decoration: underline;
-        color: darken($color-primary, 10%);        
+        color: darken($color-primary, 10%);
     }
     &:focus {
         text-decoration: none;
@@ -81,19 +81,19 @@ code {
 
 .btn-green, a.btn-green {
     background: $color-green;
-	border: 1px solid $color-green;
-	color: #fff !important;
-	&:hover, &:focus, &:active, &.active, &.hover {
-		background: darken($color-green, 5%);
-		color: #fff !important;
-		border: 1px solid darken($color-green, 5%);
-	}
-	.body-green & {
-    	color: #fff !important;
-    	&:hover, &:focus, &:active, &.active, &.hover {
-        	color: #fff !important;
-    	}
-	}
+    border: 1px solid $color-green;
+    color: #fff !important;
+    &:hover, &:focus, &:active, &.active, &.hover {
+        background: darken($color-green, 5%);
+        color: #fff !important;
+        border: 1px solid darken($color-green, 5%);
+    }
+    .body-green & {
+        color: #fff !important;
+        &:hover, &:focus, &:active, &.active, &.hover {
+            color: #fff !important;
+        }
+    }
 }
 
 .btn-blue, a.btn-blue {
@@ -164,14 +164,14 @@ code {
     &:focus {
         border-color: darken($divider, 5%);
         @include box-shadow(none);
-    }    
+    }
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="submit"],
-input[type="button"], 
+input[type="button"],
 textarea,
 select {
     appearance: none;  /* for mobile safari */
@@ -197,6 +197,32 @@ select {
         margin-bottom: 0;
         a {
             text-decoration: none;
+        }
+    }
+    .logo-text {
+        font-size: 1.2rem;
+        text-transform: none;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+        margin-left: 1rem;
+        color: $color-primary;
+        .body-green & {
+            color: $color-green;
+        }
+        .body-blue & {
+            color: $color-blue;
+        }
+        .body-orange & {
+            color: $color-orange;
+        }
+        .body-red & {
+            color: $color-red;
+        }
+        .body-pink & {
+            color: $color-pink;
+        }
+        .body-purple & {
+            color: $color-purple;
         }
     }
     .text-highlight {
@@ -263,8 +289,8 @@ select {
                 color: #fff;
             }
         }
-    } 
-    
+    }
+
 }
 
 .breadcrumb>li+li:before {
