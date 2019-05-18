@@ -444,6 +444,10 @@
 	height: 100%;
 }
 
+.doc-sidebar-title {
+    display: none;
+}
+
 .doc-menu {
     background: $smoky-grey;
     list-style: none;
@@ -741,10 +745,37 @@
         display: table;
     }
 
+    .doc-sidebar-title {
+        display: block;
+        color: $color-primary;
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        .body-green & {
+            color: $color-green;
+        }
+        .body-blue & {
+            color: $color-blue;
+        }
+        .body-orange & {
+            color: $color-orange;
+        }
+        .body-red & {
+            color: $color-red;
+        }
+        .body-pink & {
+            color: $color-pink;
+        }
+        .body-purple & {
+            color: $color-purple;
+        }
+    }
+
     .doc-menu {
 	    box-shadow: none;
 	    border: none;
 	}
+
 }
 
 /* Large devices (large desktops, 1200px and up) */

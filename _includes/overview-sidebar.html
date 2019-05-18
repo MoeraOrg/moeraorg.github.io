@@ -4,6 +4,7 @@
             <span class="navbar-toggler-icon fas fa-bars"></span>
         </button>
         <nav id="doc-menu" class="doc-menu navbar-nav collapse navbar-collapse flex-column sticky-lg">
+            <div class="doc-sidebar-title">Overview</div>
             {% for link in site.data.overview_nav %}
                 {% capture file_name %}{{ link.name }}.md{% endcapture %}
                 <a class="nav-link {% if page.name == file_name %}active{% endif %}" href="{{ link.name }}.html">{{ link.title }}</a>
