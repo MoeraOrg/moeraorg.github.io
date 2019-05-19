@@ -1,2 +1,5 @@
 - name: index
   title: About
+
+- name: setup
+  title: Development Environment
