@@ -78,7 +78,7 @@ frustrating.
 **End of life.** The owner may decide to close the platform at any
 moment, if it does not produce enough revenue. And often there are no
 alternatives in the market to migrate to. Even if the service is very
-important to you, you will not be able to prolong its life, even by with
+important to you, you will not be able to prolong its life, even for
 payment.
 
 **Vendor lock-in.** There is no easy way to migrate your data from the
