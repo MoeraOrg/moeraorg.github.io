@@ -18,7 +18,7 @@ To setup:
 1. Build and install [moera-commons][1] (see [README.md][2] for
    details). 
 2. Choose separate port numbers for naming server, node and client.
-   These ports must be free on you development machine.
+   These ports must be free on your development machine.
 3. Build and run [moera-naming][3] (see [README.md][4] for details).
 4. Build and run [moera-node][5] (see [README.md][6] for details).
 5. Build and run [moera-client][7] (see [README.md][8] for details).
