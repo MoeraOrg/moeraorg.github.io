@@ -300,7 +300,7 @@ select {
 
 /* ====== Footer ====== */
 .footer {
-    background: darken($text-color, 15%);
+    background: $text-color;
     color: rgba(256, 256, 256, 0.6);
     padding: 15px 0;
     a {
