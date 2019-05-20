@@ -6,7 +6,7 @@ body_class: body-pink
 
 # Development Environment
 
-As prerequisites you need to have OpenJDK 8+ and PostgreSQL 10+
+As prerequisites you need to have OpenJDK 8+ and PostgreSQL 9.6+
 installed. In all major Linux distributions you can install them from
 the main package repository.
 
