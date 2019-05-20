@@ -13,6 +13,7 @@ application:
 
 1. Install PostgreSQL server and client. In all major Linux
    distributions you can install them from the main package repository.
+   Make sure it is up and running.
 2. Switch to `postgres` user:
 
    ```
@@ -47,4 +48,9 @@ application:
    local   <dbname>        <username>                              password
    host    <dbname>        <username>      127.0.0.1/32            password
    host    <dbname>        <username>      ::1/128                 password
+   ```
+
+9. Restart PostgreSQL server:
+   ```
+   $ sudo systemctl restart postgresql
    ```
