@@ -12,7 +12,12 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
             <li class="breadcrumb-item"><a href="/development/index.html">Developer's Guide</a></li>
-            <li class="breadcrumb-item active">{{ page.title }}</li>
+            {% unless page.subtitle %}
+                <li class="breadcrumb-item active">{{ page.title }}</li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="/development/{{ page.up }}/">{{ page.title }}</a></li>
+                <li class="breadcrumb-item active">{{ page.subtitle }}</li>
+            {% endunless %}
         </ol>
     </div><!--//container-->
 </header><!--//header-->

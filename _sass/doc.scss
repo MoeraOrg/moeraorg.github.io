@@ -504,6 +504,7 @@
         }
     }
 }
+
 .doc-sub-menu {
     list-style: none;
     padding-left: 0;
@@ -514,45 +515,50 @@
             padding-top: 5px;
         }
 
-            display: block;
-            color: $text-color-secondary;
-            padding: 0;
-            padding-left: 34px;
+        display: block;
+        color: $text-color-secondary;
+        padding: 0;
+        padding-left: 34px;
+        background: none;
+
+        &:hover {
+            color: $text-color;
+            text-decoration: none;
             background: none;
-            &:hover{
-                color: $text-color;
-                text-decoration: none;
-                background: none;
-            }
-            &:focus {
-                background: none;
-            }
+        }
+        &:focus {
+            background: none;
+        }
 
         &.active {
 
-                background: none;
-                color: $color-primary;
-                .body-green & {
-                    color: $color-green;
-                }
-                .body-blue & {
-                    color: $color-blue;
-                }
-                .body-orange & {
-                    color: $color-orange;
-                }
-                .body-red & {
-                    color: $color-red;
-                }
-                .body-pink & {
-                    color: $color-pink;
-                }
-                .body-purple & {
-                    color: $color-purple;
-                }
+            background: none;
+            color: $color-primary;
+            .body-green & {
+                color: $color-green;
+            }
+            .body-blue & {
+                color: $color-blue;
+            }
+            .body-orange & {
+                color: $color-orange;
+            }
+            .body-red & {
+                color: $color-red;
+            }
+            .body-pink & {
+                color: $color-pink;
+            }
+            .body-purple & {
+                color: $color-purple;
+            }
 
         }
     }
+}
+
+.navbar-expand-lg .navbar-nav .doc-sub-menu .nav-link {
+    padding-left: 2.5rem;
 }
 
 /*
