@@ -110,7 +110,7 @@ of thousands of users has zero chance to be implemented.
 **Annoying ads.** If the platform makes profit from advertising, you
 will see ads and sponsored posts everywhere. It will exploit any chance
 to grab your attention and will block any measures to filter ads out.
-You attention is what they sell.
+Your attention is what they sell.
 
 **No control what to read.** Your friends usually write more posts than
 you can read. So "smart friend feed" with filtering, grouping and even
