@@ -70,8 +70,8 @@ cryptographic algorithms that may be useful for this. For example,
 It is possible to create a service that will recommend you people that
 may be your friends or posts that you may like. But to make it working,
 you will need to compromise your privacy and allow this service to see
-your list of friends and list of posts you've liked. Do this on your own
-risk.
+your list of friends and the list of posts you've liked. Do this on your
+own risk.
 
 ## Verified users
 
@@ -108,7 +108,7 @@ following:
    the list from posting anything on your node.
 6. The user may appeal to the service to be excluded from the list. The
    signed copies of his comments are used as a proof.
-7. The nodes that too many times sent false spam complains may be banned
+7. The nodes that sent false spam complains too many times may be banned
    from using the service.
 
 There may be many different services that use various definitions of
