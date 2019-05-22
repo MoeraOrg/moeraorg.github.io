@@ -14,25 +14,25 @@ receives notifications about updates and other information it needs and
 builds the newsfeed. The user may read it at any moment using a Moera
 client.
 
-There are many possible algorithms of building the newsfeed. From the
+There are many possible algorithms of newsfeed composition. From the
 simplest - all posts in the reverse chronological order - to very
 complex, with grouping, filtering, statistical analysis and AI. The
 newsfeed content is not limited to posts - any other news, events,
 important pieces of informations may be added to the feed. The newsfeed
-builder may be integrated into the node software, or node owner may
+composer may be integrated into the node software, or node owner may
 decide to use some third-party service (paying by his privacy). The
 choice is in the user's hands.
 
 It is recommended not to change the newsfeed after it was read. The new
 posts should be added to the end (or the beginning) of the feed and this
-"active part" of the feed may change in the process of building. But
+"active part" of the feed may change in the process of composition. But
 after it was seen by the user, it is recommended to lock it, so the user
 may be able to find the posts he just have seen. It also simplifies the
 client and makes caching possible.
 
 In particular, this means that the posts appear in the newsfeed not in
 the order of publication, but in the order they have been received by
-the newsfeed builder. Some posts may appear in the feed several times -
+the newsfeed composer. Some posts may appear in the feed several times -
 for example, if the algorithm is instructed to pop up the most popular
 posts. Unsubscribing means you will not receive new posts from this
 source anymore, but the posts you received earlier do not disappear
