@@ -139,10 +139,10 @@ list, geolocation, private messages and much more are collected and
 stored for selling them to advertisers or to... who knows. You are
 forced to use your real name for the account and cannot use more than
 one account. You cannot be anonymous and cannot even read someone's
-public posts anonymously. You virtual life must be intertwined with your
-real life, even if you don't want to. If you regret about your online
-behavior after a decade, you will not be able to throw everything away
-and to start with a clean slate.
+public posts anonymously. Your virtual life must be intertwined with
+your real life, even if you don't want to. If you regret about your
+online behavior after a decade, you will not be able to throw everything
+away and to start with a clean slate.
 
 Is it possible to create a decentralized social network that will not
 have the problems of centralization, but will preserve its good
