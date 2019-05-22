@@ -34,7 +34,7 @@ application:
 5. Create a database `<dbname>`:
 
    ```
-   postgres=# CREATE DATABASE <dbname> OWNER <username> COLLATE 'en_US.UTF-8';
+   postgres=# CREATE DATABASE <dbname> OWNER <username> ENCODING 'utf8';
    ```
 
 6. Type `\q` to quit.

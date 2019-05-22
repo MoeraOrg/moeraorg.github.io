@@ -139,8 +139,7 @@ as following:
    `https://client.moera.net`. It is saved in cookies.
 2. When somebody wants to share a link to some post, he must use a
    special "Copy Link to Post" button provided by his client. The link
-   will be in the form
-   `https://redirect.moera.org/roxxon.corp/posts/42`.
+   will be in the form `https://r.moera.org/roxxon.corp/posts/42`.
 3. When the friend receives the link and enters it into a browser,
    `r.moera.org` will take the client URL from the cookies and will make
    redirection to `https://client.moera.net/roxxon.corp/posts/42`.
