@@ -44,7 +44,7 @@ Web clients and mobile clients use REST API for all operations.
 Automated operations, like backups, reposts from other social networks,
 data migration, specialized Moera search engines etc. also use the it.
 REST API is also used for inter-node communication - receiving
-notifications, fetching new posts for the newsfeed etc.
+[notifications][2], fetching new posts for the [newsfeed][3] etc.
 
 Node REST API may be implemented (fully or partially) by any existing
 website, making its content available for reading and commenting with
@@ -56,7 +56,9 @@ Moera REST API implementation as a plugin for popular content management
 systems (Wordpress, Joomla etc.), so any site using a CMS may be
 converted to Moera node in one click.
 
-You can think about this as a backward-compatible "upgrade" of the Web.
+##### \* \* \*
+
+You may think about this as a backward-compatible "upgrade" of the Web.
 
 The regular web server implements HTTP protocol. User connects to it
 with a web browser and the server returns data in HTML format that the
@@ -74,3 +76,5 @@ regular web browser to a Moera-capable site, it will show the fallback
 Web UI described above.
 
 [1]: /overview/browser-extension.html
+[2]: /overview/notifications.html
+[3]: /overview/newsfeed.html
