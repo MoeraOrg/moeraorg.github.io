@@ -22,4 +22,7 @@
 - name: protocols/fingerprint
   title: Fingerprint
 
+- name: protocols/naming-api
+  title: Naming API
+
 - type: end

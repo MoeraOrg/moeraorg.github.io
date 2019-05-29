@@ -1,0 +1,212 @@
+calls:
+  - name: put
+    description: >
+      Register or update the name. See Overview for the <a href="/overview/naming.html">detailed description</a> of
+      the algorithm.
+    params:
+      - type: String
+        name: name
+        description: the name to be registered/updated. Required.
+      - type: int
+        name: generation
+        description: the name generation to be registered/updated. Required.
+      - type: byte[]
+        name: updatingKey
+        description: >
+          the public key for verifying signatures of further updates of the name. May be <code>null</code>, if the
+          current generation of the name is updated - the current key is preserved in this case.
+      - type: String
+        name: nodeUri
+        description: >
+          URI of the REST API endpoint of the node to which the name is assigned. May be <code>null</code> - the current
+          URI is preserved in this case.
+      - type: byte[]
+        name: signingKey
+        description: >
+          the public key of the name owner. May be <code>null</code> - the current key is preserved in this case.
+      - type: Long
+        name: validFrom
+        description: >
+          UNIX timestamp in seconds UTC of the moment the owner's key is valid from. May be <code>null</code>, if
+          <code>signingKey</code> is also <code>null</code>.
+      - type: byte[]
+        name: previousDigest
+        description: >
+          the unique identifier as reported by a naming server of the current state of the name. Used to detect
+          the situations when the name was changed by someone else between sending the request and processing it.
+          May be <code>null</code>, if the name was never registered before.
+      - type: byte[]
+        name: signature
+        description: the signature, if required, <code>null</code> otherwise.
+    returns:
+      type: UUID
+      description: identifier of the operation that was created
+    fingerprint:
+      - type: string
+        value: <code>name</code>
+      - type: integer
+        value: <code>generation</code>
+      - type: byte[]
+        value: <code>updatingKey</code>, if not <code>null</code>, or the current key otherwise
+      - type: string
+        value: <code>nodeUri</code>, if not <code>null</code>, or the current URI otherwise
+      - type: byte[]
+        value: <code>signingKey</code>, if not <code>null</code>, or the current key otherwise
+      - type: integer
+        value: >
+          <code>validFrom</code>, if <code>signingKey</code> is not <code>null</code>, or the timestamp of the current
+          key otherwise
+      - type: byte[]
+        value: <code>previousDigest</code>
+
+  - name: getStatus
+    description: Get current status of the operation.
+    params:
+      - type: UUID
+        name: operationId
+    returns:
+      struct: OperationStatusInfo
+      description: or <code>null</code>, if the operation ID is unknown
+
+  - name: getCurrent
+    description: Get current information about the given generation of the name.
+    params:
+      - type: String
+        name: name
+      - type: int
+        name: generation
+    returns:
+      struct: RegisteredNameInfo
+      description: or <code>null</code>, if the name/generation is not found
+
+  - name: getCurrentForLatest
+    description: Get current information about the latest generation of the name.
+    params:
+      - type: String
+        name: name
+    returns:
+      struct: RegisteredNameInfo
+      description: or <code>null</code>, if the name was never registered
+
+  - name: isFree
+    description: Check if the given name is available for registration
+    params:
+      - type: String
+        name: name
+    returns:
+      struct: boolean
+      description: <code>true</code>, if the name is free, <code>false</code> otherwise
+
+structures:
+  - name: OperationStatusInfo
+    fields:
+      - type: UUID
+        name: operationId
+      - enum: OperationStatus
+        name: status
+        description: the current status of the operation
+      - type: long
+        name: added
+        description: UNIX timestamp in seconds UTC when the operation was added
+      - type: long
+        name: completed
+        description: UNIX timestamp in seconds UTC when the operation was completed
+      - type: String
+        name: errorCode
+        description: the error code, if the operation have been failed
+      - type: String
+        name: errorMessage
+        description: the human-readable error description, if the operation have been failed
+      - type: int
+        name: generation
+        description: the generation of the name that was created or updated by the operation, if the operation succeeded
+
+  - name: RegisteredNameInfo
+    fields:
+      - type: String
+        name: name
+      - type: int
+        name: generation
+      - type: boolean
+        name: latest
+        description: <code>true</code> if this is the latest generation of the name, <code>false</code> otherwise
+      - type: byte[]
+        name: updatingKey
+        description: the public key for verifying signatures of further updates of the name
+      - type: String
+        name: nodeUri
+        description: >
+          URI of the REST API endpoint of the node to which the name is assigned. May be absent.
+      - type: long
+        name: deadline
+        description: >
+          UNIX timestamp in seconds UTC of the moment, when the name may become available for registration by anybody
+      - type: byte[]
+        name: signingKey
+        description: the public key of the name owner. May be <code>null</code>.
+      - type: long
+        name: validFrom
+        description: >
+          UNIX timestamp in seconds UTC of the moment the owner's key is valid from. May be absent, if
+          <code>signingKey</code> is also absent.
+      - type: byte[]
+        name: digest
+        description: >
+          a unique identifier of the current state of the name. May be transaction ID of the latest transaction with
+          this name in the blockchain, or a cryptographic digest of the current state.
+
+enums:
+  - name: OperationStatus
+    description: >
+      This enum is used to designate the operation status both by the naming server and by the node.
+    values:
+      - name: WAITING
+        description: operation is waiting to be sent to the naming server
+      - name: ADDED
+        description: operation was accepted by the naming server
+      - name: STARTED
+        description: the naming server started to proceed the operation
+      - name: SUCCEEDED
+        description: operation completed successfully
+      - name: FAILED
+        description: operation failed
+      - name: UNKNOWN
+        description: operation status is unknown
+
+errors:
+  - code: 1
+    description: <code>name</code> is empty
+  - code: 2
+    description: <code>name</code> is too long
+  - code: 3
+    description: <code>name</code> contains forbidden characters
+  - code: 4
+    description: <code>nodeUri</code> is too long
+  - code: 5
+    description: <code>updatingKey</code> is empty
+  - code: 6
+    description: <code>updatingKey</code> has wrong length
+  - code: 7
+    description: <code>signingKey</code> has wrong length
+  - code: 8
+    description: <code>validFrom</code> is empty
+  - code: 9
+    description: <code>validFrom</code> is before name creation
+  - code: 10
+    description: <code>validFrom</code> is too far in the past
+  - code: 11
+    description: <code>signature</code> is too long
+  - code: 12
+    description: <code>signature</code> check failed
+  - code: 13
+    description: I/O exception occured
+  - code: 14
+    description: crypto configuration exception occured
+  - code: 15
+    description: <code>previousDigest</code> has wrong length
+  - code: 16
+    description: <code>previousDigest</code> differs from the current one
+  - code: 17
+    description: <code>generation</code> must be the same as the current one
+  - code: 18
+    description: <code>generation</code> must be the next after the current one

@@ -1,0 +1,141 @@
+---
+layout: development
+title: Protocols
+up: protocols
+subtitle: Naming API
+body_class: body-pink
+---
+
+<h1>Naming API</h1>
+<p>
+    Moera Naming API is based on JSON-RPC protocol.
+</p>
+<h2>Calls</h2>
+{% for call in site.data.naming_api.calls %}
+    <h4 class="identifier">{{ call.name }}</h4><a name="{{ call.name }}"></a>
+    <p>{{ call.description }}</p>
+    <dl>
+        {% if call.params %}
+            <dt>Parameters:</dt>
+            {% for param in call.params %}
+                <dd>
+                    <code>{{ param.type }} {{ param.name }}</code>
+                    {% if param.description %}
+                        - {{ param.description }}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+        {% endif %}
+        {% if call.returns %}
+            <dt>Returns:</dt>
+            <dd>
+                {% if call.returns.type %}
+                    <code>{{ call.returns.type }}</code>
+                {% endif %}
+                {% if call.returns.struct %}
+                    <code><a href="#{{ call.returns.struct }}">{{ call.returns.struct }}</a></code>
+                {% endif %}
+                {% if call.returns.description %}
+                - {{ call.returns.description }}
+                {% endif %}
+            </dd>
+        {% endif %}
+        {% if call.fingerprint %}
+            <dt>Fingerprint:</dt>
+            <dd>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for field in call.fingerprint %}
+                            <tr>
+                                <td><code>{{ field.type }}</code></td>
+                                <td>{{ field.value }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </dd>
+        {% endif %}
+    </dl>
+{% endfor %}
+
+<br/><br/>
+<h2>Structures</h2>
+{% for struct in site.data.naming_api.structures %}
+    <h4 class="identifier">{{ struct.name }}</h4><a name="{{ struct.name }}"></a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for field in struct.fields %}
+            <tr>
+                <td>
+                    {% if field.type %}
+                        <code>{{ field.type }}</code>
+                    {% endif %}
+                    {% if field.struct %}
+                        <code><a href="#{{ field.struct }}">{{ field.struct }}</a></code>
+                    {% endif %}
+                    {% if field.enum %}
+                        <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code>
+                    {% endif %}
+                </td>
+                <td><code>{{ field.name }}</code></td>
+                <td>{{ field.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+<br/><br/>
+<h2>Enums</h2>
+{% for enum in site.data.naming_api.enums %}
+    <h4 class="identifier">{{ enum.name }}</h4><a name="{{ enum.name }}"></a>
+    <p>{{ enum.description }}</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for value in enum.values %}
+                <tr>
+                    <td><code>{{ value.name }}</code></td>
+                    <td>{{ value.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+<br/><br/>
+<h2>Error codes</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for error in site.data.naming_api.errors %}
+            <tr>
+                <td><code>{{ error.code }}</code></td>
+                <td>{{ error.description }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
