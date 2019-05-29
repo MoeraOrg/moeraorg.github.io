@@ -12,7 +12,8 @@ body_class: body-pink
 </p>
 <h2>Calls</h2>
 {% for call in site.data.naming_api.calls %}
-    <h4 class="identifier">{{ call.name }}</h4><a name="{{ call.name }}"></a>
+    <a name="{{ call.name }}"></a>
+    <h4 class="identifier">{{ call.name }}</h4>
     <p>{{ call.description }}</p>
     <dl>
         {% if call.params %}
@@ -67,7 +68,8 @@ body_class: body-pink
 <br/><br/>
 <h2>Structures</h2>
 {% for struct in site.data.naming_api.structures %}
-    <h4 class="identifier">{{ struct.name }}</h4><a name="{{ struct.name }}"></a>
+    <a name="{{ struct.name }}"></a>
+    <h4 class="identifier">{{ struct.name }}</h4>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -101,7 +103,8 @@ body_class: body-pink
 <br/><br/>
 <h2>Enums</h2>
 {% for enum in site.data.naming_api.enums %}
-    <h4 class="identifier">{{ enum.name }}</h4><a name="{{ enum.name }}"></a>
+    <a name="{{ enum.name }}"></a>
+    <h4 class="identifier">{{ enum.name }}</h4>
     <p>{{ enum.description }}</p>
     <table class="table table-bordered">
         <thead>
