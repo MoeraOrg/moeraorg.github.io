@@ -1,0 +1,406 @@
+objects:
+  - name: Credentials object
+    description: Credentials used to authenticate the administrator of the node.
+    requests:
+      - url: /credentials
+        type: GET
+        out:
+          struct: CredentialsCreated
+        description: Check whether the credentials are initialized already.
+      - url: /credentials
+        type: POST
+        in:
+          struct: Credentials
+        out:
+          struct: Result
+        description: >
+          Initialize credentials, if they are not set yet. Note that this operation can be executed without
+          authentication, so this should be done as soon as possible after the node installation. Sign in is not allowed
+          until the credentials are set.
+        errors:
+          - code: credentials.already-created
+            description: credentials are already created
+      - url: /credentials
+        type: PUT
+        in:
+          struct: Credentials
+        out:
+          struct: Result
+        auth: admin
+        description: Update credentials.
+  - name: Domains object
+    description: >
+      One instance of Moera node software can serve several virtual nodes. These virtual nodes are called <i>domains</i>
+      and distinguished by the hostname passed in the HTTP request. Each virtual node has <i>node ID</i>, it is used in
+      the database to designate the data that belongs to a particular node. The hostname is mapped to the node ID when
+      the request is processed, using the list of registered domains. If there is no domain with such a name, the
+      special <code>_default_</code> domain is used.
+    requests:
+      - url: /domains
+        type: GET
+        out:
+          struct: DomainInfo
+          array: true
+        auth: root secret
+        description: Get the list of registered domains.
+      - url: /domains/{name}
+        type: GET
+        params:
+          - type: String
+            name: name
+            description: domain name
+        out:
+          struct: DomainInfo
+        auth: root secret
+        description: Get information about the domain with the given hostname.
+        errors:
+          - code: domain.not-found
+            description: there is no domain with the given hostname
+      - url: /domains
+        type: POST
+        in:
+          struct: DomainInfo
+        out:
+          struct: DomainInfo
+        auth: root secret
+        description: >
+          Create a new domain with the given hostname. If <code>nodeId</code> is not passed, it is generated
+          automatically.
+        errors:
+          - code: domainInfo.name.blank
+            description: the hostname is empty
+          - code: domain.already-exists
+            description: the domain with the given hostname already exists
+      - url: /domains/{name}
+        type: PUT
+        params:
+          - type: String
+            name: name
+            description: domain hostname
+        in:
+          struct: DomainInfo
+        out:
+          struct: DomainInfo
+        auth: root secret
+        description: >
+          Update the domain with the given hostname. If the new hostname is not passed, the old hostname is preserved.
+          (Note that you cannot pass a new name for the default hostname, because it cannot be renamed and
+          <code>_default_</code> is not a valid hostname. Skip this field if you want to update the default hostname.)
+          If <code>nodeId</code> is not passed, it is generated automatically.
+        errors:
+          - code: domain.not-found
+            description: there is no domain with the given hostname
+          - code: domain.cannot-rename-default
+            description: cannot change the name of the default domain
+      - url: /domains/{name}
+        type: DELETE
+        params:
+          - type: String
+            name: name
+            description: domain name
+        out:
+          struct: Result
+        auth: root secret
+        description: >
+          Delete the domain with the given hostname. This operation deletes the domain record only, the user's data
+          related to the domain is preserved.
+        errors:
+          - code: domain.not-found
+            description: there is no domain with the given hostname
+          - code: domain.cannot-delete-default
+            description: cannot delete the default domain
+  - name: Profile object
+    description: The profile - the detailed information about the node's owner, node's purpose etc.
+    requests:
+      - url: /profile
+        type: GET
+        out:
+          struct: ProfileInfo
+        auth: none or admin
+        description: Get the profile.
+      - url: /profile
+        type: PUT
+        in:
+          struct: Profile
+        out:
+          struct: ProfileInfo
+        auth: admin
+        description: Update the profile.
+  - name: Registered Name object
+    description: >
+      The registered name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
+      Operations with the registered name are performed asynchronously - need to poll the node periodically to get
+      the current status of the operation. Only one operation with the registered name may be performed by the node at
+      any moment.
+    requests:
+      - url: /registered-name
+        type: GET
+        out:
+          struct: RegisteredNameInfo
+        auth: none or admin
+        description: >
+          Get the registered name of the node. Admin user receives also the current status of the latest operation with
+          the registered name.
+      - url: /registered-name
+        type: POST
+        in:
+          struct: NameToRegister
+        out:
+          struct: RegisteredNameSecret
+        auth: admin
+        description: >
+          Register a new name for the node. The corresponding signing key is generated automatically and stored at
+          the node. The updating key is generated and returned in the encoded form and in the form of mnemonic
+          (a sequence of English words) that need to be written down and stored securely to be able to perform further
+          operations with the name.
+        errors:
+          - code: naming.operation-pending
+            description: another operation with the registered name is pending currently
+      - url: /registered-name
+        type: PUT
+        in:
+          struct: RegisteredNameSecret
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Update the registered name of the node. May be used to assign an already-registered name to the node
+          (the corresponding signing key is generated automatically and stored at the node), or to prolong the name.
+          The secret or mnemonic of the updating key must be provided for this operation.
+        errors:
+          - code: naming.operation-pending
+            description: another operation with the registered name is pending currently
+          - code: registeredNameSecret.empty
+            description: the registered name secret or mnemonic are not provided
+          - code: registered-name.name-absent
+            description: the registered name/generation is not provided and not known by the node
+          - code: registered-name.<naming server error>
+            description: various errors returned by naming server
+      - url: /registered-name
+        type: DELETE
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Delete all the information related to the registered name (including the signing key) from the node. The name
+          record on the naming server is not touched.
+        errors:
+          - code: naming.operation-pending
+            description: another operation with the registered name is pending currently
+  - name: Tokens object
+    description: >
+      The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
+      in the Overview section.
+    requests:
+      - url: /tokens/{token}
+        type: GET
+        params:
+          - type: String
+            name: token
+            description: the token
+        out:
+          struct: TokenInfo
+        description: Get information about the token.
+      - url: /tokens
+        type: POST
+        in:
+          struct: Credentials
+        out:
+          struct: TokenCreated
+        description: Sign in and create a token.
+        errors:
+          - code: credentials.not-created
+            description: credentials are not created yet
+          - code: credentials.login-incorrect
+            description: login or password is incorrect
+  - name: Who Am I object
+    description: Brief information about the node.
+    requests:
+      - url: /whoami
+        type: GET
+        out:
+          struct: WhoAmI
+        description: Get brief information about the node.
+
+structures:
+  - name: Credentials
+    fields:
+      - type: String
+        name: login
+      - type: String
+        name: password
+    errors:
+      - code: credentials.login.blank
+        description: the login is empty
+      - code: credentials.password.blank
+        description: the password is empty
+
+  - name: CredentialsCreated
+    fields:
+      - type: boolean
+        name: created
+        description: <code>true</code> if the credentials are initialized already, <code>false</code> otherwise
+  - name: DomainInfo
+    fields:
+      - type: String
+        name: name
+        description: domain's hostname or <code>_default_</code> for the default domain
+      - type: UUID
+        name: nodeId
+        description: domain's node ID
+    errors:
+      - code: domainInfo.name.blank
+        description: the domain name is empty
+      - code: domainInfo.name.wrong-hostname
+        description: the domain name is not a valid hostname
+      - code: domainInfo.nodeId.wrong-uuid
+        description: the node ID is not a valid UUID
+  - name: NameToRegister
+    fields:
+      - type: String
+        name: name
+    errors:
+      - code: nameToRegister.name.blank
+        description: the name is empty
+      - code: nameToRegister.name.invalid
+        description: the name is reserved, too long or contains invalid characters
+  - name: Profile
+    fields:
+      - type: String
+        name: fullName
+        description: node owner's full name
+      - type: String
+        name: gender
+        description: node owners's gender
+      - type: String
+        name: email
+        description: node owner's E-mail address
+    errors:
+      - code: profile.fullName.wrong-size
+        description: the full name is too long
+      - code: profile.gender.wrong-size
+        description: the gender string is too long
+      - code: profile.email.wrong-email
+        description: the E-mail is not a well-formed E-mail address
+  - name: ProfileInfo
+    fields:
+      - type: String
+        name: fullName
+        description: node owner's full name
+      - type: String
+        name: gender
+        description: node owners's gender
+      - type: String
+        name: email
+        description: node owner's E-mail address
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+    operations:
+      - name: edit
+        description: change the profile
+  - name: RegisteredNameInfo
+    fields:
+      - type: String
+        name: name
+      - type: int
+        name: generation
+      - enum: OperationStatus
+        name: operationStatus
+        description: status of the latest operation with the registered name
+      - type: timestamp
+        name: operationStatusUpdated
+        description: the last time the operation status was updated
+      - type: String
+        name: operationErrorCode
+        description: if the operation with the registered name was failed, the code of the failure
+      - type: String
+        name: operationErrorMessage
+        description: if the operation with the registered name was failed, the human-readable description of the failure
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+    operations:
+      - name: manage
+        description: any modification of the registered name, prolonging it etc.
+  - name: RegisteredNameSecret
+    fields:
+      - type: String
+        name: name
+      - type: int
+        name: generation
+      - type: String[]
+        name: mnemonic
+        description: human-friendly mnemonic of the updating key
+      - type: String
+        name: secret
+        description: base64-encoded secret of the updating key
+  - name: Result
+    fields:
+      - type: String
+        name: errorCode
+        description: error code
+      - type: String
+        name: message
+        description: human-readable error message
+  - name: TokenCreated
+    fields:
+      - type: String
+        name: token
+        description: the token
+      - type: String[]
+        name: permissions
+        description: The list of <a href="/overview/permissions.html">permission groups</a> assigned to the token.
+  - name: TokenInfo
+    fields:
+      - type: String
+        name: token
+        description: the token
+      - type: boolean
+        name: valid
+        description: <code>true</code> if the token is valid, <code>false</code> otherwise.
+      - type: String[]
+        name: permissions
+        description: >
+          The list of <a href="/overview/permissions.html">permission groups</a> assigned to the token. See also the
+          <a href="#standard-permission-groups">list of standard permission groups</a>.
+  - name: WhoAmI
+    fields:
+      - type: String
+        name: registeredName
+      - type: int
+        name: registeredNameGeneration
+
+enums:
+  - name: OperationStatus
+    description: >
+      This enum is used to designate the operation status both by the naming server and by the node.
+    values:
+      - name: WAITING
+        description: operation is waiting to be sent to the naming server
+      - name: ADDED
+        description: operation was accepted by the naming server
+      - name: STARTED
+        description: the naming server started to proceed the operation
+      - name: SUCCEEDED
+        description: operation completed successfully
+      - name: FAILED
+        description: operation failed
+      - name: UNKNOWN
+        description: operation status is unknown
+
+http-codes:
+  - code: 200
+    description: No error.
+  - code: 400
+    description: Validation of the request body failed.
+  - code: 401
+    description: Invalid authentication token or root secret.
+  - code: 403
+    description: Authentication required, but not provided.
+  - code: 404
+    description: Unrecognized request or object not found.
+  - code: 409
+    description: Operation failed.
+  - code: 500
+    description: The node configured incorrectly or a bug in the node software; naming service not available.

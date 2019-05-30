@@ -10,6 +10,9 @@ body_class: body-pink
 <p>
     Moera Naming API is based on JSON-RPC protocol.
 </p>
+<p>
+    <i>Timestamp</i> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
+</p>
 <h2>Calls</h2>
 {% for call in site.data.naming_api.calls %}
     <a name="{{ call.name }}"></a>
@@ -42,7 +45,7 @@ body_class: body-pink
             </dd>
         {% endif %}
         {% if call.fingerprint %}
-            <dt>Fingerprint:</dt>
+            <dt>Fingerprint (<a href="/development/protocols/fingerprint.html">read more</a>):</dt>
             <dd>
                 <table class="table table-bordered">
                     <thead>

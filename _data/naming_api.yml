@@ -24,11 +24,11 @@ calls:
         name: signingKey
         description: >
           the public key of the name owner. May be <code>null</code> - the current key is preserved in this case.
-      - type: Long
+      - type: timestamp
         name: validFrom
         description: >
-          UNIX timestamp in seconds UTC of the moment the owner's key is valid from. May be <code>null</code>, if
-          <code>signingKey</code> is also <code>null</code>.
+          The moment in time the owner's key is valid from. May be <code>null</code>, if <code>signingKey</code> is also
+          <code>null</code>.
       - type: byte[]
         name: previousDigest
         description: >
@@ -105,12 +105,12 @@ structures:
       - enum: OperationStatus
         name: status
         description: the current status of the operation
-      - type: long
+      - type: timestamp
         name: added
-        description: UNIX timestamp in seconds UTC when the operation was added
-      - type: long
+        description: when the operation was added
+      - type: timestamp
         name: completed
-        description: UNIX timestamp in seconds UTC when the operation was completed
+        description: when the operation was completed
       - type: String
         name: errorCode
         description: the error code, if the operation have been failed
@@ -137,18 +137,17 @@ structures:
         name: nodeUri
         description: >
           URI of the REST API endpoint of the node to which the name is assigned. May be absent.
-      - type: long
+      - type: timestamp
         name: deadline
         description: >
-          UNIX timestamp in seconds UTC of the moment, when the name may become available for registration by anybody
+          the moment in time when the name may become available for registration by anybody
       - type: byte[]
         name: signingKey
         description: the public key of the name owner. May be <code>null</code>.
-      - type: long
+      - type: timestamp
         name: validFrom
         description: >
-          UNIX timestamp in seconds UTC of the moment the owner's key is valid from. May be absent, if
-          <code>signingKey</code> is also absent.
+          the moment in time the owner's key is valid from. May be absent, if <code>signingKey</code> is also absent.
       - type: byte[]
         name: digest
         description: >
