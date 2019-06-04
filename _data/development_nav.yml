@@ -31,4 +31,7 @@
 - name: protocols/virtual-pages
   title: Virtual Pages
 
+- name: protocols/headers
+  title: Headers
+
 - type: end

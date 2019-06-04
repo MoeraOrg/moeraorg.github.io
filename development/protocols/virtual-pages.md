@@ -11,7 +11,9 @@ body_class: body-pink
 These are standard virtual pages supported by Moera nodes.
 [Read more][1] about virtual pages in the Overview section.
 
-Virtual pages are located under `/moera` subdirectory of the website.
+Virtual pages are located under `/moera` subdirectory of the *Moera
+root* of the website (matches the website root by default, may be
+changed by [`X-Moera` header][2]).
 
 `/timeline`
 
@@ -27,3 +29,4 @@ purpose etc.
 Profile in editing mode.
 
 [1]: /overview/browser-extension.html
+[2]: /development/protocols/headers.html
