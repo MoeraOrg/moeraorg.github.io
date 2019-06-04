@@ -28,4 +28,7 @@
 - name: protocols/node-api
   title: Node API
 
+- name: protocols/virtual-pages
+  title: Virtual Pages
+
 - type: end
