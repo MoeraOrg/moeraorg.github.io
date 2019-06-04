@@ -174,38 +174,56 @@ enums:
 
 errors:
   - code: 1
+    name: name.empty
     description: <code>name</code> is empty
   - code: 2
+    name: name.too-long
     description: <code>name</code> is too long
   - code: 3
+    name: name.forbidden-chars
     description: <code>name</code> contains forbidden characters
   - code: 4
+    name: node-uri.too-long
     description: <code>nodeUri</code> is too long
   - code: 5
+    name: updating-key.empty
     description: <code>updatingKey</code> is empty
   - code: 6
+    name: updating-key.wrong-length
     description: <code>updatingKey</code> has wrong length
   - code: 7
+    name: signing-key.wrong-length
     description: <code>signingKey</code> has wrong length
   - code: 8
+    name: valid-from.empty
     description: <code>validFrom</code> is empty
   - code: 9
+    name: valid-from.before-name-created
     description: <code>validFrom</code> is before name creation
   - code: 10
+    name: valid-from.too-far-in-past
     description: <code>validFrom</code> is too far in the past
   - code: 11
+    name: signature.too-long
     description: <code>signature</code> is too long
   - code: 12
+    name: signature check failed
     description: <code>signature</code> check failed
   - code: 13
+    name: I/O exception occured
     description: I/O exception occured
   - code: 14
+    name: crypto.failure
     description: crypto configuration exception occured
   - code: 15
+    name: previous-digest.wrong-length
     description: <code>previousDigest</code> has wrong length
   - code: 16
+    name: previous-digest.incorrect
     description: <code>previousDigest</code> differs from the current one
   - code: 17
+    name: generation.not-same
     description: <code>generation</code> must be the same as the current one
   - code: 18
+    name: generation.not-next
     description: <code>generation</code> must be the next after the current one

@@ -175,7 +175,9 @@ objects:
           - code: registered-name.name-absent
             description: the registered name/generation is not provided and not known by the node
           - code: registered-name.<naming server error>
-            description: various errors returned by naming server
+            description: >
+              various errors returned by naming server
+              (<a href="/development/protocols/naming-api.html#error-codes">see the list</a>)
       - url: /registered-name
         type: DELETE
         out:

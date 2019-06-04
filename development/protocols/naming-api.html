@@ -128,11 +128,13 @@ body_class: body-pink
 {% endfor %}
 
 <br/><br/>
+<a name="error-codes"></a>
 <h2>Error codes</h2>
 <table class="table table-bordered">
     <thead>
         <tr>
             <th>Code</th>
+            <th>Name</th>
             <th>Description</th>
         </tr>
     </thead>
@@ -140,6 +142,7 @@ body_class: body-pink
         {% for error in site.data.naming_api.errors %}
             <tr>
                 <td><code>{{ error.code }}</code></td>
+                <td><code>{{ error.name }}</code></td>
                 <td>{{ error.description }}</td>
             </tr>
         {% endfor %}
