@@ -207,23 +207,20 @@ errors:
     name: signature.too-long
     description: <code>signature</code> is too long
   - code: 12
-    name: signature check failed
+    name: signature.failed
     description: <code>signature</code> check failed
   - code: 13
-    name: I/O exception occured
-    description: I/O exception occured
-  - code: 14
     name: crypto.failure
     description: crypto configuration exception occured
-  - code: 15
+  - code: 14
     name: previous-digest.wrong-length
     description: <code>previousDigest</code> has wrong length
-  - code: 16
+  - code: 15
     name: previous-digest.incorrect
     description: <code>previousDigest</code> differs from the current one
-  - code: 17
+  - code: 16
     name: generation.not-same
     description: <code>generation</code> must be the same as the current one
-  - code: 18
+  - code: 17
     name: generation.not-next
     description: <code>generation</code> must be the next after the current one
