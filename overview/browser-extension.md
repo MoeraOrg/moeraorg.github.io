@@ -112,7 +112,7 @@ The table summarises what response the node should send for each URL.
 Why at all we need this browser extension? Why we cannot create a
 regular web application, put it on some website and let users to open it
 and use as Moera web client, without installing anything into the
-browser? It would be must easier and user-friendly.
+browser? It would be much easier and user-friendly.
 
 Yes, it is possible, at least theoretically. But we need to solve two
 problems that arise:
@@ -123,7 +123,7 @@ problems that arise:
 * **Links.** You cannot just copy the address in the address bar and
   send it to you friend, because this address points to your web client,
   but your friend may use some other client. You need a way to get a
-  client-independent link and make them open your friend's preferred web
+  client-independent link and make it open your friend's preferred web
   client when entered in a browser.
 
 The first problem may be solved by the site itself by displaying the
@@ -136,7 +136,7 @@ as following:
 
 1. Each user must go to `r.moera.org` and enter the URL of his
    preferred Moera web client there. For example,
-   `https://client.moera.net`. It is saved in cookies.
+   `https://client.moera.net`. It is saved in the cookies.
 2. When somebody wants to share a link to some post, he must use a
    special "Copy Link to Post" button provided by his client. The link
    will be in the form `https://r.moera.org/roxxon.corp/posts/42`.
@@ -154,7 +154,7 @@ home node in this client.
 Besides not so smooth UI, this solution creates the central point of
 failure: `r.moera.org` that must be highly-available and handle a lot of
 traffic. Also, if the web client is built into the browser extension, it
-loads faster, cannot be mutated and do not create a traffic from the
+loads faster, cannot be mutated and do not create traffic from the
 website, where the client is located in the scheme described above.
 
 The browser extension may also have other features that improve user
