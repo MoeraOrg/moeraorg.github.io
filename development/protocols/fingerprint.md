@@ -64,3 +64,9 @@ Boolean value is one byte: `0x00` for `False` and `0x01` for `True`.
 
 * structure version (variable-sized integer)
 * the fields in a predefined order, encoded according to their type
+
+##### Digest (cryptographic hash)
+
+Encoded as array of bytes. The length of the array is present, as for
+every other array of bytes, but will be the same for all hashes using
+the same [algorithm](/development/protocols/cryptography.html).
