@@ -22,6 +22,9 @@
 - name: protocols/fingerprint
   title: Fingerprint
 
+- name: protocols/moment
+  title: Moment
+
 - name: protocols/naming-api
   title: Naming API
 
