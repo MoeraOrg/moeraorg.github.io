@@ -143,7 +143,7 @@ objects:
         type: GET
         out:
           struct: PostingFeatures
-        description:
+        description: Get information about supported features of postings.
   - name: Profile object
     description: The profile - the detailed information about the node's owner, node's purpose etc.
     requests:
@@ -419,6 +419,14 @@ structures:
         name: created
         description: posting creation timestamp, the current timestamp by default
     errors:
+      - code: postingText.bodySrc.blank
+        description: body text is empty
+      - code: postingText.bodySrc.wrong-size
+        description: body text is too long
+      - code: postingText.bodySrcFormat.unknown
+        description: unknown body text format
+      - code: postingText.bodyHtml.wrong-size
+        description: body HTML is too long
 
   - name: Profile
     fields:
