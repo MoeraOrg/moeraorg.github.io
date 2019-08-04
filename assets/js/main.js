@@ -25,13 +25,4 @@ $(document).ready(function() {
     // $('#cards-wrapper .item-inner').matchHeight();
     // $('#showcase .card').matchHeight();
      
-    /* Bootstrap lightbox */
-    /* Ref: http://ashleydw.github.io/lightbox/ */
-
-    $(document).delegate('*[data-toggle="lightbox"]', 'click', function(e) {
-        e.preventDefault();
-        $(this).ekkoLightbox();
-    });    
-
-
 });
