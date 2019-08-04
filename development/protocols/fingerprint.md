@@ -69,4 +69,6 @@ Boolean value is one byte: `0x00` for `False` and `0x01` for `True`.
 
 Encoded as array of bytes. The length of the array is present, as for
 every other array of bytes, but will be the same for all hashes using
-the same [algorithm](/development/protocols/cryptography.html).
+the same [algorithm][1].
+
+[1]: /development/protocols/cryptography.html

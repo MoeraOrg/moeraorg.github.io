@@ -15,9 +15,13 @@ Virtual pages are located under `/moera` subdirectory of the *Moera
 root* of the website (matches the website root by default, may be
 changed by [`X-Moera` header][2]).
 
-`/timeline`
+`/compose`
 
-Timeline - all publications in reverse chronological order.
+Post composer.
+
+`/post/<id>`
+
+Detailed view of the post with the given ID.
 
 `/profile`
 
@@ -28,5 +32,14 @@ purpose etc.
 
 Profile in editing mode.
 
+`/timeline`
+
+Timeline - all publications in reverse chronological order.
+
+`/timeline?before=<moment>`
+
+Timeline, positioned at about the given [moment][3].
+
 [1]: /overview/browser-extension.html
 [2]: /development/protocols/headers.html
+[3]: /development/protocols/moment.html
