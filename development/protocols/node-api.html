@@ -254,6 +254,25 @@ body_class: body-pink
             </tbody>
         </table>
     {% endif %}
+    {% if struct.fingerprint %}
+        <b>Fingerprint (<a href="/development/protocols/fingerprint.html">read more</a>):</b>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-4">Type</th>
+                    <th class="col-8">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for field in struct.fingerprint %}
+                    <tr>
+                        <td><code>{{ field.type }}</code></td>
+                        <td>{{ field.value }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endfor %}
 
 <br/><br/>

@@ -109,6 +109,41 @@ objects:
             description: there is no domain with the given hostname
           - code: domain.cannot-delete-default
             description: cannot delete the default domain
+  - name: Postings object
+    description: All postings.
+    requests:
+      - url: /postings
+        type: POST
+        in:
+          struct: PostingText
+        out:
+          struct: PostingInfo
+        auth: admin
+        description: >
+          Create a new posting from the text given, sign it with the signing key and publish it on the timeline.
+          The heading and the preview of the posting are created automatically, if needed.
+        errors:
+          - code: posting.registered-name-not-set
+            description: registered name is not set yet
+          - code: posting.signing-key-not-set
+            description: signing key is not set yet
+      - url: /postings/{id}
+        type: GET
+        params:
+          - type: UUID
+            name: id
+            description: ID of the posting
+        out:
+          struct: PostingInfo
+        description: Get an individual posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /postings/features
+        type: GET
+        out:
+          struct: PostingFeatures
+        description:
   - name: Profile object
     description: The profile - the detailed information about the node's owner, node's purpose etc.
     requests:
@@ -258,6 +293,13 @@ objects:
         description: Get brief information about the node.
 
 structures:
+  - name: Choice
+    fields:
+      - type: String
+        name: value
+      - type: String
+        name: title
+        description: user-readable title for the value
   - name: Credentials
     fields:
       - type: String
@@ -299,6 +341,85 @@ structures:
         description: the name is empty
       - code: nameToRegister.name.invalid
         description: the name is reserved, too long or contains invalid characters
+  - name: PostingFeatures
+    fields:
+      - struct: Choice
+        array: true
+        name: sourceFormats
+        description: >
+          List of source text formats the node understands. The well-known values are:
+          <ul>
+            <li><code>plain-text</code> - plain text with newlines and paragraphs delimited by empty line;</li>
+            <li><code>html</code> - HTML-formatted text, the node may allow only limited set of tags;</li>
+            <li><code>markdown</code> - text in Markdown format.</li>
+          </ul>
+  - name: PostingInfo
+    fields:
+      - type: UUID
+        name: id
+      - type: String
+        name: ownerName
+        description: registered name of the posting's owner
+      - type: int
+        name: ownerGeneration
+        description: registered name generation of the posting's owner
+      - type: String
+        name: bodyPreviewHtml
+        description: preview of the posting's body (HTML), may be absent
+      - type: byte[]
+        name: bodySrcHash
+        description: hash of the source text of the posting
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the posting, the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: bodyHtml
+        description: body of the posting (HTML)
+      - type: String
+        name: heading
+        description: heading of the posting
+      - type: int
+        name: created
+        description: posting creation timestamp
+      - type: byte[]
+        name: signature
+        description: the posting's owner signature (the fingerprint see below)
+      - type: int
+        name: moment
+        description:
+    fingerprint:
+      - type: String
+        value: <code>ownerName</code>
+      - type: int
+        value: <code>ownerGeneration</code>
+      - type: byte[]
+        value: <code>bodySrcHash</code>
+      - type: String
+        value: <code>bodySrcFormat</code>
+      - type: String
+        value: <code>bodyHtml</code>
+      - type: int
+        value: <code>created</code>
+  - name: PostingText
+    fields:
+      - type: String
+        name: bodySrc
+        description: the source text of the posting
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: bodyHtml
+        description: body of the posting (HTML), may be absent
+      - type: int
+        name: created
+        description: posting creation timestamp, the current timestamp by default
+    errors:
+
   - name: Profile
     fields:
       - type: String
