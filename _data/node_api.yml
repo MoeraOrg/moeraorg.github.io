@@ -189,6 +189,39 @@ objects:
         errors:
           - code: naming.operation-pending
             description: another operation with the registered name is pending currently
+  - name: Timeline object
+    description: >
+      Timeline - all postings that user is permitted to read. The postings are sorted by
+      <a href="/development/protocols/moment.html">moment</a>, descending.
+    requests:
+      - url: /timeline
+        type: GET
+        out:
+          struct: TimelineInfo
+          array: true
+        description: Get general information about the timeline.
+      - url: /timeline/postings
+        type: GET
+        params:
+          - type: int
+            name: before
+            description: filter postings posted at or before this moment
+          - type: int
+            name: after
+            description: filter postings posted strongly after this moment
+          - type: int
+            name: limit
+            description: maximum number of postings returned
+        out:
+          struct: TimelineSliceInfo
+        description: >
+          Get a slice of the timeline, delimited by <code>before</code> or <code>after</code> moments (but not both) and
+          the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest
+          postings are returned. The node may decide to return less postings than the given <code>limit</code>. The
+          postings are always sorted by moment, descending.
+        errors:
+          - code: timeline.before-after-exclusive
+            description: before and after parameters are not allowed together
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
@@ -345,6 +378,26 @@ structures:
       - type: String
         name: message
         description: human-readable error message
+  - name: TimelineInfo
+    fields:
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+    operations:
+      - name: add
+        description: add postings to the timeline
+  - name: TimelineSliceInfo
+    fields:
+      - type: int
+        name: before
+        description: the slice contains all postings before this moment, inclusive. May be the far future.
+      - type: int
+        name: after
+        description: the slice contains all postings after this moment, exclusive. May be the far past.
+      - struct: PostingInfo
+        array: true
+        name: postings
+        description: the postings
   - name: TokenCreated
     fields:
       - type: String

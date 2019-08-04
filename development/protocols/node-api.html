@@ -204,7 +204,7 @@ body_class: body-pink
                         <code>{{ field.type }}</code>
                     {% endif %}
                     {% if field.struct %}
-                        <code><a href="#{{ field.struct }}">{{ field.struct }}</a></code>
+                        <code><a href="#{{ field.struct }}">{{ field.struct }}{% if field.array == true %}[]{% endif %}</a></code>
                     {% endif %}
                     {% if field.enum %}
                         <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code>
