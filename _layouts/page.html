@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% if page.title %}
+    {% if page.subtitle %}
+        <title>{{ site.title | prepend: " - " | prepend: page.title | prepend: " - " | prepend: page.subtitle }}</title>
+    {% elsif page.title %}
         <title>{{ site.title | prepend: " - " | prepend: page.title }}</title>
     {% else %}
         <title>{{ site.title }}</title>
