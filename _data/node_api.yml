@@ -380,9 +380,12 @@ structures:
       - type: String
         name: heading
         description: heading of the posting
-      - type: int
-        name: created
-        description: posting creation timestamp
+      - type: timestamp
+        name: createdAt
+        description: posting creation timestamp - the real time when the posting was created
+      - type: timestamp
+        name: publishedAt
+        description: posting publication timestamp - the time the posting is published under at the timeline
       - type: byte[]
         name: signature
         description: the posting's owner signature (the fingerprint see below)
@@ -401,7 +404,7 @@ structures:
       - type: String
         value: <code>bodyHtml</code>
       - type: int
-        value: <code>created</code>
+        value: <code>createdAt</code>
   - name: PostingText
     fields:
       - type: String
@@ -415,9 +418,9 @@ structures:
       - type: String
         name: bodyHtml
         description: body of the posting (HTML), may be absent
-      - type: int
-        name: created
-        description: posting creation timestamp, the current timestamp by default
+      - type: timestamp
+        name: publishAt
+        description: posting publication timestamp, the current timestamp by default
     errors:
       - code: postingText.bodySrc.blank
         description: body text is empty
