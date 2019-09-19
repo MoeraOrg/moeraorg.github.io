@@ -189,6 +189,62 @@ objects:
         out:
           struct: PostingFeatures
         description: Get information about supported features of postings.
+  - name: Posting Revisions object
+    description: All revisions of the posting.
+    requests:
+      - url: /postings/{postingId}/revisions
+        type: GET
+        params:
+          - type: UUID
+            name: postingId
+            description: ID of the posting
+        out:
+          struct: PostingRevisionInfo
+          array: true
+        auth: admin
+        description: Get all revisions of the posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /postings/{postingId}/revisions/{id}
+        type: GET
+        params:
+          - type: UUID
+            name: postingId
+            description: ID of the posting
+          - type: UUID
+            name: id
+            description: ID of the revision
+        out:
+          struct: PostingRevisionInfo
+        auth: admin
+        description: Get an individual revision of the posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: posting-revision.not-found
+            description: there is no revision with the given ID
+      - url: /postings/{postingId}/revisions/{id}/restore
+        type: POST
+        params:
+          - type: UUID
+            name: postingId
+            description: ID of the posting
+          - type: UUID
+            name: id
+            description: ID of the revision
+        out:
+          struct: PostingRevisionInfo
+        auth: admin
+        description: >
+          Restore a revision of the posting. A new revision is created with the same content as in the given revision.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: posting-revision.not-found
+            description: there is no revision with the given ID
+          - code: posting-revision.already-current
+            description: the given revision is already the current one
   - name: Profile object
     description: The profile - the detailed information about the node's owner, node's purpose etc.
     requests:
@@ -474,6 +530,42 @@ structures:
         value: <code>bodyHtml</code>
       - type: int
         value: <code>createdAt</code> (of the current revision)
+  - name: PostingRevisionInfo
+    fields:
+      - type: UUID
+        name: id
+      - type: String
+        name: bodyPreviewHtml
+        description: preview of the revisions's body (HTML), may be absent
+      - type: byte[]
+        name: bodySrcHash
+        description: hash of the source text of the revision
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the revision, the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: bodyHtml
+        description: body of the revision (HTML)
+      - type: String
+        name: heading
+        description: heading of the revision
+      - type: timestamp
+        name: createdAt
+        description: revision creation timestamp - the real time when the revision was created
+      - type: timestamp
+        name: publishedAt
+        description: revision publication timestamp - the time the revision is published under at the timeline
+      - type: timestamp
+        name: deletedAt
+        description: revision deletion timestamp - the time when the revision was deleted, may be absent
+      - type: byte[]
+        name: signature
+        description: >
+          the revision's owner signature (the fingerprint see in <a href="#PostingInfo"><code>PostingInfo</code></a>)
+      - type: int
+        name: moment
   - name: PostingText
     fields:
       - type: String
