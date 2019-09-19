@@ -23,6 +23,11 @@ body_class: body-pink
     An error may occur on different stages of request processing.
     <ul>
         <li>If the request URL is unknown, <code>not-found</code> error is returned.</li>
+        <li>If incorrect JSON is provided, <code>invalid-syntax</code> error is returned.</li>
+        <li>
+            If value of one of the arguments does not correspond its type, <code>invalid-argument-value</code> error is
+            returned.
+        </li>
         <li>
             If invalid authentication token or root secret is provided, <code>authentication.invalid</code> error is
             returned.

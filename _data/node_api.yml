@@ -110,7 +110,9 @@ objects:
           - code: domain.cannot-delete-default
             description: cannot delete the default domain
   - name: Postings object
-    description: All postings.
+    description: >
+      All postings. Each posting may contain one or more revisions, a new revision is created every time the posting is
+      updated. The latest revision is the current one, the previous ones are marked as deleted.
     requests:
       - url: /postings
         type: POST
@@ -128,14 +130,57 @@ objects:
           - code: posting.signing-key-not-set
             description: signing key is not set yet
       - url: /postings/{id}
+        type: PUT
+        params:
+          - type: UUID
+            name: id
+            description: ID of the posting
+        in:
+          struct: PostingText
+        out:
+          struct: PostingInfo
+        auth: admin
+        description: >
+          Update the posting, creating a new revision of it. The text is processed just like in the <code>POST</code>
+          request.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: posting.registered-name-not-set
+            description: registered name is not set yet
+          - code: posting.signing-key-not-set
+            description: signing key is not set yet
+      - url: /postings/{id}
         type: GET
         params:
           - type: UUID
             name: id
             description: ID of the posting
+          - type: String
+            name: include
+            description: >
+              Comma-separated list of additional blocks of information that are needed. The values are:
+              <ul>
+                <li><code>source</code> - source text of the posting.
+              </ul>
         out:
           struct: PostingInfo
         description: Get an individual posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /postings/{id}
+        type: DELETE
+        params:
+          - type: UUID
+            name: id
+            description: ID of the posting
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Delete the posting. The posting may not be purged from the database immediately, but preserved for some period
+          of time to give a chance to restore it.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
@@ -256,7 +301,9 @@ objects:
           postings are always sorted by moment, descending.
         errors:
           - code: timeline.before-after-exclusive
-            description: before and after parameters are not allowed together
+            description: <code>before</code> and <code>after</code> parameters are not allowed together
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
@@ -357,6 +404,12 @@ structures:
     fields:
       - type: UUID
         name: id
+      - type: UUID
+        name: revisionId
+        description: ID of the current revision of the posting
+      - type: int
+        name: totalRevisions
+        description: total number of revisions the posting has
       - type: String
         name: ownerName
         description: registered name of the posting's owner
@@ -366,6 +419,9 @@ structures:
       - type: String
         name: bodyPreviewHtml
         description: preview of the posting's body (HTML), may be absent
+      - type: String
+        name: bodySrc
+        description: the source text of the posting, may be absent if not requested
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the posting
@@ -386,12 +442,25 @@ structures:
       - type: timestamp
         name: publishedAt
         description: posting publication timestamp - the time the posting is published under at the timeline
+      - type: timestamp
+        name: editedAt
+        description: posting editing timestamp - the last time the posting was updated
+      - type: timestamp
+        name: deletedAt
+        description: posting deletion timestamp - the time when the posting was deleted, may be absent
       - type: byte[]
         name: signature
         description: the posting's owner signature (the fingerprint see below)
       - type: int
         name: moment
-        description:
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+    operations:
+      - name: edit
+        description: edit the posting
+      - name: delete
+        description: delete the posting
     fingerprint:
       - type: String
         value: <code>ownerName</code>
@@ -404,7 +473,7 @@ structures:
       - type: String
         value: <code>bodyHtml</code>
       - type: int
-        value: <code>createdAt</code>
+        value: <code>createdAt</code> (of the current revision)
   - name: PostingText
     fields:
       - type: String
@@ -430,7 +499,6 @@ structures:
         description: unknown body text format
       - code: postingText.bodyHtml.wrong-size
         description: body HTML is too long
-
   - name: Profile
     fields:
       - type: String
@@ -579,6 +647,8 @@ enums:
 http-codes:
   - code: 200
     description: No error.
+  - code: 201
+    description: Object created successfully. The object location is provided in <code>Location:</code> header.
   - code: 400
     description: Validation of the request body failed.
   - code: 401
