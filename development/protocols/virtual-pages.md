@@ -15,9 +15,11 @@ Virtual pages are located under `/moera` subdirectory of the *Moera
 root* of the website (matches the website root by default, may be
 changed by [`X-Moera` header][2]).
 
-`/compose`
+`/compose?id=<id>`
 
-Post composer.
+Post composer. If `id` is not provided, the composer is opened for
+creating a new post, otherwise it is opened for editing the post with
+the given ID.
 
 `/post/<id>`
 
