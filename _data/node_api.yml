@@ -573,6 +573,8 @@ structures:
         description: edit the posting
       - name: delete
         description: delete the posting
+      - name: revisions
+        description: view the posting's revisions
     fingerprint:
       - type: String
         value: <code>ownerName</code>
