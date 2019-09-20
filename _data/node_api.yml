@@ -176,7 +176,7 @@ objects:
           struct: PostingText
         out:
           struct: PostingInfo
-        auth: admin
+        auth: configurable
         description: >
           Create a new posting from the text given, sign it with the signing key and publish it on the timeline.
           The heading and the preview of the posting are created automatically, if needed.
@@ -195,7 +195,7 @@ objects:
           struct: PostingText
         out:
           struct: PostingInfo
-        auth: admin
+        auth: configurable
         description: >
           Update the posting, creating a new revision of it. The text is processed just like in the <code>POST</code>
           request.
@@ -233,7 +233,7 @@ objects:
             description: ID of the posting
         out:
           struct: Result
-        auth: admin
+        auth: configurable
         description: >
           Delete the posting. The posting may not be purged from the database immediately, but preserved for some period
           of time to give a chance to restore it.
@@ -257,7 +257,7 @@ objects:
         out:
           struct: PostingRevisionInfo
           array: true
-        auth: admin
+        auth: configurable
         description: Get all revisions of the posting.
         errors:
           - code: posting.not-found
@@ -273,7 +273,7 @@ objects:
             description: ID of the revision
         out:
           struct: PostingRevisionInfo
-        auth: admin
+        auth: configurable
         description: Get an individual revision of the posting.
         errors:
           - code: posting.not-found
@@ -291,7 +291,7 @@ objects:
             description: ID of the revision
         out:
           struct: PostingRevisionInfo
-        auth: admin
+        auth: owner
         description: >
           Restore a revision of the posting. A new revision is created with the same content as in the given revision.
         errors:

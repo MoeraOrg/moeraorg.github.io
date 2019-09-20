@@ -69,7 +69,16 @@ body_class: body-pink
         </li>
         <li>
             <i>signature</i> - user's access rights are figured out from the name and signature passed in the request
-            body.
+            body;
+        </li>
+        <li>
+            <i>owner</i> - only the owner of the posting, comment etc. may perform this request, use <i>admin</i>
+            (for own posts on the home node only) or <i>signature</i> scheme for authentication.
+        </li>
+        <li>
+            <i>configurable</i> - access to the request is configurable, the client may refer to the corresponding
+            <a href="/overview/permissions.html">access hint</a> to clarify and use <i>admin</i> or <i>signature</i>
+            scheme for authentication.
         </li>
     </ul>
 </p>
