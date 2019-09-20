@@ -28,6 +28,62 @@ objects:
           struct: Result
         auth: admin
         description: Update credentials.
+  - name: Deleted Postings object
+    description: >
+      All deleted postings, that are not purged from the database yet.
+    requests:
+      - url: /deleted-postings
+        type: GET
+        params:
+          - type: int
+            name: page
+            description: page number, 0 by default
+          - type: int
+            name: limit
+            description: page size (maximum number of postings returned), the default is defined by the node
+        out:
+          struct: PostingInfo
+          array: true
+        auth: admin
+        description: >
+          Get the list of deleted postings, page by page. The node may decide to use smaller page size than the given
+          <code>limit</code>. The postings are always sorted by the deletion timestamp, descending.
+        errors:
+          - code: page.invalid
+            description: <code>page</code> parameter has an invalid value
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /deleted-postings/{id}
+        type: GET
+        params:
+          - type: UUID
+            name: id
+            description: ID of the posting
+        out:
+          struct: PostingInfo
+        description: Get an individual deleted posting.
+        errors:
+          - code: posting.not-found
+            description: there is no deleted posting with the given ID
+      - url: /deleted-postings/{id}/restore
+        type: POST
+        params:
+          - type: UUID
+            name: id
+            description: ID of the posting
+        out:
+          struct: PostingInfo
+        auth: admin
+        description: >
+          Restore a posting. A new revision is created with the same content as in the latest revision.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+  - name: Deleted Posting Revisions object
+    description: >
+      All revisions of the deleted posting. This object supports the same requests as
+      <a href="#Posting%20Revisions%20object">Posting Revisions object</a>, but uses <code>/deleted-postings</code>
+      prefix instead of <code>/postings</code>.
   - name: Domains object
     description: >
       One instance of Moera node software can serve several virtual nodes. These virtual nodes are called <i>domains</i>
