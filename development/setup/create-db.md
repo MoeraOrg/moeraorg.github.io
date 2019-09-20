@@ -12,8 +12,9 @@ How to create a database in PostgreSQL and make it accessible for an
 application:
 
 1. Install PostgreSQL server and client. In all major Linux
-   distributions you can install them from the main package repository.
-   Make sure it is up and running.
+   distributions you can install them from the main package repository
+   (note that you need `postgresql-contrib` package also). Make sure it
+   is up and running.
 2. Switch to `postgres` user:
 
    ```
@@ -37,11 +38,23 @@ application:
    postgres=# CREATE DATABASE <dbname> OWNER <username> ENCODING 'utf8';
    ```
 
-6. Type `\q` to quit.
-7. Press `^D` to exit the `postgres` user shell.
-8. Under superuser, edit `/var/lib/pgsql/data/pg_hba.conf`
-   (`/etc/postgresql/*/main/pg_hba.conf` in Debian) and add the
-   following lines to it:
+6. Connect to the database:
+
+   ```
+   postgres=# \c <dbname>
+   ```
+
+7. Activate `uuid-ossp` extension:
+
+   ```
+   <dbname>=# CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+   ```
+
+8. Type `\q` to quit.
+9. Press `^D` to exit the `postgres` user shell.
+10. Under superuser, edit `/var/lib/pgsql/data/pg_hba.conf`
+    (`/etc/postgresql/*/main/pg_hba.conf` in Debian) and add the
+    following lines to it:
 
    ```
    # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -50,7 +63,7 @@ application:
    host    <dbname>        <username>      ::1/128                 password
    ```
 
-9. Restart PostgreSQL server:
+11. Restart PostgreSQL server:
    ```
    $ sudo systemctl restart postgresql
    ```
