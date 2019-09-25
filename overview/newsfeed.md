@@ -18,7 +18,7 @@ There are many possible algorithms of newsfeed composition. From the
 simplest - all posts in the reverse chronological order - to very
 complex, with grouping, filtering, statistical analysis and AI. The
 newsfeed content is not limited to posts - any other news, events,
-important pieces of informations may be added to the feed. The newsfeed
+important pieces of information may be added to the feed. The newsfeed
 composer may be integrated into the node software, or node owner may
 decide to use some third-party service (paying by his privacy). The
 choice is in the user's hands.
@@ -35,7 +35,7 @@ the order of publication, but in the order they have been received by
 the newsfeed composer. Some posts may appear in the feed several times -
 for example, if the algorithm is instructed to pop up the most popular
 posts. Unsubscribing means you will not receive new posts from this
-source anymore, but the posts you received earlier do not disappear
+source anymore, but the posts you have received earlier do not disappear
 (while it is possible to remove them explicitly).
 
 Since the posts may be edited or removed by the author, the
@@ -51,9 +51,9 @@ anybody can copy-paste a post or make a screenshot.
 publishing it and sending notifications. This may give a chance to the
 author to think again and make changes not visible to others.)
 
-A node may decide to send notifications about old posts that changed
-their visibility from private to public and now available to be read by
-subscribers.
+A node may decide to send notifications about old posts that have
+changed their visibility from private to public and now are available to
+be read by subscribers.
 
 Simplified nodes may not support notifications. In this case subscribers
 need to poll such nodes periodically to get the updates. But polling may
