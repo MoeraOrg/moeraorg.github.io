@@ -48,3 +48,13 @@ Big naming servers and nodes with millions of subscribers might not be
 able to handle the large volume of notifications they have to send. For
 this purpose special notification delivery networks may be developed
 that use more effective algorithms of delivery.
+
+## Client notifications
+
+An active client may use WebSockets to receive notifications about
+recent updates from the home node and the node it is viewing currently.
+This allows to make the UI more responsive. The node begins to send
+these notifications when a client opens a connection to it. To handle
+intermittent connections, the node keeps a short queue of recent events
+and the client, when reconnects, reports the timestamp of the last
+notification it have seen.

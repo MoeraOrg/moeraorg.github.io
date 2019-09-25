@@ -25,7 +25,7 @@ signature.
 Cryptographic key must be long and random. No user can remember it and
 enter by hand. Therefore, we store it at the home node instead. Every
 time we need to sign a message, we send it to the home node, the home
-node signs it end sends to the recipient.
+node signs it and sends to the recipient.
 
 The whole process is as follows:
 

@@ -8,9 +8,9 @@ next: cheaper-names
 # Naming
 
 The *naming database* - the public database that keeps the names of the
-users and the corresponding public keys is a single point of failure in
-this scheme. Making this database fault-tolerant, tamper-resistant and
-censorship-resistant is critically important for the security of the
+users and the corresponding public keys - is a single point of failure
+in this scheme. Making this database fault-tolerant, tamper-resistant
+and censorship-resistant is critically important for the security of the
 decentralized network. Blockchain is a natural choice for this task.
 
 ## Blockchain
@@ -111,7 +111,8 @@ have been changed. They should store enough information to undo the
 operations that can be undone - content of deleted messages, previous
 versions of the edited ones and so on. We limit the undo feature to up
 to 1 week in the past. It will be enough for most cases and will not
-require nodes to store too much of extra data or follow too many names.
+require nodes to store too much of extra data or to follow too many
+names.
 
 ## Recap of the consensus rules
 
