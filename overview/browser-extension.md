@@ -17,8 +17,8 @@ use a combination of a web application and a browser extension to
 achieve this goal.
 
 1. When the user opens a Moera-capable site with his browser, the site
-   includes a special `X-Moera` HTTP header to the response. This is an
-   indication that the site supports Moera [REST API][1]. (The header
+   includes a special `X-Moera` HTTP header into the response. This is
+   an indication that the site supports Moera [REST API][1]. (The header
    may also contain the list of supported API capabilities and the
    location of the API endpoint.)
 2. The browser extension detects the `X-Moera` header and **replaces**
