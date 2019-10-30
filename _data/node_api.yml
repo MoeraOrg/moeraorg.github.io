@@ -365,7 +365,7 @@ objects:
           - code: registeredNameSecret.empty
             description: the registered name secret or mnemonic are not provided
           - code: registered-name.name-absent
-            description: the registered name/generation is not provided and not known by the node
+            description: the registered name is not provided and not known by the node
           - code: registered-name.<naming server error>
             description: >
               various errors returned by naming server
@@ -593,9 +593,6 @@ structures:
       - type: String
         name: ownerName
         description: registered name of the posting's owner
-      - type: int
-        name: ownerGeneration
-        description: registered name generation of the posting's owner
       - type: String
         name: bodyPreviewHtml
         description: preview of the posting's body (HTML), may be absent
@@ -646,8 +643,6 @@ structures:
     fingerprint:
       - type: String
         value: <code>ownerName</code>
-      - type: int
-        value: <code>ownerGeneration</code>
       - type: byte[]
         value: <code>bodySrcHash</code>
       - type: String
@@ -756,8 +751,6 @@ structures:
     fields:
       - type: String
         name: name
-      - type: int
-        name: generation
       - enum: OperationStatus
         name: operationStatus
         description: status of the latest operation with the registered name
@@ -780,8 +773,6 @@ structures:
     fields:
       - type: String
         name: name
-      - type: int
-        name: generation
       - type: String[]
         name: mnemonic
         description: human-friendly mnemonic of the updating key
@@ -901,8 +892,6 @@ structures:
     fields:
       - type: String
         name: registeredName
-      - type: int
-        name: registeredNameGeneration
 
 enums:
   - name: OperationStatus
