@@ -935,6 +935,8 @@ http-codes:
     description: Authentication required, but not provided.
   - code: 404
     description: Unrecognized request or object not found.
+  - code: 405
+    description: Method not allowed.
   - code: 409
     description: Operation failed.
   - code: 500
