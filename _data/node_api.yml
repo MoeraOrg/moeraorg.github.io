@@ -608,8 +608,8 @@ structures:
           format of the source text of the posting, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
-        name: bodyHtml
-        description: body of the posting (HTML)
+        name: body
+        description: body of the posting
       - type: String
         name: heading
         description: heading of the posting
@@ -648,7 +648,7 @@ structures:
       - type: String
         value: <code>bodySrcFormat</code>
       - type: String
-        value: <code>bodyHtml</code>
+        value: <code>body</code>
       - type: int
         value: <code>createdAt</code> (of the current revision)
   - name: PostingRevisionInfo
@@ -667,7 +667,7 @@ structures:
           format of the source text of the revision, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
-        name: bodyHtml
+        name: body
         description: body of the revision (HTML)
       - type: String
         name: heading
@@ -698,8 +698,8 @@ structures:
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
-        name: bodyHtml
-        description: body of the posting (HTML), may be absent
+        name: body
+        description: body of the posting, may be absent
       - type: timestamp
         name: publishAt
         description: posting publication timestamp, the current timestamp by default
@@ -710,7 +710,7 @@ structures:
         description: body text is too long
       - code: postingText.bodySrcFormat.unknown
         description: unknown body text format
-      - code: postingText.bodyHtml.wrong-size
+      - code: postingText.body.wrong-size
         description: body HTML is too long
   - name: Profile
     fields:
