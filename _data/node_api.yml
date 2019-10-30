@@ -591,6 +591,9 @@ structures:
         name: totalRevisions
         description: total number of revisions the posting has
       - type: String
+        name: receiverName
+        description: registered name of the node where the posting was published
+      - type: String
         name: ownerName
         description: registered name of the posting's owner
       - type: String
@@ -610,6 +613,13 @@ structures:
       - type: String
         name: body
         description: body of the posting
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the posting, may have any value meaningful for the client, including:
+          <ul>
+            <li><code>html</code> - HTML</li>
+          </ul>
       - type: String
         name: heading
         description: heading of the posting
@@ -642,6 +652,8 @@ structures:
         description: view the posting's revisions
     fingerprint:
       - type: String
+        value: <code>receiverName</code>
+      - type: String
         value: <code>ownerName</code>
       - type: byte[]
         value: <code>bodySrcHash</code>
@@ -649,6 +661,8 @@ structures:
         value: <code>bodySrcFormat</code>
       - type: String
         value: <code>body</code>
+      - type: String
+        value: <code>bodyFormat</code>
       - type: int
         value: <code>createdAt</code> (of the current revision)
   - name: PostingRevisionInfo
@@ -668,7 +682,12 @@ structures:
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: body
-        description: body of the revision (HTML)
+        description: body of the revision
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the revision, see detailed description in
+          <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
       - type: String
         name: heading
         description: heading of the revision
@@ -700,6 +719,11 @@ structures:
       - type: String
         name: body
         description: body of the posting, may be absent
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the posting, see detailed description in
+          <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
       - type: timestamp
         name: publishAt
         description: posting publication timestamp, the current timestamp by default
