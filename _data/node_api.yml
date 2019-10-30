@@ -393,7 +393,7 @@ objects:
       - url: /settings/node
         type: GET
         params:
-          - type: string
+          - type: String
             name: prefix
             description: filter settings whose names start with the given prefix, case-sensitive
         out:
@@ -405,7 +405,7 @@ objects:
       - url: /settings/client
         type: GET
         params:
-          - type: string
+          - type: String
             name: prefix
             description: >
               filter settings whose names start with the given prefix, case-sensitive (<code>client.</code> prefix
@@ -418,7 +418,7 @@ objects:
       - url: /settings/node/metadata
         type: GET
         params:
-          - type: string
+          - type: String
             name: prefix
             description: filter settings whose names start with the given prefix, case-sensitive
         out:
@@ -796,6 +796,66 @@ structures:
       - type: String
         name: message
         description: human-readable error message
+  - name: SettingInfo
+    fields:
+      - type: String
+        name: name
+        description: name of the setting
+      - type: String
+        name: value
+        description: value of the setting
+  - name: SettingMetaInfo
+    fields:
+      - type: String
+        name: name
+        description: name of the setting
+      - type: String
+        name: type
+        description: >
+          type of the setting, may be one of:
+          <ul>
+            <li>
+              <code>bool</code> - boolean, may have value <code>true</code> or <code>false</code>
+            </li>
+            <li>
+              <code>Duration</code> - period of time, an non-negative integer followed by a single character
+              designating a measurement unit:
+              <ul>
+                <li><code>s</code> - seconds;</li>
+                <li><code>m</code> - minutes;</li>
+                <li><code>h</code> - hours;</li>
+                <li><code>d</code> - days.</li>
+              </ul>
+            </li>
+            <li>
+              <code>int</code> - integer
+            </li>
+            <li>
+              <code>string</code> - string
+            </li>
+          </ul>
+      - type: String
+        name: defaultValue
+        description: default value of the setting
+      - type: String
+        name: title
+        description: human-friendly description of the setting
+      - struct: SettingTypeModifiers
+        name: modifiers
+        description: >
+          additional modifiers that may help to choose a proper UI component for the setting value and to validate the
+          input; meaning of the modifiers depend on the setting type
+  - name: SettingTypeModifiers
+    fields:
+      - type: String
+        name: min
+        description: (<code>int</code>, <code>Duration</code>) minimal value
+      - type: String
+        name: max
+        description: (<code>int</code>, <code>Duration</code>) maximal value
+      - type: boolean
+        name: multiline
+        description: (<code>string</code>) <code>true</code>, if the value is a multiline text
   - name: TimelineInfo
     fields:
       - type: String -> String[]
