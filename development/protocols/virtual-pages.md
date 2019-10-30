@@ -34,6 +34,14 @@ purpose etc.
 
 Profile in editing mode.
 
+`/settings`
+
+Settings page.
+
+`/settings/<tab>`
+
+Settings page with the given tab open (may be `node` or `client`).
+
 `/timeline`
 
 Timeline - all publications in reverse chronological order.
