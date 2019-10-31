@@ -25,6 +25,9 @@
 - name: protocols/moment
   title: Moment
 
+- name: protocols/registered-name
+  title: Registered Name
+
 - name: protocols/naming-api
   title: Naming API
 
