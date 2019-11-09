@@ -120,7 +120,7 @@ names.
 maximal length etc.)
 
 A transaction is considered invalid if and only if at least one of these
-conditions is false:
+conditions is true:
 
 * There were no transactions with *name*, and:
   1. *Generation* is not 0.
