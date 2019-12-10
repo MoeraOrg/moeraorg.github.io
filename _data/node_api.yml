@@ -1,4 +1,17 @@
 objects:
+  - name: Asyncronous operations object
+    description: Asyncronous operations pending or just finished on the node.
+    requests:
+      - url: /async-operations/remote-posting-verification/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: asynchronous operation ID
+        out:
+          struct: RemotePostingVerificationInfo
+        auth: admin
+        description: Get status of the asyncronous operation that performs verification of a remote posting signature.
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -848,6 +861,41 @@ structures:
       - type: String
         name: secret
         description: base64-encoded secret of the updating key
+  - name: RemotePostingVerificationInfo
+    fields:
+      - type: String
+        name: id
+        description: asynchronous operation ID
+      - type: String
+        name: nodeName
+      - type: String
+        name: postingId
+      - type: String
+        name: revisionId
+      - type: String
+        name: status
+        description: >
+          status of the operation, may be one of:
+          <ul>
+            <li>
+              <code>running</code> - the verification is pending;
+            </li>
+            <li>
+              <code>correct</code> - the signature is correct;
+            </li>
+            <li>
+              <code>incorrect</code> - the signature is incorrect;
+            </li>
+            <li>
+              <code>error</code> - the verification cannot be performed due to an error.
+            </li>
+          </ul>
+      - type: String
+        name: errorCode
+        description: error code
+      - type: String
+        name: errorMessage
+        description: human-readable error message
   - name: Result
     fields:
       - type: String
