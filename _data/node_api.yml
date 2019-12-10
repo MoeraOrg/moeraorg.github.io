@@ -597,8 +597,8 @@ structures:
         name: ownerName
         description: registered name of the posting's owner
       - type: String
-        name: bodyPreviewHtml
-        description: preview of the posting's body (HTML), may be absent
+        name: bodyPreview
+        description: preview of the posting's body, may be absent
       - type: String
         name: bodySrc
         description: the source text of the posting, may be absent if not requested
@@ -670,8 +670,8 @@ structures:
       - type: String
         name: id
       - type: String
-        name: bodyPreviewHtml
-        description: preview of the revisions's body (HTML), may be absent
+        name: bodyPreview
+        description: preview of the revisions's body, may be absent
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
