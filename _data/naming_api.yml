@@ -88,6 +88,32 @@ calls:
       struct: RegisteredNameInfo
       description: or <code>null</code>, if the name was never registered
 
+  - name: getPast
+    description: Get past information about the given generation of the name.
+    params:
+      - type: String
+        name: name
+      - type: int
+        name: generation
+      - type: timestamp
+        name: at
+        description: the moment in time the information is related to
+    returns:
+      struct: RegisteredNameInfo
+      description: or <code>null</code>, if the name/generation did not exist at the given moment
+
+  - name: getPastForLatest
+    description: Get past information about the latest generation of the name.
+    params:
+      - type: String
+        name: name
+      - type: timestamp
+        name: at
+        description: the moment in time the information is related to
+    returns:
+      struct: RegisteredNameInfo
+      description: or <code>null</code>, if the name was not registered at the given moment
+
   - name: isFree
     description: Check if the given name is available for registration
     params:
