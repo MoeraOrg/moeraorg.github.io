@@ -381,6 +381,38 @@ objects:
         errors:
           - code: naming.operation-pending
             description: another operation with the registered name is pending currently
+  - name: Remote postings object
+    description: Postings located on other nodes.
+    requests:
+      - url: /nodes/{nodeName}/postings/{id}/verify
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: id
+            description: ID of the posting on the remote node
+        out:
+          struct: AsyncOperationCreated
+        auth: admin
+        description: Verify the signature of the given posting.
+      - url: /nodes/{nodeName}/postings/{id}/revisions/{revisionId}/verify
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: id
+            description: ID of the posting on the remote node
+          - type: String
+            name: revisionId
+            description: ID of the posting revision
+        out:
+          struct: AsyncOperationCreated
+        auth: admin
+        description: Verify the signature of the given revision of a posting.
   - name: Settings object
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
@@ -520,6 +552,11 @@ objects:
         description: Get brief information about the node.
 
 structures:
+  - name: AsyncOperationCreated
+    fields:
+      - type: String
+        name: id
+        description: ID of the asyncronous operation that was created
   - name: Choice
     fields:
       - type: String
@@ -538,7 +575,6 @@ structures:
         description: the login is empty
       - code: credentials.password.blank
         description: the password is empty
-
   - name: CredentialsCreated
     fields:
       - type: boolean
