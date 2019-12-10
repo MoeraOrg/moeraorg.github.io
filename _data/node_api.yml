@@ -56,7 +56,7 @@ objects:
       - url: /deleted-postings/{id}
         type: GET
         params:
-          - type: UUID
+          - type: String
             name: id
             description: ID of the posting
         out:
@@ -68,7 +68,7 @@ objects:
       - url: /deleted-postings/{id}/restore
         type: POST
         params:
-          - type: UUID
+          - type: String
             name: id
             description: ID of the posting
         out:
@@ -188,7 +188,7 @@ objects:
       - url: /postings/{id}
         type: PUT
         params:
-          - type: UUID
+          - type: String
             name: id
             description: ID of the posting
         in:
@@ -209,7 +209,7 @@ objects:
       - url: /postings/{id}
         type: GET
         params:
-          - type: UUID
+          - type: String
             name: id
             description: ID of the posting
           - type: String
@@ -228,7 +228,7 @@ objects:
       - url: /postings/{id}
         type: DELETE
         params:
-          - type: UUID
+          - type: String
             name: id
             description: ID of the posting
         out:
@@ -251,7 +251,7 @@ objects:
       - url: /postings/{postingId}/revisions
         type: GET
         params:
-          - type: UUID
+          - type: String
             name: postingId
             description: ID of the posting
         out:
@@ -265,10 +265,10 @@ objects:
       - url: /postings/{postingId}/revisions/{id}
         type: GET
         params:
-          - type: UUID
+          - type: String
             name: postingId
             description: ID of the posting
-          - type: UUID
+          - type: String
             name: id
             description: ID of the revision
         out:
@@ -283,10 +283,10 @@ objects:
       - url: /postings/{postingId}/revisions/{id}/restore
         type: POST
         params:
-          - type: UUID
+          - type: String
             name: postingId
             description: ID of the posting
-          - type: UUID
+          - type: String
             name: id
             description: ID of the revision
         out:
@@ -582,9 +582,9 @@ structures:
           </ul>
   - name: PostingInfo
     fields:
-      - type: UUID
+      - type: String
         name: id
-      - type: UUID
+      - type: String
         name: revisionId
         description: ID of the current revision of the posting
       - type: int
@@ -667,7 +667,7 @@ structures:
         value: <code>createdAt</code> (of the current revision)
   - name: PostingRevisionInfo
     fields:
-      - type: UUID
+      - type: String
         name: id
       - type: String
         name: bodyPreviewHtml
