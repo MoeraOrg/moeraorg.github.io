@@ -570,6 +570,14 @@ structures:
       - type: String
         name: id
         description: ID of the asyncronous operation that was created
+  - name: Body
+    fields:
+      - type: String
+        name: subject
+        description: plain text
+      - type: String
+        name: text
+        description: HTML
   - name: Choice
     fields:
       - type: String
@@ -650,10 +658,11 @@ structures:
         description: registered name of the posting's owner
       - type: String
         name: bodyPreview
-        description: preview of the posting's body, may be absent
+        description: preview of the posting's body, a string representation of a JSON structure, may be absent
       - type: String
         name: bodySrc
-        description: the source text of the posting, may be absent if not requested
+        description: >
+          the source text of the posting, a string representation of a JSON structure, may be absent if not requested
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the posting
@@ -664,13 +673,13 @@ structures:
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: body
-        description: body of the posting
+        description: body of the posting, a string representation of a JSON structure
       - type: String
         name: bodyFormat
         description: >
           format of the body of the posting, may have any value meaningful for the client, including:
           <ul>
-            <li><code>html</code> - HTML</li>
+            <li><code>html</code> - <a href="#Body"><code>Body</code></a> structure</li>
           </ul>
       - type: String
         name: heading
@@ -726,7 +735,7 @@ structures:
         name: id
       - type: String
         name: bodyPreview
-        description: preview of the revisions's body, may be absent
+        description: preview of the revisions's body, a string representation of a JSON structure, may be absent
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
@@ -737,7 +746,7 @@ structures:
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: body
-        description: body of the revision
+        description: body of the revision, a string representation of a JSON structure
       - type: String
         name: bodyFormat
         description: >
@@ -768,7 +777,7 @@ structures:
     fields:
       - type: String
         name: bodySrc
-        description: the source text of the posting
+        description: the source text of the posting, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
         description: >
@@ -776,7 +785,7 @@ structures:
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: body
-        description: body of the posting, may be absent
+        description: body of the posting, a string representation of a JSON structure, may be absent
       - type: String
         name: bodyFormat
         description: >
