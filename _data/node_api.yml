@@ -570,6 +570,9 @@ structures:
         description: the name is reserved, too long or contains invalid characters
   - name: PostingFeatures
     fields:
+      - type: boolean
+        name: subjectPresent
+        description: <code>true</code> if new postings are recommended to have a subject, <code>false</code> otherwise
       - struct: Choice
         array: true
         name: sourceFormats
