@@ -635,6 +635,9 @@ structures:
       - type: timestamp
         name: deletedAt
         description: posting deletion timestamp - the time when the posting was deleted, may be absent
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
       - type: byte[]
         name: signature
         description: the posting's owner signature (the fingerprint see below)
@@ -700,6 +703,9 @@ structures:
       - type: timestamp
         name: deletedAt
         description: revision deletion timestamp - the time when the revision was deleted, may be absent
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
       - type: byte[]
         name: signature
         description: >
