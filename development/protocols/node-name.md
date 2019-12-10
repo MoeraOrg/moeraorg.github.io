@@ -2,17 +2,16 @@
 layout: development
 title: Protocols
 up: protocols
-subtitle: Registered Name
+subtitle: Node Name
 body_class: body-pink
 ---
 
-# Registered Name
+# Node Name
 
-*Registered name* is the name of the node that is registered at the
-[naming service][1]. Currently Moera supports only *delegated names*
-(you may [read about them][1] in the Overview section), but there are
-many other [name types][2] possible. Every name type has a unique syntax
-that distinguishes it from others.
+Node name is registered at the [naming service][1]. Currently Moera
+supports only *registered names* (you may [read about them][1] in the
+Overview section), but there are many other [name types][2] possible.
+Every name type has a unique syntax that distinguishes it from others.
 
 <table class="table table-bordered">
     <thead>
@@ -23,7 +22,7 @@ that distinguishes it from others.
     </thead>
     <tbody>
         <tr>
-            <td>Delegated name</td>
+            <td>Registered name</td>
             <td>
                 <code>&lt;name&gt;_&lt;generation&gt;</code>
             </td>
