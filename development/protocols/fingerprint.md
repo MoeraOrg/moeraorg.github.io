@@ -8,16 +8,15 @@ body_class: body-pink
 
 # Fingerprint
 
-When a signature is required for a query, the designated fields of the
-query are taken, encoded in the standard way (see below) and
+When a signature is required for an object, the designated fields of the
+object are taken, encoded in the standard way (see below) and
 concatenated together in the designated order. The resulting block of
-data is called the *fingerprint* of the query. It is signed with the
+data is called the *fingerprint* of the object. It is signed with the
 private key of the respective user.
 
-The encoding is designed in such a way so that any two functionally
-different queries produce different fingerprints. This prevents query
-malleability - to make impossible to change the query while the
-signature remains valid.
+The encoding is designed in such a way so that any two different objects
+produce different fingerprints. This prevents object malleability - to
+make impossible to change the object while the signature remains valid.
 
 The fingerprint is a structure consisting of fields in a fixed order.
 Every field may be of one of primitive types, a structure, or an array
