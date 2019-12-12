@@ -1,0 +1,40 @@
+---
+layout: development
+title: Protocols
+up: protocols
+subtitle: Node API Fingerprints
+body_class: body-pink
+---
+
+<h1>Node API Fingerprints</h1>
+<p>
+    <a href="/development/protocols/fingerprint.html">Fingerprints</a> of Node API objects always start with a string
+    designating the type of the object. <i>Version</i> of a fingerprint defines a concrete revision of the fingerprint
+    structure, if it was changed in backward-incompatible way. The fingerprint version (also known as
+    "signature version") must be returned from Node API call together with the signature.
+</p>
+{% for object in site.data.node_api_fingerprints.objects %}
+    <a name="{{ object.name }}"></a>
+    {% for ver in object.versions %}
+        <a name="{{ object.name }}_{{ ver.version }}"></a>
+        <h2>{{ object.name }}, version {{ ver.version }}</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-3">Type</th>
+                    <th class="col-3">Field</th>
+                    <th class="col-6">Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for field in ver.fingerprint %}
+                    <tr>
+                        <td><code>{{ field.type }}</code></td>
+                        <td><code>{{ field.field }}</code></td>
+                        <td>{{ field.comment }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endfor %}

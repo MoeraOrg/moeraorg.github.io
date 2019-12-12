@@ -1,0 +1,30 @@
+objects:
+  - name: Posting
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: POSTING
+          - type: String
+            field: receiverName
+          - type: String
+            field: ownerName
+          - type: byte[]
+            field: bodySrcHash
+            comment: hash of <code>bodySrc</code> field
+          - type: String
+            field: bodySrcFormat
+          - type: String
+            field: body
+          - type: String
+            field: bodyFormat
+          - type: int
+            field: createdAt
+            comment: of the current revision
+          - type: byte
+            field: permissions
+            comment: 0 <i>(reserved for future use)</i>
+          - type: byte
+            field: attachments
+            comment: 0 <i>(reserved for future use)</i>

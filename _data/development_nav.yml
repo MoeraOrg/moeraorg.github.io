@@ -34,6 +34,9 @@
 - name: protocols/node-api
   title: Node API
 
+- name: protocols/node-api-fingerprints
+  title: Node API Fingerprints
+
 - name: protocols/virtual-pages
   title: Virtual Pages
 

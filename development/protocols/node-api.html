@@ -145,27 +145,6 @@ body_class: body-pink
                     {% endif %}
                 </dd>
             {% endif %}
-            {% if req.fingerprint %}
-                <dt>Fingerprint (<a href="/development/protocols/fingerprint.html">read more</a>):</dt>
-                <dd>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th class="col-4">Type</th>
-                            <th class="col-8">Value</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for field in req.fingerprint %}
-                        <tr>
-                            <td><code>{{ field.type }}</code></td>
-                            <td>{{ field.value }}</td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </dd>
-            {% endif %}
             <dt>Authentication (<a href="#auth">read more</a>):</dt>
             {% if req.auth %}
                 <dd>{{ req.auth }}</dd>
@@ -263,25 +242,6 @@ body_class: body-pink
                     <tr>
                         <td><code>{{ error.code }}</code></td>
                         <td>{{ error.description }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
-    {% if struct.fingerprint %}
-        <b>Fingerprint (<a href="/development/protocols/fingerprint.html">read more</a>):</b>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="col-4">Type</th>
-                    <th class="col-8">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for field in struct.fingerprint %}
-                    <tr>
-                        <td><code>{{ field.type }}</code></td>
-                        <td>{{ field.value }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

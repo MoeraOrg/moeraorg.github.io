@@ -701,7 +701,9 @@ structures:
         description: signature version (i.e. fingerprint version)
       - type: byte[]
         name: signature
-        description: the posting's owner signature (the fingerprint see below)
+        description: >
+          the posting's owner signature (use <a href="node-api-fingerprints#Posting"><code>Posting</code></a>
+          fingerprint)
       - type: int
         name: moment
       - type: String -> String[]
@@ -714,21 +716,6 @@ structures:
         description: delete the posting
       - name: revisions
         description: view the posting's revisions
-    fingerprint:
-      - type: String
-        value: <code>receiverName</code>
-      - type: String
-        value: <code>ownerName</code>
-      - type: byte[]
-        value: <code>bodySrcHash</code>
-      - type: String
-        value: <code>bodySrcFormat</code>
-      - type: String
-        value: <code>body</code>
-      - type: String
-        value: <code>bodyFormat</code>
-      - type: int
-        value: <code>createdAt</code> (of the current revision)
   - name: PostingRevisionInfo
     fields:
       - type: String
@@ -770,7 +757,8 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the revision's owner signature (the fingerprint see in <a href="#PostingInfo"><code>PostingInfo</code></a>)
+          the revision's owner signature (use <a href="node-api-fingerprints#Posting"><code>Posting</code></a>
+          fingerprint)
       - type: int
         name: moment
   - name: PostingText
