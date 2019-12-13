@@ -37,6 +37,9 @@
 - name: protocols/node-api-fingerprints
   title: Node API Fingerprints
 
+- name: protocols/events
+  title: Events
+
 - name: protocols/virtual-pages
   title: Virtual Pages
 

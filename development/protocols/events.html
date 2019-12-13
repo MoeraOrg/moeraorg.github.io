@@ -1,0 +1,137 @@
+---
+layout: development
+title: Protocols
+up: protocols
+subtitle: Events
+body_class: body-pink
+---
+
+<h1>Events</h1>
+<p>
+    Moera client may connect to WebSockets endpoint of a node to receive events about everything happening at the node
+    right now: new and updated posts, changed settings etc. This allows client to be more responsive. Typically
+    the client connects to the home node (authentication token is required) and to the node the user views at
+    the moment.
+</p>
+<p>
+    Moera uses STOMP protocol with several additional headers. Any STOMP client should be compatible.
+</p>
+<h2>Connecting</h2>
+<p>
+    Client opens a WebSockets connection to the endpoint located at <code>/events</code> under Moera API root. Then it
+    sends <code>CONNECTED</code> STOMP frame with the following headers:
+    <ul>
+        <li><code>accept-version:</code> - as per STOMP specification;</li>
+        <li>
+            <code>host:</code> - is required to differentiate between
+            <a href="node-api.html#Domains%20object">virtual domains</a> at the same server;
+        </li>
+        <li><code>token:</code> - authentication token, if available</li>
+        <li><code>heart-beat:</code> - recommended, as per STOMP specification.</li>
+    </ul>
+</p>
+<h2>Subscribing</h2>
+<p>
+    After successful connection, the client sends <code>SUBSCRIBE</code> STOMP frame with the following headers:
+    <ul>
+        <li><code>id:</code> - as per STOMP specification;</li>
+        <li><code>destination: /user/queue</code> - required;</li>
+        <li>
+            <code>seen: &lt;queueStartedAt>,&lt;lastEvent></code> - in the case of reconnection, the client tells
+            the node the queue timestamp and the number of the last event it received from this node. If possible,
+            the node resends all events that the client lost while being disconnected.
+        </li>
+    </ul>
+</p>
+<h2>Event packet</h2>
+<p>
+    Events are send to the client in <code>MESSAGE</code> frames. Each frame contains <i>event packet</i> in JSON form
+    with the following fields:
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="col-3">Type</th>
+                <th class="col-3">Field</th>
+                <th class="col-6">Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>timestamp</code></td>
+                <td><code>queueStartedAt</code></td>
+                <td>
+                    The timestamp of the moment when the current event queue was created on the node side. This value
+                    is typically changed when the node is restarted. In this case event numbers start again from 0, but
+                    combination with the queue timestamp makes them unique.
+                </td>
+            </tr>
+            <tr>
+                <td><code>int</code></td>
+                <td><code>ordinal</code></td>
+                <td>The event ordinal number.</td>
+            </tr>
+            <tr>
+                <td><code>timestamp</code></td>
+                <td><code>sentAt</code></td>
+                <td>The event timestamp.</td>
+            </tr>
+            <tr>
+                <td><code>String</code></td>
+                <td><code>cid</code></td>
+                <td>
+                    The client ID. If the event was created as a result of processing a REST API request of some client,
+                    this field will contain a copy of <code>cid</code> parameter passed with the request. This mechanism
+                    allows client to know that the event is a result of processing its own request. Usually such events
+                    are ignored, because they contain information already known to the client.
+                </td>
+            </tr>
+            <tr>
+                <td><code>Event</code></td>
+                <td><code>event</code></td>
+                <td>The event structure itself, see below.</td>
+            </tr>
+        </tbody>
+    </table>
+</p>
+<h2>Event</h2>
+<p>
+    The event structure consists of <code>type</code> field, containing the type of the event and zero or more
+    additional fields, containing more detailed information. See their description below.
+</p>
+<p>
+    Events typically contain minimal amount of information. Since many events are not relevant to the client and are
+    ignored, including too much information would be waste of traffic. The client may make a REST API request, if
+    needed.
+</p>
+{% for event in site.data.events.events %}
+    <h4 class="identifier">{{ event.type }}</h4>
+    <p>{{ event.description }}</p>
+    <dl>
+        <dt>Authentication:</dt>
+        {% if event.auth %}
+            <dd>{{ event.auth }}</dd>
+        {% else %}
+            <dd>none</dd>
+        {% endif %}
+    </dl>
+    {% if event.fields %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-3">Type</th>
+                    <th class="col-3">Field</th>
+                    <th class="col-6">Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for field in event.fields %}
+                    <tr>
+                        <td><code>{{ field.type }}</code></td>
+                        <td><code>{{ field.name }}</code></td>
+                        <td>{{ field.comment }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endfor %}

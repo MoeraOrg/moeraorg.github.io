@@ -90,6 +90,10 @@ body_class: body-pink
         <li><code>owner</code> - owner of the posting, comment etc.</li>
     </ul>
 </p>
+<p>
+    <code>cid</code> parameter may be passed with any request. See
+    <a href="/development/protocols/events.html">Events</a> page for the description of its purpose.
+</p>
 {% for object in site.data.node_api.objects %}
     <a name="{{ object.name }}"></a>
     <h2>{{ object.name }}</h2>
