@@ -25,6 +25,9 @@
 - name: protocols/moment
   title: Moment
 
+- name: protocols/carte
+  title: Carte
+
 - name: protocols/node-name
   title: Node Name
 

@@ -1,4 +1,28 @@
 objects:
+  - name: Carte
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: CARTE
+          - type: String
+            field: ownerName
+          - type: InetAddress
+            field: address
+            comment: IP address of the client
+          - type: int
+            field: beginning
+            comment: timestamp of the beginning of the carte's life
+          - type: int
+            field: deadline
+            comment: timestamp of the end of the carte's life
+          - type: byte
+            field: permissions
+            comment: 0 <i>(reserved for future use)</i>
+          - type: byte[]
+            field: salt
+            comment: 8 random bytes
   - name: Posting
     versions:
       - version: 0

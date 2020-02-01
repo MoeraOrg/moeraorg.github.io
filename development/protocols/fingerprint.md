@@ -70,4 +70,8 @@ Encoded as array of bytes. The length of the array is present, as for
 every other array of bytes, but will be the same for all hashes using
 the same [algorithm][1].
 
+##### InetAddress
+
+IPv4 or IPv6 address, encoded as array of bytes in network order.
+
 [1]: /development/protocols/cryptography.html
