@@ -51,8 +51,8 @@ events:
       - type: int
         name: moment
         comment: the posting moment
-  - type: REGISTERED_NAME_CHANGED
-    description: The registered name of the node was changed.
+  - type: NODE_NAME_CHANGED
+    description: The name of the node was changed.
     fields:
       - type: String
         name: name

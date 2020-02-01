@@ -178,6 +178,69 @@ objects:
             description: there is no domain with the given hostname
           - code: domain.cannot-delete-default
             description: cannot delete the default domain
+  - name: Node Name object
+    description: >
+      The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
+      Operations with the node name are performed asynchronously - need to poll the node periodically to get
+      the current status of the operation. Only one operation with the node name may be performed by the node at
+      any moment.
+    requests:
+      - url: /node-name
+        type: GET
+        out:
+          struct: NodeNameInfo
+        auth: none or admin
+        description: >
+          Get the name of the node. Admin user receives also the current status of the latest operation with
+          the node name.
+      - url: /node-name
+        type: POST
+        in:
+          struct: NameToRegister
+        out:
+          struct: RegisteredNameSecret
+        auth: admin
+        description: >
+          Register a new name for the node. The corresponding signing key is generated automatically and stored at
+          the node. The updating key is generated and returned in the encoded form and in the form of mnemonic
+          (a sequence of English words) that need to be written down and stored securely to be able to perform further
+          operations with the name.
+        errors:
+          - code: naming.operation-pending
+            description: another operation with the node name is pending currently
+      - url: /node-name
+        type: PUT
+        in:
+          struct: RegisteredNameSecret
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Update the name of the node. May be used to assign an already-registered name to the node (the corresponding
+          signing key is generated automatically and stored at the node), or to prolong the name. The secret or
+          mnemonic of the updating key must be provided for this operation.
+        errors:
+          - code: naming.operation-pending
+            description: another operation with the node name is pending currently
+          - code: registeredNameSecret.empty
+            description: the registered name secret or mnemonic are not provided
+          - code: node-name.name-absent
+            description: the node name is not provided and not known by the node
+          - code: node-name.<naming server error>
+            description: >
+              various errors returned by naming server
+              (<a href="/development/protocols/naming-api.html#error-codes">see the list</a>)
+      - url: /node-name
+        type: DELETE
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Delete all the information related to the node name (including the signing key) from the node. The name
+          record on the naming server is not touched.
+        errors:
+          - code: naming.operation-pending
+            description: another operation with the node name is pending currently
   - name: Postings object
     description: >
       All postings. Each posting may contain one or more revisions, a new revision is created every time the posting is
@@ -194,8 +257,8 @@ objects:
           Create a new posting from the text given, sign it with the signing key and publish it on the timeline.
           The heading and the preview of the posting are created automatically, if needed.
         errors:
-          - code: posting.registered-name-not-set
-            description: registered name is not set yet
+          - code: posting.node-name-not-set
+            description: node name is not set yet
           - code: posting.signing-key-not-set
             description: signing key is not set yet
       - url: /postings/{id}
@@ -215,8 +278,8 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
-          - code: posting.registered-name-not-set
-            description: registered name is not set yet
+          - code: posting.node-name-not-set
+            description: node name is not set yet
           - code: posting.signing-key-not-set
             description: signing key is not set yet
       - url: /postings/{id}
@@ -331,69 +394,6 @@ objects:
           struct: ProfileInfo
         auth: admin
         description: Update the profile.
-  - name: Registered Name object
-    description: >
-      The registered name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
-      Operations with the registered name are performed asynchronously - need to poll the node periodically to get
-      the current status of the operation. Only one operation with the registered name may be performed by the node at
-      any moment.
-    requests:
-      - url: /registered-name
-        type: GET
-        out:
-          struct: RegisteredNameInfo
-        auth: none or admin
-        description: >
-          Get the registered name of the node. Admin user receives also the current status of the latest operation with
-          the registered name.
-      - url: /registered-name
-        type: POST
-        in:
-          struct: NameToRegister
-        out:
-          struct: RegisteredNameSecret
-        auth: admin
-        description: >
-          Register a new name for the node. The corresponding signing key is generated automatically and stored at
-          the node. The updating key is generated and returned in the encoded form and in the form of mnemonic
-          (a sequence of English words) that need to be written down and stored securely to be able to perform further
-          operations with the name.
-        errors:
-          - code: naming.operation-pending
-            description: another operation with the registered name is pending currently
-      - url: /registered-name
-        type: PUT
-        in:
-          struct: RegisteredNameSecret
-        out:
-          struct: Result
-        auth: admin
-        description: >
-          Update the registered name of the node. May be used to assign an already-registered name to the node
-          (the corresponding signing key is generated automatically and stored at the node), or to prolong the name.
-          The secret or mnemonic of the updating key must be provided for this operation.
-        errors:
-          - code: naming.operation-pending
-            description: another operation with the registered name is pending currently
-          - code: registeredNameSecret.empty
-            description: the registered name secret or mnemonic are not provided
-          - code: registered-name.name-absent
-            description: the registered name is not provided and not known by the node
-          - code: registered-name.<naming server error>
-            description: >
-              various errors returned by naming server
-              (<a href="/development/protocols/naming-api.html#error-codes">see the list</a>)
-      - url: /registered-name
-        type: DELETE
-        out:
-          struct: Result
-        auth: admin
-        description: >
-          Delete all the information related to the registered name (including the signing key) from the node. The name
-          record on the naming server is not touched.
-        errors:
-          - code: naming.operation-pending
-            description: another operation with the registered name is pending currently
   - name: Remote postings object
     description: Postings located on other nodes.
     requests:
@@ -652,10 +652,10 @@ structures:
         description: total number of revisions the posting has
       - type: String
         name: receiverName
-        description: registered name of the node where the posting was published
+        description: name of the node where the posting was published
       - type: String
         name: ownerName
-        description: registered name of the posting's owner
+        description: node name of the posting's owner
       - type: String
         name: bodyPreview
         description: preview of the posting's body, a string representation of a JSON structure, may be absent
@@ -826,28 +826,28 @@ structures:
     operations:
       - name: edit
         description: change the profile
-  - name: RegisteredNameInfo
+  - name: NodeNameInfo
     fields:
       - type: String
         name: name
       - enum: OperationStatus
         name: operationStatus
-        description: status of the latest operation with the registered name
+        description: status of the latest operation with the node name
       - type: timestamp
         name: operationStatusUpdated
         description: the last time the operation status was updated
       - type: String
         name: operationErrorCode
-        description: if the operation with the registered name was failed, the code of the failure
+        description: if the operation with the node name was failed, the code of the failure
       - type: String
         name: operationErrorMessage
-        description: if the operation with the registered name was failed, the human-readable description of the failure
+        description: if the operation with the node name was failed, the human-readable description of the failure
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
       - name: manage
-        description: any modification of the registered name, prolonging it etc.
+        description: any modification of the node name, prolonging it etc.
   - name: RegisteredNameSecret
     fields:
       - type: String
@@ -1005,7 +1005,7 @@ structures:
   - name: WhoAmI
     fields:
       - type: String
-        name: registeredName
+        name: nodeName
 
 enums:
   - name: OperationStatus
