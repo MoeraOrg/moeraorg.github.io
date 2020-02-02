@@ -12,6 +12,23 @@ objects:
           struct: RemotePostingVerificationInfo
         auth: admin
         description: Get status of the asyncronous operation that performs verification of a remote posting signature.
+  - name: Cartes object
+    description: >
+      <a href="/development/protocols/carte.md">Cartes</a> - cryptographic tokens used for authentication on any node
+      besides the home node.
+    requests:
+      - url: /cartes
+        type: GET
+        params:
+          - type: int
+            name: limit
+            description: maximum number of cartes returned
+        out:
+          struct: CarteSet
+        auth: admin
+        description: >
+          Get a set of cartes that correspond to successive periods of time. The node may decide to return less cartes
+          than the given <code>limit</code>.
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -578,6 +595,25 @@ structures:
       - type: String
         name: text
         description: HTML
+  - name: CarteInfo
+    fields:
+      - type: String
+        name: carte
+      - type: timestamp
+        name: beginning
+        description: timestamp of the beginning of the carte's life
+      - type: timestamp
+        name: deadline
+        description: timestamp of the end of the carte's life
+  - name: CarteSet
+    fields:
+      - type: String
+        name: cartesIp
+        description: the client IP address the cartes are bound to
+      - struct: CarteInfo
+        array: true
+        name: cartes
+        description: the cartes
   - name: Choice
     fields:
       - type: String

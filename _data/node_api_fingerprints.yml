@@ -11,10 +11,10 @@ objects:
           - type: InetAddress
             field: address
             comment: IP address of the client
-          - type: int
+          - type: timestamp
             field: beginning
             comment: timestamp of the beginning of the carte's life
-          - type: int
+          - type: timestamp
             field: deadline
             comment: timestamp of the end of the carte's life
           - type: byte
@@ -43,7 +43,7 @@ objects:
             field: body
           - type: String
             field: bodyFormat
-          - type: int
+          - type: timestamp
             field: createdAt
             comment: of the current revision
           - type: byte
