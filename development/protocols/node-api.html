@@ -68,17 +68,14 @@ body_class: body-pink
             <i>admin</i> - admin token received after signing in must be passed in URL parameter <code>token</code>;
         </li>
         <li>
-            <i>signature</i> - user's access rights are figured out from the name and signature passed in the request
-            body;
-        </li>
-        <li>
-            <i>owner</i> - only the owner of the posting, comment etc. may perform this request, use <i>admin</i>
-            (for own posts on the home node only) or <i>signature</i> scheme for authentication.
+            <i>owner</i> - only the owner of the content (posting, comment etc.) may perform this request, use admin
+            token (for own content on the home node only), <a href="/development/protocols/carte.html">carte</a>
+            (passed in URL parameter <code>carte</code>) or signature (if present in the input) for authentication.
         </li>
         <li>
             <i>configurable</i> - access to the request is configurable, the client may refer to the corresponding
-            <a href="/overview/permissions.html">access hint</a> to clarify and use <i>admin</i> or <i>signature</i>
-            scheme for authentication.
+            <a href="/overview/permissions.html">access hint</a> to clarify and use token, carte or signature for
+            authentication.
         </li>
     </ul>
 </p>
@@ -87,7 +84,8 @@ body_class: body-pink
     Standard <a href="/overview/permissions.html">permission groups</a> are:
     <ul>
         <li><code>admin</code> - administrator of the node;</li>
-        <li><code>owner</code> - owner of the posting, comment etc.</li>
+        <li><code>owner</code> - owner of the posting, comment etc.;</li>
+        <li><code>public</code> - anybody.</li>
     </ul>
 </p>
 <p>
