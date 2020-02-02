@@ -36,6 +36,9 @@ body_class: body-pink
             If authentication is required, but not provided, <code>authentication.required</code> error is returned.
         </li>
         <li>
+            If the provided signature is incorrect, <code>authentication.incorrect-signature</code> error is returned.
+        </li>
+        <li>
             If request body does not pass validation, a validation error is returned. Look into the chapter on
             the particular structure for the list of validation errors that correspond to the structure.
         </li>

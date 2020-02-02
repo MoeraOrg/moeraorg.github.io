@@ -29,7 +29,14 @@ body_class: body-pink
             <tbody>
                 {% for field in ver.fingerprint %}
                     <tr>
-                        <td><code>{{ field.type }}</code></td>
+                        <td>
+                            {% if field.type %}
+                                <code>{{ field.type }}</code>
+                            {% endif %}
+                            {% if field.digest %}
+                                hash of <a href="#{{ field.digest }}"><code>{{ field.digest }}</code></a> fingerprint
+                            {% endif %}
+                        </td>
                         <td><code>{{ field.field }}</code></td>
                         <td>{{ field.comment }}</td>
                     </tr>

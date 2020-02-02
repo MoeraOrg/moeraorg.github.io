@@ -52,3 +52,18 @@ objects:
           - type: byte
             field: attachments
             comment: 0 <i>(reserved for future use)</i>
+  - name: Reaction
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: REACTION
+          - type: String
+            field: ownerName
+          - digest: Posting
+            field: postingFingerprint
+          - type: boolean
+            field: negative
+          - type: int
+            field: emoji
