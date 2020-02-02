@@ -543,6 +543,40 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the given revision of a posting.
+  - name: Remote reactions object
+    description: Reactions to postings located on other nodes.
+    requests:
+      - url: /nodes/{nodeName}/postings/{postingId}/reactions
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+        in:
+          struct: ReactionAttributes
+        out:
+          struct: Result
+        auth: admin
+        description: Add a reaction to the posting on the remote node.
+      - url: /nodes/{nodeName}/postings/{postingId}/reactions/{ownerName}/verify
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: ownerName
+            description: reaction owner node name
+        out:
+          struct: AsyncOperationCreated
+        auth: admin
+        description: Verify the signature of the reaction of the given owner to the posting on the remote node.
   - name: Settings object
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
@@ -984,6 +1018,14 @@ structures:
     operations:
       - name: edit
         description: change the profile
+  - name: ReactionAttributes
+    fields:
+      - type: boolean
+        name: negative
+        description: true, if the reaction is negative, false, if positive
+      - type: int
+        name: emoji
+        description: reaction code, usually interpreted by clients as emoji code point
   - name: ReactionCreated
     fields:
       - struct: ReactionInfo
