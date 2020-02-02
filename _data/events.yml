@@ -1,31 +1,18 @@
 events:
-  - type: SUBSCRIBED
-    description: >
-      Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.
-    auth: the subscriber only
-    fields:
-      - type: String
-        name: sessionId
-        comment: STOMP session ID
-  - type: PROFILE_UPDATED
-    description: Profile was updated.
-  - type: NODE_SETTINGS_CHANGED
-    description: Some node settings were changed.
-    auth: admin
   - type: CLIENT_SETTINGS_CHANGED
     description: Some client settings were changed.
     auth: admin
-  - type: POSTING_ADDED
-    description: A posting was added.
+  - type: NODE_NAME_CHANGED
+    description: The name of the node was changed.
     fields:
       - type: String
-        name: id
-        comment: the posting ID
-      - type: int
-        name: moment
-        comment: the posting moment
-  - type: POSTING_UPDATED
-    description: A posting was updated.
+        name: name
+        comment: the new name
+  - type: NODE_SETTINGS_CHANGED
+    description: Some node settings were changed.
+    auth: admin
+  - type: POSTING_ADDED
+    description: A posting was added.
     fields:
       - type: String
         name: id
@@ -42,6 +29,15 @@ events:
       - type: int
         name: moment
         comment: the posting moment
+  - type: POSTING_REACTIONS_CHANGED
+    description: Reactions to a posting were changed.
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
+      - type: int
+        name: moment
+        comment: the posting moment
   - type: POSTING_RESTORED
     description: A deleted posting was restored.
     fields:
@@ -51,37 +47,28 @@ events:
       - type: int
         name: moment
         comment: the posting moment
-  - type: NODE_NAME_CHANGED
-    description: The name of the node was changed.
-    fields:
-      - type: String
-        name: name
-        comment: the new name
-  - type: REGISTERED_NAME_OPERATION_STATUS
-    description: Status of an operation on the registered name of the node was changed.
-    auth: admin
-  - type: REMOTE_POSTING_VERIFIED
-    description: Signature of a posting on a remote node was verified.
-    auth: admin
+  - type: POSTING_UPDATED
+    description: A posting was updated.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
-      - type: String
-        name: nodeName
-        comment: the remote node name
-      - type: String
-        name: receiverName
-        comment: the posting receiver name
-      - type: String
-        name: postingId
         comment: the posting ID
+      - type: int
+        name: moment
+        comment: the posting moment
+  - type: PROFILE_UPDATED
+    description: Profile was updated.
+  - type: SUBSCRIBED
+    description: >
+      Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.
+    auth: the subscriber only
+    fields:
       - type: String
-        name: revisionId
-        comment: the posting revision ID
-      - type: boolean
-        name: correct
-        comment: verification result
+        name: sessionId
+        comment: STOMP session ID
+  - type: REGISTERED_NAME_OPERATION_STATUS
+    description: Status of an operation on the registered name of the node was changed.
+    auth: admin
   - type: REMOTE_POSTING_VERIFICATION_FAILED
     description: Verification of the signature of a posting on a remote node failed.
     auth: admin
@@ -107,3 +94,66 @@ events:
       - type: String
         name: errorMessage
         comment: error message
+  - type: REMOTE_POSTING_VERIFIED
+    description: Signature of a posting on a remote node was verified.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: asynchronous operation ID
+      - type: String
+        name: nodeName
+        comment: the remote node name
+      - type: String
+        name: receiverName
+        comment: the posting receiver name
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: String
+        name: revisionId
+        comment: the posting revision ID
+      - type: boolean
+        name: correct
+        comment: verification result
+  - type: REMOTE_REACTION_VERIFICATION_FAILED
+    description: Verification of the signature of a reaction on a remote node failed.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: asynchronous operation ID
+      - type: String
+        name: nodeName
+        comment: the remote node name
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: String
+        name: reactionOwnerName
+        comment: the reaction owner name
+      - type: String
+        name: errorCode
+        comment: error code
+      - type: String
+        name: errorMessage
+        comment: error message
+  - type: REMOTE_REACTION_VERIFIED
+    description: Signature of a reaction on a remote node was verified.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: asynchronous operation ID
+      - type: String
+        name: nodeName
+        comment: the remote node name
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: String
+        name: reactionOwnerName
+        comment: the reaction owner name
+      - type: boolean
+        name: correct
+        comment: verification result
