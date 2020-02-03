@@ -896,7 +896,8 @@ structures:
         description: >
           format of the body of the posting, may have any value meaningful for the client, including:
           <ul>
-            <li><code>html</code> - <a href="#Body"><code>Body</code></a> structure</li>
+            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
+            <li><code>application</code> - an application-specific structure.</li>
           </ul>
       - type: String
         name: heading
@@ -1015,17 +1016,21 @@ structures:
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
-        name: body
-        description: body of the posting, a string representation of a JSON structure, may be absent
-      - type: String
-        name: bodyFormat
-        description: >
-          format of the body of the posting, see detailed description in
-          <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
       - type: timestamp
         name: publishAt
         description: posting publication timestamp, the current timestamp by default
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the posting accepts
+      - type: boolean
+        name: reactionsVisible
+        description: >
+          true, if the posting allows to view detailed information about reactions to anybody except posting and
+          reaction owners, false otherwise
+      - type: boolean
+        name: reactionTotalsVisible
+        description: >
+          true, if the posting allows to view number of reactions to anybody except the posting owner, false otherwise
     errors:
       - code: postingText.bodySrc.blank
         description: body text is empty
@@ -1033,8 +1038,14 @@ structures:
         description: body text is too long
       - code: postingText.bodySrcFormat.unknown
         description: unknown body text format
-      - code: postingText.body.wrong-size
-        description: body HTML is too long
+      - code: postingText.acceptedReactions.positive.wrong-size
+        description: list of accepted positive reactions is too long
+      - code: postingText.acceptedReactions.positive.wrong-pattern
+        description: list of accepted positive reactions has wrong format
+      - code: postingText.acceptedReactions.negative.wrong-size
+        description: list of accepted negative reactions is too long
+      - code: postingText.acceptedReactions.negative.wrong-pattern
+        description: list of accepted negative reactions has wrong format
   - name: Profile
     fields:
       - type: String
