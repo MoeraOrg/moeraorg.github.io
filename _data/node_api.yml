@@ -716,6 +716,17 @@ objects:
         description: Get brief information about the node.
 
 structures:
+  - name: AcceptedReactions
+    fields:
+      - type: String
+        name: positive
+        description: >
+          comma-separated list of codes of the positive reactions that are accepted; a code may be prefixed by
+          <code>0x</code> to designate hexadecimal number and <code>+</code> to designate a recommended reaction
+      - type: String
+        name: negative
+        description: >
+          comma-separated list of codes of the negative reactions that are accepted (the format is the same as above)
   - name: AsyncOperationCreated
     fields:
       - type: String
@@ -755,6 +766,20 @@ structures:
       - type: String
         name: title
         description: user-readable title for the value
+  - name: ClientReactionInfo
+    fields:
+      - type: boolean
+        name: negative
+        description: true, if the reaction is negative, false, if positive
+      - type: int
+        name: emoji
+        description: reaction code, usually interpreted by clients as emoji code point
+      - type: timestamp
+        name: createdAt
+        description: reaction creation timestamp - the real time when the reaction was created
+      - type: timestamp
+        name: deadline
+        description: if present, the reaction will be erased at this time
   - name: Credentials
     fields:
       - type: String
@@ -901,6 +926,25 @@ structures:
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the posting accepts
+      - struct: ClientReactionInfo
+        name: clientReaction
+        description: details of the existing reaction (if any) of the client's owner
+      - struct: ReactionTotalsInfo
+        name: reactions
+        description: reactions summary of the posting
+      - type: boolean
+        name: reactionsVisible
+        description: >
+          true, if the posting allows to view detailed information about reactions to anybody except posting and
+          reaction owners, false otherwise (may be absent, if not requested)
+      - type: boolean
+        name: reactionTotalsVisible
+        description: >
+          true, if the posting allows to view number of reactions to anybody except the posting owner, false otherwise
+          (may be absent, if not requested)
     operations:
       - name: edit
         description: edit the posting
@@ -908,6 +952,8 @@ structures:
         description: delete the posting
       - name: revisions
         description: view the posting's revisions
+      - name: reactions
+        description: view reactions to the posting
   - name: PostingRevisionInfo
     fields:
       - type: String
