@@ -29,14 +29,27 @@ body_class: body-pink
             returned.
         </li>
         <li>
+            If authentication is required, but not provided, <code>authentication.required</code> error is returned.
+        </li>
+        <li>
             If invalid authentication token or root secret is provided, <code>authentication.invalid</code> error is
             returned.
         </li>
         <li>
-            If authentication is required, but not provided, <code>authentication.required</code> error is returned.
+            If the provided signature is incorrect, <code>authentication.incorrect-signature</code> error is returned.
         </li>
         <li>
-            If the provided signature is incorrect, <code>authentication.incorrect-signature</code> error is returned.
+            If the provided <a href="/development/protocols/carte.html">carte</a> is incorrect, one of the following
+            error codes is returned:
+            <ul>
+                <li><code>carte.client-address-unknown</code> - cannot determine client IP address;</li>
+                <li><code>carte.unknown-fingerprint</code> - unknown fingerprint version encoded in the carte;</li>
+                <li><code>carte.invalid</code> - the carte format is invalid;</li>
+                <li><code>carte.not-begun</code> - the timespan of the carte has not begun yet;</li>
+                <li><code>carte.expired</code> - the carte is expired;</li>
+                <li><code>carte.unknown-signing-key</code> - cannot find public key for carte owner;</li>
+                <li><code>carte.invalid-signature</code> - carte signature is invalid.</li>
+            </ul>
         </li>
         <li>
             If request body does not pass validation, a validation error is returned. Look into the chapter on
