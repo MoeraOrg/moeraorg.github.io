@@ -999,6 +999,12 @@ structures:
           fingerprint)
       - type: int
         name: moment
+      - struct: ClientReactionInfo
+        name: clientReaction
+        description: details of the existing reaction (if any) of the client's owner
+      - struct: ReactionTotalsInfo
+        name: reactions
+        description: reactions summary of the posting revision
   - name: PostingText
     fields:
       - type: String
