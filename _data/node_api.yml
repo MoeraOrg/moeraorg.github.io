@@ -458,7 +458,7 @@ objects:
             description: ID of the posting
           - type: boolean
             name: negative
-            description: true, to filter negative reactions, false, to filter positive ones
+            description: <code>true</code>, to filter negative reactions, <code>false</code>, to filter positive ones
           - type: int
             name: emoji
             description: filter by reaction code, usually interpreted by clients as emoji code point
@@ -785,7 +785,7 @@ structures:
     fields:
       - type: boolean
         name: negative
-        description: true, if the reaction is negative, false, if positive
+        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
@@ -932,7 +932,8 @@ structures:
       - type: boolean
         name: pinned
         description: >
-          true, if the posting is pinned (should appear before any non-pinned posting in a timeline), false otherwise
+          <code>true</code>, if the posting is pinned (should appear before any non-pinned posting in a timeline),
+          <code>false</code> otherwise
       - type: byte[]
         name: signature
         description: >
@@ -958,13 +959,13 @@ structures:
       - type: boolean
         name: reactionsVisible
         description: >
-          true, if the posting allows to view detailed information about reactions to anybody except posting and
-          reaction owners, false otherwise (may be absent, if not requested)
+          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
+          posting and reaction owners, <code>false</code> otherwise (may be absent, if not requested)
       - type: boolean
         name: reactionTotalsVisible
         description: >
-          true, if the posting allows to view number of reactions to anybody except the posting owner, false otherwise
-          (may be absent, if not requested)
+          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
+          <code>false</code> otherwise (may be absent, if not requested)
     operations:
       - name: edit
         description: edit the posting
@@ -1012,7 +1013,8 @@ structures:
       - type: boolean
         name: pinned
         description: >
-          true, if the posting is pinned (should appear before any non-pinned posting in a timeline), false otherwise
+          <code>true</code>, if the posting is pinned (should appear before any non-pinned posting in a timeline),
+          <code>false</code> otherwise
       - type: byte[]
         name: signature
         description: >
@@ -1045,19 +1047,21 @@ structures:
       - type: boolean
         name: pinned
         description: >
-          true, if the posting is pinned (should appear before any non-pinned posting in a timeline), false otherwise
+          <code>true</code>, if the posting is pinned (should appear before any non-pinned posting in a timeline),
+          <code>false</code> otherwise
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
       - type: boolean
         name: reactionsVisible
         description: >
-          true, if the posting allows to view detailed information about reactions to anybody except posting and
-          reaction owners, false otherwise
+          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
+          posting and reaction owners, <code>false</code> otherwise
       - type: boolean
         name: reactionTotalsVisible
         description: >
-          true, if the posting allows to view number of reactions to anybody except the posting owner, false otherwise
+          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
+          <code>false</code> otherwise
     errors:
       - code: postingText.bodySrc.blank
         description: body text is empty
@@ -1112,7 +1116,7 @@ structures:
     fields:
       - type: boolean
         name: negative
-        description: true, if the reaction is negative, false, if positive
+        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
@@ -1131,7 +1135,7 @@ structures:
         description: reaction owner node name
       - type: boolean
         name: negative
-        description: true, if the reaction is negative, false, if positive
+        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
@@ -1156,7 +1160,7 @@ structures:
         description: ID of the posting revision
       - type: boolean
         name: negative
-        description: true, if the reaction is negative, false, if positive
+        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
