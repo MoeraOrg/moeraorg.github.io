@@ -12,6 +12,18 @@ objects:
           struct: RemotePostingVerificationInfo
         auth: admin
         description: Get status of the asyncronous operation that performs verification of a remote posting signature.
+      - url: /async-operations/remote-reaction-verification/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: asynchronous operation ID
+        out:
+          struct: RemoteReactionVerificationInfo
+        auth: admin
+        description: >
+          Get status of the asyncronous operation that performs verification of the signature of a reaction to a remote
+          posting.
   - name: Cartes object
     description: >
       <a href="/development/protocols/carte.md">Cartes</a> - cryptographic tokens used for authentication on any node
@@ -1240,6 +1252,42 @@ structures:
         name: postingId
       - type: String
         name: revisionId
+      - type: String
+        name: status
+        description: >
+          status of the operation, may be one of:
+          <ul>
+            <li>
+              <code>running</code> - the verification is pending;
+            </li>
+            <li>
+              <code>correct</code> - the signature is correct;
+            </li>
+            <li>
+              <code>incorrect</code> - the signature is incorrect;
+            </li>
+            <li>
+              <code>error</code> - the verification cannot be performed due to an error.
+            </li>
+          </ul>
+      - type: String
+        name: errorCode
+        description: error code
+      - type: String
+        name: errorMessage
+        description: human-readable error message
+  - name: RemoteReactionVerificationInfo
+    fields:
+      - type: String
+        name: id
+        description: asynchronous operation ID
+      - type: String
+        name: nodeName
+      - type: String
+        name: postingId
+      - type: String
+        name: reactionOwnerName
+        description: node name of the reaction's owner
       - type: String
         name: status
         description: >
