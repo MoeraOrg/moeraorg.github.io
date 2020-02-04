@@ -411,6 +411,21 @@ objects:
           struct: ProfileInfo
         auth: admin
         description: Update the profile.
+  - name: Reaction Totals object
+    description: Summary of reactions to a posting.
+    requests:
+      - url: /postings/{postingId}/reaction-totals
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+        out:
+          struct: ReactionTotalsInfo
+        description: Get summary of reactions to the posting given.
+        errors:
+          - code: reaction-totals.posting-not-found
+            description: there is no posting with the given ID
   - name: Reactions object
     description: Reactions ("Likes") - simple textless answers to a posting.
     requests:
