@@ -921,22 +921,26 @@ structures:
         name: createdAt
         description: posting creation timestamp - the real time when the posting was created
       - type: timestamp
-        name: publishedAt
-        description: posting publication timestamp - the time the posting is published under at the timeline
-      - type: timestamp
         name: editedAt
         description: posting editing timestamp - the last time the posting was updated
       - type: timestamp
         name: deletedAt
         description: posting deletion timestamp - the time when the posting was deleted, may be absent
-      - type: int
-        name: signatureVersion
-        description: signature version (i.e. fingerprint version)
+      - type: timestamp
+        name: publishedAt
+        description: posting publication timestamp - the time the posting is published under at the timeline
+      - type: boolean
+        name: pinned
+        description: >
+          true, if the posting is pinned (should appear before any non-pinned posting in a timeline), false otherwise
       - type: byte[]
         name: signature
         description: >
           the posting's owner signature (use <a href="node-api-fingerprints#Posting"><code>Posting</code></a>
           fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
       - type: int
         name: moment
       - type: String -> String[]
@@ -1005,14 +1009,18 @@ structures:
       - type: timestamp
         name: deletedAt
         description: revision deletion timestamp - the time when the revision was deleted, may be absent
-      - type: int
-        name: signatureVersion
-        description: signature version (i.e. fingerprint version)
+      - type: boolean
+        name: pinned
+        description: >
+          true, if the posting is pinned (should appear before any non-pinned posting in a timeline), false otherwise
       - type: byte[]
         name: signature
         description: >
           the revision's owner signature (use <a href="node-api-fingerprints#Posting"><code>Posting</code></a>
           fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
       - type: int
         name: moment
       - struct: ClientReactionInfo
@@ -1034,6 +1042,10 @@ structures:
       - type: timestamp
         name: publishAt
         description: posting publication timestamp, the current timestamp by default
+      - type: boolean
+        name: pinned
+        description: >
+          true, if the posting is pinned (should appear before any non-pinned posting in a timeline), false otherwise
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts

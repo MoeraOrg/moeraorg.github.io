@@ -30,3 +30,6 @@ Any moment that is larger than maximum safe integer in JavaScript
 
 Similarly, any moment that is less than minimum safe integer in
 JavaScript (- (2<sup>53</sup> - 1)) is treated as "far past".
+
+Moments larger or equal to 9⋅10<sup>15</sup> are assigned to "pinned"
+posts.
