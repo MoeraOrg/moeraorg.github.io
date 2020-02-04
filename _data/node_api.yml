@@ -26,6 +26,7 @@ objects:
         out:
           struct: CarteSet
         auth: admin
+        entitled: true
         description: >
           Get a set of cartes that correspond to successive periods of time. The node may decide to return less cartes
           than the given <code>limit</code>.
@@ -104,6 +105,7 @@ objects:
         out:
           struct: PostingInfo
         auth: admin
+        entitled: true
         description: >
           Restore a posting. A new revision is created with the same content as in the latest revision.
         errors:
@@ -206,7 +208,6 @@ objects:
         type: GET
         out:
           struct: NodeNameInfo
-        auth: none or admin
         description: >
           Get the name of the node. Admin user receives also the current status of the latest operation with
           the node name.
@@ -270,14 +271,10 @@ objects:
         out:
           struct: PostingInfo
         auth: configurable
+        entitled: true
         description: >
           Create a new posting from the text given, sign it with the signing key and publish it on the timeline.
           The heading and the preview of the posting are created automatically, if needed.
-        errors:
-          - code: posting.node-name-not-set
-            description: node name is not set yet
-          - code: posting.signing-key-not-set
-            description: signing key is not set yet
       - url: /postings/{id}
         type: PUT
         params:
@@ -289,16 +286,13 @@ objects:
         out:
           struct: PostingInfo
         auth: configurable
+        entitled: true
         description: >
           Update the posting, creating a new revision of it. The text is processed just like in the <code>POST</code>
           request.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
-          - code: posting.node-name-not-set
-            description: node name is not set yet
-          - code: posting.signing-key-not-set
-            description: signing key is not set yet
       - url: /postings/{id}
         type: GET
         params:
@@ -385,6 +379,7 @@ objects:
         out:
           struct: PostingRevisionInfo
         auth: owner
+        entitled: true
         description: >
           Restore a revision of the posting. A new revision is created with the same content as in the given revision.
         errors:
@@ -401,7 +396,6 @@ objects:
         type: GET
         out:
           struct: ProfileInfo
-        auth: none or admin
         description: Get the profile.
       - url: /profile
         type: PUT
@@ -575,6 +569,7 @@ objects:
         out:
           struct: Result
         auth: admin
+        entitled: true
         description: Add a reaction to the posting on the remote node.
       - url: /nodes/{nodeName}/postings/{postingId}/reactions/{ownerName}/verify
         type: POST

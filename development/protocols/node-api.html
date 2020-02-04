@@ -52,6 +52,13 @@ body_class: body-pink
             </ul>
         </li>
         <li>
+            If the request needs a node name, but it is not defined, <code>node-name-not-set</code> error is returned.
+        </li>
+        <li>
+            If the request needs a signing key, but it is not defined, <code>signing-key-not-set</code> error is
+            returned.
+        </li>
+        <li>
             If request body does not pass validation, a validation error is returned. Look into the chapter on
             the particular structure for the list of validation errors that correspond to the structure.
         </li>
@@ -167,7 +174,13 @@ body_class: body-pink
             {% if req.auth %}
                 <dd>{{ req.auth }}</dd>
             {% else %}
-                <dd>none</dd>
+                <dd><i>none</i></dd>
+            {% endif %}
+            <dt>Name and signing key:</dt>
+            {% if req.entitled %}
+                <dd>required</dd>
+            {% else %}
+                <dd><i>not required</i></dd>
             {% endif %}
             {% if req.errors %}
                 <dt>Errors:</dt>
