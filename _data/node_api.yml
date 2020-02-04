@@ -12,6 +12,9 @@ objects:
           struct: RemotePostingVerificationInfo
         auth: admin
         description: Get status of the asyncronous operation that performs verification of a remote posting signature.
+        errors:
+          - code: async-operation.not-found
+            description: async operation with the given ID is not found
       - url: /async-operations/remote-reaction-verification/{id}
         type: GET
         params:
@@ -24,6 +27,9 @@ objects:
         description: >
           Get status of the asyncronous operation that performs verification of the signature of a reaction to a remote
           posting.
+        errors:
+          - code: async-operation.not-found
+            description: async operation with the given ID is not found
   - name: Cartes object
     description: >
       <a href="/development/protocols/carte.md">Cartes</a> - cryptographic tokens used for authentication on any node
@@ -1074,6 +1080,8 @@ structures:
         description: body text is empty
       - code: postingText.bodySrc.wrong-size
         description: body text is too long
+      - code: postingText.bodySrc.wrong-encoding
+        description: body text is formatted incorrectly
       - code: postingText.bodySrcFormat.unknown
         description: unknown body text format
       - code: postingText.acceptedReactions.positive.wrong-size
