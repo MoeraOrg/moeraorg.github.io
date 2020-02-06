@@ -7,8 +7,8 @@
 
 code[class*="language-"],
 pre[class*="language-"] {
-	color: #f8f8f2;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+	/*color: #f8f8f2;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);*/
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	direction: ltr;
 	text-align: left;
@@ -30,7 +30,7 @@ pre[class*="language-"] {
 
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 1em;
+	/*padding: 1em;*/
 	margin: .5em 0;
 	overflow: auto;
 	border-radius: 0.3em;
@@ -38,7 +38,7 @@ pre[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #272822;
+	/*background: #272822;*/
 }
 
 /* Inline code */
