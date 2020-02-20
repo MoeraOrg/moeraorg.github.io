@@ -11,6 +11,27 @@ events:
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
     auth: admin
+  - type: DRAFT_POSTING_ADDED
+    description: A draft posting was added.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
+  - type: DRAFT_POSTING_DELETED
+    description: A draft posting was deleted.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
+  - type: DRAFT_POSTING_UPDATED
+    description: A draft posting was updated.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
@@ -29,6 +50,20 @@ events:
       - type: int
         name: moment
         comment: the posting moment
+  - type: POSTING_DRAFT_REVISION_DELETED
+    description: Draft revision of a posting was deleted.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
+  - type: POSTING_DRAFT_REVISION_UPDATED
+    description: Draft revision of a posting was updated.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
   - type: POSTING_REACTIONS_CHANGED
     description: Reactions to a posting were changed.
     fields:
