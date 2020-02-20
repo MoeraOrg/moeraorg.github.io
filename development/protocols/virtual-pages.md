@@ -21,6 +21,11 @@ Post composer. If `id` is not provided, the composer is opened for
 creating a new post, otherwise it is opened for editing the post with
 the given ID.
 
+`/compose?draft=<id>`
+
+Post composer opened for creating a new post, with a draft loaded. ID of
+the draft is passed in the `draft` parameter.
+
 `/post/<id>`
 
 Detailed view of the post with the given ID.
