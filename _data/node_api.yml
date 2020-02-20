@@ -110,6 +110,7 @@ objects:
             description: ID of the posting
         out:
           struct: PostingInfo
+        auth: admin
         description: Get an individual deleted posting.
         errors:
           - code: posting.not-found
@@ -215,6 +216,84 @@ objects:
             description: there is no domain with the given hostname
           - code: domain.cannot-delete-default
             description: cannot delete the default domain
+  - name: Draft Postings object
+    description: >
+      All draft postings.
+    requests:
+      - url: /draft-postings
+        type: GET
+        params:
+          - type: int
+            name: page
+            description: page number, 0 by default
+          - type: int
+            name: limit
+            description: page size (maximum number of postings returned), the default is defined by the node
+        out:
+          struct: PostingInfo
+          array: true
+        auth: admin
+        description: >
+          Get the list of draft postings, page by page. The node may decide to use smaller page size than the given
+          <code>limit</code>. The postings are always sorted by the creation timestamp, descending.
+        errors:
+          - code: page.invalid
+            description: <code>page</code> parameter has an invalid value
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /draft-postings
+        type: POST
+        in:
+          struct: PostingText
+        out:
+          struct: PostingInfo
+        auth: admin
+        entitled: true
+        description: Create a new draft posting from the text given.
+      - url: /draft-postings/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the posting
+        out:
+          struct: PostingInfo
+        auth: admin
+        description: Get an individual draft posting.
+        errors:
+          - code: posting.not-found
+            description: there is no draft posting with the given ID
+      - url: /draft-postings/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the draft posting
+        in:
+          struct: PostingText
+        out:
+          struct: PostingInfo
+        auth: admin
+        entitled: true
+        description: Update the draft posting, overwriting the current revision of it.
+        errors:
+          - code: posting.not-found
+            description: there is no draft posting with the given ID
+      - url: /draft-postings/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the draft posting
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Delete the draft posting. The posting may not be purged from the database immediately, but preserved for some
+          period of time to give a chance to restore it.
+        errors:
+          - code: posting.not-found
+            description: there is no draft posting with the given ID
   - name: Node Name object
     description: >
       The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
