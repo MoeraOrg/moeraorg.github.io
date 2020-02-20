@@ -486,6 +486,52 @@ objects:
             description: there is no revision with the given ID
           - code: posting-revision.already-current
             description: the given revision is already the current one
+  - name: Posting Draft Revision object
+    description: >
+      The draft revisions of the posting - the special revision designed for storing pending changes to the posting
+      that are not published yet.
+    requests:
+      - url: /postings/{postingId}/revisions/draft
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+        out:
+          struct: PostingInfo
+        auth: admin
+        description: Get the posting with the changes stored in its draft revision.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /postings/{postingId}/revisions/draft
+        type: PUT
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+        in:
+          struct: PostingText
+        out:
+          struct: PostingInfo
+        auth: admin
+        description: Update the draft revision of the posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /postings/{postingId}/revisions/draft
+        type: DELETE
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+        out:
+          struct: Result
+        auth: admin
+        description: Erase all changes stored in the draft revision of the posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
   - name: Profile object
     description: The profile - the detailed information about the node's owner, node's purpose etc.
     requests:
