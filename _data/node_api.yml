@@ -294,6 +294,92 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no draft posting with the given ID
+  - name: Feeds object
+    description: >
+      Feed is a set of stories collected for some purpose. The stories are sorted by
+      <a href="/development/protocols/moment.html">moment</a>, descending.
+      </p><p>
+      These are the standard feeds that have special meaning:
+      <ul>
+      <li><code>timeline</code> - the main feed of publications;</li>
+      <li><code>instant</code> - the feed of instant notifications.</li>
+      </ul>
+    requests:
+      - url: /feeds
+        type: GET
+        out:
+          struct: FeedInfo
+          array: true
+        description: Get general information about all feeds accessible by client.
+      - url: /feeds/{feedName}
+        type: GET
+        params:
+          - type: String
+            name: feedName
+            description: name of the feed
+        out:
+          struct: FeedInfo
+        description: Get general information about the feed.
+        errors:
+          - code: feed.not-found
+            description: there is no accessible feed with this name
+      - url: /feeds/{feedName}/status
+        type: GET
+        params:
+          - type: String
+            name: feedName
+            description: name of the feed
+        out:
+          struct: FeedStatus
+        auth: admin
+        description: Get information about non-read and non-viewed stories in the feed.
+        errors:
+          - code: feed.not-found
+            description: there is no accessible feed with this name
+      - url: /feeds/{feedName}/status
+        type: PUT
+        params:
+          - type: String
+            name: feedName
+            description: name of the feed
+        in:
+          struct: FeedStatusChange
+        out:
+          struct: FeedStatus
+        auth: admin
+        description: Update information about non-read and non-viewed stories in the feed.
+        errors:
+          - code: feed.not-found
+            description: there is no accessible feed with this name
+      - url: /feeds/{feedName}/stories
+        type: GET
+        params:
+          - type: String
+            name: feedName
+            description: name of the feed
+          - type: int
+            name: before
+            description: filter stories posted at or before this moment
+          - type: int
+            name: after
+            description: filter stories posted strongly after this moment
+          - type: int
+            name: limit
+            description: maximum number of stories returned
+        out:
+          struct: FeedSliceInfo
+        description: >
+          Get a slice of the feed, delimited by <code>before</code> or <code>after</code> moments (but not both) and
+          the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest
+          stories are returned. The node may decide to return less stories than the given <code>limit</code>. The
+          stories are always sorted by moment, descending.
+        errors:
+          - code: feed.not-found
+            description: there is no accessible feed with this name
+          - code: feed.before-after-exclusive
+            description: <code>before</code> and <code>after</code> parameters are not allowed together
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
   - name: Node Name object
     description: >
       The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
@@ -798,41 +884,6 @@ objects:
             description: cannot set value of an internal setting
           - code: setting.unknown
             description: unknown setting
-  - name: Timeline object
-    description: >
-      Timeline - all postings that user is permitted to read. The postings are sorted by
-      <a href="/development/protocols/moment.html">moment</a>, descending.
-    requests:
-      - url: /timeline
-        type: GET
-        out:
-          struct: TimelineInfo
-          array: true
-        description: Get general information about the timeline.
-      - url: /timeline/postings
-        type: GET
-        params:
-          - type: int
-            name: before
-            description: filter postings posted at or before this moment
-          - type: int
-            name: after
-            description: filter postings posted strongly after this moment
-          - type: int
-            name: limit
-            description: maximum number of postings returned
-        out:
-          struct: TimelineSliceInfo
-        description: >
-          Get a slice of the timeline, delimited by <code>before</code> or <code>after</code> moments (but not both) and
-          the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest
-          postings are returned. The node may decide to return less postings than the given <code>limit</code>. The
-          postings are always sorted by moment, descending.
-        errors:
-          - code: timeline.before-after-exclusive
-            description: <code>before</code> and <code>after</code> parameters are not allowed together
-          - code: limit.invalid
-            description: <code>limit</code> parameter has an invalid value
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
@@ -1521,26 +1572,48 @@ structures:
       - type: boolean
         name: multiline
         description: (<code>string</code>) <code>true</code>, if the value is a multiline text
-  - name: TimelineInfo
+  - name: FeedInfo
     fields:
+      - type: String
+        name: feedName
+        description: name of the feed
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
       - name: add
-        description: add postings to the timeline
-  - name: TimelineSliceInfo
+        description: add stories to the feed
+  - name: FeedSliceInfo
     fields:
       - type: int
         name: before
-        description: the slice contains all postings before this moment, inclusive. May be the far future.
+        description: the slice contains all stories before this moment, inclusive. May be the far future.
       - type: int
         name: after
-        description: the slice contains all postings after this moment, exclusive. May be the far past.
-      - struct: PostingInfo
+        description: the slice contains all stories after this moment, exclusive. May be the far past.
+      - struct: StoryInfo
         array: true
-        name: postings
-        description: the postings
+        name: stories
+        description: the stories
+  - name: FeedStatus
+    fields:
+      - type: int
+        name: notViewed
+        description: number of stories that have not been viewed yet.
+      - type: int
+        name: notRead
+        description: number of stories that have not been read yet.
+  - name: FeedStatusChange
+    fields:
+      - type: boolean
+        name: viewed
+        description: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+      - type: boolean
+        name: read
+        description: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
+      - type: int
+        name: before
+        description: change flags for all stories before this moment, inclusive.
   - name: TokenCreated
     fields:
       - type: String
