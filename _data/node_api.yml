@@ -456,8 +456,8 @@ objects:
         auth: configurable
         entitled: true
         description: >
-          Create a new posting from the text given, sign it with the signing key and publish it on the timeline.
-          The heading and the preview of the posting are created automatically, if needed.
+          Create a new posting from the text given, sign it with the signing key and publish it in the given feeds
+          (if any). The heading and the preview of the posting are created automatically, if needed.
       - url: /postings/{id}
         type: PUT
         params:
