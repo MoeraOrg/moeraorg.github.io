@@ -1026,6 +1026,24 @@ structures:
     operations:
       - name: add
         description: add stories to the feed
+  - name: FeedReference
+    fields:
+      - type: String
+        name: feedName
+        description: name of the feed
+      - type: timestamp
+        name: publishedAt
+        description: story publication timestamp - the time the story is published under in the feed
+      - type: boolean
+        name: pinned
+        description: >
+          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>false</code> otherwise
+      - type: int
+        name: moment
+      - type: String
+        name: storyId
+        description: ID of the story
   - name: FeedSliceInfo
     fields:
       - type: int
@@ -1158,13 +1176,9 @@ structures:
         name: deletedAt
         description: posting deletion timestamp - the time when the posting was deleted, may be absent
       - type: timestamp
-        name: publishedAt
-        description: posting publication timestamp - the time the posting is published under at the timeline
-      - type: boolean
-        name: pinned
+        name: deadline
         description: >
-          <code>true</code>, if the posting is pinned (should appear before any non-pinned posting in a timeline),
-          <code>false</code> otherwise
+          posting purging timestamp - the time when the deleted posting will be purged from the database, may be absent
       - type: boolean
         name: draft
         description: <code>true</code>, if the posting is a draft, <code>false</code> otherwise
@@ -1181,8 +1195,10 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
-      - type: int
-        name: moment
+      - struct: FeedReference
+        array: true
+        name: feedReferences
+        description: array of references to the posting from stories in feeds
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
@@ -1244,16 +1260,8 @@ structures:
         name: createdAt
         description: revision creation timestamp - the real time when the revision was created
       - type: timestamp
-        name: publishedAt
-        description: revision publication timestamp - the time the revision is published under at the timeline
-      - type: timestamp
         name: deletedAt
         description: revision deletion timestamp - the time when the revision was deleted, may be absent
-      - type: boolean
-        name: pinned
-        description: >
-          <code>true</code>, if the posting is pinned (should appear before any non-pinned posting in a timeline),
-          <code>false</code> otherwise
       - type: byte[]
         name: signature
         description: >
@@ -1262,8 +1270,6 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
-      - type: int
-        name: moment
       - struct: ClientReactionInfo
         name: clientReaction
         description: details of the existing reaction (if any) of the client's owner
@@ -1614,6 +1620,59 @@ structures:
       - type: boolean
         name: multiline
         description: (<code>string</code>) <code>true</code>, if the value is a multiline text
+  - name: StoryInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: feedName
+        description: name of the feed
+      - type: String
+        name: storyType
+        description: type of the story
+      - type: timestamp
+        name: createdAt
+        description: story creation timestamp - the real time when the story was created
+      - type: timestamp
+        name: publishedAt
+        description: story publication timestamp - the time the story is published under in the feed
+      - type: boolean
+        name: pinned
+        description: >
+          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>false</code> otherwise
+      - type: int
+        name: moment
+      - type: boolean
+        name: viewed
+        description: <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: read
+        description: <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+      - type: String
+        name: summary
+        description: user-readable summary of the story
+      - type: String
+        name: trackingId
+        description: >
+          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
+      - struct: PostingInfo
+        name: posting
+        description: the posting this story is about (may be absent or contain only ID)
+      - type: String
+        name: remoteNodeName
+        description: name of the node this story is about (may be absent)
+      - type: String
+        name: remotePostingId
+        description: ID of the posting at remote node this story is about (may be absent)
+    operations:
+      - name: edit
+        description: update the story
+      - name: delete
+        description: delete the story
   - name: TokenCreated
     fields:
       - type: String
