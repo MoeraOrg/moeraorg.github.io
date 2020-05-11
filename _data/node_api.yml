@@ -1286,14 +1286,6 @@ structures:
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: timestamp
-        name: publishAt
-        description: posting publication timestamp, the current timestamp by default
-      - type: boolean
-        name: pinned
-        description: >
-          <code>true</code>, if the posting is pinned (should appear before any non-pinned posting in a timeline),
-          <code>false</code> otherwise
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
@@ -1307,6 +1299,9 @@ structures:
         description: >
           <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
           <code>false</code> otherwise
+      - struct: StoryAttributes
+        array: true
+        description: list of publications in feeds that must be made after creating the posting (for new postings only)
     errors:
       - code: postingText.bodySrc.blank
         description: body text is empty
@@ -1324,6 +1319,8 @@ structures:
         description: list of accepted negative reactions is too long
       - code: postingText.acceptedReactions.negative.wrong-pattern
         description: list of accepted negative reactions has wrong format
+      - code: postingText.publications.cannot-modify
+        description: <code>publications</code> field is not allowed in posting modification query
   - name: Profile
     fields:
       - type: String
@@ -1620,6 +1617,25 @@ structures:
       - type: boolean
         name: multiline
         description: (<code>string</code>) <code>true</code>, if the value is a multiline text
+  - name: StoryAttributes
+    fields:
+      - type: String
+        name: feedName
+        description: name of the feed
+      - type: timestamp
+        name: publishAt
+        description: story publication timestamp - the time the story must be published under in the feed
+      - type: boolean
+        name: pinned
+        description: >
+          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>false</code> otherwise
+      - type: boolean
+        name: viewed
+        description: value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+      - type: boolean
+        name: read
+        description: value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
   - name: StoryInfo
     fields:
       - type: String
