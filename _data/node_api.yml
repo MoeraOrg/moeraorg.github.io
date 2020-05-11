@@ -1015,6 +1015,48 @@ structures:
         description: the domain name is not a valid hostname
       - code: domainInfo.nodeId.wrong-uuid
         description: the node ID is not a valid UUID
+  - name: FeedInfo
+    fields:
+      - type: String
+        name: feedName
+        description: name of the feed
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+    operations:
+      - name: add
+        description: add stories to the feed
+  - name: FeedSliceInfo
+    fields:
+      - type: int
+        name: before
+        description: the slice contains all stories before this moment, inclusive. May be the far future.
+      - type: int
+        name: after
+        description: the slice contains all stories after this moment, exclusive. May be the far past.
+      - struct: StoryInfo
+        array: true
+        name: stories
+        description: the stories
+  - name: FeedStatus
+    fields:
+      - type: int
+        name: notViewed
+        description: number of stories that have not been viewed yet.
+      - type: int
+        name: notRead
+        description: number of stories that have not been read yet.
+  - name: FeedStatusChange
+    fields:
+      - type: boolean
+        name: viewed
+        description: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+      - type: boolean
+        name: read
+        description: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
+      - type: int
+        name: before
+        description: change flags for all stories before this moment, inclusive.
   - name: NameToRegister
     fields:
       - type: String
@@ -1134,7 +1176,7 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the posting's owner signature (use <a href="node-api-fingerprints#Posting"><code>Posting</code></a>
+          the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -1215,7 +1257,7 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the revision's owner signature (use <a href="node-api-fingerprints#Posting"><code>Posting</code></a>
+          the revision's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -1341,7 +1383,7 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the reaction owner signature (use <a href="node-api-fingerprints#Reaction"><code>Reaction</code></a>
+          the reaction owner signature (use <a href="node-api-fingerprints.html#Reaction"><code>Reaction</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -1374,7 +1416,7 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the reaction owner signature (use <a href="node-api-fingerprints#Reaction"><code>Reaction</code></a>
+          the reaction owner signature (use <a href="node-api-fingerprints.html#Reaction"><code>Reaction</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -1572,48 +1614,6 @@ structures:
       - type: boolean
         name: multiline
         description: (<code>string</code>) <code>true</code>, if the value is a multiline text
-  - name: FeedInfo
-    fields:
-      - type: String
-        name: feedName
-        description: name of the feed
-      - type: String -> String[]
-        name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
-    operations:
-      - name: add
-        description: add stories to the feed
-  - name: FeedSliceInfo
-    fields:
-      - type: int
-        name: before
-        description: the slice contains all stories before this moment, inclusive. May be the far future.
-      - type: int
-        name: after
-        description: the slice contains all stories after this moment, exclusive. May be the far past.
-      - struct: StoryInfo
-        array: true
-        name: stories
-        description: the stories
-  - name: FeedStatus
-    fields:
-      - type: int
-        name: notViewed
-        description: number of stories that have not been viewed yet.
-      - type: int
-        name: notRead
-        description: number of stories that have not been read yet.
-  - name: FeedStatusChange
-    fields:
-      - type: boolean
-        name: viewed
-        description: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
-      - type: boolean
-        name: read
-        description: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
-      - type: int
-        name: before
-        description: change flags for all stories before this moment, inclusive.
   - name: TokenCreated
     fields:
       - type: String
