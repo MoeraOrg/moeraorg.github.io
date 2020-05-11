@@ -38,18 +38,12 @@ events:
       - type: String
         name: id
         comment: the posting ID
-      - type: int
-        name: moment
-        comment: the posting moment
   - type: POSTING_DELETED
     description: A posting was deleted.
     fields:
       - type: String
         name: id
         comment: the posting ID
-      - type: int
-        name: moment
-        comment: the posting moment
   - type: POSTING_DRAFT_REVISION_DELETED
     description: Draft revision of a posting was deleted.
     auth: admin
@@ -70,27 +64,18 @@ events:
       - type: String
         name: id
         comment: the posting ID
-      - type: int
-        name: moment
-        comment: the posting moment
   - type: POSTING_RESTORED
     description: A deleted posting was restored.
     fields:
       - type: String
         name: id
         comment: the posting ID
-      - type: int
-        name: moment
-        comment: the posting moment
   - type: POSTING_UPDATED
     description: A posting was updated.
     fields:
       - type: String
         name: id
         comment: the posting ID
-      - type: int
-        name: moment
-        comment: the posting moment
   - type: PROFILE_UPDATED
     description: Profile was updated.
   - type: SUBSCRIBED
