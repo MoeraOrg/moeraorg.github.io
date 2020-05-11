@@ -884,6 +884,39 @@ objects:
             description: cannot set value of an internal setting
           - code: setting.unknown
             description: unknown setting
+  - name: Stories object
+    description: >
+      All stories. Each story describes something happening in Moera, stories are building blocks for feeds. A story may
+      reference a posting, a remote object etc.
+    requests:
+      - url: /stories/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the story
+        out:
+          struct: StoryInfo
+        description: Get an individual story.
+        errors:
+          - code: story.not-found
+            description: there is no story with the given ID
+      - url: /stories/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the story
+        in:
+          struct: StoryAttributes
+        out:
+          struct: StoryInfo
+        auth: admin
+        description: >
+          Update the story.
+        errors:
+          - code: story.not-found
+            description: there is no story with the given ID
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
