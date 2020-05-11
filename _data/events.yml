@@ -32,6 +32,19 @@ events:
       - type: String
         name: id
         comment: the posting ID
+  - type: FEED_STATUS_UPDATED
+    description: Number of non-viewed/non-read stories in a feed was updated.
+    auth: admin
+    fields:
+      - type: String
+        name: feedName
+        comment: name of the feed
+      - type: int
+        name: notViewed
+        comment: number of stories that have not been viewed yet.
+      - type: int
+        name: notRead
+        comment: number of stories that have not been read yet.
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
@@ -177,3 +190,163 @@ events:
       - type: boolean
         name: correct
         comment: verification result
+  - type: STORIES_STATUS_UPDATED
+    description: Viewed/read status of a group of stories in a feed was changed.
+    auth: admin
+    fields:
+      - type: String
+        name: feedName
+        comment: name of the feed
+      - type: boolean
+        name: viewed
+        comment: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+      - type: boolean
+        name: read
+        comment: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
+      - type: int
+        name: before
+        comment: flags for all stories before this moment, inclusive were changed.
+  - type: STORY_ADDED
+    description: A story was created.
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: storyType
+        comment: type of the story
+      - type: String
+        name: feedName
+        comment: name of the feed
+      - type: timestamp
+        name: publishedAt
+        comment: story publication timestamp - the time the story is published under in the feed
+      - type: boolean
+        name: pinned
+        comment: >
+          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>false</code> otherwise
+      - type: int
+        name: moment
+      - type: String
+        name: postingId
+        comment: ID of the posting this story is about (may be absent)
+      - type: boolean
+        name: viewed
+        comment: >
+          (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: read
+        comment: >
+          (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String
+        name: summary
+        comment: user-readable summary of the story
+      - type: String
+        name: trackingId
+        comment: >
+          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
+      - type: String
+        name: remoteNodeName
+        comment: name of the node this story is about (may be absent)
+      - type: String
+        name: remotePostingId
+        comment: ID of the posting at remote node this story is about (may be absent)
+      - type: String -> String[]
+        name: operations
+        comment: list of the supported operations and the corresponding access hints
+  - type: STORY_DELETED
+    description: A story was deleted.
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: storyType
+        comment: type of the story
+      - type: String
+        name: feedName
+        comment: name of the feed
+      - type: timestamp
+        name: publishedAt
+        comment: story publication timestamp - the time the story is published under in the feed
+      - type: boolean
+        name: pinned
+        comment: >
+          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>false</code> otherwise
+      - type: int
+        name: moment
+      - type: String
+        name: postingId
+        comment: ID of the posting this story is about (may be absent)
+      - type: boolean
+        name: viewed
+        comment: >
+          (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: read
+        comment: >
+          (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String
+        name: summary
+        comment: user-readable summary of the story
+      - type: String
+        name: trackingId
+        comment: >
+          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
+      - type: String
+        name: remoteNodeName
+        comment: name of the node this story is about (may be absent)
+      - type: String
+        name: remotePostingId
+        comment: ID of the posting at remote node this story is about (may be absent)
+      - type: String -> String[]
+        name: operations
+        comment: list of the supported operations and the corresponding access hints
+  - type: STORY_UPDATED
+    description: A story was updated.
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: storyType
+        comment: type of the story
+      - type: String
+        name: feedName
+        comment: name of the feed
+      - type: timestamp
+        name: publishedAt
+        comment: story publication timestamp - the time the story is published under in the feed
+      - type: boolean
+        name: pinned
+        comment: >
+          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>false</code> otherwise
+      - type: int
+        name: moment
+      - type: String
+        name: postingId
+        comment: ID of the posting this story is about (may be absent)
+      - type: boolean
+        name: viewed
+        comment: >
+          (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: read
+        comment: >
+          (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String
+        name: summary
+        comment: user-readable summary of the story
+      - type: String
+        name: trackingId
+        comment: >
+          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
+      - type: String
+        name: remoteNodeName
+        comment: name of the node this story is about (may be absent)
+      - type: String
+        name: remotePostingId
+        comment: ID of the posting at remote node this story is about (may be absent)
+      - type: String -> String[]
+        name: operations
+        comment: list of the supported operations and the corresponding access hints
