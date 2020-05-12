@@ -43,6 +43,9 @@
 - name: protocols/events
   title: Events
 
+- name: protocols/notifications
+  title: Notifications
+
 - name: protocols/virtual-pages
   title: Virtual Pages
 

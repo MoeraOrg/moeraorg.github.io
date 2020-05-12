@@ -1146,7 +1146,9 @@ structures:
         description: notification type
       - type: String
         name: notification
-        description: the notification, a string representation of a JSON structure
+        description: >
+          the notification, a string representation of a JSON structure (see
+          <a href="notifications.html">Notifications</a> page for details)
       - type: byte[]
         name: signature
         description: >

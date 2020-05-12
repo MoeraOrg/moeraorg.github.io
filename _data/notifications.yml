@@ -1,0 +1,16 @@
+notifications:
+  - type: MENTION_POSTING_ADDED
+    description: A mention of the receiver in a posting on the sending node added
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: heading
+        comment: Heading of the posting
+  - type: MENTION_POSTING_DELETED
+    description: A mention of the receiver in a posting on the sending node deleted
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
