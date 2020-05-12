@@ -46,6 +46,9 @@
 - name: protocols/notifications
   title: Notifications
 
+- name: protocols/stories
+  title: Stories
+
 - name: protocols/virtual-pages
   title: Virtual Pages
 

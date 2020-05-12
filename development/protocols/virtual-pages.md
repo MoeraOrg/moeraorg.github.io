@@ -56,5 +56,8 @@ Timeline - all publications in reverse chronological order.
 Timeline, positioned at about the given [moment][3].
 
 [1]: /overview/browser-extension.html
+<!-- @IGNORE PREVIOUS: link -->
 [2]: /development/protocols/headers.html
+<!-- @IGNORE PREVIOUS: link -->
 [3]: /development/protocols/moment.html
+<!-- @IGNORE PREVIOUS: link -->

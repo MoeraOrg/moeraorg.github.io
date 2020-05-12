@@ -1718,7 +1718,9 @@ structures:
         description: name of the feed
       - type: String
         name: storyType
-        description: type of the story
+        description: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
       - type: timestamp
         name: createdAt
         description: story creation timestamp - the real time when the story was created
