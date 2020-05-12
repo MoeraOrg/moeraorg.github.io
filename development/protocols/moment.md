@@ -8,12 +8,11 @@ body_class: body-pink
 
 # Moment
 
-Usually every post is assigned its place in the timeline or in the
-newsfeed in accordance with its timestamp. But it is absolutely possible
-that two posts will have the same timestamp, so the position becomes
-ambiguous. To make the timeline working properly, we need to be able to
-fix the position and order of posts and specify a position in the
-timeline to within a particular post.
+Usually every post is assigned its place in a feed in accordance with
+its timestamp. But it is absolutely possible that two posts will have
+the same timestamp, so the position becomes ambiguous. To make the feed
+working properly, we need to be able to fix the position and order of
+posts and specify a position in the feed to within a particular post.
 
 To achieve this goal, every post is assigned a *moment*, that is
 calculated as follows:
