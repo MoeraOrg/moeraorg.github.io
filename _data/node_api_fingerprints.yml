@@ -23,6 +23,23 @@ objects:
           - type: byte[]
             field: salt
             comment: 8 random bytes
+  - name: NotificationPacket
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: NOTIFICATION_PACKET
+          - type: String
+            field: id
+          - type: String
+            field: nodeName
+          - type: timestamp
+            field: createdAt
+          - type: String
+            field: type
+          - type: String
+            field: notification
   - name: Posting
     versions:
       - version: 0
