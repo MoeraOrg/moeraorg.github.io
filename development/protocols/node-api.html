@@ -115,6 +115,13 @@ body_class: body-pink
     <code>cid</code> parameter may be passed with any request. See
     <a href="/development/protocols/events.html">Events</a> page for the description of its purpose.
 </p>
+<h2>Table of Contents</h2>
+<ol>
+    {% for object in site.data.node_api.objects %}
+        <li><a href="#{{ object.name }}">{{ object.name }}</a></li>
+    {% endfor %}
+    <li><a href="#Structures">Structures</a></li>
+</ol>
 {% for object in site.data.node_api.objects %}
     <a name="{{ object.name }}"></a>
     <h2>{{ object.name }}</h2>
@@ -208,6 +215,7 @@ body_class: body-pink
 {% endfor %}
 
 <br/><br/>
+<a name="Structures"></a>
 <h2>Structures</h2>
 {% for struct in site.data.node_api.structures %}
     <a name="{{ struct.name }}"></a>
