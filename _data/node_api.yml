@@ -1312,12 +1312,18 @@ structures:
       - type: String
         name: revisionId
         description: ID of the current revision of the posting
+      - type: String
+        name: receiverRevisionId
+        description: ID of the current revision of the original posting (for cached copies of remote postings only)
       - type: int
         name: totalRevisions
         description: total number of revisions the posting has
       - type: String
         name: receiverName
-        description: name of the node where the posting was published, if it differs from <code>ownerName</code>
+        description: name of the node where the posting was published (for cached copies of remote postings only)
+      - type: String
+        name: receiverPostingId
+        description: ID of the original posting (for cached copies of remote postings only)
       - type: String
         name: ownerName
         description: node name of the posting's owner
@@ -1360,6 +1366,15 @@ structures:
         name: deletedAt
         description: posting deletion timestamp - the time when the posting was deleted, may be absent
       - type: timestamp
+        name: receiverCreatedAt
+        description: original posting creation timestamp (for cached copies of remote postings only)
+      - type: timestamp
+        name: receiverEditedAt
+        description: original posting editing timestamp (for cached copies of remote postings only)
+      - type: timestamp
+        name: receiverDeletedAt
+        description: original posting deletion timestamp (for cached copies of remote postings only)
+      - type: timestamp
         name: deadline
         description: >
           posting purging timestamp - the time when the deleted posting will be purged from the database, may be absent
@@ -1399,12 +1414,16 @@ structures:
         name: reactionsVisible
         description: >
           <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
-          posting and reaction owners, <code>false</code> otherwise (may be absent, if not requested)
+          posting and reaction owners, <code>false</code> otherwise
       - type: boolean
         name: reactionTotalsVisible
         description: >
           <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
-          <code>false</code> otherwise (may be absent, if not requested)
+          <code>false</code> otherwise
+      - struct: PostingSourceInfo
+        array: true
+        name: sources
+        description: details of the sources the posting was received from (for cached copies of remote postings only)
     operations:
       - name: edit
         description: edit the posting
@@ -1460,6 +1479,20 @@ structures:
       - struct: ReactionTotalsInfo
         name: reactions
         description: reactions summary of the posting revision
+  - name: PostingSourceInfo
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the remote node
+      - type: String
+        name: feedName
+        description: name of the feed on the remote node
+      - type: String
+        name: postingId
+        description: ID of the posting on the remote node
+      - type: timestamp
+        name: createdAt
+        description: timestamp when the posting was received from this source
   - name: PostingText
     fields:
       - type: String
