@@ -1438,6 +1438,9 @@ structures:
       - type: String
         name: id
       - type: String
+        name: receiverId
+        description: ID of the original revision (for cached copies of remote postings only)
+      - type: String
         name: bodyPreview
         description: preview of the revisions's body, a string representation of a JSON structure, may be absent
       - type: byte[]
@@ -1465,6 +1468,12 @@ structures:
       - type: timestamp
         name: deletedAt
         description: revision deletion timestamp - the time when the revision was deleted, may be absent
+      - type: timestamp
+        name: receiverCreatedAt
+        description: original revision creation timestamp (for cached copies of remote postings only)
+      - type: timestamp
+        name: receiverDeletedAt
+        description: original revision deletion timestamp (for cached copies of remote postings only)
       - type: byte[]
         name: signature
         description: >
