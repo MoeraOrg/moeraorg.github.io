@@ -26,6 +26,27 @@ the given ID.
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
 
+`/news`
+
+Newsfeed - publications from the nodes this node is subscribed to in
+reverse chronological order.
+
+`/news?before=<moment>`
+
+Newsfeed, positioned at about the given [moment][3].
+
+`/people`
+
+Information related to other nodes.
+
+`/people/subscribers`
+
+Information about subscribers of this node.
+
+`/people/subscriptions`
+
+Information about subscriptions of this node.
+
 `/post/<id>`
 
 Detailed view of the post with the given ID.
