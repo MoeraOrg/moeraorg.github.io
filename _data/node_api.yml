@@ -1169,6 +1169,14 @@ structures:
       - type: String
         name: feedName
         description: name of the feed
+      - type: String
+        name: title
+        description: title of the feed
+      - type: String
+        name: subscriberId
+        description: >
+          ID of the subscriber, if the client is subscribed to notifications about this feed, <code>null</code>
+          or absent otherwise
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
