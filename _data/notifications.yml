@@ -1,4 +1,16 @@
 notifications:
+  - type: FEED_POSTING_ADDED
+    description: A new posting added in a feed the receiver is subscribed to
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: feedName
+        comment: name of the feed on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
   - type: MENTION_POSTING_ADDED
     description: A mention of the receiver in a posting on the sending node added
     fields:
