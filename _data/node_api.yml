@@ -302,7 +302,8 @@ objects:
       These are the standard feeds that have special meaning:
       <ul>
       <li><code>timeline</code> - the main feed of publications;</li>
-      <li><code>instant</code> - the feed of instant notifications.</li>
+      <li><code>instant</code> - the feed of instant notifications;</li>
+      <li><code>news</code> - the main feed of publications gathered from other nodes.</li>
       </ul>
     requests:
       - url: /feeds
@@ -930,6 +931,47 @@ objects:
         errors:
           - code: story.not-found
             description: there is no story with the given ID
+  - name: Subscribers object
+    description: >
+      All nodes that have subscribed to notifications from this node.
+    requests:
+      - url: /people/subscribers
+        type: GET
+        params:
+          - type: String
+            name: nodeName
+            description: filter by subscribed node name, may be omitted
+          - type: String
+            name: type
+            description: filter by subscription type, may be omitted
+        out:
+          struct: SubscriberInfo
+          array: true
+        description: Get the list of all subscribers, optionally filtered by some criteria.
+      - url: /people/subscribers
+        type: POST
+        in:
+          struct: SubscriberDescription
+        out:
+          struct: SubscriberInfo
+        auth: owner
+        description: Subscribe to a particular group of notifications.
+        errors:
+          - code: subscriber.already-exists
+            description: an identical subscriber already exists
+      - url: /people/subscribers/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the subscriber
+        out:
+          struct: SubscriberInfo
+        auth: admin or owner
+        description: Get an individual subscriber.
+        errors:
+          - code: subscriber.not-found
+            description: there is no subscriber with the given ID
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
@@ -1206,7 +1248,7 @@ structures:
         description: total number of revisions the posting has
       - type: String
         name: receiverName
-        description: name of the node where the posting was published
+        description: name of the node where the posting was published, if it differs from <code>ownerName</code>
       - type: String
         name: ownerName
         description: node name of the posting's owner
@@ -1764,6 +1806,51 @@ structures:
         description: update the story
       - name: delete
         description: delete the story
+  - name: SubscriberDescription
+    fields:
+      - type: String
+        name: type
+        description: subscription type
+      - type: String
+        name: feedName
+        description: feed name, if the subscription type requires one
+      - type: String
+        name: postingId
+        description: posting ID, if the subscription type requires one
+      - type: timestamp
+        name: lastUpdatedAt
+        description: timestamp of the latest known state of the object, may be absent
+    errors:
+      - code: subscriberDescription.type.blank
+        description: type is empty
+      - code: subscriberDescription.feedName.blank
+        description: feed name is empty
+      - code: subscriberDescription.feedName.not-found
+        description: feed is not found
+      - code: subscriberDescription.postingId.blank
+        description: posting ID is empty
+      - code: subscriberDescription.postingId.not-found
+        description: posting is not found
+  - name: SubscriberInfo
+    fields:
+      - type: String
+        name: id
+        description: subscriber ID
+      - type: String
+        name: type
+        description: subscription type
+      - type: String
+        name: feedName
+        description: feed name, if the subscription type requires one
+      - type: String
+        name: postingId
+        description: posting ID, if the subscription type requires one
+      - type: String
+        name: nodeName
+        description: name of the subscribed node
+      - type: timestamp
+        name: createdAt
+        description: subscription creation timestamp
   - name: TokenCreated
     fields:
       - type: String
