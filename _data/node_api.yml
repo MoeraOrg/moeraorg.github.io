@@ -972,6 +972,67 @@ objects:
         errors:
           - code: subscriber.not-found
             description: there is no subscriber with the given ID
+      - url: /people/subscribers/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the subscriber
+        out:
+          struct: Result
+        auth: admin or owner
+        description: Delete a subscriber.
+        errors:
+          - code: subscriber.not-found
+            description: there is no subscriber with the given ID
+  - name: Subscriptions object
+    description: >
+      All nodes that send notifications to this node.
+    requests:
+      - url: /people/subscriptions
+        type: GET
+        params:
+          - type: String
+            name: nodeName
+            description: filter by node name, may be omitted
+          - type: String
+            name: type
+            description: filter by subscription type, may be omitted
+        out:
+          struct: SubscriptionInfo
+          array: true
+        description: Get the list of all subscriptions, optionally filtered by some criteria.
+      - url: /people/subscriptions
+        type: POST
+        in:
+          struct: SubscriptionDescription
+        out:
+          struct: SubscriptionInfo
+        auth: admin
+        entitled: true
+        description: Register a subscription to notifications from a particular node.
+        errors:
+          - code: subscription.already-exists
+            description: an identical subscription already exists
+      - url: /people/subscriptions
+        type: DELETE
+        params:
+          - type: String
+            name: type
+            description: subscription type
+          - type: String
+            name: remoteNodeName
+            description: name of the node this node is subscribed to
+          - type: String
+            name: remoteSubscriberId
+            description: ID of the subscriber on the remote node
+        out:
+          struct: Result
+        auth: admin
+        description: Delete the subscription described by the given parameters.
+        errors:
+          - code: subscription.not-found
+            description: there is no subscription with the given parameters.
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
@@ -1848,6 +1909,71 @@ structures:
       - type: String
         name: nodeName
         description: name of the subscribed node
+      - type: timestamp
+        name: createdAt
+        description: subscription creation timestamp
+  - name: SubscriptionDescription
+    fields:
+      - type: String
+        name: type
+        description: subscription type
+      - type: String
+        name: feedName
+        description: feed name on this node that receives notifications
+      - type: String
+        name: remoteSubscriberId
+        description: ID of the subscriber on the remote node
+      - type: String
+        name: remoteNodeName
+        description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFeedName
+        description: feed name on the remote node, if the subscription type requires one
+      - type: String
+        name: remotePostingId
+        description: posting ID on the remote node, if the subscription type requires one
+    errors:
+      - code: subscriptionDescription.type.blank
+        description: type is empty
+      - code: subscriptionDescription.feedName.blank
+        description: feed name is empty
+      - code: subscriptionDescription.feedName.not-found
+        description: feed is not found
+      - code: subscriptionDescription.remoteSubscriberId.blank
+        description: subscriber ID is empty
+      - code: subscriptionDescription.remoteSubscriberId.wrong-size
+        description: subscriber ID is too long
+      - code: subscriptionDescription.remoteNodeName.blank
+        description: node name is empty
+      - code: subscriptionDescription.remoteNodeName.wrong-size
+        description: node name is too long
+      - code: subscriptionDescription.remoteFeedName.wrong-size
+        description: remote feed name is too long
+      - code: subscriptionDescription.remotePostingId.wrong-size
+        description: posting ID is too long
+  - name: SubscriptionInfo
+    fields:
+      - type: String
+        name: id
+        description: subscription ID
+      - type: String
+        name: type
+        description: subscription type
+      - type: String
+        name: feedName
+        description: feed name on this node that receives notifications
+      - type: String
+        name: remoteSubscriberId
+        description: ID of the subscriber on the remote node
+      - type: String
+        name: remoteNodeName
+        description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFeedName
+        description: feed name on the remote node, if the subscription type requires one
+      - type: String
+        name: remotePostingId
+        description: posting ID on the remote node, if the subscription type requires one
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
