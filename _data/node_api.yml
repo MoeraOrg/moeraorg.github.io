@@ -813,7 +813,20 @@ objects:
           struct: Result
         auth: admin
         entitled: true
-        description: Add a reaction to the posting on the remote node.
+        description: Add a reaction to the posting on the remote node and register it in the registry at the local node.
+      - url: /nodes/{nodeName}/postings/{postingId}/reactions
+        type: DELETE
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+        out:
+          struct: Result
+        auth: admin
+        description: Delete a reaction from the registry of all reactions at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/reactions/{ownerName}/verify
         type: POST
         params:
