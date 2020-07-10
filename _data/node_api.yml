@@ -468,6 +468,14 @@ objects:
           Accept a notification packet from other node. Notification packets older than 10 minutes are ignored.
           The sending node should update the packet timestamp and the signature and send the packet again.
           This mechanism prevents attackers from recording and resending old signed packets.
+  - name: People object
+    description: Information related to other nodes.
+    requests:
+      - url: /people
+        type: GET
+        out:
+          struct: PeopleGeneralInfo
+        description: Get general information about other nodes.
   - name: Postings object
     description: >
       All postings. Each posting may contain one or more revisions, a new revision is created every time the posting is
@@ -1338,6 +1346,14 @@ structures:
     operations:
       - name: manage
         description: any modification of the node name, prolonging it etc.
+  - name: PeopleGeneralInfo
+    fields:
+      - type: int
+        name: feedSubscribersTotal
+        description: total number of subscribers of the node
+      - type: int
+        name: feedSubscriptionsTotal
+        description: total number of subscriptions of the node
   - name: PostingFeatures
     fields:
       - type: boolean
