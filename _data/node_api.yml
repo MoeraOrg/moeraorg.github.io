@@ -1375,6 +1375,13 @@ structures:
         name: receiverDeletedAt
         description: original posting deletion timestamp (for cached copies of remote postings only)
       - type: timestamp
+        name: revisionCreatedAt
+        description: creation timestamp of the current revision of the posting
+      - type: timestamp
+        name: receiverRevisionCreatedAt
+        description: >
+          creation timestamp of the current revision of the original posting (for cached copies of remote postings only)
+      - type: timestamp
         name: deadline
         description: >
           posting purging timestamp - the time when the deleted posting will be purged from the database, may be absent
