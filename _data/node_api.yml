@@ -89,6 +89,12 @@ objects:
           struct: Result
         auth: admin
         description: Update credentials.
+      - url: /credentials
+        type: DELETE
+        out:
+          struct: Result
+        auth: root secret
+        description: Delete credentials.
   - name: Deleted Postings object
     description: >
       All deleted postings, that are not purged from the database yet.
