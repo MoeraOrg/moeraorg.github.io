@@ -1,5 +1,17 @@
 objects:
-  - name: Asyncronous operations object
+  - name: Activity Reactions object
+    description: Local registry of all activity in the form of reactions performed by the node.
+    requests:
+      - url: /activity/reactions/search
+        type: GET
+        in:
+          struct: ActivityReactionFilter
+        out:
+          struct: ActivityReactionInfo
+          array: true
+        auth: admin
+        description: Get the list of all reactions performed by the node, filtered by some criteria.
+  - name: Asyncronous Operations object
     description: Asyncronous operations pending or just finished on the node.
     requests:
       - url: /async-operations/remote-posting-verification/{id}
@@ -763,7 +775,7 @@ objects:
         errors:
           - code: reaction.posting-not-found
             description: there is no posting with the given ID
-  - name: Remote postings object
+  - name: Remote Postings object
     description: Postings located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings/{id}/verify
@@ -795,7 +807,7 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the given revision of a posting.
-  - name: Remote reactions object
+  - name: Remote Reactions object
     description: Reactions to postings located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/reactions
@@ -1093,6 +1105,29 @@ structures:
         name: negative
         description: >
           comma-separated list of codes of the negative reactions that are accepted (the format is the same as above)
+  - name: ActivityReactionFilter
+    fields:
+      - struct: RemotePosting
+        array: true
+        name: postings
+        description: include only reactions to remote postings from this list
+  - name: ActivityReactionInfo
+    fields:
+      - type: String
+        name: remoteNodeName
+        description: name of the remote node
+      - type: String
+        name: remotePostingId
+        description: ID of the posting on the remote node
+      - type: boolean
+        name: negative
+        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+      - type: int
+        name: emoji
+        description: reaction code, usually interpreted by clients as emoji code point
+      - type: timestamp
+        name: createdAt
+        description: reaction creation timestamp - the real time when the reaction was created
   - name: AsyncOperationCreated
     fields:
       - type: String
@@ -1724,6 +1759,14 @@ structures:
       - type: String
         name: secret
         description: base64-encoded secret of the updating key
+  - name: RemotePosting
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node
+      - type: String
+        name: postingId
+        description: ID of the posting on the node
   - name: RemotePostingVerificationInfo
     fields:
       - type: String
