@@ -26,3 +26,33 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+  - type: POSTING_DELETED
+    description: Posting the receiver is subscribed to has been deleted.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+  - type: POSTING_REACTIONS_UPDATED
+    description: Reactions have been updated at the posting the receiver is subscribed to.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - struct: ReactionTotalsInfo
+        name: totals
+        comment: updated reaction totals of the posting
+  - type: POSTING_UPDATED
+    description: Posting the receiver is subscribed to has been updated.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
