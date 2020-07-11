@@ -2,15 +2,6 @@ events:
   - type: CLIENT_SETTINGS_CHANGED
     description: Some client settings were changed.
     auth: admin
-  - type: NODE_NAME_CHANGED
-    description: The name of the node was changed.
-    fields:
-      - type: String
-        name: name
-        comment: the new name
-  - type: NODE_SETTINGS_CHANGED
-    description: Some node settings were changed.
-    auth: admin
   - type: DRAFT_POSTING_ADDED
     description: A draft posting was added.
     auth: admin
@@ -45,6 +36,15 @@ events:
       - type: int
         name: notRead
         comment: number of stories that have not been read yet.
+  - type: NODE_NAME_CHANGED
+    description: The name of the node was changed.
+    fields:
+      - type: String
+        name: name
+        comment: the new name
+  - type: NODE_SETTINGS_CHANGED
+    description: Some node settings were changed.
+    auth: admin
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
