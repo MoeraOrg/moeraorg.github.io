@@ -149,6 +149,35 @@ events:
       - type: boolean
         name: correct
         comment: verification result
+  - type: REMOTE_REACTION_ADDED
+    description: This node added a reaction on a remote node
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the remote posting ID
+      - type: boolean
+        name: negative
+        comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+      - type: int
+        name: emoji
+        comment: reaction code, usually interpreted by clients as emoji code point
+      - type: timestamp
+        name: createdAt
+        comment: reaction creation timestamp - the real time when the reaction was created
+  - type: REMOTE_REACTION_DELETED
+    description: This node deleted a reaction on a remote node
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the remote posting ID
   - type: REMOTE_REACTION_VERIFICATION_FAILED
     description: Verification of the signature of a reaction on a remote node failed.
     auth: admin
