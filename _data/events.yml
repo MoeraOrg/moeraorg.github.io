@@ -379,3 +379,99 @@ events:
       - type: String -> String[]
         name: operations
         comment: list of the supported operations and the corresponding access hints
+  - type: SUBSCRIBER_ADDED
+    description: A node subscribed to notifications from this node.
+    fields:
+      - type: String
+        name: id
+        comment: subscriber ID
+      - type: String
+        name: subscriptionType
+        comment: subscription type
+      - type: String
+        name: feedName
+        comment: feed name, if the subscription type requires one
+      - type: String
+        name: postingId
+        comment: posting ID, if the subscription type requires one
+      - type: String
+        name: nodeName
+        comment: name of the subscribed node
+      - type: timestamp
+        name: createdAt
+        comment: subscription creation timestamp
+  - type: SUBSCRIBER_DELETED
+    description: A node unsubscribed from notifications from this node.
+    fields:
+      - type: String
+        name: id
+        comment: subscriber ID
+      - type: String
+        name: subscriptionType
+        comment: subscription type
+      - type: String
+        name: feedName
+        comment: feed name, if the subscription type requires one
+      - type: String
+        name: postingId
+        comment: posting ID, if the subscription type requires one
+      - type: String
+        name: nodeName
+        comment: name of the subscribed node
+      - type: timestamp
+        name: createdAt
+        comment: subscription creation timestamp
+  - type: SUBSCRIPTION_ADDED
+    description: This node subscribed to notifications from a remote node.
+    fields:
+      - type: String
+        name: id
+        description: subscription ID
+      - type: String
+        name: subscriptionType
+        comment: subscription type
+      - type: String
+        name: feedName
+        description: feed name on this node that receives notifications
+      - type: String
+        name: remoteSubscriberId
+        description: ID of the subscriber on the remote node
+      - type: String
+        name: remoteNodeName
+        description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFeedName
+        description: feed name on the remote node, if the subscription type requires one
+      - type: String
+        name: remotePostingId
+        description: posting ID on the remote node, if the subscription type requires one
+      - type: timestamp
+        name: createdAt
+        description: subscription creation timestamp
+  - type: SUBSCRIPTION_DELETED
+    description: This node unsubscribed from notifications from a remote node.
+    fields:
+      - type: String
+        name: id
+        description: subscription ID
+      - type: String
+        name: subscriptionType
+        comment: subscription type
+      - type: String
+        name: feedName
+        description: feed name on this node that receives notifications
+      - type: String
+        name: remoteSubscriberId
+        description: ID of the subscriber on the remote node
+      - type: String
+        name: remoteNodeName
+        description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFeedName
+        description: feed name on the remote node, if the subscription type requires one
+      - type: String
+        name: remotePostingId
+        description: posting ID on the remote node, if the subscription type requires one
+      - type: timestamp
+        name: createdAt
+        description: subscription creation timestamp
