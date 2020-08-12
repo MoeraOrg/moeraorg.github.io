@@ -4,7 +4,7 @@ sass:
 title: Moera
 tagline: Decentralized Social Network
 github_username: MoeraOrg
-tryit_link: false
+tryit_link: https://www.moera.blog
 card_overview_link: /overview/index.html
 card_development_link: /development/index.html
 card_license_link: /license.html
