@@ -60,6 +60,55 @@ objects:
         description: >
           Get a set of cartes that correspond to successive periods of time. The node may decide to return less cartes
           than the given <code>limit</code>.
+  - name: Comments object
+    description: Comments to a posting.
+    requests:
+      - url: /postings/{postingId}/comments
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: int
+            name: before
+            description: filter comments posted at or before this moment
+          - type: int
+            name: after
+            description: filter comments posted strongly after this moment
+          - type: int
+            name: limit
+            description: maximum number of comments returned
+        out:
+          struct: CommentsSliceInfo
+        description: >
+          Get a slice of the list of comments, delimited by <code>before</code> or <code>after</code> moments (but not
+          both) and the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided,
+          the latest comments are returned. The node may decide to return less comments than the given
+          <code>limit</code>. The stories are always sorted by moment, ascending.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: comments.before-after-exclusive
+            description: <code>before</code> and <code>after</code> parameters are not allowed together
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /postings/{postingId}/comments
+        type: POST
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+        in:
+          struct: CommentText
+        out:
+          struct: CommentCreated
+        auth: owner
+        description: >
+          Create a comment from the given text and add it to the given posting. The comment owner must authenticate in
+          some way. If the comment is not signed, it will be kept for a limited period of time and then erased.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -1195,6 +1244,206 @@ structures:
       - type: timestamp
         name: deadline
         description: if present, the reaction will be erased at this time
+  - name: CommentCreated
+    fields:
+      - struct: CommentInfo
+        name: comment
+        description: details of the comment created
+      - type: int
+        name: total
+        description: total number of comment after the creation
+  - name: CommentInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: ownerName
+        description: node name of the comment's owner
+      - type: String
+        name: postingId
+        description: ID of the parent posting of the comment
+      - type: String
+        name: postingRevisionId
+        description: ID of the revision of parent posting that was current when the comment was created
+      - type: String
+        name: revisionId
+        description: ID of the current revision of the comment
+      - type: int
+        name: totalRevisions
+        description: total number of revisions the comment has
+      - type: String
+        name: bodyPreview
+        description: preview of the comment's body, a string representation of a JSON structure, may be absent
+      - type: String
+        name: bodySrc
+        description: >
+          the source text of the comment, a string representation of a JSON structure, may be absent if not requested
+      - type: byte[]
+        name: bodySrcHash
+        description: hash of the source text of the comment
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the comment, the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: body
+        description: body of the comment, a string representation of a JSON structure
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the comment, may have any value meaningful for the client, including:
+          <ul>
+            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
+            <li><code>application</code> - an application-specific structure.</li>
+          </ul>
+      - type: String
+        name: heading
+        description: heading of the comment
+      - struct: RepliedTo
+        name: repliedTo
+        description: information about the comment this comment is replying to, may be absent
+      - type: int
+        name: moment
+      - type: timestamp
+        name: createdAt
+        description: comment creation timestamp - the real time when the comment was created
+      - type: timestamp
+        name: editedAt
+        description: comment editing timestamp - the last time the comment was updated
+      - type: timestamp
+        name: deletedAt
+        description: comment deletion timestamp - the time when the comment was deleted, may be absent
+      - type: timestamp
+        name: revisionCreatedAt
+        description: creation timestamp of the current revision of the comment
+      - type: timestamp
+        name: deadline
+        description: >
+          comment purging timestamp - the time when the deleted comment will be purged from the database, may be absent
+      - type: byte[]
+        name: digest
+        description: cryptographic digest of the comment
+      - type: byte[]
+        name: signature
+        description: >
+          the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
+      - type: String -> String[]
+        name: operations
+        description: list of the supported operations (see below) and the corresponding access hints
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the comment accepts
+      - struct: ClientReactionInfo
+        name: clientReaction
+        description: details of the existing reaction (if any) of the client's owner
+      - struct: ReactionTotalsInfo
+        name: reactions
+        description: reactions summary of the comment
+    operations:
+      - name: edit
+        description: edit the comment
+      - name: delete
+        description: delete the comment
+      - name: revisions
+        description: view the comment's revisions
+      - name: reactions
+        description: view reactions to the comment
+  - name: CommentsSliceInfo
+    fields:
+      - type: int
+        name: before
+        description: the slice contains all comments before this moment, inclusive. May be the far future.
+      - type: int
+        name: after
+        description: the slice contains all comments after this moment, exclusive. May be the far past.
+      - struct: CommentInfo
+        array: true
+        name: comments
+        description: the comments
+      - type: int
+        name: totalInPast
+        description: number of comments before this slice till the far past
+      - type: int
+        name: totalInFuture
+        description: number of comments after this slice till the far future
+  - name: CommentText
+    fields:
+      - type: String
+        name: ownerName
+        description: node name of the comment's owner
+      - type: String
+        name: bodyPreview
+        description: preview of the comment's body, a string representation of a JSON structure
+      - type: String
+        name: bodySrc
+        description: the source text of the comment, a string representation of a JSON structure
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: body
+        description: body of the comment, a string representation of a JSON structure
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the comment, may have any value meaningful for the client, including:
+          <ul>
+            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
+            <li><code>application</code> - an application-specific structure.</li>
+          </ul>
+      - type: timestamp
+        name: createdAt
+        description: comment creation timestamp - the real time when the comment was created
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the comment accepts
+      - type: String
+        name: repliedToId
+        description: ID of the comment this comment is replying to
+      - type: byte[]
+        name: signature
+        description: >
+          the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
+    errors:
+      - code: commentText.bodySrc.blank
+        description: body text is empty
+      - code: commentText.bodySrc.wrong-size
+        description: body text is too long
+      - code: commentText.bodySrc.wrong-encoding
+        description: body text is formatted incorrectly
+      - code: commentText.bodySrcFormat.unknown
+        description: unknown body text format
+      - code: commentText.body.blank
+        description: body is empty
+      - code: commentText.bodyFormat.blank
+        description: body format is not set
+      - code: commentText.bodyFormat.wrong-size
+        description: body format is too long
+      - code: commentText.createdAt.blank
+        description: body creation timestamp is not set
+      - code: commentText.createdAt.out-of-range
+        description: body creation timestamp is too far from the current timestamp
+      - code: commentText.acceptedReactions.positive.wrong-size
+        description: list of accepted positive reactions is too long
+      - code: commentText.acceptedReactions.positive.wrong-pattern
+        description: list of accepted positive reactions has wrong format
+      - code: commentText.acceptedReactions.negative.wrong-size
+        description: list of accepted negative reactions is too long
+      - code: commentText.acceptedReactions.negative.wrong-pattern
+        description: list of accepted negative reactions has wrong format
+      - code: commentText.repliedToId.not-found
+        description: comment referred in `repliedToId` is not found
   - name: Credentials
     fields:
       - type: String
@@ -1860,6 +2109,20 @@ structures:
       - type: String
         name: errorMessage
         description: human-readable error message
+  - name: RepliedTo
+    fields:
+      - type: String
+        name: id
+        description: ID of the comment
+      - type: String
+        name: name
+        description: node name of the comment's owner
+      - type: String
+        name: heading
+        description: heading of the comment
+      - type: byte[]
+        name: digest
+        description: cryptographic digest of the comment
   - name: Result
     fields:
       - type: String
