@@ -1,4 +1,40 @@
 events:
+  - type: COMMENT_ADDED
+    description: A comment was added.
+    fields:
+      - type: String
+        name: id
+        comment: the comment ID
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: int
+        name: moment
+        comment: moment of the comment
+  - type: COMMENT_DELETED
+    description: A comment was added.
+    fields:
+      - type: String
+        name: id
+        comment: the comment ID
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: int
+        name: moment
+        comment: moment of the comment
+  - type: COMMENT_UPDATED
+    description: A comment was deleted.
+    fields:
+      - type: String
+        name: id
+        comment: the comment ID
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: int
+        name: moment
+        comment: moment of the comment
   - type: CLIENT_SETTINGS_CHANGED
     description: Some client settings were changed.
     auth: admin
@@ -51,6 +87,15 @@ events:
       - type: String
         name: id
         comment: the posting ID
+  - type: POSTING_COMMENTS_CHANGED
+    description: Comments to a posting were changed.
+    fields:
+      - type: String
+        name: id
+        comment: the posting ID
+      - type: int
+        name: total
+        comment: the current number of comments
   - type: POSTING_DELETED
     description: A posting was deleted.
     fields:
