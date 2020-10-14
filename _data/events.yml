@@ -147,6 +147,45 @@ events:
   - type: REGISTERED_NAME_OPERATION_STATUS
     description: Status of an operation on the registered name of the node was changed.
     auth: admin
+  - type: REMOTE_COMMENT_ADDED
+    description: This node added a comment on a remote node
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the remote posting ID
+      - type: String
+        name: remoteCommentId
+        comment: the remote comment ID
+  - type: REMOTE_COMMENT_DELETED
+    description: This node deleted a comment on a remote node
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the remote posting ID
+      - type: String
+        name: remoteCommentId
+        comment: the remote comment ID
+  - type: REMOTE_COMMENT_UPDATED
+    description: This node updated a comment on a remote node
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the remote posting ID
+      - type: String
+        name: remoteCommentId
+        comment: the remote comment ID
   - type: REMOTE_POSTING_VERIFICATION_FAILED
     description: Verification of the signature of a posting on a remote node failed.
     auth: admin
