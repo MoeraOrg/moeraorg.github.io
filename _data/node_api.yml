@@ -109,6 +109,72 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
+      - url: /postings/{postingId}/comments/{commentId}
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+          - type: String
+            name: include
+            description: >
+              Comma-separated list of additional blocks of information that are needed. The values are:
+              <ul>
+                <li><code>source</code> - source text of the comment.
+              </ul>
+        out:
+          struct: CommentInfo
+        description: Get an individual comment.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments/{commentId}
+        type: PUT
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        in:
+          struct: CommentText
+        out:
+          struct: CommentInfo
+        auth: owner
+        description: >
+          Update the comment, creating a new revision of it. The text is processed just like in the <code>POST</code>
+          request.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments/{commentId}
+        type: DELETE
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        out:
+          struct: CommentTotalInfo
+        auth: admin or owner
+        description: >
+          Delete the comment. The comment may not be purged from the database immediately, but preserved for some period
+          of time to give a chance to restore it.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -1251,7 +1317,7 @@ structures:
         description: details of the comment created
       - type: int
         name: total
-        description: total number of comment after the creation
+        description: total number of comments in the posting after the creation
   - name: CommentInfo
     fields:
       - type: String
@@ -1426,6 +1492,10 @@ structures:
         description: unknown body text format
       - code: commentText.body.blank
         description: body is empty
+      - code: commentText.body.wrong-encoding
+        description: body encoding is incorrect
+      - code: commentText.bodyPreview.wrong-encoding
+        description: body preview encoding is incorrect
       - code: commentText.bodyFormat.blank
         description: body format is not set
       - code: commentText.bodyFormat.wrong-size
@@ -1444,6 +1514,11 @@ structures:
         description: list of accepted negative reactions has wrong format
       - code: commentText.repliedToId.not-found
         description: comment referred in `repliedToId` is not found
+  - name: CommentTotalInfo
+    fields:
+      - type: int
+        name: total
+        description: total number of comments in the posting after the operation
   - name: Credentials
     fields:
       - type: String
