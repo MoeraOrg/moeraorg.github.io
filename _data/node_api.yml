@@ -802,7 +802,7 @@ objects:
           struct: ReactionTotalsInfo
         description: Get summary of reactions to the posting given.
         errors:
-          - code: reaction-totals.posting-not-found
+          - code: posting.not-found
             description: there is no posting with the given ID
   - name: Reactions object
     description: Reactions ("Likes") - simple textless answers to a posting.
@@ -824,7 +824,7 @@ objects:
           exists, it is overwritten. If the reaction is not signed, the reaction will be kept for a limited period of
           time and then erased (the previous reaction of the same owner will be restored, if any).
         errors:
-          - code: reaction.posting-not-found
+          - code: posting.not-found
             description: there is no posting with the given ID
           - code: reaction.not-accepted
             description: the reaction is not acceptable
@@ -854,7 +854,7 @@ objects:
           the latest reactions are returned. The node may decide to return less reactions than the given
           <code>limit</code>. The reactions are always sorted by moment, descending.
         errors:
-          - code: reaction.posting-not-found
+          - code: posting.not-found
             description: there is no posting with the given ID
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
@@ -873,7 +873,7 @@ objects:
           Get the detailed information about the reaction of the given owner to the given posting. If no reaction with
           such owner exist, an empty structure with just <code>postingId</code> is returned.
         errors:
-          - code: reaction.posting-not-found
+          - code: posting.not-found
             description: there is no posting with the given ID
       - url: /postings/{postingId}/reactions
         type: DELETE
@@ -886,7 +886,7 @@ objects:
         auth: admin
         description: Delete all reactions to the given posting.
         errors:
-          - code: reaction.posting-not-found
+          - code: posting.not-found
             description: there is no posting with the given ID
       - url: /postings/{postingId}/reactions/{ownerName}
         type: DELETE
@@ -902,7 +902,7 @@ objects:
         auth: admin or owner
         description: Delete the reaction of the given owner to the given posting.
         errors:
-          - code: reaction.posting-not-found
+          - code: posting.not-found
             description: there is no posting with the given ID
   - name: Remote Comments object
     description: Comments to postings located on other nodes.
