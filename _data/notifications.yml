@@ -1,4 +1,52 @@
 notifications:
+  - type: COMMENT_REACTION_ADDED
+    description: Reaction added to a comment owned by the receiver
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: ownerName
+        comment: name of the reaction owner
+      - type: boolean
+        name: negative
+        comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+      - type: int
+        name: emoji
+        comment: reaction code, usually interpreted by clients as emoji code point
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+      - type: String
+        name: commentHeading
+        comment: heading of the comment
+  - type: COMMENT_REACTION_DELETED
+    description: Reaction deleted from a comment owned by the receiver
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: ownerName
+        comment: name of the reaction owner
+      - type: boolean
+        name: negative
+        comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+  - type: COMMENT_REACTION_DELETED_ALL
+    description: All reactions deleted from a comment owned by the receiver
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
   - type: FEED_POSTING_ADDED
     description: A new posting added in a feed the receiver is subscribed to
     fields:
@@ -11,6 +59,33 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+  - type: MENTION_COMMENT_ADDED
+    description: A mention of the receiver in a comment on the sending node added
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+      - type: String
+        name: commentOwnerName
+        comment: name of the comment owner
+      - type: String
+        name: commentHeading
+        comment: heading of the comment
+  - type: MENTION_COMMENT_DELETED
+    description: A mention of the receiver in a comment on the sending node deleted
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
   - type: MENTION_POSTING_ADDED
     description: A mention of the receiver in a posting on the sending node added
     fields:
@@ -19,13 +94,61 @@ notifications:
         comment: ID of the posting on the sending node
       - type: String
         name: heading
-        comment: Heading of the posting
+        comment: heading of the posting
   - type: MENTION_POSTING_DELETED
     description: A mention of the receiver in a posting on the sending node deleted
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+  - type: POSTING_COMMENT_ADDED
+    description: A comment added to the posting the receiver is subscribed to.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: commentOwnerName
+        comment: name of the comment owner
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+      - type: String
+        name: commentHeading
+        comment: heading of the comment
+  - type: POSTING_COMMENT_DELETED
+    description: A comment deleted from the posting the receiver is subscribed to.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: commentOwnerName
+        comment: name of the comment owner
+  - type: POSTING_COMMENTS_UPDATED
+    description: Comments have been updated at the posting the receiver is subscribed to.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - struct: int
+        name: total
+        comment: updated total number of comments to the posting
   - type: POSTING_DELETED
     description: Posting the receiver is subscribed to has been deleted.
     fields:
@@ -56,3 +179,42 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+  - type: REPLY_COMMENT_ADDED
+    description: A reply to a comment of the receiver on the sending node added
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: repliedToId
+        comment: ID of the comment on the sending node that is replied to
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+      - type: String
+        name: commentOwnerName
+        comment: name of the comment owner
+      - type: String
+        name: commentHeading
+        comment: heading of the comment
+      - type: String
+        name: repliedToHeading
+        comment: heading of the comment that is repliedTo
+  - type: REPLY_COMMENT_DELETED
+    description: A reply to a comment of the receiver on the sending node deleted
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: repliedToId
+        comment: ID of the comment on the sending node that is replied to
+      - type: String
+        name: commentOwnerName
+        comment: name of the comment owner
