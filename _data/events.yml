@@ -423,6 +423,9 @@ events:
       - type: String
         name: remotePostingId
         comment: ID of the posting at remote node this story is about (may be absent)
+      - type: String
+        name: remoteCommentId
+        comment: ID of the comment at remote node this story is about (may be absent)
       - type: String -> String[]
         name: operations
         comment: list of the supported operations and the corresponding access hints
@@ -471,6 +474,9 @@ events:
       - type: String
         name: remotePostingId
         comment: ID of the posting at remote node this story is about (may be absent)
+      - type: String
+        name: remoteCommentId
+        comment: ID of the comment at remote node this story is about (may be absent)
       - type: String -> String[]
         name: operations
         comment: list of the supported operations and the corresponding access hints
@@ -519,6 +525,9 @@ events:
       - type: String
         name: remotePostingId
         comment: ID of the posting at remote node this story is about (may be absent)
+      - type: String
+        name: remoteCommentId
+        comment: ID of the comment at remote node this story is about (may be absent)
       - type: String -> String[]
         name: operations
         comment: list of the supported operations and the corresponding access hints
