@@ -1,6 +1,6 @@
 notifications:
   - type: COMMENT_REACTION_ADDED
-    description: Reaction added to a comment owned by the receiver
+    description: Reaction added to a comment owned by the receiver.
     fields:
       - type: String
         name: postingId
@@ -24,7 +24,7 @@ notifications:
         name: commentHeading
         comment: heading of the comment
   - type: COMMENT_REACTION_DELETED
-    description: Reaction deleted from a comment owned by the receiver
+    description: Reaction deleted from a comment owned by the receiver.
     fields:
       - type: String
         name: postingId
@@ -39,7 +39,7 @@ notifications:
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
   - type: COMMENT_REACTION_DELETED_ALL
-    description: All reactions deleted from a comment owned by the receiver
+    description: All reactions deleted from a comment owned by the receiver.
     fields:
       - type: String
         name: postingId
@@ -48,7 +48,7 @@ notifications:
         name: commentId
         comment: ID of the comment on the sending node
   - type: FEED_POSTING_ADDED
-    description: A new posting added in a feed the receiver is subscribed to
+    description: A new posting added in a feed the receiver is subscribed to.
     fields:
       - type: String
         name: subscriberId
@@ -60,7 +60,7 @@ notifications:
         name: postingId
         comment: ID of the posting on the sending node
   - type: MENTION_COMMENT_ADDED
-    description: A mention of the receiver in a comment on the sending node added
+    description: A mention of the receiver in a comment on the sending node added.
     fields:
       - type: String
         name: postingId
@@ -78,7 +78,7 @@ notifications:
         name: commentHeading
         comment: heading of the comment
   - type: MENTION_COMMENT_DELETED
-    description: A mention of the receiver in a comment on the sending node deleted
+    description: A mention of the receiver in a comment on the sending node deleted.
     fields:
       - type: String
         name: postingId
@@ -87,7 +87,7 @@ notifications:
         name: commentId
         comment: ID of the comment on the sending node
   - type: MENTION_POSTING_ADDED
-    description: A mention of the receiver in a posting on the sending node added
+    description: A mention of the receiver in a posting on the sending node added.
     fields:
       - type: String
         name: postingId
@@ -96,7 +96,7 @@ notifications:
         name: heading
         comment: heading of the posting
   - type: MENTION_POSTING_DELETED
-    description: A mention of the receiver in a posting on the sending node deleted
+    description: A mention of the receiver in a posting on the sending node deleted.
     fields:
       - type: String
         name: postingId
@@ -180,7 +180,7 @@ notifications:
         name: postingId
         comment: ID of the posting on the sending node
   - type: REPLY_COMMENT_ADDED
-    description: A reply to a comment of the receiver on the sending node added
+    description: A reply to a comment of the receiver on the sending node added.
     fields:
       - type: String
         name: postingId
@@ -204,7 +204,7 @@ notifications:
         name: repliedToHeading
         comment: heading of the comment that is repliedTo
   - type: REPLY_COMMENT_DELETED
-    description: A reply to a comment of the receiver on the sending node deleted
+    description: A reply to a comment of the receiver on the sending node deleted.
     fields:
       - type: String
         name: postingId
