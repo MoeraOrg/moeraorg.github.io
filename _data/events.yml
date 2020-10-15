@@ -329,6 +329,9 @@ events:
         name: postingId
         comment: the posting ID
       - type: String
+        name: commentId
+        comment: the comment ID, if any
+      - type: String
         name: reactionOwnerName
         comment: the reaction owner name
       - type: String
@@ -350,6 +353,9 @@ events:
       - type: String
         name: postingId
         comment: the posting ID
+      - type: String
+        name: commentId
+        comment: the comment ID, if any
       - type: String
         name: reactionOwnerName
         comment: the reaction owner name
