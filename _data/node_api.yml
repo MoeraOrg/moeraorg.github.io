@@ -904,6 +904,76 @@ objects:
         errors:
           - code: reaction.posting-not-found
             description: there is no posting with the given ID
+  - name: Remote Comments object
+    description: Comments to postings located on other nodes.
+    requests:
+      - url: /nodes/{nodeName}/postings/{postingId}/comments
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+        in:
+          struct: CommentSourceText
+        out:
+          struct: Result
+        auth: admin
+        entitled: true
+        description: Add a comment to the posting on the remote node and register it in the registry at the local node.
+      - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}
+        type: PUT
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: commentId
+            description: ID of the comment on the remote node
+        in:
+          struct: CommentSourceText
+        out:
+          struct: Result
+        auth: admin
+        entitled: true
+        description: Update a comment to the posting on the remote node.
+      - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}
+        type: DELETE
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: commentId
+            description: ID of the comment on the remote node
+        out:
+          struct: Result
+        auth: admin
+        description: Delete a comment from the registry of all comments at the local node.
+      - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/verify
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: commentId
+            description: ID of the comment on the remote node
+        out:
+          struct: AsyncOperationCreated
+        auth: admin
+        description: Verify the signature of the given comment to the posting on the remote node.
   - name: Remote Postings object
     description: Postings located on other nodes.
     requests:
@@ -936,7 +1006,7 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the given revision of a posting.
-  - name: Remote Reactions object
+  - name: Remote Posting Reactions object
     description: Reactions to postings located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/reactions
@@ -1437,6 +1507,37 @@ structures:
       - type: int
         name: totalInFuture
         description: number of comments after this slice till the far future
+  - name: CommentSourceText
+    fields:
+      - type: String
+        name: bodySrc
+        description: the source text of the comment, a string representation of a JSON structure
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the comment accepts
+      - type: String
+        name: repliedToId
+        description: ID of the comment this comment is replying to
+    errors:
+      - code: commentText.bodySrc.blank
+        description: body text is empty
+      - code: commentText.bodySrc.wrong-size
+        description: body text is too long
+      - code: commentText.bodySrc.wrong-encoding
+        description: body text is formatted incorrectly
+      - code: commentText.acceptedReactions.positive.wrong-size
+        description: list of accepted positive reactions is too long
+      - code: commentText.acceptedReactions.positive.wrong-pattern
+        description: list of accepted positive reactions has wrong format
+      - code: commentText.acceptedReactions.negative.wrong-size
+        description: list of accepted negative reactions is too long
+      - code: commentText.acceptedReactions.negative.wrong-pattern
+        description: list of accepted negative reactions has wrong format
   - name: CommentText
     fields:
       - type: String
