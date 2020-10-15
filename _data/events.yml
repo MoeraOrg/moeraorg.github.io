@@ -23,6 +23,18 @@ events:
       - type: int
         name: moment
         comment: moment of the comment
+  - type: COMMENT_REACTIONS_CHANGED
+    description: Reactions to a comment were changed.
+    fields:
+      - type: String
+        name: id
+        comment: the comment ID
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: int
+        name: moment
+        comment: moment of the comment
   - type: COMMENT_UPDATED
     description: A comment was deleted.
     fields:
@@ -186,6 +198,47 @@ events:
       - type: String
         name: remoteCommentId
         comment: the remote comment ID
+  - type: REMOTE_COMMENT_VERIFICATION_FAILED
+    description: Verification of the signature of a comment on a remote node failed.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: asynchronous operation ID
+      - type: String
+        name: nodeName
+        comment: the remote node name
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: String
+        name: commentId
+        comment: the comment ID
+      - type: String
+        name: errorCode
+        comment: error code
+      - type: String
+        name: errorMessage
+        comment: error message
+  - type: REMOTE_COMMENT_VERIFIED
+    description: Signature of a comment on a remote node was verified.
+    auth: admin
+    fields:
+      - type: String
+        name: id
+        comment: asynchronous operation ID
+      - type: String
+        name: nodeName
+        comment: the remote node name
+      - type: String
+        name: postingId
+        comment: the posting ID
+      - type: String
+        name: commentId
+        comment: the comment ID
+      - type: boolean
+        name: correct
+        comment: verification result
   - type: REMOTE_POSTING_VERIFICATION_FAILED
     description: Verification of the signature of a posting on a remote node failed.
     auth: admin
