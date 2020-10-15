@@ -23,6 +23,37 @@ objects:
           - type: byte[]
             field: salt
             comment: 8 random bytes
+  - name: Comment
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: COMMENT
+          - type: String
+            field: ownerName
+          - digest: Posting
+            field: postingFingerprint
+          - digest: Comment
+            field: repliedToFingerprint
+          - type: byte[]
+            field: bodySrcHash
+            comment: hash of <code>bodySrc</code> field
+          - type: String
+            field: bodySrcFormat
+          - type: String
+            field: body
+          - type: String
+            field: bodyFormat
+          - type: timestamp
+            field: createdAt
+            comment: of the current revision
+          - type: byte
+            field: permissions
+            comment: 0 <i>(reserved for future use)</i>
+          - type: byte
+            field: attachments
+            comment: 0 <i>(reserved for future use)</i>
   - name: NotificationPacket
     versions:
       - version: 0
