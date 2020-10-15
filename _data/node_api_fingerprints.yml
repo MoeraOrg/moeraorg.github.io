@@ -109,8 +109,11 @@ objects:
             comment: REACTION
           - type: String
             field: ownerName
-          - digest: Posting
-            field: postingFingerprint
+          - type: byte[]
+            field: entryFingerprint
+            comment: >
+              hash of <a href="#Posting"><code>Posting</code></a> or <a href="#Comment"><code>Comment</code></a>
+              fingerprint
           - type: boolean
             field: negative
           - type: int
