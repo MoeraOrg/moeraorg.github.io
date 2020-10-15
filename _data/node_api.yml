@@ -1926,6 +1926,12 @@ structures:
         array: true
         name: sources
         description: details of the sources the posting was received from (for cached copies of remote postings only)
+      - type: int
+        name: totalComments
+        description: total number of comments to the posting
+      - struct: PostingSubscriptionsInfo
+        name: subscriptions
+        description: existing subscriptions of the client's owner
     operations:
       - name: edit
         description: edit the posting
@@ -2004,6 +2010,11 @@ structures:
       - type: timestamp
         name: createdAt
         description: timestamp when the posting was received from this source
+  - name: PostingSubscriptionsInfo
+    fields:
+      - type: String
+        name: comments
+        description: ID of the existing subscription to posting comments, if any
   - name: PostingText
     fields:
       - type: String
