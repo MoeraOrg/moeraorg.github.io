@@ -175,6 +175,51 @@ objects:
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
+  - name: Comment Revisions object
+    description: All revisions of the comment.
+    requests:
+      - url: /postings/{postingId}/comments/{commentId}/revisions
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        out:
+          struct: CommentRevisionInfo
+          array: true
+        auth: configurable
+        description: Get all revisions of the comment.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments/{commentId}/revisions/{id}
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+          - type: String
+            name: id
+            description: ID of the revision
+        out:
+          struct: CommentRevisionInfo
+        auth: configurable
+        description: Get an individual revision of the comment.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+          - code: comment-revision.not-found
+            description: there is no revision with the given ID
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -1489,6 +1534,63 @@ structures:
         description: view the comment's revisions
       - name: reactions
         description: view reactions to the comment
+  - name: CommentRevisionInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: bodyPreview
+        description: preview of the revision's body, a string representation of a JSON structure, may be absent
+      - type: byte[]
+        name: bodySrcHash
+        description: hash of the source text of the revision
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the revision, the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: body
+        description: body of the revision, a string representation of a JSON structure
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the revision, may have any value meaningful for the client, including:
+          <ul>
+            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
+            <li><code>application</code> - an application-specific structure.</li>
+          </ul>
+      - type: String
+        name: heading
+        description: heading of the revision
+      - type: timestamp
+        name: createdAt
+        description: revision creation timestamp - the real time when the revision was created
+      - type: timestamp
+        name: deletedAt
+        description: revision deletion timestamp - the time when the revision was deleted, may be absent
+      - type: timestamp
+        name: deadline
+        description: >
+          revision deletion timestamp - the time when the revision will be deleted and the previous revision will take
+          its place, may be absent
+      - type: byte[]
+        name: digest
+        description: cryptographic digest of the revision
+      - type: byte[]
+        name: signature
+        description: >
+          the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
+      - struct: ClientReactionInfo
+        name: clientReaction
+        description: details of the existing reaction (if any) of the client's owner
+      - struct: ReactionTotalsInfo
+        name: reactions
+        description: reactions summary of the revision
   - name: CommentsSliceInfo
     fields:
       - type: int
