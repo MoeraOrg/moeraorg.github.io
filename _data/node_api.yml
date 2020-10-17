@@ -220,6 +220,153 @@ objects:
             description: the comment is not related to the given posting
           - code: comment-revision.not-found
             description: there is no revision with the given ID
+  - name: Comment Reactions object
+    description: Reactions ("Likes") - simple textless answers to a comment.
+    requests:
+      - url: /postings/{postingId}/comments/{commentId}/reactions
+        type: POST
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        in:
+          struct: ReactionDescription
+        out:
+          struct: ReactionCreated
+        auth: owner
+        description: >
+          Add a reaction to the given comment. The reaction owner must authenticate in some way. Only one reaction is
+          allowed from each owner to a particular comment. If a reaction from the same owner to this comment already
+          exists, it is overwritten. If the reaction is not signed, the reaction will be kept for a limited period of
+          time and then erased (the previous reaction of the same owner will be restored, if any).
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+          - code: comment.not-signed
+            description: cannot add a reaction to an unsigned comment
+          - code: reaction.not-accepted
+            description: the reaction is not acceptable
+      - url: /postings/{postingId}/comments/{commentId}/reactions
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+          - type: boolean
+            name: negative
+            description: <code>true</code>, to filter negative reactions, <code>false</code>, to filter positive ones
+          - type: int
+            name: emoji
+            description: filter by reaction code, usually interpreted by clients as emoji code point
+          - type: int
+            name: before
+            description: filter reactions created at or before this moment
+          - type: int
+            name: limit
+            description: maximum number of reactions returned
+        out:
+          struct: ReactionsSliceInfo
+        description: >
+          Get a slice of the list of reactions to the given comment, optionally filtered by reaction type, delimited by
+          <code>before</code> moment and the given <code>limit</code>. If <code>before</code> is not provided,
+          the latest reactions are returned. The node may decide to return less reactions than the given
+          <code>limit</code>. The reactions are always sorted by moment, descending.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /postings/{postingId}/comments/{commentId}/reactions/{ownerName}
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+          - type: String
+            name: ownerName
+            description: reaction owner node name
+        out:
+          struct: ReactionInfo
+        description: >
+          Get the detailed information about the reaction of the given owner to the given comment. If no reaction with
+          such owner exist, an empty structure with just <code>commentId</code> is returned.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments/{commentId}/reactions
+        type: DELETE
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        out:
+          struct: Result
+        auth: admin
+        description: Delete all reactions to the given comment.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments/{commentId}/reactions/{ownerName}
+        type: DELETE
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+          - type: String
+            name: ownerName
+            description: reaction owner node name
+        out:
+          struct: ReactionTotalsInfo
+        auth: admin or owner
+        description: Delete the reaction of the given owner to the given comment.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
+  - name: Comment Reaction Totals object
+    description: Summary of reactions to a comment.
+    requests:
+      - url: /postings/{postingId}/comments/{commentId}/reaction-totals
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        out:
+          struct: ReactionTotalsInfo
+        description: Get summary of reactions to the comment given.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
