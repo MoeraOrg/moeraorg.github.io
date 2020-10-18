@@ -2696,12 +2696,18 @@ structures:
       - struct: PostingInfo
         name: posting
         description: the posting this story is about (may be absent or contain only ID)
+      - struct: CommentInfo
+        name: comment
+        description: the comment this story is about (may be absent or contain only ID)
       - type: String
         name: remoteNodeName
         description: name of the node this story is about (may be absent)
       - type: String
         name: remotePostingId
         description: ID of the posting at remote node this story is about (may be absent)
+      - type: String
+        name: remoteCommentId
+        description: ID of the comment at remote node this story is about (may be absent)
     operations:
       - name: edit
         description: update the story
