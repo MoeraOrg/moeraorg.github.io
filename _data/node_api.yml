@@ -2389,7 +2389,13 @@ structures:
         description: ID of the posting
       - type: String
         name: postingRevisionId
-        description: ID of the posting revision
+        description: ID of the posting revision, if relevant
+      - type: String
+        name: commentId
+        description: ID of the comment, if relevant
+      - type: String
+        name: commentRevisionId
+        description: ID of the comment revision, if relevant
       - type: boolean
         name: negative
         description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
