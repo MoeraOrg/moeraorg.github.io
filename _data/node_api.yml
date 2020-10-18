@@ -1366,7 +1366,10 @@ objects:
             description: filter by subscribed node name, may be omitted
           - type: String
             name: type
-            description: filter by subscription type, may be omitted
+            description: >
+              filter by subscription type (see
+              <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for the list of possible
+              values), may be omitted
         out:
           struct: SubscriberInfo
           array: true
@@ -1420,7 +1423,10 @@ objects:
             description: filter by node name, may be omitted
           - type: String
             name: type
-            description: filter by subscription type, may be omitted
+            description: >
+              filter by subscription type (see
+              <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for the list of possible
+              values), may be omitted
         out:
           struct: SubscriptionInfo
           array: true
@@ -2735,7 +2741,9 @@ structures:
     fields:
       - type: String
         name: type
-        description: subscription type
+        description: >
+          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          the list of possible values)
       - type: String
         name: feedName
         description: feed name, if the subscription type requires one
@@ -2763,7 +2771,9 @@ structures:
         description: subscriber ID
       - type: String
         name: type
-        description: subscription type
+        description: >
+          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          the list of possible values)
       - type: String
         name: feedName
         description: feed name, if the subscription type requires one
@@ -2780,7 +2790,13 @@ structures:
     fields:
       - type: String
         name: type
-        description: subscription type
+        description: >
+          subscription type, the possible values are:
+          <ul>
+            <li><code>feed</code> - subscribe to new stories in the feed;</li>
+            <li><code>posting</code> - subscribe to updates to the posting;</li>
+            <li><code>posting-comments</code> - subscribe to new comments to the posting.</li>
+          </ul>
       - type: String
         name: feedName
         description: feed name on this node that receives notifications
@@ -2799,7 +2815,7 @@ structures:
       - type: String
         name: reason
         description: >
-          subscription reason. The well-known values are:
+          subscription reason, the well-known values are:
           <ul>
             <li><code>user</code> - node owner asked to subscribe;</li>
             <li><code>mention</code> - node name was mentioned;</li>
@@ -2839,7 +2855,9 @@ structures:
         description: subscription ID
       - type: String
         name: type
-        description: subscription type
+        description: >
+          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          the list of possible values)
       - type: String
         name: feedName
         description: feed name on this node that receives notifications
