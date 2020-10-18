@@ -2784,6 +2784,15 @@ structures:
       - type: String
         name: remotePostingId
         description: posting ID on the remote node, if the subscription type requires one
+      - type: String
+        name: reason
+        description: >
+          subscription reason. The well-known values are:
+          <ul>
+            <li><code>user</code> - node owner asked to subscribe;</li>
+            <li><code>mention</code> - node name was mentioned;</li>
+            <li><code>comment</code> - node owner commented the posting.</li>
+          </ul>
     errors:
       - code: subscriptionDescription.type.blank
         description: type is empty
@@ -2803,6 +2812,8 @@ structures:
         description: remote feed name is too long
       - code: subscriptionDescription.remotePostingId.wrong-size
         description: posting ID is too long
+      - code: subscriptionDescription.reason.blank
+        description: subscription reason is empty
   - name: SubscriptionFilter
     fields:
       - struct: RemotePosting
@@ -2835,6 +2846,11 @@ structures:
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
+      - type: String
+        name: reason
+        description: >
+          subscription reason (see the list of well-known values in
+          <a href="#SubscriptionDescription"><code>SubscriptionDescription</code></a><code>.reason</code>
   - name: TokenCreated
     fields:
       - type: String
