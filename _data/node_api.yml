@@ -1434,9 +1434,6 @@ objects:
         type: DELETE
         params:
           - type: String
-            name: type
-            description: subscription type
-          - type: String
             name: remoteNodeName
             description: name of the node this node is subscribed to
           - type: String
