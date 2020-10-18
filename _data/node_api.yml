@@ -823,6 +823,8 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
+          - code: posting.not-original
+            description: updating a non-original posting is not allowed
       - url: /postings/{id}
         type: GET
         params:
