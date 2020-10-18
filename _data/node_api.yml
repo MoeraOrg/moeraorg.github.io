@@ -1950,6 +1950,11 @@ structures:
       - type: String
         name: storyId
         description: ID of the story
+      - type: String -> String[]
+        name: operations
+        description: >
+          list of the supported operations (see <code><a href="#StoryInfo">StoryInfo</a>.operations</code>) and
+          the corresponding access hints for the story in the feed
   - name: FeedSliceInfo
     fields:
       - type: int
