@@ -871,11 +871,16 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting
+          - type: int
+            name: limit
+            description: maximum number of revisions returned
         out:
           struct: PostingRevisionInfo
           array: true
         auth: configurable
-        description: Get all revisions of the posting.
+        description: >
+          Get all revisions of the posting, but not more than <code>limit</code>. The node may decide to return less
+          revisions than the given <code>limit</code>.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
