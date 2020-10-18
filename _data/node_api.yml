@@ -1446,6 +1446,15 @@ objects:
         errors:
           - code: subscription.not-found
             description: there is no subscription with the given parameters.
+      - url: /people/subscriptions/search
+        type: GET
+        in:
+          struct: SubscriptionFilter
+        out:
+          struct: SubscriptionInfo
+          array: true
+        auth: admin
+        description: Search for subscriptions by the given criteria.
   - name: Tokens object
     description: >
       The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
@@ -2794,6 +2803,12 @@ structures:
         description: remote feed name is too long
       - code: subscriptionDescription.remotePostingId.wrong-size
         description: posting ID is too long
+  - name: SubscriptionFilter
+    fields:
+      - struct: RemotePosting
+        array: true
+        name: postings
+        description: list of postings
   - name: SubscriptionInfo
     fields:
       - type: String
