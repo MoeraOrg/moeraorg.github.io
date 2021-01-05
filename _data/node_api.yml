@@ -483,8 +483,10 @@ objects:
             description: domain name
         out:
           struct: DomainInfo
-        auth: root secret
-        description: Get information about the domain with the given hostname.
+        auth: root secret or none
+        description: >
+          Get information about the domain with the given hostname. If domain registration for this server is public,
+          this request does not require authentication.
         errors:
           - code: domain.not-found
             description: there is no domain with the given hostname
@@ -494,10 +496,10 @@ objects:
           struct: DomainInfo
         out:
           struct: DomainInfo
-        auth: root secret
+        auth: root secret or none
         description: >
           Create a new domain with the given hostname. If <code>nodeId</code> is not passed, it is generated
-          automatically.
+          automatically. If domain registration for this server is public, this request does not require authentication.
         errors:
           - code: domainInfo.name.blank
             description: the hostname is empty
@@ -541,6 +543,18 @@ objects:
             description: there is no domain with the given hostname
           - code: domain.cannot-delete-default
             description: cannot delete the default domain
+      - url: /domains/available
+        type: GET
+        params:
+          - type: String
+            name: nodeName
+            description: node name
+        out:
+          struct: DomainAvailable
+        description: >
+          Get an available domain name that is recommended for the given node name. The domain name is usually chosen to
+          be close to the node name in English transcription. If domain registration for this server is not public, this
+          request is not accessible.
   - name: Draft Postings object
     description: >
       All draft postings.
@@ -1904,6 +1918,11 @@ structures:
       - type: boolean
         name: created
         description: <code>true</code> if the credentials are initialized already, <code>false</code> otherwise
+  - name: DomainAvailable
+    fields:
+      - type: String
+        name: name
+        description: fully-qualified domain name
   - name: DomainInfo
     fields:
       - type: String
