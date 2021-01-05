@@ -2603,6 +2603,9 @@ structures:
         name: id
         description: ID of the comment
       - type: String
+        name: revisionId
+        description: ID of the comment revision
+      - type: String
         name: name
         description: node name of the comment's owner
       - type: String
