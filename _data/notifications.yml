@@ -122,6 +122,9 @@ notifications:
       - type: String
         name: commentHeading
         comment: heading of the comment
+      - type: String
+        name: commentRepliedTo
+        comment: ID of the comment on the sending node this comment replies to
   - type: POSTING_COMMENT_DELETED
     description: A comment deleted from the posting the receiver is subscribed to.
     fields:
