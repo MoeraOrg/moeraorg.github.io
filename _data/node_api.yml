@@ -1508,6 +1508,36 @@ objects:
             description: credentials are not created yet
           - code: credentials.login-incorrect
             description: login or password is incorrect
+  - name: Web Push object
+    description: Management of Web Push subscriptions.
+    requests:
+      - url: /web-push/key
+        type: GET
+        out:
+          struct: WebPushKey
+        auth: admin
+        description: Get Web Push application key.
+      - url: /web-push/subscriptions
+        type: POST
+        in:
+          struct: WebPushSubscriptionAttributes
+        out:
+          struct: WebPushSubscriptionInfo
+        auth: admin
+        description: Add Web Push subscription.
+      - url: /web-push/subscriptions/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the subscription
+        out:
+          struct: Result
+        auth: admin
+        description: Delete Web Push subscription.
+        errors:
+          - code: web-push-subscription.not-found
+            description: there is no Web Push subscription with the given ID
   - name: Who Am I object
     description: Brief information about the node.
     requests:
@@ -2930,6 +2960,40 @@ structures:
         description: >
           The list of <a href="/overview/permissions.html">permission groups</a> assigned to the token. See also the
           <a href="#standard-permission-groups">list of standard permission groups</a>.
+  - name: WebPushKey
+    fields:
+      - type: String
+        name: key
+        description: BASE64-encoded key
+  - name: WebPushSubscriptionAttributes
+    fields:
+      - type: String
+        name: endpoint
+        description: Web Push endpoint URL
+      - type: String
+        name: publicKey
+        description: VAPID public signing key
+      - type: String
+        name: authKey
+        description: VAPID authentication key
+    errors:
+      - code: webPushSubscriptionAttributes.endpoint.blank
+        description: endpoint is empty
+      - code: webPushSubscriptionAttributes.endpoint.wrong-size
+        description: endpoint is too long
+      - code: webPushSubscriptionAttributes.publicKey.blank
+        description: public key is empty
+      - code: webPushSubscriptionAttributes.publicKey.wrong-size
+        description: public key is too long
+      - code: webPushSubscriptionAttributes.authKey.blank
+        description: auth key is empty
+      - code: webPushSubscriptionAttributes.authKey.wrong-size
+        description: auth key is too long
+  - name: WebPushSubscriptionInfo
+    fields:
+      - type: String
+        name: id
+        description: Web Push subscription ID
   - name: WhoAmI
     fields:
       - type: String
