@@ -55,4 +55,7 @@
 - name: protocols/headers
   title: Headers
 
+- name: protocols/web-push
+  title: Web Push Notifications
+
 - type: end

@@ -1,0 +1,69 @@
+---
+layout: development
+title: Protocols
+up: protocols
+subtitle: Web Push Notifications
+body_class: body-pink
+---
+
+<h1>Web Push Notifications</h1>
+<p>
+    Web Push notification payload is a JSON-encoded structure that describes a new or updated story or deletion of
+    one of the stories. The structure is described below.
+</p>
+<h4 class="identifier">STORY_ADDED</h4>
+<p>Story added or updated.</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-3">Type</th>
+            <th class="col-3">Field</th>
+            <th class="col-6">Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>String</code></td>
+            <td><code>type</code></td>
+            <td><code>story-added</code></td>
+        </tr>
+        <tr>
+            <td><code>String</code></td>
+            <td><code>originUrl</code></td>
+            <td>URL of the node the notification is coming from</td>
+        </tr>
+        <tr>
+            <td><code><a href="node-api.html#StoryInfo">StoryInfo</a></code></td>
+            <td><code>story</code></td>
+            <td>the story</td>
+        </tr>
+    </tbody>
+</table>
+<h4 class="identifier">STORY_DELETED</h4>
+<p>Story deleted.</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-3">Type</th>
+            <th class="col-3">Field</th>
+            <th class="col-6">Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>String</code></td>
+            <td><code>type</code></td>
+            <td><code>story-deleted</code></td>
+        </tr>
+        <tr>
+            <td><code>String</code></td>
+            <td><code>originUrl</code></td>
+            <td>URL of the node the notification is coming from</td>
+        </tr>
+        <tr>
+            <td><code>String</code></td>
+            <td><code>id</code></td>
+            <td>ID of the story to be deleted</td>
+        </tr>
+    </tbody>
+</table>
