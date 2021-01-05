@@ -1719,6 +1719,9 @@ structures:
       - type: String
         name: id
       - type: String
+        name: postingRevisionId
+        description: ID of the posting revision that was actual at the moment of creation of this comment revision
+      - type: String
         name: bodyPreview
         description: preview of the revision's body, a string representation of a JSON structure, may be absent
       - type: byte[]
