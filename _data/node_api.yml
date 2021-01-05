@@ -1784,6 +1784,9 @@ structures:
         name: comments
         description: the comments
       - type: int
+        name: total
+        description: total number of comments
+      - type: int
         name: totalInPast
         description: number of comments before this slice till the far past
       - type: int
