@@ -93,6 +93,9 @@ events:
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
     auth: admin
+  - type: PING
+    description: Sent periodically to verify status of WebSockets connection.
+    auth: admin
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
