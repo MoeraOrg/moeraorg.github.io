@@ -2934,6 +2934,9 @@ structures:
     fields:
       - type: String
         name: nodeName
+      - type: boolean
+        name: nodeNameChanging
+        description: <code>true</code> if node name is about to be changed
 
 enums:
   - name: OperationStatus
