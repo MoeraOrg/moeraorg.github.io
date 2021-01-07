@@ -6,36 +6,38 @@ body_class: body-pink
 
 # Development Environment
 
-To work with Moera, you need four components: naming service
-([moera-naming][3]), node ([moera-node][5]), client
-([moera-client-react][7]) and browser extension
-([moera-browser-extension][9]). You don't need to build and install all
-of them - you may use those that are publicly available, until you plan
-to make changes to the code.
+To work with Moera, you need four components. You don't need to build
+and install all of them - you may use those that are publicly available,
+until you plan to make changes to the code. These components are:
 
-For local installation of naming and node servers you need to have
-OpenJDK 8+ and PostgreSQL 9.6+ installed. In all major Linux
-distributions you can install them from the main package repository. For
-development purposes, you can use one PostgreSQL instance for both node
-and naming servers.
+1. **Naming service.** By default, [naming.moera.org][11] is used. For
+   development, build and run [moera-naming][3] (see [README.md][4] for
+   details).
+2. **Node.** You may get one from [moera.blog][16] provider. For
+   development, build and run [moera-node][5] (see [README.md][6] for
+   details).
+3. **Client.** If you have the browser extension installed (see below),
+   it uses the client at [client.moera.org][12] by default. Without the
+   browser extension you can use [web.moera.org][17] standalone client.
+   For development, build and run [moera-client-react][7] (see
+   [README.md][8] for details).
+4. (Optional) **Browser extension.** Install from the [Firefox][13] or
+   [Chrome][15] store. For development, build and install
+   [moera-browser-extension][9] (see [README.md][10] for details).
+
+Naming service and node use [moera-commons][1] package. By default, it
+is downloaded from GitHub Maven repository, but you can build and
+install it, if you need to modify it (see [README.md][2] for details).
+
+For local installation of naming and node servers you need to have Java
+11+ and PostgreSQL 9.6+ installed. In all major Linux distributions you
+can install them from the main package repository. For development
+purposes, you can use one PostgreSQL instance for both node and naming
+servers.
 
 If you install several components on the same host, note to choose
 different port numbers for them. By default, they are 8080, 8081 and
 3000 for naming, node and client respectively.
-
-How to setup:
-
-1. For either naming or node, build and install [moera-commons][1] first
-   (see [README.md][2] for details).
-2. Build and run [moera-naming][3] (see [README.md][4] for details) or
-   use the default [naming.moera.org][11].
-3. Build and run [moera-node][5] (see [README.md][6] for details).
-4. Build and run [moera-client-react][7] (see [README.md][8] for
-   details) or use the default at [client.moera.org][12].
-5. Build and install [moera-browser-extension][9] (see [README.md][10]
-   for details) or install the release version from the [Firefox][13]
-   store.
-6. Open the main page of the node in your browser.
 
 #### Note about HTTPS
 
@@ -66,3 +68,6 @@ problem.
 [12]: https://client.moera.org/
 [13]: https://addons.mozilla.org/en-US/firefox/addon/moera/
 [14]: https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content
+[15]: https://chrome.google.com/webstore/detail/moera/endpkknmpgamhhlojbgifimfcleeeghb
+[16]: https://moera.blog
+[17]: https://web.moera.org
