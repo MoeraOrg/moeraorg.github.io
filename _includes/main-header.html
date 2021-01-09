@@ -1,23 +1,31 @@
-<!-- ******Header****** -->
 <header class="header text-center">
     <div class="container">
         <div class="branding">
             <img src="assets/images/logo-c-128.png" width="217" height="118">
-        </div><!--//branding-->
+        </div>
         <div class="tagline">
             {% if site.tagline %}
-            {{ site.tagline }}
+                {{ site.tagline }}
             {% endif %}
-        </div><!--//tagline-->
+        </div>
 
         {% if site.socials != false %}
-        <div class="social-container">
-            <a class="btn btn-success" href="https://github.com/{{ site.github_username }}" data-size="large" aria-label="View on GitHub">View on GitHub &rarr;</a>
-            &nbsp;
-            <a class="btn btn-primary" href="https://t.me/moeranews" data-size="large" aria-label="Follow on Telegram">Follow on Telegram &rarr;</a>
-            &nbsp;
-            <a class="btn btn-purple" href="https://blog.moera.org" data-size="large" aria-label="Read on Moera">Read on Moera &rarr;</a>
-        </div><!--//social-container-->
+            <div class="social-container">
+                <a class="btn btn-success" href="https://github.com/{{ site.github_username }}" data-size="large"
+                   aria-label="View on GitHub">View on GitHub &rarr;</a>
+                &nbsp;
+                <a class="btn btn-primary" href="https://t.me/moeranews" data-size="large"
+                   aria-label="Follow on Telegram">Follow on Telegram &rarr;</a>
+                &nbsp;
+                <a class="btn btn-purple" href="https://blog.moera.org" data-size="large"
+                   aria-label="Read on Moera">Read on Moera &rarr;</a>
+            </div>
         {% endif %}
-    </div><!--//container-->
-</header><!--//header-->
+        <div class="mobile-container">
+            <a href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
+                <img alt="Get it on Google Play"
+                     src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+            </a>
+        </div>
+    </div>
+</header>

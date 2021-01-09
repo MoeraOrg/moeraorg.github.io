@@ -53,8 +53,16 @@
             position: relative;
             top:5px;
         }
-        .fab-like{
+        .fab-like {
             display: inline-block;
+        }
+    }
+
+    .mobile-container {
+        margin-top: 1rem;
+
+        IMG {
+            height: 4.5em;
         }
     }
 
