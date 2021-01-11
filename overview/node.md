@@ -42,7 +42,7 @@ software.
 
 Web clients and mobile clients use REST API for all operations.
 Automated operations, like backups, reposts from other social networks,
-data migration, specialized Moera search engines etc. also use the it.
+data migration, specialized Moera search engines etc. also use it.
 REST API is also used for inter-node communication - receiving
 [notifications][2], fetching new posts for the [newsfeed][3] etc.
 
