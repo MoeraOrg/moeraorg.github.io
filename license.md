@@ -7,9 +7,9 @@ body_class: body-orange
 # Protocols & APIs
 
 All Moera protocols and APIs are open and free to use and implement by
-any software. If you extend these protocols and APIs, you are
-appreciated to publish the specifications of the extensions to encourage
-interoperability with other software.
+any software. If you extend these protocols and APIs, we would
+appreciate if you publish the specifications of the extensions in order
+to encourage interoperability with other software.
 
 # Software
 
