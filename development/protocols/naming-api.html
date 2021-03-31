@@ -37,7 +37,11 @@ body_class: body-pink
                     <code>{{ call.returns.type }}</code>
                 {% endif %}
                 {% if call.returns.struct %}
-                    <code><a href="#{{ call.returns.struct }}">{{ call.returns.struct }}</a></code>
+                    <code>
+                        <a href="#{{ call.returns.struct }}">
+                            {{ call.returns.struct }}{% if call.returns.array == true %}[]{% endif %}
+                        </a>
+                    </code>
                 {% endif %}
                 {% if call.returns.description %}
                 - {{ call.returns.description }}

@@ -79,15 +79,6 @@ calls:
       struct: RegisteredNameInfo
       description: or <code>null</code>, if the name/generation is not found
 
-  - name: getCurrentForLatest
-    description: Get current information about the latest generation of the name.
-    params:
-      - type: String
-        name: name
-    returns:
-      struct: RegisteredNameInfo
-      description: or <code>null</code>, if the name was never registered
-
   - name: getPast
     description: Get past information about the given generation of the name.
     params:
@@ -102,26 +93,41 @@ calls:
       struct: RegisteredNameInfo
       description: or <code>null</code>, if the name/generation did not exist at the given moment
 
-  - name: getPastForLatest
-    description: Get past information about the latest generation of the name.
-    params:
-      - type: String
-        name: name
-      - type: timestamp
-        name: at
-        description: the moment in time the information is related to
-    returns:
-      struct: RegisteredNameInfo
-      description: or <code>null</code>, if the name was not registered at the given moment
-
   - name: isFree
     description: Check if the given name is available for registration
     params:
       - type: String
         name: name
+      - type: int
+        name: generation
     returns:
       struct: boolean
       description: <code>true</code>, if the name is free, <code>false</code> otherwise
+
+  - name: getSimilar
+    description: Find a name that is close to the given name
+    params:
+      - type: String
+        name: name
+    returns:
+      struct: RegisteredNameInfo
+      description: or <code>null</code>, if couldn't find a name that is close enough
+
+  - name: getAll
+    description: Get the list of all registered names at the given moment. The list is returned in pages, one per call
+    params:
+      - type: timestamp
+        name: at
+        description: the moment in time the information is related to
+      - type: int
+        name: page
+        description: number of the page to be returned (starting from 0)
+      - type: int
+        name: size
+        description: size of the page
+    returns:
+      struct: RegisteredNameInfo
+      array: true
 
 structures:
   - name: OperationStatusInfo
@@ -153,9 +159,6 @@ structures:
         name: name
       - type: int
         name: generation
-      - type: boolean
-        name: latest
-        description: <code>true</code> if this is the latest generation of the name, <code>false</code> otherwise
       - type: byte[]
         name: updatingKey
         description: the public key for verifying signatures of further updates of the name
@@ -163,10 +166,6 @@ structures:
         name: nodeUri
         description: >
           URI of the REST API endpoint of the node to which the name is assigned. May be absent.
-      - type: timestamp
-        name: deadline
-        description: >
-          the moment in time when the name may become available for registration by anybody
       - type: byte[]
         name: signingKey
         description: the public key of the name owner. May be <code>null</code>.
