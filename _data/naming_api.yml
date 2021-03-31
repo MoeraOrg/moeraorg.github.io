@@ -248,5 +248,11 @@ errors:
     name: generation.not-same
     description: <code>generation</code> must be the same as the current one
   - code: 17
-    name: generation.not-next
-    description: <code>generation</code> must be the next after the current one
+    name: page.incorrect
+    description: <code>page</code> number is incorrect
+  - code: 18
+    name: size.incorrect
+    description: <code>size</code> number is incorrect
+  - code: 19
+    name: size.too-large
+    description: <code>size</code> is too large
