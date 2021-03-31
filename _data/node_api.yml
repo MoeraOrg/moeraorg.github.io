@@ -1651,6 +1651,9 @@ structures:
         name: ownerName
         description: node name of the comment's owner
       - type: String
+        name: ownerFullName
+        description: full name of the comment's owner
+      - type: String
         name: postingId
         description: ID of the parent posting of the comment
       - type: String
@@ -1861,6 +1864,9 @@ structures:
       - type: String
         name: ownerName
         description: node name of the comment's owner
+      - type: String
+        name: ownerFullName
+        description: full name of the comment's owner
       - type: String
         name: bodyPreview
         description: preview of the comment's body, a string representation of a JSON structure
@@ -2145,11 +2151,17 @@ structures:
         name: receiverName
         description: name of the node where the posting was published (for cached copies of remote postings only)
       - type: String
+        name: receiverFullName
+        description: full name of the node where the posting was published (for cached copies of remote postings only)
+      - type: String
         name: receiverPostingId
         description: ID of the original posting (for cached copies of remote postings only)
       - type: String
         name: ownerName
         description: node name of the posting's owner
+      - type: String
+        name: ownerFullName
+        description: full name of the posting's owner
       - type: String
         name: bodyPreview
         description: preview of the posting's body, a string representation of a JSON structure, may be absent
@@ -2330,6 +2342,9 @@ structures:
         name: nodeName
         description: name of the remote node
       - type: String
+        name: fullName
+        description: full name of the remote node
+      - type: String
         name: feedName
         description: name of the feed on the remote node
       - type: String
@@ -2345,6 +2360,9 @@ structures:
         description: ID of the existing subscription to posting comments, if any
   - name: PostingText
     fields:
+      - type: String
+        name: ownerFullName
+        description: full name of the posting's owner
       - type: String
         name: bodySrc
         description: the source text of the posting, a string representation of a JSON structure
@@ -2641,6 +2659,9 @@ structures:
       - type: String
         name: name
         description: node name of the comment's owner
+      - type: String
+        name: fullName
+        description: full name of the comment's owner
       - type: String
         name: heading
         description: heading of the comment
