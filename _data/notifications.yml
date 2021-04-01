@@ -11,6 +11,9 @@ notifications:
       - type: String
         name: ownerName
         comment: name of the reaction owner
+      - type: String
+        name: ownerFullName
+        comment: full name of the reaction owner
       - type: boolean
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
@@ -35,6 +38,9 @@ notifications:
       - type: String
         name: ownerName
         comment: name of the reaction owner
+      - type: String
+        name: ownerFullName
+        comment: full name of the reaction owner
       - type: boolean
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
@@ -74,6 +80,9 @@ notifications:
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+      - type: String
+        name: commentOwnerFullName
+        comment: full name of the comment owner
       - type: String
         name: commentHeading
         comment: heading of the comment
@@ -117,6 +126,9 @@ notifications:
         name: commentOwnerName
         comment: name of the comment owner
       - type: String
+        name: commentOwnerFullName
+        comment: full name of the comment owner
+      - type: String
         name: postingHeading
         comment: heading of the posting
       - type: String
@@ -140,6 +152,9 @@ notifications:
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+      - type: String
+        name: commentOwnerFullName
+        comment: full name of the comment owner
   - type: POSTING_COMMENTS_UPDATED
     description: Comments have been updated at the posting the receiver is subscribed to.
     fields:
@@ -201,6 +216,9 @@ notifications:
         name: commentOwnerName
         comment: name of the comment owner
       - type: String
+        name: commentOwnerFullName
+        comment: full name of the comment owner
+      - type: String
         name: commentHeading
         comment: heading of the comment
       - type: String
@@ -221,3 +239,6 @@ notifications:
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+      - type: String
+        name: commentOwnerFullName
+        comment: full name of the comment owner
