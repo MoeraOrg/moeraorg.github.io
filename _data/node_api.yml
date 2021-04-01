@@ -1571,6 +1571,9 @@ structures:
         name: remoteNodeName
         description: name of the remote node
       - type: String
+        name: remoteFullName
+        description: full name of the remote node
+      - type: String
         name: remotePostingId
         description: ID of the posting on the remote node
       - type: boolean
@@ -2462,6 +2465,9 @@ structures:
       - type: String
         name: ownerName
         description: reaction owner node name
+      - type: String
+        name: ownerFullName
+        description: reaction owner full name
       - type: boolean
         name: negative
         description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
@@ -2481,6 +2487,9 @@ structures:
       - type: String
         name: ownerName
         description: reaction owner node name
+      - type: String
+        name: ownerFullName
+        description: reaction owner full name
       - type: String
         name: postingId
         description: ID of the posting
@@ -2806,6 +2815,9 @@ structures:
         name: remoteNodeName
         description: name of the node this story is about (may be absent)
       - type: String
+        name: remoteFullName
+        description: full name of the node this story is about (may be absent)
+      - type: String
         name: remotePostingId
         description: ID of the posting at remote node this story is about (may be absent)
       - type: String
@@ -2829,6 +2841,9 @@ structures:
       - type: String
         name: postingId
         description: posting ID, if the subscription type requires one
+      - type: String
+        name: ownerFullName
+        description: full name of the subscriber
       - type: timestamp
         name: lastUpdatedAt
         description: timestamp of the latest known state of the object, may be absent
@@ -2862,6 +2877,9 @@ structures:
       - type: String
         name: nodeName
         description: name of the subscribed node
+      - type: String
+        name: fullName
+        description: full name of the subscribed node
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
@@ -2885,6 +2903,9 @@ structures:
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFullName
+        description: full name of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
@@ -2946,6 +2967,9 @@ structures:
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFullName
+        description: full name of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
@@ -3019,6 +3043,8 @@ structures:
     fields:
       - type: String
         name: nodeName
+      - type: String
+        name: fullName
       - type: boolean
         name: nodeNameChanging
         description: <code>true</code> if node name is about to be changed
