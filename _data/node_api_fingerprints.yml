@@ -81,6 +81,23 @@ objects:
             comment: 0 <i>(reserved for future use)</i>
   - name: NotificationPacket
     versions:
+      - version: 1
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: NOTIFICATION_PACKET
+          - type: String
+            field: id
+          - type: String
+            field: nodeName
+          - type: String
+            field: fullName
+          - type: timestamp
+            field: createdAt
+          - type: String
+            field: type
+          - type: String
+            field: notification
       - version: 0
         fingerprint:
           - type: String

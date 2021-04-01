@@ -2073,6 +2073,9 @@ structures:
       - type: String
         name: nodeName
         description: name of the sending node
+      - type: String
+        name: fullName
+        description: full name of the sending node
       - type: timestamp
         name: createdAt
         description: notification packet creation timestamp
