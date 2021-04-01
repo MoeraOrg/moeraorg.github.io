@@ -85,11 +85,14 @@ events:
         name: notRead
         comment: number of stories that have not been read yet.
   - type: NODE_NAME_CHANGED
-    description: The name of the node was changed.
+    description: The name of the node or one or more of important profile fields were changed.
     fields:
       - type: String
         name: name
         comment: the new name
+      - type: String
+        name: fullName
+        comment: the new full name
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
     auth: admin
@@ -424,6 +427,9 @@ events:
         name: remoteNodeName
         comment: name of the node this story is about (may be absent)
       - type: String
+        name: remoteFullName
+        comment: full name of the node this story is about (may be absent)
+      - type: String
         name: remotePostingId
         comment: ID of the posting at remote node this story is about (may be absent)
       - type: String
@@ -474,6 +480,9 @@ events:
       - type: String
         name: remoteNodeName
         comment: name of the node this story is about (may be absent)
+      - type: String
+        name: remoteFullName
+        comment: full name of the node this story is about (may be absent)
       - type: String
         name: remotePostingId
         comment: ID of the posting at remote node this story is about (may be absent)
@@ -526,6 +535,9 @@ events:
         name: remoteNodeName
         comment: name of the node this story is about (may be absent)
       - type: String
+        name: remoteFullName
+        comment: full name of the node this story is about (may be absent)
+      - type: String
         name: remotePostingId
         comment: ID of the posting at remote node this story is about (may be absent)
       - type: String
@@ -552,6 +564,9 @@ events:
       - type: String
         name: nodeName
         comment: name of the subscribed node
+      - type: String
+        name: fullName
+        comment: full name of the subscribed node
       - type: timestamp
         name: createdAt
         comment: subscription creation timestamp
@@ -573,6 +588,9 @@ events:
       - type: String
         name: nodeName
         comment: name of the subscribed node
+      - type: String
+        name: fullName
+        comment: full name of the subscribed node
       - type: timestamp
         name: createdAt
         comment: subscription creation timestamp
@@ -594,6 +612,9 @@ events:
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFullName
+        description: full name of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
@@ -621,6 +642,9 @@ events:
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
+      - type: String
+        name: remoteFullName
+        description: full name of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
