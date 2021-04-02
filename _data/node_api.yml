@@ -1112,7 +1112,7 @@ objects:
       - url: /profile
         type: PUT
         in:
-          struct: Profile
+          struct: ProfileAttributes
         out:
           struct: ProfileInfo
         auth: admin
@@ -2412,7 +2412,7 @@ structures:
         description: list of accepted negative reactions has wrong format
       - code: postingText.publications.cannot-modify
         description: <code>publications</code> field is not allowed in posting modification query
-  - name: Profile
+  - name: ProfileAttributes
     fields:
       - type: String
         name: fullName
@@ -2423,13 +2423,30 @@ structures:
       - type: String
         name: email
         description: node owner's E-mail address
+      - type: String
+        name: title
+        description: node title
+      - type: String
+        name: bioSrc
+        description: the source text of node owner's bio (arbitrary text)
+      - type: String
+        name: bioSrcFormat
+        description: >
+          format of the source text of node owner's bio, <code>markdown</code> by default; the list of available formats
+          is returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
     errors:
-      - code: profile.fullName.wrong-size
+      - code: profileAttributes.fullName.wrong-size
         description: the full name is too long
-      - code: profile.gender.wrong-size
+      - code: profileAttributes.gender.wrong-size
         description: the gender string is too long
-      - code: profile.email.wrong-email
+      - code: profileAttributes.email.wrong-size
+        description: the E-mail is too long
+      - code: profileAttributes.email.wrong-email
         description: the E-mail is not a well-formed E-mail address
+      - code: profileAttributes.title.wrong-size
+        description: the title is too long
+      - code: profileAttributes.bioSrc.wrong-size
+        description: the bio is too long
   - name: ProfileInfo
     fields:
       - type: String
@@ -2441,6 +2458,21 @@ structures:
       - type: String
         name: email
         description: node owner's E-mail address
+      - type: String
+        name: title
+        description: node title
+      - type: String
+        name: bioSrc
+        description: the source text of node owner's bio (arbitrary text), may be absent if not requested
+      - type: String
+        name: bioSrcFormat
+        description: >
+          format of the source text of node owner's bio, <code>markdown</code> by default, may be absent if not
+          requested; the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: bioHtml
+        description: HTML representation of node owner's bio
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
@@ -3046,11 +3078,18 @@ structures:
     fields:
       - type: String
         name: nodeName
-      - type: String
-        name: fullName
       - type: boolean
         name: nodeNameChanging
         description: <code>true</code> if node name is about to be changed
+      - type: String
+        name: fullName
+        description: node owner's full name
+      - type: String
+        name: gender
+        description: node owners's gender
+      - type: String
+        name: title
+        description: node title
 
 enums:
   - name: OperationStatus

@@ -93,6 +93,12 @@ events:
       - type: String
         name: fullName
         comment: the new full name
+      - type: String
+        name: gender
+        description: the new node owners's gender
+      - type: String
+        name: title
+        description: the new node title
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
     auth: admin
