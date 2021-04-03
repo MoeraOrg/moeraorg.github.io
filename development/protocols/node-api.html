@@ -84,16 +84,18 @@ body_class: body-pink
             <i>none</i> or not present - authentication is not required;
         </li>
         <li>
-            <i>root secret</i> - URL parameter <code>secret</code> must be provided with the value equal to the secret
-            value set in the node configuration;
+            <i>root secret</i> - <code>Authorization: bearer secret:&lt;token></code> header must be provided with
+            <code>&lt;token></code> equal to the secret value set in the node configuration;
         </li>
         <li>
-            <i>admin</i> - admin token received after signing in must be passed in URL parameter <code>token</code>;
+            <i>admin</i> - admin token received after signing in must be passed in header
+            <code>Authorization: bearer [token:]&lt;token></code>;
         </li>
         <li>
             <i>owner</i> - only the owner of the content (posting, comment etc.) may perform this request, use admin
             token (for own content on the home node only), <a href="/development/protocols/carte.html">carte</a>
-            (passed in URL parameter <code>carte</code>) or signature (if present in the input) for authentication.
+            (passed in header <code>Authorization: bearer carte:&lt;token></code>) or signature (if present in the
+            input) for authentication.
         </li>
         <li>
             <i>configurable</i> - access to the request is configurable, the client may refer to the corresponding
