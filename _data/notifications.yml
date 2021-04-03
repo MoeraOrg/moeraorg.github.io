@@ -197,6 +197,12 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+  - type: PROFILE_UPDATED
+    description: Sender's profile the receiver is subscribed to has been updated.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
   - type: REPLY_COMMENT_ADDED
     description: A reply to a comment of the receiver on the sending node added.
     fields:
