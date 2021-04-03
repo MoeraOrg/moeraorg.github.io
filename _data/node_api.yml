@@ -520,7 +520,7 @@ objects:
       - url: /domains
         type: POST
         in:
-          struct: DomainInfo
+          struct: DomainAttributes
         out:
           struct: DomainInfo
         auth: root secret or none
@@ -528,18 +528,18 @@ objects:
           Create a new domain with the given hostname. If <code>nodeId</code> is not passed, it is generated
           automatically. If domain registration for this server is public, this request does not require authentication.
         errors:
-          - code: domainInfo.name.blank
-            description: the hostname is empty
           - code: domain.already-exists
-            description: the domain with the given hostname already exists
+            description: a domain with the given hostname already exists
+          - code: domain.node-id-used
+            description: a domain with the given node ID already exists
       - url: /domains/{name}
         type: PUT
         params:
           - type: String
             name: name
-            description: domain hostname
+            description: domain's hostname
         in:
-          struct: DomainInfo
+          struct: DomainAttributes
         out:
           struct: DomainInfo
         auth: root secret
@@ -2001,6 +2001,21 @@ structures:
       - type: boolean
         name: created
         description: <code>true</code> if the credentials are initialized already, <code>false</code> otherwise
+  - name: DomainAttributes
+    fields:
+      - type: String
+        name: name
+        description: domain's hostname or <code>_default_</code> for the default domain
+      - type: UUID
+        name: nodeId
+        description: domain's node ID
+    errors:
+      - code: domainAttributes.name.blank
+        description: the domain name is empty
+      - code: domainAttributes.name.wrong-hostname
+        description: the domain name is not a valid hostname
+      - code: domainAttributes.nodeId.wrong-uuid
+        description: the node ID is not a valid UUID
   - name: DomainAvailable
     fields:
       - type: String
@@ -2014,6 +2029,9 @@ structures:
       - type: UUID
         name: nodeId
         description: domain's node ID
+      - type: timestamp
+        name: createdAt
+        description: domain creation timestamp
     errors:
       - code: domainInfo.name.blank
         description: the domain name is empty
