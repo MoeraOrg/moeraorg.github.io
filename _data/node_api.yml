@@ -2965,7 +2965,8 @@ structures:
           <ul>
             <li><code>feed</code> - subscribe to new stories in the feed;</li>
             <li><code>posting</code> - subscribe to updates to the posting;</li>
-            <li><code>posting-comments</code> - subscribe to new comments to the posting.</li>
+            <li><code>posting-comments</code> - subscribe to new comments to the posting;</li>
+            <li><code>profile</code> - subscribe to updates to the node profile.</li>
           </ul>
       - type: String
         name: feedName
