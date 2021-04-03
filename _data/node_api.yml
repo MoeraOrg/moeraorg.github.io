@@ -367,6 +367,33 @@ objects:
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
+  - name: Contacts object
+    description: Information about all nodes having a relationship with the node.
+    requests:
+      - url: /contacts
+        type: GET
+        params:
+          - type: String
+            name: query
+            description: the search query
+          - type: int
+            name: limit
+            description: maximum number of contacts returned
+        out:
+          struct: ContactInfo
+          array: true
+        description: >
+          Search for contacts matching the search <code>query</code>. Every space-delimited word in the query must
+          case-insensitively match a beginning of the contact's node name or a beginning of any space-delimited word in
+          the contact's full name. The order of words is not significant.
+          <br><br>
+          The node may decide to return less contacts than the given <code>limit</code>.
+          <br><br>
+          The contacts are sorted by their <i>closeness</i> to the node, which is calculated from the number of
+          reactions and comments and their age.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
   - name: Credentials object
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -1958,6 +1985,17 @@ structures:
         description: the login is empty
       - code: credentials.password.blank
         description: the password is empty
+  - name: ContactInfo
+    fields:
+      - type: String
+        name: nodeName
+      - type: String
+        name: fullName
+      - type: float
+        name: closeness
+        description: >
+          closeness of the contact to the node, which is calculated from the number of reactions and comments and
+          their age
   - name: CredentialsCreated
     fields:
       - type: boolean
