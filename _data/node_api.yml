@@ -1675,6 +1675,9 @@ structures:
         array: true
         name: cartes
         description: the cartes
+      - type: timestamp
+        name: createdAt
+        description: cartes creation timestamp
   - name: Choice
     fields:
       - type: String
