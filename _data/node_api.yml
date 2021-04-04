@@ -2852,6 +2852,12 @@ structures:
       - type: boolean
         name: multiline
         description: (<code>string</code>) <code>true</code>, if the value is a multiline text
+      - type: boolean
+        name: never
+        description: (<code>Duration</code>) <code>true</code>, if value <code>never</code> is allowed
+      - type: boolean
+        name: always
+        description: (<code>Duration</code>) <code>true</code>, if value <code>always</code> is allowed
   - name: StoryAttributes
     fields:
       - type: String
