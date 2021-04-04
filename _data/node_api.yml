@@ -2309,6 +2309,9 @@ structures:
       - type: String
         name: heading
         description: heading of the posting
+      - struct: UpdateInfo
+        name: updateInfo
+        description: description of the latest update
       - type: timestamp
         name: createdAt
         description: posting creation timestamp - the real time when the posting was created
@@ -2428,6 +2431,9 @@ structures:
       - type: String
         name: heading
         description: heading of the revision
+      - struct: UpdateInfo
+        name: updateInfo
+        description: description of the latest update
       - type: timestamp
         name: createdAt
         description: revision creation timestamp - the real time when the revision was created
@@ -2505,6 +2511,9 @@ structures:
       - struct: StoryAttributes
         array: true
         description: list of publications in feeds that must be made after creating the posting (for new postings only)
+      - struct: UpdateInfo
+        name: updateInfo
+        description: description of the update
     errors:
       - code: postingText.bodySrc.blank
         description: body text is empty
@@ -3162,6 +3171,14 @@ structures:
         description: >
           The list of <a href="/overview/permissions.html">permission groups</a> assigned to the token. See also the
           <a href="#standard-permission-groups">list of standard permission groups</a>.
+  - name: UpdateInfo
+    fields:
+      - type: boolean
+        name: important
+        description: <code>true</code>, if the update is important, <code>false</code> (the default) otherwise
+      - type: String
+        name: description
+        description: description of the update
   - name: WebPushKey
     fields:
       - type: String
