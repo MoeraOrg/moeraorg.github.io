@@ -1354,11 +1354,14 @@ objects:
           array: true
         out:
           struct: Result
-        auth: admin
+        auth: admin or root secret
         description:
           Update the given settings. If the input contains node settings, they are validated and the first validation
           error is returned, if any. The update is always performed as whole - if there is an error saving any one of
           the settings in the input, none of them are updated.
+          <br><br>
+          If one of the settings to be updated is privileged, <i>root secret</i> authentication is required. If one of
+          the settings to be updated is non-privileged, <i>admin</i> authentication is required.
         errors:
           - code: setting.deserialization-failed
             description: setting value deserialization failed
@@ -2825,6 +2828,9 @@ structures:
       - type: String
         name: defaultValue
         description: default value of the setting
+      - type: boolean
+        name: privileged
+        description: the setting is privileged - may be changed by server owner only
       - type: String
         name: title
         description: human-friendly description of the setting
