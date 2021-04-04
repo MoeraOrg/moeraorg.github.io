@@ -1958,6 +1958,8 @@ structures:
         description: unknown body text format
       - code: commentText.body.blank
         description: body is empty
+      - code: commentText.body.wrong-size
+        description: body is too long
       - code: commentText.body.wrong-encoding
         description: body encoding is incorrect
       - code: commentText.bodyPreview.wrong-encoding
