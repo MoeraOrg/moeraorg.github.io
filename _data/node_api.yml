@@ -1133,6 +1133,14 @@ objects:
     requests:
       - url: /profile
         type: GET
+        params:
+          - type: String
+            name: include
+            description: >
+              Comma-separated list of additional blocks of information that are needed. The values are:
+              <ul>
+                <li><code>source</code> - source text of the bio.
+              </ul>
         out:
           struct: ProfileInfo
         description: Get the profile.
