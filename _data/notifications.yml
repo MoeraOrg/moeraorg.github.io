@@ -176,6 +176,22 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+  - type: POSTING_IMPORTANT_UPDATE
+    description: >
+      An important update was done to the posting the receiver is subscribed to (subscription to comments is enough).
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+      - type: String
+        name: description
+        comment: description of the update
   - type: POSTING_REACTIONS_UPDATED
     description: Reactions have been updated at the posting the receiver is subscribed to.
     fields:
