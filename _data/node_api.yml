@@ -418,17 +418,37 @@ objects:
       - url: /credentials
         type: PUT
         in:
-          struct: Credentials
+          struct: CredentialsChange
         out:
           struct: Result
-        auth: admin
-        description: Update credentials.
+        description: >
+          Update credentials. Either old password or credentials reset token should be set in the input for the
+          operation to succeed. Credentials reset token is not related to the authentication token and usually is
+          sent to the user by E-mail.
+        errors:
+          - code: credentials.login-incorrect
+            description: login incorrect (the old password is wrong)
+          - code: credentials.wrong-reset-token
+            description: credentials reset token is wrong
+          - code: credentials.reset-token-expired
+            description: credentials reset token is expired
       - url: /credentials
         type: DELETE
         out:
           struct: Result
         auth: root secret
         description: Delete credentials.
+      - url: /credentials/reset
+        type: POST
+        out:
+          struct: EmailHint
+        description: >
+          The node generates credentials reset token that is sent to the node admin by E-mail or using any other way
+          that is defined for credentials recovery. This token then may be used to change the credentials without
+          knowing the password.
+        errors:
+          - code: credentials.email-not-set
+            description: E-mail address is not set for the node
   - name: Deleted Postings object
     description: >
       All deleted postings, that are not purged from the database yet.
@@ -1987,17 +2007,6 @@ structures:
       - type: int
         name: total
         description: total number of comments in the posting after the operation
-  - name: Credentials
-    fields:
-      - type: String
-        name: login
-      - type: String
-        name: password
-    errors:
-      - code: credentials.login.blank
-        description: the login is empty
-      - code: credentials.password.blank
-        description: the password is empty
   - name: ContactInfo
     fields:
       - type: String
@@ -2009,6 +2018,34 @@ structures:
         description: >
           closeness of the contact to the node, which is calculated from the number of reactions and comments and
           their age
+  - name: Credentials
+    fields:
+      - type: String
+        name: login
+      - type: String
+        name: password
+    errors:
+      - code: credentials.login.blank
+        description: the login is empty
+      - code: credentials.password.blank
+        description: the password is empty
+  - name: CredentialsChange
+    fields:
+      - type: String
+        name: token
+        description: credentials reset token
+      - type: String
+        name: oldPassword
+        description: the current password
+      - type: String
+        name: login
+      - type: String
+        name: password
+    errors:
+      - code: credentials.login.blank
+        description: the login is empty
+      - code: credentials.password.blank
+        description: the password is empty
   - name: CredentialsCreated
     fields:
       - type: boolean
@@ -2052,6 +2089,12 @@ structures:
         description: the domain name is not a valid hostname
       - code: domainInfo.nodeId.wrong-uuid
         description: the node ID is not a valid UUID
+  - name: EmailHint
+    fields:
+      - type: String
+        name: emailHint
+        description: >
+          a masked E-mail address that should help user to understand which E-mail address was used without revealing it
   - name: FeedInfo
     fields:
       - type: String
