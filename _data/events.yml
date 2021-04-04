@@ -102,6 +102,15 @@ events:
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
     auth: admin
+  - type: PEOPLE_CHANGED
+    description: People information was changed.
+    fields:
+      - type: int
+        name: feedSubscribersTotal
+        description: total number of subscribers of the node
+      - type: int
+        name: feedSubscriptionsTotal
+        description: total number of subscriptions of the node
   - type: PING
     description: Sent periodically to verify status of WebSockets connection.
     auth: admin
