@@ -767,6 +767,72 @@ objects:
             description: <code>before</code> and <code>after</code> parameters are not allowed together
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+  - name: Private Media object
+    description: >
+      Media files that are bound to a particular uploader and may be inaccessible to other clients. Private media files
+      cannot be retrieved by their hash, only by their ID. The ID is unique to the client that uploaded the file and
+      the node the file was uploaded to.
+    requests:
+      - url: /media/private
+        type: POST
+        out:
+          struct: MediaFileInfo
+        auth: owner
+        description: >
+          Upload a new media file. Content of the file is passed in the request body
+        errors:
+          - code: media.wrong-size
+            description: media file is too large
+          - code: media.storage-error
+            description: media file cannot be stored
+      - url: /media/private/{id}/data
+        type: GET
+        description: >
+          Get media file content (returned in the response body).
+        errors:
+          - code: media.not-found
+            description: media file is not found
+      - url: /media/private/{id}/info
+        type: GET
+        out:
+          struct: MediaFileInfo
+        description: >
+          Get media file details.
+        errors:
+          - code: media.not-found
+            description: media file is not found
+  - name: Public Media object
+    description: >
+      Media files that should be accessible to any client. ID of a public media file is SHA-1 hash of its content.
+    requests:
+      - url: /media/public
+        type: POST
+        out:
+          struct: MediaFileInfo
+        auth: owner
+        description: >
+          Upload a new media file. Content of the file is passed in the request body
+        errors:
+          - code: media.wrong-size
+            description: media file is too large
+          - code: media.storage-error
+            description: media file cannot be stored
+      - url: /media/public/{id}/data
+        type: GET
+        description: >
+          Get media file content (returned in the response body).
+        errors:
+          - code: media.not-found
+            description: media file is not found
+      - url: /media/public/{id}/info
+        type: GET
+        out:
+          struct: MediaFileInfo
+        description: >
+          Get media file details.
+        errors:
+          - code: media.not-found
+            description: media file is not found
   - name: Node Name object
     description: >
       The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
@@ -2171,6 +2237,25 @@ structures:
       - type: int
         name: before
         description: change flags for all stories before this moment, inclusive.
+  - name: MediaFileInfo
+    fields:
+      - type: String
+        name: id
+        description: ID of the media file.
+      - type: String
+        name: path
+        description: >
+          virtual location of the media file, relative to the <code>/media</code>
+          <a href="virtual-pages.html">virtual page</a>.
+      - type: int
+        name: width
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video).
+      - type: int
+        name: height
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video).
+      - type: int
+        name: size
+        description: size of the media file in bytes.
   - name: NameToRegister
     fields:
       - type: String
