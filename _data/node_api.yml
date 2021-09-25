@@ -370,7 +370,7 @@ objects:
   - name: Contacts object
     description: Information about all nodes having a relationship with the node.
     requests:
-      - url: /contacts
+      - url: /people/contacts
         type: GET
         params:
           - type: String
@@ -767,7 +767,7 @@ objects:
             description: <code>before</code> and <code>after</code> parameters are not allowed together
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
-  - name: Private Media object
+  - name: Media object (private)
     description: >
       Media files that are bound to a particular uploader and may be inaccessible to other clients. Private media files
       cannot be retrieved by their hash, only by their ID. The ID is unique to the client that uploaded the file and
@@ -801,7 +801,7 @@ objects:
         errors:
           - code: media.not-found
             description: media file is not found
-  - name: Public Media object
+  - name: Media object (public)
     description: >
       Media files that should be accessible to any client. ID of a public media file is SHA-1 hash of its content.
     requests:
