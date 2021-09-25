@@ -42,6 +42,74 @@ objects:
         errors:
           - code: async-operation.not-found
             description: async operation with the given ID is not found
+  - name: Avatars object
+    description: >
+      Avatars of the node. The list of avatars is ordered using ordinals that every avatar has.
+      <br><br>
+      Every avatar has a shape. It is stored and returned solely for client's interpretation. The shape has no meaning
+      for the node and does not affect the avatar image stored at the node.
+    requests:
+      - url: /avatars
+        type: GET
+        out:
+          struct: AvatarInfo
+          array: true
+        description: Get the list of avatars in the ascending order of their ordinals.
+      - url: /avatars
+        type: POST
+        in:
+          struct: AvatarAttributes
+        out:
+          struct: AvatarInfo
+        auth: admin
+        description: >
+          Create a new avatar from a public media file that exists on the node. New public media file is created for
+          the avatar. If avatar's ordinal is not provided in the input, the avatar is assigned an ordinal that is
+          greater than ordinals of all existing avatars.
+        errors:
+          - code: media.storage-error
+            description: media file cannot be stored
+          - code: avatar.media-unsupported
+            description: the type of the source media file is not supported for avatars
+      - url: /avatars/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: avatar ID
+        out:
+          struct: AvatarInfo
+        description: Get an individual avatar.
+        errors:
+          - code: avatar.not-found
+            description: avatar is not found
+      - url: /avatars/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: avatar ID
+        out:
+          struct: Result
+        auth: admin
+        description: Delete an avatar.
+        errors:
+          - code: avatar.not-found
+            description: avatar is not found
+      - url: /avatars/reorder
+        type: POST
+        in:
+          struct: AvatarsOrdered
+        out:
+          struct: AvatarOrdinal
+          array: true
+        auth: admin
+        description: >
+          Reorder avatars. Every avatar mentioned in the input is assigned an ordinal in ascending order as they appear
+          in the input. Ordinals of avatars not mentioned in the input are not touched.
+        errors:
+          - code: avatar.not-found
+            description: avatar is not found
   - name: Cartes object
     description: >
       <a href="/development/protocols/carte.md">Cartes</a> - cryptographic tokens used for authentication on any node
@@ -787,6 +855,10 @@ objects:
             description: media file cannot be stored
       - url: /media/private/{id}/data
         type: GET
+        params:
+          - type: String
+            name: id
+            description: media file ID
         description: >
           Get media file content (returned in the response body).
         errors:
@@ -794,6 +866,10 @@ objects:
             description: media file is not found
       - url: /media/private/{id}/info
         type: GET
+        params:
+          - type: String
+            name: id
+            description: media file ID
         out:
           struct: MediaFileInfo
         description: >
@@ -819,6 +895,10 @@ objects:
             description: media file cannot be stored
       - url: /media/public/{id}/data
         type: GET
+        params:
+          - type: String
+            name: id
+            description: media file ID
         description: >
           Get media file content (returned in the response body).
         errors:
@@ -826,6 +906,10 @@ objects:
             description: media file is not found
       - url: /media/public/{id}/info
         type: GET
+        params:
+          - type: String
+            name: id
+            description: media file ID
         out:
           struct: MediaFileInfo
         description: >
@@ -1714,6 +1798,83 @@ structures:
       - type: String
         name: id
         description: ID of the asyncronous operation that was created
+  - name: AvatarAttributes
+    fields:
+      - type: String
+        name: mediaId
+        description: ID of the public media file used as a source image
+      - type: int
+        name: clipX
+        description: x coordinate of the top-left corner of the clipping square
+      - type: int
+        name: clipY
+        description: y coordinate of the top-left corner of the clipping square
+      - type: int
+        name: clipSize
+        description: size of the clipping square
+      - type: int
+        name: avatarSize
+        description: size of the avatar to be created
+      - type: float
+        name: rotate
+        description: rotation angle of the source image
+      - type: String
+        name: shape
+        description: shape of the avatar
+      - type: int
+        name: ordinal
+        description: ordinal of the avatar, may be absent
+    errors:
+      - code: avatarAttributes.mediaId.blank
+        description: media ID is not set
+      - code: avatarAttributes.mediaId.not-found
+        description: the source media is not found
+      - code: avatarAttributes.clipX.out-of-range
+        description: clipping area left side is out of the image bounds
+      - code: avatarAttributes.clipY.out-of-range
+        description: clipping area top side is out of the image bounds
+      - code: avatarAttributes.clipSize.out-of-range
+        description: clipping area size is out of range (usually too small)
+      - code: avatarAttributes.avatarSize.out-of-range
+        description: avatar size is out of range (usually too small)
+  - name: AvatarInfo
+    fields:
+      - type: String
+        name: id
+        description: ID of the avatar
+      - type: String
+        name: mediaId
+        description: ID of the media file
+      - type: String
+        name: path
+        description: >
+          virtual location of the media file, relative to the <code>/media</code>
+          <a href="virtual-pages.html">virtual page</a>
+      - type: int
+        name: width
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: int
+        name: height
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: String
+        name: shape
+        description: shape of the avatar
+      - type: int
+        name: ordinal
+        description: ordinal of the avatar
+  - name: AvatarOrdinal
+    fields:
+      - type: String
+        name: id
+        description: ID of the avatar
+      - type: int
+        name: ordinal
+        description: ordinal of the avatar
+  - name: AvatarsOrdered
+    fields:
+      - type: String[]
+        name: ids
+        description: IDs of avatars
   - name: Body
     fields:
       - type: String
@@ -2222,40 +2383,40 @@ structures:
     fields:
       - type: int
         name: notViewed
-        description: number of stories that have not been viewed yet.
+        description: number of stories that have not been viewed yet
       - type: int
         name: notRead
-        description: number of stories that have not been read yet.
+        description: number of stories that have not been read yet
   - name: FeedStatusChange
     fields:
       - type: boolean
         name: viewed
-        description: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+        description: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed)
       - type: boolean
         name: read
-        description: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
+        description: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed)
       - type: int
         name: before
-        description: change flags for all stories before this moment, inclusive.
+        description: change flags for all stories before this moment, inclusive
   - name: MediaFileInfo
     fields:
       - type: String
         name: id
-        description: ID of the media file.
+        description: ID of the media file
       - type: String
         name: path
         description: >
           virtual location of the media file, relative to the <code>/media</code>
-          <a href="virtual-pages.html">virtual page</a>.
+          <a href="virtual-pages.html">virtual page</a>
       - type: int
         name: width
-        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video).
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
       - type: int
         name: height
-        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video).
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
       - type: int
         name: size
-        description: size of the media file in bytes.
+        description: size of the media file in bytes
   - name: NameToRegister
     fields:
       - type: String
@@ -2316,7 +2477,7 @@ structures:
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
       - name: manage
-        description: any modification of the node name, prolonging it etc.
+        description: any modification of the node name, prolonging it etc
   - name: PeopleGeneralInfo
     fields:
       - type: int
@@ -3013,10 +3174,10 @@ structures:
           <code>false</code> otherwise
       - type: boolean
         name: viewed
-        description: value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+        description: value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed)
       - type: boolean
         name: read
-        description: value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
+        description: value of the <code>read</code> flag (<code>null</code>, if the flag is not changed)
   - name: StoryInfo
     fields:
       - type: String
@@ -3245,7 +3406,7 @@ structures:
         description: the token
       - type: String[]
         name: permissions
-        description: The list of <a href="/overview/permissions.html">permission groups</a> assigned to the token.
+        description: the list of <a href="/overview/permissions.html">permission groups</a> assigned to the token
   - name: TokenInfo
     fields:
       - type: String
@@ -3253,7 +3414,7 @@ structures:
         description: the token
       - type: boolean
         name: valid
-        description: <code>true</code> if the token is valid, <code>false</code> otherwise.
+        description: <code>true</code> if the token is valid, <code>false</code> otherwise
       - type: String[]
         name: permissions
         description: >
