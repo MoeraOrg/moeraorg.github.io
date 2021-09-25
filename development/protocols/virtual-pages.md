@@ -26,6 +26,14 @@ the given ID.
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
 
+`/media/private/<id>.<extension>`
+
+Private media file. The `extension` does not affect the result.
+
+`/media/public/<id>.<extension>`
+
+Public media file. The `extension` does not affect the result.
+
 `/news`
 
 Newsfeed - publications from the nodes this node is subscribed to in
