@@ -50,27 +50,66 @@ events:
   - type: CLIENT_SETTINGS_CHANGED
     description: Some client settings were changed.
     auth: admin
-  - type: DRAFT_POSTING_ADDED
-    description: A draft posting was added.
+  - type: DRAFT_ADDED
+    description: A draft was added.
     auth: admin
     fields:
       - type: String
         name: id
-        comment: the posting ID
-  - type: DRAFT_POSTING_DELETED
-    description: A draft posting was deleted.
+      - type: String
+        name: draftType
+        comment: >
+          type of the draft (see <code><a href="node-api.html#DraftInfo">DraftInfo</a>.draftType</code> for the list of
+          possible values)
+      - type: String
+        name: receiverName
+        comment: name of the node the draft is related to
+      - type: String
+        name: receiverPostingId
+        comment: ID of the posting, set for all types, except <code>new-posting</code>
+      - type: String
+        name: receiverCommentId
+        comment: ID of the comment, set for <code>comment-update</code> type
+  - type: DRAFT_DELETED
+    description: A draft was deleted.
     auth: admin
     fields:
       - type: String
         name: id
-        comment: the posting ID
-  - type: DRAFT_POSTING_UPDATED
-    description: A draft posting was updated.
+      - type: String
+        name: draftType
+        comment: >
+          type of the draft (see <code><a href="node-api.html#DraftInfo">DraftInfo</a>.draftType</code> for the list of
+          possible values)
+      - type: String
+        name: receiverName
+        comment: name of the node the draft is related to
+      - type: String
+        name: receiverPostingId
+        comment: ID of the posting, set for all types, except <code>new-posting</code>
+      - type: String
+        name: receiverCommentId
+        comment: ID of the comment, set for <code>comment-update</code> type
+  - type: DRAFT_UPDATED
+    description: A draft was updated.
     auth: admin
     fields:
       - type: String
         name: id
-        comment: the posting ID
+      - type: String
+        name: draftType
+        comment: >
+          type of the draft (see <code><a href="node-api.html#DraftInfo">DraftInfo</a>.draftType</code> for the list of
+          possible values)
+      - type: String
+        name: receiverName
+        comment: name of the node the draft is related to
+      - type: String
+        name: receiverPostingId
+        comment: ID of the posting, set for all types, except <code>new-posting</code>
+      - type: String
+        name: receiverCommentId
+        comment: ID of the comment, set for <code>comment-update</code> type
   - type: FEED_STATUS_UPDATED
     description: Number of non-viewed/non-read stories in a feed was updated.
     auth: admin
@@ -134,20 +173,6 @@ events:
         comment: the current number of comments
   - type: POSTING_DELETED
     description: A posting was deleted.
-    fields:
-      - type: String
-        name: id
-        comment: the posting ID
-  - type: POSTING_DRAFT_REVISION_DELETED
-    description: Draft revision of a posting was deleted.
-    auth: admin
-    fields:
-      - type: String
-        name: id
-        comment: the posting ID
-  - type: POSTING_DRAFT_REVISION_UPDATED
-    description: Draft revision of a posting was updated.
-    auth: admin
     fields:
       - type: String
         name: id
