@@ -800,8 +800,8 @@ objects:
             description: name of the feed
         out:
           struct: FeedStatus
-        auth: admin
-        description: Get information about non-read and non-viewed stories in the feed.
+        auth: admin or none
+        description: Get information about total number and number of non-read and non-viewed stories in the feed.
         errors:
           - code: feed.not-found
             description: there is no accessible feed with this name
@@ -2565,14 +2565,29 @@ structures:
         array: true
         name: stories
         description: the stories
+      - type: int
+        name: totalInPast
+        description: total number of stories in the feed before this slice
+      - type: int
+        name: totalInFuture
+        description: total number of stories in the feed after this slice
   - name: FeedStatus
     fields:
       - type: int
+        name: total
+        description: total number of stories
+      - type: int
+        name: totalPinned
+        description: total number of pinned stories
+      - type: int
         name: notViewed
-        description: number of stories that have not been viewed yet
+        description: number of stories that have not been viewed yet, admin only
       - type: int
         name: notRead
-        description: number of stories that have not been read yet
+        description: number of stories that have not been read yet, admin only
+      - type: int
+        name: notViewedMoment
+        description: moment of the oldest non-viewed story, admin only, may be absent
   - name: FeedStatusChange
     fields:
       - type: boolean

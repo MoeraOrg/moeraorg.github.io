@@ -111,18 +111,14 @@ events:
         name: receiverCommentId
         comment: ID of the comment, set for <code>comment-update</code> type
   - type: FEED_STATUS_UPDATED
-    description: Number of non-viewed/non-read stories in a feed was updated.
-    auth: admin
+    description: Status of a feed was updated.
     fields:
       - type: String
         name: feedName
         comment: name of the feed
-      - type: int
-        name: notViewed
-        comment: number of stories that have not been viewed yet.
-      - type: int
-        name: notRead
-        comment: number of stories that have not been read yet.
+      - struct: FeedStatus
+        name: status
+        comment: status of the feed
   - type: NODE_NAME_CHANGED
     description: The name of the node or one or more of important profile fields were changed.
     fields:
