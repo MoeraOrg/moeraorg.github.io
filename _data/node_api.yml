@@ -1500,42 +1500,6 @@ objects:
       ones. By convention, the client name is added to the prefix (<code>client.&lt;client name>.</code>) to be able to
       store settings of several different clients at the same time.
     requests:
-      - url: /settings/node
-        type: GET
-        params:
-          - type: String
-            name: prefix
-            description: filter settings whose names start with the given prefix, case-sensitive
-        out:
-          struct: SettingInfo
-          array: true
-        auth: admin
-        description: >
-          Get all node settings, sorted by name. If a setting has not changed its value from the default, it is omitted.
-      - url: /settings/client
-        type: GET
-        params:
-          - type: String
-            name: prefix
-            description: >
-              filter settings whose names start with the given prefix, case-sensitive (<code>client.</code> prefix
-              must be included)
-        out:
-          struct: SettingInfo
-          array: true
-        auth: admin
-        description: Get all client settings, sorted by name.
-      - url: /settings/node/metadata
-        type: GET
-        params:
-          - type: String
-            name: prefix
-            description: filter settings whose names start with the given prefix, case-sensitive
-        out:
-          struct: SettingMetaInfo
-          array: true
-        auth: admin
-        description: Get all node settings metadata, sorted by name.
       - url: /settings
         type: PUT
         in:
@@ -1551,6 +1515,62 @@ objects:
           <br><br>
           If one of the settings to be updated is privileged, <i>root secret</i> authentication is required. If one of
           the settings to be updated is non-privileged, <i>admin</i> authentication is required.
+        errors:
+          - code: setting.deserialization-failed
+            description: setting value deserialization failed
+          - code: setting.cannot-convert
+            description: cannot convert value to the setting type
+          - code: setting.invalid-value
+            description: invalid value for the setting
+          - code: setting.internal
+            description: cannot set value of an internal setting
+          - code: setting.unknown
+            description: unknown setting
+      - url: /settings/client
+        type: GET
+        params:
+          - type: String
+            name: prefix
+            description: >
+              filter settings whose names start with the given prefix, case-sensitive (<code>client.</code> prefix
+              must be included)
+        out:
+          struct: SettingInfo
+          array: true
+        auth: admin
+        description: Get all client settings, sorted by name.
+      - url: /settings/node
+        type: GET
+        params:
+          - type: String
+            name: prefix
+            description: filter settings whose names start with the given prefix, case-sensitive
+        out:
+          struct: SettingInfo
+          array: true
+        auth: admin
+        description: >
+          Get all node settings, sorted by name. If a setting has not changed its value from the default, it is omitted.
+      - url: /settings/node/metadata
+        type: GET
+        params:
+          - type: String
+            name: prefix
+            description: filter settings whose names start with the given prefix, case-sensitive
+        out:
+          struct: SettingMetaInfo
+          array: true
+        auth: admin
+        description: Get all node settings metadata, sorted by name.
+      - url: /settings/node/metadata
+        type: PUT
+        in:
+          struct: SettingMetaAttributes
+          array: true
+        out:
+          struct: Result
+        auth: root secret
+        description: Update node settings metadata, overriding built-in defaults.
         errors:
           - code: setting.deserialization-failed
             description: setting value deserialization failed
@@ -3358,6 +3378,19 @@ structures:
       - type: String
         name: value
         description: value of the setting
+  - name: SettingMetaAttributes
+    fields:
+      - type: String
+        name: name
+        description: name of the setting
+      - type: String
+        name: defaultValue
+        description: >
+          default value of the setting (if absent or <code>null</code>, the built-in default value will be used)
+      - type: boolean
+        name: privileged
+        description: >
+          the setting should be privileged (if absent or <code>null</code>, the built-in value of the flag will be used)
   - name: SettingMetaInfo
     fields:
       - type: String
