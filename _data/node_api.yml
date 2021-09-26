@@ -1322,6 +1322,47 @@ objects:
           struct: ProfileInfo
         auth: admin
         description: Update the profile.
+  - name: Push Notifications object
+    description: >
+      SSE channels for delivering push notifications from the home node. When a client opens an SSE connection for
+      the first time, an individual push notifications channel for this client is created (every client must generate
+      a unique random identifier for its channel). After that, push notifications are stacked for this channel and
+      the client should poll the channel periodically (or keep it open constantly) to receive them. If the client
+      does not poll the channel for a long time, the channel is deleted.
+    requests:
+      - url: /push/{clientId}
+        type: GET
+        params:
+          - type: String
+            name: clientId
+            description: ID of the client
+          - type: int
+            name: after
+            description: >
+              moment of the last notification already received by the client (<code>Last-Event-ID</code> header may be
+              used instead of this parameter)
+        out:
+          struct: PushContent
+          array: true
+        auth: admin
+        description: >
+          Open the push notifications channel for the connected client or create a new one, if it does not exist. This
+          request returns a live SSE stream, where <i>events</i> are notifications in a form of JSON-encoded
+          <a href="#PushContent"><code>PushContent</code></a> structures and <i>event IDs</i> are the moments, when
+          these notifications were generated. When the channel is opened, the node discards all notifications up to
+          <code>after</code> (if provided) and delivers the rest of notifications till the current moment. After that,
+          the notifications are delivered in real time until the channel is closed. If a client with the same
+          <code>clientId</code> opens a channel from another device, this channel is automatically closed by the node.
+      - url: /push/{clientId}
+        type: DELETE
+        params:
+          - type: String
+            name: clientId
+            description: ID of the client
+        out:
+          struct: Result
+        auth: admin
+        description: Delete the channel with all notifications in it.
   - name: Remote Comments object
     description: Comments to postings located on other nodes.
     requests:
@@ -2447,6 +2488,17 @@ structures:
       - type: int
         name: before
         description: change flags for all stories before this moment, inclusive
+  - name: FeedWithStatus
+    fields:
+      - type: String
+        name: feedName
+        description: name of the feed
+      - type: int
+        name: notViewed
+        description: number of stories in the feed that have not been viewed yet
+      - type: int
+        name: notRead
+        description: number of stories in the feed that have not been read yet
   - name: MediaFileInfo
     fields:
       - type: String
@@ -2921,6 +2973,26 @@ structures:
     operations:
       - name: edit
         description: change the profile
+  - name: PushContent
+    fields:
+      - type: String
+        name: type
+        description: >
+          type of the notification, one of:
+          <ul>
+            <li><code>story-added</code> - a story was added to a feed;</li>
+            <li><code>story-deleted</code> - a story was deleted from a feed;</li>
+            <li><code>feed-updated</code> - feed status was updated.</li>
+          </ul>
+      - type: String
+        name: id
+        description: ID of the story (<code>story-deleted</code> notifications only)
+      - struct: StoryInfo
+        name: story
+        description: the story (<code>story-added</code> notifications only)
+      - struct: FeedWithStatus
+        name: feedStatus
+        description: status of the feed (<code>feed-updated</code> notifications only)
   - name: ReactionAttributes
     fields:
       - type: boolean
