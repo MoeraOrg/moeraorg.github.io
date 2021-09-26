@@ -1,4 +1,31 @@
 events:
+  - type: AVATAR_ADDED
+    description: An avatar was added.
+    fields:
+      - struct: AvatarInfo
+        name: avatar
+        comment: the avatar
+  - type: AVATAR_DELETED
+    description: An avatar was deleted.
+    fields:
+      - type: String
+        name: id
+        comment: ID of the avatar
+      - type: String
+        name: mediaId
+        comment: ID of the media file
+  - type: AVATAR_ORDERED
+    description: An avatar was assigned a new ordinal.
+    fields:
+      - type: String
+        name: id
+        comment: ID of the avatar
+      - type: String
+        name: mediaId
+        comment: ID of the media file
+      - type: int
+        name: ordinal
+        comment: ordinal of the avatar
   - type: COMMENT_ADDED
     description: A comment was added.
     fields:
