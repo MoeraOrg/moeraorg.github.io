@@ -126,7 +126,18 @@ body_class: body-pink
             <tbody>
                 {% for field in event.fields %}
                     <tr>
-                        <td><code>{{ field.type }}</code></td>
+                        <td>
+                            {% if field.type %}
+                                <code>{{ field.type }}</code>
+                            {% endif %}
+                            {% if field.struct %}
+                                <code>
+                                    <a href="node-api.html#{{ field.struct }}">
+                                        {{ field.struct }}{% if field.array == true %}[]{% endif %}
+                                    </a>
+                                </code>
+                            {% endif %}
+                        </td>
                         <td><code>{{ field.name }}</code></td>
                         <td>{{ field.comment }}</td>
                     </tr>

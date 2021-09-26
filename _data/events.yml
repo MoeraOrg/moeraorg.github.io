@@ -95,10 +95,13 @@ events:
         comment: the new full name
       - type: String
         name: gender
-        description: the new node owners's gender
+        comment: the new node owners's gender
       - type: String
         name: title
-        description: the new node title
+        comment: the new node title
+      - struct: AvatarImage
+        name: avatar
+        comment: the new avatar
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
     auth: admin
@@ -107,10 +110,10 @@ events:
     fields:
       - type: int
         name: feedSubscribersTotal
-        description: total number of subscribers of the node
+        comment: total number of subscribers of the node
       - type: int
         name: feedSubscriptionsTotal
-        description: total number of subscriptions of the node
+        comment: total number of subscriptions of the node
   - type: PING
     description: Sent periodically to verify status of WebSockets connection.
     auth: admin
@@ -260,6 +263,15 @@ events:
       - type: boolean
         name: correct
         comment: verification result
+  - type: REMOTE_NODE_AVATAR_CHANGED
+    description: Avatar of a remote node was changed.
+    fields:
+      - type: String
+        name: nodeName
+        comment: the remote node name
+      - struct: AvatarImage
+        name: avatar
+        comment: the remote node avatar
   - type: REMOTE_NODE_FULL_NAME_CHANGED
     description: Name of a remote node was changed.
     fields:
@@ -440,6 +452,9 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - struct: AvatarImage
+        name: summaryAvatar
+        comment: avatar of the summary of the story
       - type: String
         name: summary
         comment: user-readable summary of the story
@@ -494,6 +509,9 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - struct: AvatarImage
+        name: summaryAvatar
+        comment: avatar of the summary of the story
       - type: String
         name: summary
         comment: user-readable summary of the story
@@ -548,6 +566,9 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - struct: AvatarImage
+        name: summaryAvatar
+        comment: avatar of the summary of the story
       - type: String
         name: summary
         comment: user-readable summary of the story
@@ -591,6 +612,9 @@ events:
       - type: String
         name: fullName
         comment: full name of the subscribed node
+      - struct: AvatarImage
+        name: avatar
+        comment: avatar of the subscribed node
       - type: timestamp
         name: createdAt
         comment: subscription creation timestamp
@@ -615,6 +639,9 @@ events:
       - type: String
         name: fullName
         comment: full name of the subscribed node
+      - struct: AvatarImage
+        name: avatar
+        comment: avatar of the subscribed node
       - type: timestamp
         name: createdAt
         comment: subscription creation timestamp
@@ -623,58 +650,64 @@ events:
     fields:
       - type: String
         name: id
-        description: subscription ID
+        comment: subscription ID
       - type: String
         name: subscriptionType
         comment: subscription type
       - type: String
         name: feedName
-        description: feed name on this node that receives notifications
+        comment: feed name on this node that receives notifications
       - type: String
         name: remoteSubscriberId
-        description: ID of the subscriber on the remote node
+        comment: ID of the subscriber on the remote node
       - type: String
         name: remoteNodeName
-        description: name of the node this node is subscribed to
+        comment: name of the node this node is subscribed to
       - type: String
         name: remoteFullName
-        description: full name of the node this node is subscribed to
+        comment: full name of the node this node is subscribed to
+      - struct: AvatarImage
+        name: remoteAvatar
+        comment: avatar of the node this node is subscribed to
       - type: String
         name: remoteFeedName
-        description: feed name on the remote node, if the subscription type requires one
+        comment: feed name on the remote node, if the subscription type requires one
       - type: String
         name: remotePostingId
-        description: posting ID on the remote node, if the subscription type requires one
+        comment: posting ID on the remote node, if the subscription type requires one
       - type: timestamp
         name: createdAt
-        description: subscription creation timestamp
+        comment: subscription creation timestamp
   - type: SUBSCRIPTION_DELETED
     description: This node unsubscribed from notifications from a remote node.
     fields:
       - type: String
         name: id
-        description: subscription ID
+        comment: subscription ID
       - type: String
         name: subscriptionType
         comment: subscription type
       - type: String
         name: feedName
-        description: feed name on this node that receives notifications
+        comment: feed name on this node that receives notifications
       - type: String
         name: remoteSubscriberId
-        description: ID of the subscriber on the remote node
+        comment: ID of the subscriber on the remote node
       - type: String
         name: remoteNodeName
-        description: name of the node this node is subscribed to
+        comment: name of the node this node is subscribed to
       - type: String
         name: remoteFullName
-        description: full name of the node this node is subscribed to
+        comment: full name of the node this node is subscribed to
+      - struct: AvatarImage
+        name: remoteAvatar
+        comment: avatar of the node this node is subscribed to
       - type: String
         name: remoteFeedName
-        description: feed name on the remote node, if the subscription type requires one
+        comment: feed name on the remote node, if the subscription type requires one
       - type: String
         name: remotePostingId
-        description: posting ID on the remote node, if the subscription type requires one
+        comment: posting ID on the remote node, if the subscription type requires one
       - type: timestamp
         name: createdAt
-        description: subscription creation timestamp
+        comment: subscription creation timestamp
