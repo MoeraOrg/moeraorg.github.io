@@ -14,6 +14,9 @@ notifications:
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        comment: avatar of the reaction owner
       - type: boolean
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
@@ -41,6 +44,9 @@ notifications:
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        comment: avatar of the reaction owner
       - type: boolean
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
@@ -83,6 +89,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - struct: AvatarImage
+        name: commentOwnerAvatar
+        comment: avatar of the comment owner
       - type: String
         name: commentHeading
         comment: heading of the comment
@@ -128,6 +137,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - struct: AvatarImage
+        name: commentOwnerAvatar
+        comment: avatar of the comment owner
       - type: String
         name: postingHeading
         comment: heading of the posting
@@ -155,6 +167,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - struct: AvatarImage
+        name: commentOwnerAvatar
+        comment: avatar of the comment owner
   - type: POSTING_COMMENTS_UPDATED
     description: Comments have been updated at the posting the receiver is subscribed to.
     fields:
@@ -164,7 +179,7 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
-      - struct: int
+      - type: int
         name: total
         comment: updated total number of comments to the posting
   - type: POSTING_DELETED
@@ -240,6 +255,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - struct: AvatarImage
+        name: commentOwnerAvatar
+        comment: avatar of the comment owner
       - type: String
         name: commentHeading
         comment: heading of the comment
@@ -264,3 +282,6 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - struct: AvatarImage
+        name: commentOwnerAvatar
+        comment: avatar of the comment owner
