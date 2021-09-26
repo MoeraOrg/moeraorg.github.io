@@ -670,13 +670,28 @@ objects:
           Get an available domain name that is recommended for the given node name. The domain name is usually chosen to
           be close to the node name in English transcription. If domain registration for this server is not public, this
           request is not accessible.
-  - name: Draft Postings object
+  - name: Drafts object
     description: >
-      All draft postings.
+      All drafts. This is an universal interface for managing all types for drafts to all types of entries. Drafts of
+      entries located on remote nodes are all stored on the home node.
     requests:
-      - url: /draft-postings
+      - url: /drafts
         type: GET
         params:
+          - type: String
+            name: draftType
+            description: >
+              type of the drafts, mandatory (see <code><a href="#DraftInfo">DraftInfo</a>.draftType</code> for the list
+              of possible values)
+          - type: String
+            name: nodeName
+            description: name of the node the drafts are related to, mandatory
+          - type: String
+            name: postingId
+            description: ID of the posting, mandatory for all types, except <code>new-posting</code>
+          - type: String
+            name: commentId
+            description: ID of the comment, mandatory for <code>comment-update</code> type
           - type: int
             name: page
             description: page number, 0 by default
@@ -684,70 +699,69 @@ objects:
             name: limit
             description: page size (maximum number of postings returned), the default is defined by the node
         out:
-          struct: PostingInfo
+          struct: DraftInfo
           array: true
         auth: admin
         description: >
-          Get the list of draft postings, page by page. The node may decide to use smaller page size than the given
-          <code>limit</code>. The postings are always sorted by the creation timestamp, descending.
+          Get the list of drafts, page by page, filtered by the given criteria. The node may decide to use smaller page
+          size than the given <code>limit</code>. The drafts are always sorted by the creation timestamp, descending.
         errors:
           - code: page.invalid
             description: <code>page</code> parameter has an invalid value
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
-      - url: /draft-postings
+      - url: /drafts
         type: POST
         in:
-          struct: PostingText
+          struct: DraftText
         out:
-          struct: PostingInfo
+          struct: DraftInfo
         auth: admin
         entitled: true
-        description: Create a new draft posting from the text given.
-      - url: /draft-postings/{id}
+        description: Create a new draft from the text given.
+      - url: /drafts/{id}
         type: GET
         params:
           - type: String
             name: id
-            description: ID of the posting
+            description: ID of the draft
         out:
-          struct: PostingInfo
+          struct: DraftInfo
         auth: admin
-        description: Get an individual draft posting.
+        description: Get an individual draft.
         errors:
-          - code: posting.not-found
-            description: there is no draft posting with the given ID
-      - url: /draft-postings/{id}
+          - code: draft.not-found
+            description: there is no draft with the given ID
+      - url: /drafts/{id}
         type: PUT
         params:
           - type: String
             name: id
-            description: ID of the draft posting
+            description: ID of the draft
         in:
-          struct: PostingText
+          struct: DraftText
         out:
-          struct: PostingInfo
+          struct: DraftInfo
         auth: admin
         entitled: true
-        description: Update the draft posting, overwriting the current revision of it.
+        description: Update the draft.
         errors:
-          - code: posting.not-found
-            description: there is no draft posting with the given ID
-      - url: /draft-postings/{id}
+          - code: draft.not-found
+            description: there is no draft with the given ID
+      - url: /draft/{id}
         type: DELETE
         params:
           - type: String
             name: id
-            description: ID of the draft posting
+            description: ID of the draft
         out:
           struct: Result
         auth: admin
         description: >
-          Delete the draft posting. The posting may not be purged from the database immediately, but preserved for some
-          period of time to give a chance to restore it.
+          Delete the draft.
         errors:
-          - code: posting.not-found
-            description: there is no draft posting with the given ID
+          - code: draft.not-found
+            description: there is no draft with the given ID
   - name: Feeds object
     description: >
       Feed is a set of stories collected for some purpose. The stories are sorted by
@@ -1137,52 +1151,6 @@ objects:
             description: there is no revision with the given ID
           - code: posting-revision.already-current
             description: the given revision is already the current one
-  - name: Posting Draft Revision object
-    description: >
-      The draft revisions of the posting - the special revision designed for storing pending changes to the posting
-      that are not published yet.
-    requests:
-      - url: /postings/{postingId}/revisions/draft
-        type: GET
-        params:
-          - type: String
-            name: postingId
-            description: ID of the posting
-        out:
-          struct: PostingInfo
-        auth: admin
-        description: Get the posting with the changes stored in its draft revision.
-        errors:
-          - code: posting.not-found
-            description: there is no posting with the given ID
-      - url: /postings/{postingId}/revisions/draft
-        type: PUT
-        params:
-          - type: String
-            name: postingId
-            description: ID of the posting
-        in:
-          struct: PostingText
-        out:
-          struct: PostingInfo
-        auth: admin
-        description: Update the draft revision of the posting.
-        errors:
-          - code: posting.not-found
-            description: there is no posting with the given ID
-      - url: /postings/{postingId}/revisions/draft
-        type: DELETE
-        params:
-          - type: String
-            name: postingId
-            description: ID of the posting
-        out:
-          struct: Result
-        auth: admin
-        description: Erase all changes stored in the draft revision of the posting.
-        errors:
-          - code: posting.not-found
-            description: there is no posting with the given ID
   - name: Posting Reactions object
     description: Reactions ("Likes") - simple textless answers to a posting.
     requests:
@@ -1353,6 +1321,13 @@ objects:
           <code>after</code> (if provided) and delivers the rest of notifications till the current moment. After that,
           the notifications are delivered in real time until the channel is closed. If a client with the same
           <code>clientId</code> opens a channel from another device, this channel is automatically closed by the node.
+        errors:
+          - code: push.clientId.blank
+            description: client ID is not set
+          - code: push.clientId.wrong-size
+            description: client ID is too long
+          - code: push.too-many-clients
+            description: too many push clients
       - url: /push/{clientId}
         type: DELETE
         params:
@@ -1363,6 +1338,9 @@ objects:
           struct: Result
         auth: admin
         description: Delete the channel with all notifications in it.
+        errors:
+          - code: push.not-found
+            description: push client is not found
   - name: Remote Comments object
     description: Comments to postings located on other nodes.
     requests:
@@ -2379,6 +2357,154 @@ structures:
         description: the domain name is not a valid hostname
       - code: domainInfo.nodeId.wrong-uuid
         description: the node ID is not a valid UUID
+  - name: DraftInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: draftType
+        description: >
+          type of the draft, one of:
+          <ul>
+            <li><code>new-posting</code> - draft of a new posting;</li>
+            <li><code>posting-update</code> - draft of an update to a posting;</li>
+            <li><code>new-comment</code> - draft of a new comment;</li>
+            <li><code>comment-update</code> - draft of an update to a comment.</li>
+          </ul>
+      - type: String
+        name: receiverName
+        description: name of the node the draft is related to
+      - type: String
+        name: receiverPostingId
+        description: ID of the posting, set for all types, except <code>new-posting</code>
+      - type: String
+        name: receiverCommentId
+        description: ID of the comment, set for <code>comment-update</code> type
+      - type: timestamp
+        name: createdAt
+        description: draft creation timestamp - the real time when the draft was created
+      - type: timestamp
+        name: editedAt
+        description: draft editing timestamp - the last time the draft was updated
+      - type: timestamp
+        name: deadline
+        description: draft purging timestamp - the time when the draft will be purged from the database, if not updated
+      - type: String
+        name: ownerFullName
+        description: full name of the posting's/comment's owner
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: avatar of the posting's/comment's owner
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the posting accepts
+      - type: boolean
+        name: reactionsVisible
+        description: >
+          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
+          posting and reaction owners, <code>false</code> otherwise
+      - type: boolean
+        name: reactionTotalsVisible
+        description: >
+          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
+          <code>false</code> otherwise
+      - type: String
+        name: bodySrc
+        description: the source text of the draft, a string representation of a JSON structure
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: body
+        description: body of the draft, a string representation of a JSON structure
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the draft, see detailed description in
+          <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
+      - type: String
+        name: heading
+        description: heading of the draft
+      - type: int
+        name: publishAt
+        description: story publication timestamp - the time the story must be published under in the feed
+      - struct: UpdateInfo
+        name: updateInfo
+        description: description of the update
+  - name: DraftText
+    fields:
+      - type: String
+        name: draftType
+        description: >
+          type of the draft (see <code><a href="#DraftInfo">DraftInfo</a>.draftType</code> for the list of possible
+          values)
+      - type: String
+        name: receiverName
+        description: name of the node the draft is related to
+      - type: String
+        name: receiverPostingId
+        description: ID of the posting, mandatory for all types, except <code>new-posting</code>
+      - type: String
+        name: receiverCommentId
+        description: ID of the comment, mandatory for <code>comment-update</code> type
+      - type: String
+        name: ownerFullName
+        description: full name of the posting's/comment's owner
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: avatar of the posting's/comment's owner
+      - struct: AcceptedReactions
+        name: acceptedReactions
+        description: types of reactions that the posting accepts
+      - type: boolean
+        name: reactionsVisible
+        description: >
+          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
+          posting and reaction owners, <code>false</code> otherwise
+      - type: boolean
+        name: reactionTotalsVisible
+        description: >
+          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
+          <code>false</code> otherwise
+      - type: String
+        name: bodySrc
+        description: the source text of the draft, a string representation of a JSON structure
+      - type: String
+        name: bodySrcFormat
+        description: >
+          format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: int
+        name: publishAt
+        description: story publication timestamp - the time the story must be published under in the feed
+      - struct: UpdateInfo
+        name: updateInfo
+        description: description of the update
+    errors:
+      - code: draftText.postingId.blank
+        description: posting ID is not set
+      - code: draftText.commentId.blank
+        description: comment ID is not set
+      - code: draftText.ownerFullName.wrong-size
+        description: owner's full name is too long
+      - code: draftText.ownerAvatar.mediaId.not-found
+        description: owner's avatar is not found
+      - code: draftText.bodySrc.wrong-size
+        description: body text is too long
+      - code: draftText.bodySrc.wrong-encoding
+        description: body text encoding is incorrect
+      - code: draftText.bodySrcFormat.unknown
+        description: unknown body text format
+      - code: draftText.acceptedReactions.positive.wrong-size
+        description: list of accepted positive reactions is too long
+      - code: draftText.acceptedReactions.positive.wrong-pattern
+        description: list of accepted positive reactions has wrong format
+      - code: draftText.acceptedReactions.negative.wrong-size
+        description: list of accepted negative reactions is too long
+      - code: draftText.acceptedReactions.negative.wrong-pattern
+        description: list of accepted negative reactions has wrong format
   - name: EmailHint
     fields:
       - type: String
@@ -2670,14 +2796,6 @@ structures:
         name: deadline
         description: >
           posting purging timestamp - the time when the deleted posting will be purged from the database, may be absent
-      - type: boolean
-        name: draft
-        description: <code>true</code>, if the posting is a draft, <code>false</code> otherwise
-      - type: boolean
-        name: draftPending
-        description: >
-          <code>true</code>, if the posting has a pending draft revision, <code>false</code> otherwise, may be absent
-          if not requested
       - type: byte[]
         name: signature
         description: >
@@ -2845,6 +2963,7 @@ structures:
           <code>false</code> otherwise
       - struct: StoryAttributes
         array: true
+        name: publications
         description: list of publications in feeds that must be made after creating the posting (for new postings only)
       - struct: UpdateInfo
         name: updateInfo
