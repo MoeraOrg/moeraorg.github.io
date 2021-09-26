@@ -44,7 +44,7 @@ objects:
             description: async operation with the given ID is not found
   - name: Avatars object
     description: >
-      Avatars of the node. The list of avatars is ordered using ordinals that every avatar has.
+      Avatars of the node's owner. The list of avatars is ordered using ordinals that every avatar has.
       <br><br>
       Every avatar has a shape. It is stored and returned solely for client's interpretation. The shape has no meaning
       for the node and does not affect the avatar image stored at the node.
@@ -1781,6 +1781,9 @@ structures:
       - type: String
         name: remoteFullName
         description: full name of the remote node
+      - struct: AvatarImage
+        name: remoteAvatar
+        description: avatar of the remote node
       - type: String
         name: remotePostingId
         description: ID of the posting on the remote node
@@ -1837,6 +1840,39 @@ structures:
         description: clipping area size is out of range (usually too small)
       - code: avatarAttributes.avatarSize.out-of-range
         description: avatar size is out of range (usually too small)
+  - name: AvatarDescription
+    fields:
+      - type: String
+        name: mediaId
+        description: ID of the public media file used as an avatar image
+      - type: String
+        name: shape
+        description: shape of the avatar
+      - type: bool
+        name: optional
+        description: >
+          if set to <code>true</code>, the node will ignore the absence of the media file referenced in
+          <code>mediaId</code> field (empty avatar will be used in this case); if set to <code>false</code> or absent,
+          the node will return an error, if the media file referenced in <code>mediaId</code> field is absent
+  - name: AvatarImage
+    fields:
+      - type: String
+        name: mediaId
+        description: ID of the media file
+      - type: String
+        name: path
+        description: >
+          virtual location of the media file, relative to the <code>/media</code>
+          <a href="virtual-pages.html">virtual page</a>
+      - type: int
+        name: width
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: int
+        name: height
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: String
+        name: shape
+        description: shape of the avatar
   - name: AvatarInfo
     fields:
       - type: String
@@ -1944,6 +1980,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the comment's owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        description: avatar of the comment's owner
       - type: String
         name: postingId
         description: ID of the parent posting of the comment
@@ -2121,6 +2160,9 @@ structures:
         description: number of comments after this slice till the far future
   - name: CommentSourceText
     fields:
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: avatar of the comment's owner
       - type: String
         name: bodySrc
         description: the source text of the comment, a string representation of a JSON structure
@@ -2158,6 +2200,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the comment's owner
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: avatar of the comment's owner
       - type: String
         name: bodyPreview
         description: preview of the comment's body, a string representation of a JSON structure
@@ -2198,6 +2243,8 @@ structures:
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
     errors:
+      - code: commentText.ownerAvatar.mediaId.not-found
+        description: owner's avatar is not found
       - code: commentText.bodySrc.blank
         description: body text is empty
       - code: commentText.bodySrc.wrong-size
@@ -2243,6 +2290,8 @@ structures:
         name: nodeName
       - type: String
         name: fullName
+      - struct: AvatarImage
+        name: avatar
       - type: float
         name: closeness
         description: >
@@ -2437,6 +2486,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the sending node
+      - struct: AvatarImage
+        name: avatar
+        description: avatar of the sending node
       - type: timestamp
         name: createdAt
         description: notification packet creation timestamp
@@ -2520,6 +2572,9 @@ structures:
       - type: String
         name: receiverFullName
         description: full name of the node where the posting was published (for cached copies of remote postings only)
+      - struct: AvatarImage
+        name: receiverAvatar
+        description: avatar of the node where the posting was published (for cached copies of remote postings only)
       - type: String
         name: receiverPostingId
         description: ID of the original posting (for cached copies of remote postings only)
@@ -2529,6 +2584,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the posting's owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        description: avatar of the posting's owner
       - type: String
         name: bodyPreview
         description: preview of the posting's body, a string representation of a JSON structure, may be absent
@@ -2717,6 +2775,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the remote node
+      - struct: AvatarImage
+        name: avatar
+        description: avatar of the remote node
       - type: String
         name: feedName
         description: name of the feed on the remote node
@@ -2736,6 +2797,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the posting's owner
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: avatar of the posting's owner
       - type: String
         name: bodySrc
         description: the source text of the posting, a string representation of a JSON structure
@@ -2764,6 +2828,8 @@ structures:
         name: updateInfo
         description: description of the update
     errors:
+      - code: postingText.ownerAvatar.mediaId.not-found
+        description: owner's avatar is not found
       - code: postingText.bodySrc.blank
         description: body text is empty
       - code: postingText.bodySrc.wrong-size
@@ -2804,6 +2870,9 @@ structures:
         description: >
           format of the source text of node owner's bio, <code>markdown</code> by default; the list of available formats
           is returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: avatarId
+        description: node owner's avatar ID
     errors:
       - code: profileAttributes.fullName.wrong-size
         description: the full name is too long
@@ -2843,6 +2912,9 @@ structures:
       - type: String
         name: bioHtml
         description: HTML representation of node owner's bio
+      - struct: AvatarInfo
+        name: avatar
+        description: node owner's avatar
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
@@ -2869,10 +2941,13 @@ structures:
     fields:
       - type: String
         name: ownerName
-        description: reaction owner node name
+        description: reaction owner's node name
       - type: String
         name: ownerFullName
-        description: reaction owner full name
+        description: reaction owner's full name
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: reaction owner's avatar
       - type: boolean
         name: negative
         description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
@@ -2887,14 +2962,20 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
+    errors:
+      - code: reactionDescription.ownerAvatar.mediaId.not-found
+        description: owner's avatar is not found
   - name: ReactionInfo
     fields:
       - type: String
         name: ownerName
-        description: reaction owner node name
+        description: reaction owner's node name
       - type: String
         name: ownerFullName
-        description: reaction owner full name
+        description: reaction owner's full name
+      - struct: AvatarImage
+        name: ownerAvatar
+        description: reaction owner's avatar
       - type: String
         name: postingId
         description: ID of the posting
@@ -3076,6 +3157,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the comment's owner
+      - struct: AvatarImage
+        name: avatar
+        description: avatar of the comment's owner
       - type: String
         name: heading
         description: heading of the comment
@@ -3212,6 +3296,9 @@ structures:
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
+      - struct: AvatarImage
+        name: summaryAvatar
+        description: avatar of the summary of the story
       - type: String
         name: summary
         description: user-readable summary of the story
@@ -3258,6 +3345,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the subscriber
+      - struct: AvatarDescription
+        name: ownerAvatar
+        description: avatar of the subscriber
       - type: timestamp
         name: lastUpdatedAt
         description: timestamp of the latest known state of the object, may be absent
@@ -3272,6 +3362,8 @@ structures:
         description: posting ID is empty
       - code: subscriberDescription.postingId.not-found
         description: posting is not found
+      - code: subscriberDescription.ownerAvatar.mediaId.not-found
+        description: subscriber's avatar is not found
   - name: SubscriberInfo
     fields:
       - type: String
@@ -3294,6 +3386,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the subscribed node
+      - struct: AvatarImage
+        name: avatar
+        description: avatar of the subscribed node
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
@@ -3321,6 +3416,9 @@ structures:
       - type: String
         name: remoteFullName
         description: full name of the node this node is subscribed to
+      - struct: AvatarDescription
+        name: remoteAvatar
+        description: avatar of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
@@ -3351,6 +3449,8 @@ structures:
         description: node name is empty
       - code: subscriptionDescription.remoteNodeName.wrong-size
         description: node name is too long
+      - code: subscriptionDescription.remoteAvatar.mediaId.not-found
+        description: node avatar is not found
       - code: subscriptionDescription.remoteFeedName.wrong-size
         description: remote feed name is too long
       - code: subscriptionDescription.remotePostingId.wrong-size
@@ -3385,6 +3485,9 @@ structures:
       - type: String
         name: remoteFullName
         description: full name of the node this node is subscribed to
+      - struct: AvatarImage
+        name: remoteAvatar
+        description: avatar of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
@@ -3478,6 +3581,9 @@ structures:
       - type: String
         name: title
         description: node title
+      - struct: AvatarImage
+        name: avatar
+        description: node owners's avatar
 
 enums:
   - name: OperationStatus
