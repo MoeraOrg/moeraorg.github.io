@@ -39,7 +39,7 @@ Another approach is to organize naming servers into a hierarchy similar
 to DNS hierarchy. That is, `test.moera.org` domain is resolved by
 requesting one of root nameservers for the list of nameservers for `org`
 domain, then asking one of them for the address of the nameserver for
-`moera` subdomain and asking one of them for the address of `moera`
+`moera` subdomain and asking one of them for the address of `test`
 host.
  
 Similarly in Moera we may have top-level names registered in the
