@@ -67,15 +67,58 @@ A negative reaction was added to user's comment.
 
 A comment was added under a posting the user is subscribed to.
 
-`POSTING_TASK_FAILED`
+`COMMENT_POST_TASK_FAILED`
 
-A failed attempt to post a comment, a reaction or to subscribe to a
-posting.
+A failed attempt to post a comment.
 
-`COMMENT_TASK_FAILED`
+`COMMENT_UPDATE_TASK_FAILED`
 
-A failed attempt to post a reaction to a comment.
+A failed attempt to update a comment.
 
 `POSTING_UPDATED`
 
 A posting was updated.
+
+`POSTING_POST_TASK_FAILED`
+
+A failed attempt to create a posting.
+
+`POSTING_UPDATE_TASK_FAILED`
+
+A failed attempt to update a posting.
+
+`POSTING_MEDIA_REACTION_ADDED_POSITIVE`
+
+A positive reaction was added to a media attached to a posting.
+
+`POSTING_MEDIA_REACTION_ADDED_NEGATIVE`
+
+A negative reaction was added to a media attached to a posting.
+
+`COMMENT_MEDIA_REACTION_ADDED_POSITIVE`
+
+A positive reaction was added to a media attached to a comment.
+
+`COMMENT_MEDIA_REACTION_ADDED_NEGATIVE`
+
+A positive reaction was added to a media attached to a comment.
+
+`POSTING_MEDIA_REACTION_FAILED`
+
+A failed attempt to add a reaction to a media attached to a posting.
+
+`COMMENT_MEDIA_REACTION_FAILED`
+
+A failed attempt to add a reaction to a media attached to a comment.
+
+`POSTING_SUBSCRIBE_TASK_FAILED`
+
+A failed attempt to subscribe to a posting.
+
+`POSTING_REACTION_TASK_FAILED`
+
+A failed attempt to post a reaction to a posting.
+
+`COMMENT_REACTION_TASK_FAILED`
+
+A failed attempt to post a reaction to a comment.
