@@ -332,6 +332,33 @@ events:
       - type: String
         name: fullName
         comment: the remote node full name
+  - type: REMOTE_POSTING_ADDED
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the posting ID
+  - type: REMOTE_POSTING_DELETED
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the posting ID
+  - type: REMOTE_POSTING_UPDATED
+    auth: admin
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: the remote node name
+      - type: String
+        name: remotePostingId
+        comment: the posting ID
   - type: REMOTE_POSTING_VERIFICATION_FAILED
     description: Verification of the signature of a posting on a remote node failed.
     auth: admin
