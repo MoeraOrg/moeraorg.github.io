@@ -2694,6 +2694,15 @@ structures:
         description: >
           ID of the subscriber, if the client is subscribed to notifications about this feed, <code>null</code>
           or absent otherwise
+      - type: int
+        name: total
+        description: total number of stories in the feed
+      - type: timestamp
+        name: firstCreatedAt
+        description: creation timestamp of the earliest story in the feed
+      - type: timestamp
+        name: lastCreatedAt
+        description: creation timestamp of the latest story in the feed
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
