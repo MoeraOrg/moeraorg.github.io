@@ -2449,6 +2449,10 @@ structures:
         description: >
           format of the body of the draft, see detailed description in
           <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
+      - struct: MediaAttachment
+        array: true
+        name: media
+        description: list of the media attached to the draft
       - type: String
         name: heading
         description: heading of the draft
@@ -2501,6 +2505,10 @@ structures:
         description: >
           format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - struct: RemoteMedia
+        array: true
+        name: media
+        description: list of the media attached to the draft, the media may be located on another node
       - type: int
         name: publishAt
         description: story publication timestamp - the time the story must be published under in the feed
@@ -3379,6 +3387,17 @@ structures:
       - type: String
         name: secret
         description: base64-encoded secret of the updating key
+  - name: RemoteMedia
+    fields:
+      - type: String
+        name: id
+        description: ID of the media file
+      - type: String
+        name: hash
+        description: SHA-1 hash of the media file
+      - type: String
+        name: digest
+        description: cryptographic digest of the media file
   - name: RemoteMediaInfo
     fields:
       - type: String
