@@ -858,7 +858,7 @@ objects:
       - url: /media/private
         type: POST
         out:
-          struct: MediaFileInfo
+          struct: PublicMediaFileInfo
         auth: owner
         description: >
           Upload a new media file. Content of the file is passed in the request body
@@ -885,7 +885,7 @@ objects:
             name: id
             description: media file ID
         out:
-          struct: MediaFileInfo
+          struct: PublicMediaFileInfo
         description: >
           Get media file details.
         errors:
@@ -898,7 +898,7 @@ objects:
       - url: /media/public
         type: POST
         out:
-          struct: MediaFileInfo
+          struct: PublicMediaFileInfo
         auth: owner
         description: >
           Upload a new media file. Content of the file is passed in the request body
@@ -925,7 +925,7 @@ objects:
             name: id
             description: media file ID
         out:
-          struct: MediaFileInfo
+          struct: PublicMediaFileInfo
         description: >
           Get media file details.
         errors:
@@ -2630,7 +2630,7 @@ structures:
       - type: int
         name: notRead
         description: number of stories in the feed that have not been read yet
-  - name: MediaFileInfo
+  - name: PublicMediaFileInfo
     fields:
       - type: String
         name: id
