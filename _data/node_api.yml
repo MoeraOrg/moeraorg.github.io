@@ -853,7 +853,8 @@ objects:
     description: >
       Media files that are bound to a particular uploader and may be inaccessible to other clients. Private media files
       cannot be retrieved by their hash, only by their ID. The ID is unique to the client that uploaded the file and
-      the node the file was uploaded to.
+      the node the file was uploaded to. A private media file may have a linked posting - it is used to store the media
+      file description, reactions and comments. The linked posting is accessed as any other posting.
     requests:
       - url: /media/private
         type: POST
@@ -2630,6 +2631,18 @@ structures:
       - type: int
         name: notRead
         description: number of stories in the feed that have not been read yet
+  - name: MediaAttachment
+    fields:
+      - struct: PrivateMediaFileInfo
+        name: media
+        description: details of the attached media, may be absent, if the media is not located on the node
+      - struct: RemoteMediaInfo
+        name: remoteMedia
+        description: details of the media, if it is located on another node
+      - type: boolean
+        name: embedded
+        description: >
+            <code>true</code> if the media is used in the body of the posting/comment, <code>false</code> otherwise
   - name: MediaFilePreviewInfo
     fields:
       - type: int
@@ -2757,6 +2770,9 @@ structures:
         name: receiverPostingId
         description: ID of the original posting (for cached copies of remote postings only)
       - type: String
+        name: parentMediaId
+        description: ID of the media the posting is linked to, if any
+      - type: String
         name: ownerName
         description: node name of the posting's owner
       - type: String
@@ -2791,6 +2807,10 @@ structures:
             <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
             <li><code>application</code> - an application-specific structure.</li>
           </ul>
+      - struct: MediaAttachment
+        array: true
+        name: media
+        description: list of the media attached to the posting
       - type: String
         name: heading
         description: heading of the posting
@@ -3355,6 +3375,17 @@ structures:
       - type: String
         name: secret
         description: base64-encoded secret of the updating key
+  - name: RemoteMediaInfo
+    fields:
+      - type: String
+        name: id
+        description: ID of the media file
+      - type: String
+        name: hash
+        description: SHA-1 hash of the media file
+      - type: String
+        name: digest
+        description: cryptographic digest of the media file
   - name: RemotePosting
     fields:
       - type: String
