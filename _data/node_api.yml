@@ -864,6 +864,8 @@ objects:
         description: >
           Upload a new media file. Content of the file is passed in the request body
         errors:
+          - code: media.image-invalid
+            description: media file is not a readable image
           - code: media.wrong-size
             description: media file is too large
           - code: media.storage-error
@@ -904,6 +906,8 @@ objects:
         description: >
           Upload a new media file. Content of the file is passed in the request body
         errors:
+          - code: media.image-invalid
+            description: media file is not a readable image
           - code: media.wrong-size
             description: media file is too large
           - code: media.storage-error
