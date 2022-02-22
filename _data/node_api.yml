@@ -897,6 +897,17 @@ objects:
         errors:
           - code: media.not-found
             description: media file is not found
+      - url: /media/private/{id}/parent
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: media file ID
+        out:
+          struct: EntryInfo
+          array: true
+        description: >
+          Get the list of all postings and comments the media file is attached to.
   - name: Media object (public)
     description: >
       Media files that should be accessible to any client. ID of a public media file is SHA-1 hash of its content.
@@ -2610,6 +2621,14 @@ structures:
         name: emailHint
         description: >
           a masked E-mail address that should help user to understand which E-mail address was used without revealing it
+  - name: EntryInfo
+    fields:
+      - struct: PostingInfo
+        name: posting
+        description: posting details, may be absent, if the entry is not a posting
+      - struct: CommentInfo
+        name: comment
+        description: comment details, may be absent, if the entry is not a comment
   - name: FeedInfo
     fields:
       - type: String
