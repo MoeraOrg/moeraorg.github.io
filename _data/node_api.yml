@@ -2756,6 +2756,15 @@ structures:
             <li><code>html</code> - HTML-formatted text, the node may allow only limited set of tags;</li>
             <li><code>markdown</code> - text in Markdown format.</li>
           </ul>
+      - type: int
+        name: mediaMaxSize
+        description: maximal size of a media attachment in a post
+      - type: int
+        name: imageRecommendedSize
+        description: maximal size of a compressed image in a post
+      - type: int
+        name: imageRecommendedPixels
+        description: maximal resolution of a compressed image in a post (in pixels)
   - name: PostingInfo
     fields:
       - type: String
@@ -3085,7 +3094,9 @@ structures:
       - code: postingText.media.not-found
         description: media attachment is not found
       - code: postingText.media.not-compressed
-        description: media attachment is not compressed as the node requires
+        description: >
+          media attachment is not compressed as the node requires, the parameters of the desired compression are
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - code: postingText.createdAt.blank
         description: body creation timestamp is not set
       - code: postingText.createdAt.out-of-range
