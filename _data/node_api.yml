@@ -858,7 +858,7 @@ objects:
       - url: /media/private
         type: POST
         out:
-          struct: PublicMediaFileInfo
+          struct: PrivateMediaFileInfo
         auth: owner
         description: >
           Upload a new media file. Content of the file is passed in the request body
@@ -885,7 +885,7 @@ objects:
             name: id
             description: media file ID
         out:
-          struct: PublicMediaFileInfo
+          struct: PrivateMediaFileInfo
         description: >
           Get media file details.
         errors:
@@ -2630,25 +2630,20 @@ structures:
       - type: int
         name: notRead
         description: number of stories in the feed that have not been read yet
-  - name: PublicMediaFileInfo
+  - name: MediaFilePreviewInfo
     fields:
-      - type: String
-        name: id
-        description: ID of the media file
-      - type: String
-        name: path
-        description: >
-          virtual location of the media file, relative to the <code>/media</code>
-          <a href="virtual-pages.html">virtual page</a>
+      - type: int
+        name: targetWidth
+        description: the width the preview was prepared for viewing at
       - type: int
         name: width
-        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+        description: actual width of the preview in pixels
       - type: int
         name: height
-        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
-      - type: int
-        name: size
-        description: size of the media file in bytes
+        description: actual height of the preview in pixels
+      - type: boolean
+        name: original
+        description: <code>true</code> if the preview is identical to the original media, <code>false</code> otherwise
   - name: NameToRegister
     fields:
       - type: String
@@ -3073,6 +3068,38 @@ structures:
         description: list of accepted negative reactions has wrong format
       - code: postingText.publications.cannot-modify
         description: <code>publications</code> field is not allowed in posting modification query
+  - name: PrivateMediaFileInfo
+    fields:
+      - type: String
+        name: id
+        description: ID of the media file
+      - type: String
+        name: hash
+        description: SHA-1 hash of the media file
+      - type: String
+        name: path
+        description: >
+          virtual location of the media file, relative to the <code>/media</code>
+          <a href="virtual-pages.html">virtual page</a>
+      - type: String
+        name: mimeType
+        description: MIME-type of the media
+      - type: int
+        name: width
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: int
+        name: height
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: int
+        name: size
+        description: size of the media file in bytes
+      - type: String
+        name: postingId
+        description: ID of the posting linked to the media (may be absent)
+      - struct: MediaFilePreviewInfo
+        array: true
+        name: previews
+        description: list of media previews - downscaled versions of the media
   - name: ProfileAttributes
     fields:
       - type: String
@@ -3146,6 +3173,25 @@ structures:
     operations:
       - name: edit
         description: change the profile
+  - name: PublicMediaFileInfo
+    fields:
+      - type: String
+        name: id
+        description: ID of the media file
+      - type: String
+        name: path
+        description: >
+          virtual location of the media file, relative to the <code>/media</code>
+          <a href="virtual-pages.html">virtual page</a>
+      - type: int
+        name: width
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: int
+        name: height
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
+      - type: int
+        name: size
+        description: size of the media file in bytes
   - name: PushContent
     fields:
       - type: String
