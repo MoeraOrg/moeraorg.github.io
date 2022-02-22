@@ -207,6 +207,96 @@ notifications:
       - type: String
         name: description
         comment: description of the update
+  - type: POSTING_REACTION_ADDED
+    description: Reaction added to a posting owned by the receiver.
+    fields:
+      - type: String
+        name: parentPostingId
+        comment: >
+          ID of the posting containing the media or containing the comment that contains the media linked to the posting
+          in question (present only if the posting in question is linked to a media)
+      - type: String
+        name: parentCommentId
+          ID of the comment containing the media linked to the posting in question (present only if the posting in
+          question is linked to a media attached to a comment)
+      - type: String
+        name: parentMediaId
+          ID of the media linked to the posting in question (present only if the posting in question is linked to
+          a media)
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: ownerName
+        comment: name of the reaction owner
+      - type: String
+        name: ownerFullName
+        comment: full name of the reaction owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        comment: avatar of the reaction owner
+      - type: boolean
+        name: negative
+        comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+      - type: int
+        name: emoji
+        comment: reaction code, usually interpreted by clients as emoji code point
+      - type: String
+        name: parentHeading
+        comment: heading of the posting
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+  - type: POSTING_REACTION_DELETED
+    description: Reaction deleted from a posting owned by the receiver.
+    fields:
+      - type: String
+        name: parentPostingId
+        comment: >
+          ID of the posting containing the media or containing the comment that contains the media linked to the posting
+          in question (present only if the posting in question is linked to a media)
+      - type: String
+        name: parentCommentId
+          ID of the comment containing the media linked to the posting in question (present only if the posting in
+          question is linked to a media attached to a comment)
+      - type: String
+        name: parentMediaId
+          ID of the media linked to the posting in question (present only if the posting in question is linked to
+          a media)
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: ownerName
+        comment: name of the reaction owner
+      - type: String
+        name: ownerFullName
+        comment: full name of the reaction owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        comment: avatar of the reaction owner
+      - type: boolean
+        name: negative
+        comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+  - type: POSTING_REACTION_DELETED_ALL
+    description: Deleted all reactions from a posting owned by the receiver.
+    fields:
+      - type: String
+        name: parentPostingId
+        comment: >
+          ID of the posting containing the media or containing the comment that contains the media linked to the posting
+          in question (present only if the posting in question is linked to a media)
+      - type: String
+        name: parentCommentId
+          ID of the comment containing the media linked to the posting in question (present only if the posting in
+          question is linked to a media attached to a comment)
+      - type: String
+        name: parentMediaId
+          ID of the media linked to the posting in question (present only if the posting in question is linked to
+          a media)
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
   - type: POSTING_REACTIONS_UPDATED
     description: Reactions have been updated at the posting the receiver is subscribed to.
     fields:
