@@ -246,6 +246,24 @@ objects:
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments/{commentId}/attached
+        type: GET
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+        out:
+          struct: PostingInfo
+          array: true
+        description: Get all postings linked to media attached to the given comment.
+        errors:
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
   - name: Comment Revisions object
     description: All revisions of the comment.
     requests:
@@ -1102,6 +1120,19 @@ objects:
         description: >
           Delete the posting. The posting may not be purged from the database immediately, but preserved for some period
           of time to give a chance to restore it.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /postings/{id}/attached
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the posting
+        out:
+          struct: PostingInfo
+          array: true
+        description: Get all postings linked to media attached to the given posting.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
