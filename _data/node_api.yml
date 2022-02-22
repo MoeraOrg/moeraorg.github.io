@@ -2195,6 +2195,9 @@ structures:
       - struct: ClientReactionInfo
         name: clientReaction
         description: details of the existing reaction (if any) of the client's owner
+      - struct: ClientReactionInfo
+        name: seniorReaction
+        description: details of the existing reaction (if any) of the posting's owner ("senior") to the comment
       - struct: ReactionTotalsInfo
         name: reactions
         description: reactions summary of the comment
