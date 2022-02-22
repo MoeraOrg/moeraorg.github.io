@@ -217,10 +217,12 @@ notifications:
           in question (present only if the posting in question is linked to a media)
       - type: String
         name: parentCommentId
+        comment: >
           ID of the comment containing the media linked to the posting in question (present only if the posting in
           question is linked to a media attached to a comment)
       - type: String
         name: parentMediaId
+        comment: >
           ID of the media linked to the posting in question (present only if the posting in question is linked to
           a media)
       - type: String
@@ -257,10 +259,12 @@ notifications:
           in question (present only if the posting in question is linked to a media)
       - type: String
         name: parentCommentId
+        comment: >
           ID of the comment containing the media linked to the posting in question (present only if the posting in
           question is linked to a media attached to a comment)
       - type: String
         name: parentMediaId
+        comment: >
           ID of the media linked to the posting in question (present only if the posting in question is linked to
           a media)
       - type: String
@@ -288,10 +292,12 @@ notifications:
           in question (present only if the posting in question is linked to a media)
       - type: String
         name: parentCommentId
+        comment: >
           ID of the comment containing the media linked to the posting in question (present only if the posting in
           question is linked to a media attached to a comment)
       - type: String
         name: parentMediaId
+        comment: >
           ID of the media linked to the posting in question (present only if the posting in question is linked to
           a media)
       - type: String
