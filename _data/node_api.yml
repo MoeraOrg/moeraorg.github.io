@@ -2946,6 +2946,10 @@ structures:
         description: >
           format of the body of the revision, see detailed description in
           <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
+      - struct: MediaAttachment
+        array: true
+        name: media
+        description: list of the media attached to the revision
       - type: String
         name: heading
         description: heading of the revision
