@@ -152,6 +152,7 @@ objects:
           - digest: Attachment
             array: true
             field: attachments
+            comment: if the posting is linked to a media, its fingerprint should be put at the beginning of the list
       - version: 0
         fingerprint:
           - type: String
