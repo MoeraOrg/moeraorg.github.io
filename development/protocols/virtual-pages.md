@@ -59,6 +59,18 @@ Information about subscriptions of this node.
 
 Detailed view of the post with the given ID.
 
+`/post/<id>?comment=<commentId>`
+
+View of the comment with the given ID to the given post.
+
+`/post/<id>?media=<mediaId>`
+
+View of the media with the given ID attached to the given post.
+
+`/post/<id>?comment=<commentId>&media=<mediaId>`
+
+View of the media with the given ID attached to the given comment to the given post.
+
 `/profile`
 
 Profile - the detailed information about the node's owner, node's
