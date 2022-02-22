@@ -530,6 +530,12 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String
+        name: summaryNodeName
+        description: name of the node related to the summary of the story
+      - type: String
+        name: summaryFullName
+        description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
         comment: avatar of the summary of the story
@@ -587,6 +593,12 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String
+        name: summaryNodeName
+        description: name of the node related to the summary of the story
+      - type: String
+        name: summaryFullName
+        description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
         comment: avatar of the summary of the story
@@ -644,6 +656,12 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: String
+        name: summaryNodeName
+        description: name of the node related to the summary of the story
+      - type: String
+        name: summaryFullName
+        description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
         comment: avatar of the summary of the story

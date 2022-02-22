@@ -3782,6 +3782,12 @@ structures:
       - type: String -> String[]
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
+      - type: String
+        name: summaryNodeName
+        description: name of the node related to the summary of the story
+      - type: String
+        name: summaryFullName
+        description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
         description: avatar of the summary of the story
@@ -3810,6 +3816,9 @@ structures:
       - type: String
         name: remoteCommentId
         description: ID of the comment at remote node this story is about (may be absent)
+      - type: String
+        name: remoteMediaId
+        description: ID of the media at remote node this story is about (may be absent)
     operations:
       - name: edit
         description: update the story
