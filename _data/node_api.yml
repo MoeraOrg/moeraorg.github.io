@@ -178,6 +178,8 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
+          - code: posting.not-signed
+            description: the posting is not signed, so it is impossible to add comments to it
       - url: /postings/{postingId}/comments/{commentId}
         type: GET
         params:
@@ -1181,6 +1183,8 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
+          - code: posting.not-signed
+            description: the posting is not signed, so it is impossible to add reactions to it
           - code: reaction.not-accepted
             description: the reaction is not acceptable
       - url: /postings/{postingId}/reactions
