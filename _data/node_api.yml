@@ -1313,6 +1313,27 @@ objects:
           struct: ProfileInfo
         auth: admin
         description: Update the profile.
+  - name: Proxy object
+    description: Proxy, that may be used by web clients to workaround CORS restrictions of browsers
+    requests:
+      - url: /proxy/media
+        type: GET
+        params:
+          - type: String
+            name: url
+        auth: admin
+        description: Open the URL passed in the parameters and pass to the client the media file returned by the server.
+        errors:
+          - code: proxy.request-failed
+            description: HTTP request failed
+          - code: proxy.resource-not-found
+            description: resource is not found
+          - code: proxy.resource-not-media
+            description: resource is not a media file
+          - code: proxy.error-status
+            description: HTTP request returned an error status
+          - code: proxy.url.invalid
+            description: the URL is not valid
   - name: Push Notifications object
     description: >
       SSE channels for delivering push notifications from the home node. When a client opens an SSE connection for
