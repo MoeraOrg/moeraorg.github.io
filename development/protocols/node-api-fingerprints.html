@@ -34,7 +34,13 @@ body_class: body-pink
                                 <code>{{ field.type }}</code>
                             {% endif %}
                             {% if field.digest %}
-                                hash of <a href="#{{ field.digest }}"><code>{{ field.digest }}</code></a> fingerprint
+                                {% if field.array %}
+                                    array of hashes of <a href="#{{ field.digest }}"><code>{{ field.digest }}</code></a>
+                                    fingerprint
+                                {% else %}
+                                    hash of <a href="#{{ field.digest }}"><code>{{ field.digest }}</code></a>
+                                    fingerprint
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td><code>{{ field.field }}</code></td>

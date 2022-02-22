@@ -1,4 +1,14 @@
 objects:
+  - name: Attachment
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: ATTACHMENT
+          - type: byte[]
+            field: digest
+            comment: cryptographic hash of the attachment as a file
   - name: Carte
     versions:
       - version: 1
@@ -76,9 +86,9 @@ objects:
           - type: byte
             field: permissions
             comment: 0 <i>(reserved for future use)</i>
-          - type: byte
+          - digest: Attachment
+            array: true
             field: attachments
-            comment: 0 <i>(reserved for future use)</i>
   - name: NotificationPacket
     versions:
       - version: 1
@@ -115,6 +125,33 @@ objects:
             field: notification
   - name: Posting
     versions:
+      - version: 1
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: POSTING
+          - type: String
+            field: receiverName
+          - type: String
+            field: ownerName
+          - type: byte[]
+            field: bodySrcHash
+            comment: hash of <code>bodySrc</code> field
+          - type: String
+            field: bodySrcFormat
+          - type: String
+            field: body
+          - type: String
+            field: bodyFormat
+          - type: timestamp
+            field: createdAt
+            comment: of the current revision
+          - type: byte
+            field: permissions
+            comment: 0 <i>(reserved for future use)</i>
+          - digest: Attachment
+            array: true
+            field: attachments
       - version: 0
         fingerprint:
           - type: String
