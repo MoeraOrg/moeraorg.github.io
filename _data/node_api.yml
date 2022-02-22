@@ -2035,6 +2035,10 @@ structures:
             <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
             <li><code>application</code> - an application-specific structure.</li>
           </ul>
+      - struct: MediaAttachment
+        array: true
+        name: media
+        description: list of the media attached to the comment
       - type: String
         name: heading
         description: heading of the comment
@@ -2185,6 +2189,10 @@ structures:
         description: >
           format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - struct: MediaWithDigest
+        array: true
+        name: media
+        description: array of IDs and digests of private media to be attached to the comment
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the comment accepts
@@ -2239,6 +2247,9 @@ structures:
             <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
             <li><code>application</code> - an application-specific structure.</li>
           </ul>
+      - type: String[]
+        name: media
+        description: array of IDs of private media to be attached to the comment
       - type: timestamp
         name: createdAt
         description: comment creation timestamp - the real time when the comment was created
@@ -2279,6 +2290,12 @@ structures:
         description: body format is not set
       - code: commentText.bodyFormat.wrong-size
         description: body format is too long
+      - code: commentText.media.not-found
+        description: media attachment is not found
+      - code: commentText.media.not-compressed
+        description: >
+          media attachment is not compressed as the node requires, the parameters of the desired compression are
+          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - code: commentText.createdAt.blank
         description: body creation timestamp is not set
       - code: commentText.createdAt.out-of-range
@@ -2669,6 +2686,14 @@ structures:
       - type: boolean
         name: original
         description: <code>true</code> if the preview is identical to the original media, <code>false</code> otherwise
+  - name: MediaWithDigest
+    fields:
+      - type: String
+        name: id
+        description: ID of the media file
+      - type: String
+        name: digest
+        description: cryptographic digest of the media file
   - name: NameToRegister
     fields:
       - type: String
