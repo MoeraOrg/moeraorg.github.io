@@ -2970,11 +2970,17 @@ structures:
   - name: PostingText
     fields:
       - type: String
+        name: ownerName
+        description: node name of the posting's owner, may be absent
+      - type: String
         name: ownerFullName
         description: full name of the posting's owner
       - struct: AvatarDescription
         name: ownerAvatar
         description: avatar of the posting's owner
+      - type: String
+        name: bodyPreview
+        description: preview of the posting's body, a string representation of a JSON structure
       - type: String
         name: bodySrc
         description: the source text of the posting, a string representation of a JSON structure
@@ -2983,6 +2989,23 @@ structures:
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: body
+        description: body of the posting, a string representation of a JSON structure
+      - type: String
+        name: bodyFormat
+        description: >
+          format of the body of the posting, may have any value meaningful for the client, including:
+          <ul>
+            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
+            <li><code>application</code> - an application-specific structure.</li>
+          </ul>
+      - type: String[]
+        name: media
+        description: array of IDs of private media to be attached to the posting
+      - type: timestamp
+        name: createdAt
+        description: posting creation timestamp - the real time when the posting was created
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
@@ -3003,17 +3026,43 @@ structures:
       - struct: UpdateInfo
         name: updateInfo
         description: description of the update
+      - type: byte[]
+        name: signature
+        description: >
+          the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
     errors:
       - code: postingText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
       - code: postingText.bodySrc.blank
-        description: body text is empty
+        description: body source text is empty
       - code: postingText.bodySrc.wrong-size
-        description: body text is too long
+        description: body source text is too long
       - code: postingText.bodySrc.wrong-encoding
-        description: body text is formatted incorrectly
+        description: body source text is formatted incorrectly
       - code: postingText.bodySrcFormat.unknown
-        description: unknown body text format
+        description: unknown body source text format
+      - code: postingText.body.blank
+        description: body text is empty
+      - code: postingText.body.wrong-size
+        description: body text is too long
+      - code: postingText.bodyPreview.wrong-encoding
+        description: body preview encoding is incorrect
+      - code: postingText.bodyFormat.blank
+        description: body format is not set
+      - code: postingText.bodyFormat.wrong-size
+        description: body format is too long
+      - code: postingText.media.not-found
+        description: media attachment is not found
+      - code: postingText.media.not-compressed
+        description: media attachment is not compressed as the node requires
+      - code: postingText.createdAt.blank
+        description: body creation timestamp is not set
+      - code: postingText.createdAt.out-of-range
+        description: body creation timestamp is too far from the current timestamp
       - code: postingText.acceptedReactions.positive.wrong-size
         description: list of accepted positive reactions is too long
       - code: postingText.acceptedReactions.positive.wrong-pattern
