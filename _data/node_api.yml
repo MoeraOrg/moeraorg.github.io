@@ -173,7 +173,8 @@ objects:
         auth: owner
         description: >
           Create a comment from the given text and add it to the given posting. The comment owner must authenticate in
-          some way. If the comment is not signed, it will be kept for a limited period of time and then erased.
+          some way. If the comment is not signed, it will be kept for a limited period of time and then erased. If
+          authenticated as admin, the comment is signed by the node.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
@@ -1030,11 +1031,13 @@ objects:
           struct: PostingText
         out:
           struct: PostingInfo
-        auth: configurable
+        auth: owner
         entitled: true
         description: >
-          Create a new posting from the text given, sign it with the signing key and publish it in the given feeds
-          (if any). The heading and the preview of the posting are created automatically, if needed.
+          Create a new posting from the text given and publish it in the given feeds (if any). The heading and
+          the preview of the posting are created automatically, if needed. The posting owner must authenticate in
+          some way. If the posting is not signed, it will be kept for a limited period of time and then erased. If
+          authenticated as admin, the posting is signed by the node.
       - url: /postings/{id}
         type: PUT
         params:
