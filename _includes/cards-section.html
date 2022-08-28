@@ -1,25 +1,8 @@
 <section class="cards-section text-center">
     <div class="container">
-        {% if site.tryit_link != false %}
-        <div class="intro-block">
-            <h2 class="title">Try it!</h2>
-            <div class="intro">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        Moera is still under active development and parts of the functionality are missing,
-                        but you can see what is working right now
-                    </div>
-                </div>
-                <div class="cta-container">
-                    <a class="btn btn-blue btn-lg" href="{{ site.tryit_link }}"
-                       target="_blank"><i class="fas fa-paint-roller"></i> Try Now</a>
-                </div><!--//cta-container-->
-            </div><!--//intro-->
-        </div><!--//intro-block-->
-        {% endif %}
         <div id="cards-wrapper" class="cards-wrapper row">
             {% if site.card_overview_link != false %}
-            <div class="item item-green col-lg-4 col-6">
+            <div class="item item-green col-lg-4 col-md-6 col-12">
                 <div class="item-inner">
                     <div class="icon-holder">
                         <i class="icon fa fa-paper-plane"></i>
@@ -31,7 +14,7 @@
             </div><!--//item-->
             {% endif %}
             {% if site.card_development_link != false %}
-            <div class="item item-pink item-2 col-lg-4 col-6">
+            <div class="item item-pink col-lg-4 col-md-6 col-12">
                 <div class="item-inner">
                     <div class="icon-holder">
                         <span aria-hidden="true" class="icon icon_puzzle_alt"></span>
@@ -43,7 +26,7 @@
             </div><!--//item-->
             {% endif %}
             {% if site.card_license_link != false %}
-            <div class="item item-orange col-lg-4 col-6">
+            <div class="item item-orange col-lg-4 col-md-6 col-12">
                 <div class="item-inner">
                     <div class="icon-holder">
                         <span aria-hidden="true" class="icon icon_gift"></span>
@@ -57,3 +40,15 @@
         </div><!--//cards-->
     </div><!--//container-->
 </section><!--//cards-section-->
+
+{% if site.socials != false %}
+<section class="socials">
+    <span class="title">Follow the development:</span>
+    <a class="btn btn-success" href="https://github.com/{{ site.github_username }}" data-size="large"
+       aria-label="View on GitHub">View on GitHub &rarr;</a>
+    <a class="btn btn-primary" href="https://t.me/moeranews" data-size="large"
+       aria-label="Follow on Telegram">Follow on Telegram &rarr;</a>
+    <a class="btn btn-purple" href="https://blog.moera.org" data-size="large"
+       aria-label="Read on Moera">Read on Moera &rarr;</a>
+</section>
+{% endif %}

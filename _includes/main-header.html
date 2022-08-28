@@ -9,18 +9,13 @@
             {% endif %}
         </div>
 
-        {% if site.socials != false %}
-            <div class="social-container">
-                <a class="btn btn-success" href="https://github.com/{{ site.github_username }}" data-size="large"
-                   aria-label="View on GitHub">View on GitHub &rarr;</a>
-                &nbsp;
-                <a class="btn btn-primary" href="https://t.me/moeranews" data-size="large"
-                   aria-label="Follow on Telegram">Follow on Telegram &rarr;</a>
-                &nbsp;
-                <a class="btn btn-purple" href="https://blog.moera.org" data-size="large"
-                   aria-label="Read on Moera">Read on Moera &rarr;</a>
-            </div>
+        {% if site.tryit_link != false %}
+        <div class="tryit">
+            <a class="btn btn-success btn-lg" href="{{ site.tryit_link }}"
+               target="_blank">Register Now</a>
+        </div>
         {% endif %}
+
         <div class="mobile-container">
             <a href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
                 <img alt="Get it on Google Play"
