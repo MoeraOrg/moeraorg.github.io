@@ -1,0 +1,12 @@
+/* ====== Footer ====== */
+.footer {
+  background: $text-color;
+  color: rgba(256, 256, 256, 0.6);
+  padding: 15px 0;
+  a {
+    color: $color-primary;
+  }
+  .fa-heart {
+    color: $color-pink;
+  }
+}
