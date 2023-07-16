@@ -1365,6 +1365,20 @@ objects:
             description: HTTP request returned an error status
           - code: proxy.url.invalid
             description: the URL is not valid
+      - url: /proxy/link-preview
+        type: GET
+        params:
+          - type: String
+            name: url
+        out:
+          struct: LinkPreviewInfo
+        auth: admin
+        description: >
+          Parse the page located at the URL and return the title, the description and the picture that may be used to
+          build a preview of the page.
+        errors:
+          - code: proxy.resource-not-found
+            description: resource is not found
   - name: Push Notifications object
     description: >
       SSE channels for delivering push notifications from the home node. When a client opens an SSE connection for
@@ -2186,7 +2200,7 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
       - struct: AcceptedReactions
@@ -2202,14 +2216,39 @@ structures:
         name: reactions
         description: reactions summary of the comment
     operations:
+      - name: view
+        default: public
+        description: view the comment
       - name: edit
+        default: owner
         description: edit the comment
       - name: delete
+        default: private
         description: delete the comment
-      - name: revisions
-        description: view the comment's revisions
-      - name: reactions
-        description: view reactions to the comment
+      - name: viewReactions
+        default: public
+        description: view the comment's reactions
+      - name: viewNegativeReactions
+        default: public
+        description: view the comment's negative reactions
+      - name: viewReactionTotals
+        default: public
+        description: view the number of the comment's reactions
+      - name: viewNegativeReactionTotals
+        default: public
+        description: view the number of the comment's negative reactions
+      - name: viewReactionRatios
+        default: public
+        description: view the relative number of different types of the comment's reactions
+      - name: viewNegativeReactionRatios
+        default: public
+        description: view the relative number of different types of the comment's negative reactions
+      - name: addReaction
+        default: signed
+        description: add a reaction to the comment
+      - name: addNegativeReaction
+        default: signed
+        description: add a negative reaction to the comment
   - name: CommentRevisionInfo
     fields:
       - type: String
@@ -2706,11 +2745,12 @@ structures:
       - type: timestamp
         name: lastCreatedAt
         description: creation timestamp of the latest story in the feed
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
       - name: add
+        default:
         description: add stories to the feed
   - name: FeedReference
     fields:
@@ -2730,7 +2770,7 @@ structures:
       - type: String
         name: storyId
         description: ID of the story
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: >
           list of the supported operations (see <code><a href="#StoryInfo">StoryInfo</a>.operations</code>) and
@@ -2809,6 +2849,23 @@ structures:
       - type: any
         name: any
         description: any other fields understood by Moera clients
+  - name: LinkPreviewInfo
+    fields:
+      - type: String
+        name: siteName
+        description: name of the site
+      - type: String
+        name: url
+        description: canonical URL of the page
+      - type: String
+        name: title
+        description: title of the page
+      - type: String
+        name: description
+        description: description of the page
+      - type: String
+        name: imageUrl
+        description: URL of the image presenting the page
   - name: MediaAttachment
     fields:
       - struct: PrivateMediaFileInfo
@@ -2901,11 +2958,12 @@ structures:
       - type: String
         name: operationErrorMessage
         description: if the operation with the node name was failed, the human-readable description of the failure
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
       - name: manage
+        default:
         description: any modification of the node name, prolonging it etc
   - name: PeopleGeneralInfo
     fields:
@@ -3053,7 +3111,7 @@ structures:
         array: true
         name: feedReferences
         description: array of references to the posting from stories in feeds
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
       - struct: AcceptedReactions
@@ -3086,14 +3144,57 @@ structures:
         name: subscriptions
         description: existing subscriptions of the client's owner
     operations:
+      - name: view
+        default: public
+        description: view the posting
       - name: edit
+        default: owner
         description: edit the posting
       - name: delete
+        default: private
         description: delete the posting
-      - name: revisions
-        description: view the posting's revisions
-      - name: reactions
-        description: view reactions to the posting
+      - name: viewComments
+        default: public
+        description: view the posting's comments
+      - name: addComment
+        default: signed
+        description: add a comment to the posting
+      - name: overrideComment
+        default: owner
+        description: override the permissions of the posting's comments
+      - name: viewReactions
+        default: public
+        description: view the posting's reactions
+      - name: viewNegativeReactions
+        default: public
+        description: view the posting's negative reactions
+      - name: viewReactionTotals
+        default: public
+        description: view the number of the posting's reactions
+      - name: viewNegativeReactionTotals
+        default: public
+        description: view the number of the posting's negative reactions
+      - name: viewReactionTotals
+        default: public
+        description: view the number of the posting's reactions
+      - name: viewReactionRatios
+        default: public
+        description: view the relative number of different types of the posting's reactions
+      - name: viewNegativeReactionRatios
+        default: public
+        description: view the relative number of different types of the posting's negative reactions
+      - name: addReaction
+        default: signed
+        description: add a reaction to the posting
+      - name: addNegativeReaction
+        default: signed
+        description: add a negative reaction to the posting
+      - name: overrideReaction
+        default: owner
+        description: override the permissions of the posting's reactions
+      - name: overrideCommentReaction
+        default: owner
+        description: override the permissions of the posting's comment's reactions
   - name: PostingRevisionInfo
     fields:
       - type: String
@@ -3416,12 +3517,16 @@ structures:
         array: true
         name: fundraisers
         description: list of fundraisers - methods of giving a donation to the node owner (may be absent)
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
       - name: edit
+        default:
         description: change the profile
+      - name: viewEmail
+        default:
+        description: view the e-mail address in the profile
   - name: PublicMediaFileInfo
     fields:
       - type: String
@@ -3550,11 +3655,15 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
     operations:
+      - name: view
+        default: public
+        description: view the reaction
       - name: delete
+        default: private
         description: delete the reaction
   - name: ReactionsSliceInfo
     fields:
@@ -3868,7 +3977,7 @@ structures:
       - type: boolean
         name: read
         description: <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding access hints
       - type: String
@@ -3910,8 +4019,10 @@ structures:
         description: ID of the media at remote node this story is about (may be absent)
     operations:
       - name: edit
+        default: admin
         description: update the story
       - name: delete
+        default: admin
         description: delete the story
   - name: SubscriberDescription
     fields:

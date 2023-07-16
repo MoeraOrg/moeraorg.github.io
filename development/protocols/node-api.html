@@ -257,13 +257,15 @@ body_class: body-pink
             <thead>
                 <tr>
                     <th class="col-4">Name</th>
-                    <th class="col-8">Description</th>
+                    <th class="col-2">Default</th>
+                    <th class="col-6">Description</th>
                 </tr>
             </thead>
             <tbody>
                 {% for op in struct.operations %}
                     <tr>
                         <td><code>{{ op.name }}</code></td>
+                        <td><code>{{ op.default }}</code></td>
                         <td>{{ op.description }}</td>
                     </tr>
                 {% endfor %}

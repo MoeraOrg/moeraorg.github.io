@@ -558,7 +558,7 @@ events:
       - type: String
         name: remoteCommentId
         comment: ID of the comment at remote node this story is about (may be absent)
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         comment: list of the supported operations and the corresponding access hints
   - type: STORY_DELETED
@@ -572,58 +572,11 @@ events:
       - type: String
         name: feedName
         comment: name of the feed
-      - type: timestamp
-        name: publishedAt
-        comment: story publication timestamp - the time the story is published under in the feed
-      - type: boolean
-        name: pinned
-        comment: >
-          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
-          <code>false</code> otherwise
       - type: int
         name: moment
       - type: String
         name: postingId
         comment: ID of the posting this story is about (may be absent)
-      - type: boolean
-        name: viewed
-        comment: >
-          (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
-      - type: boolean
-        name: read
-        comment: >
-          (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
-      - type: String
-        name: summaryNodeName
-        description: name of the node related to the summary of the story
-      - type: String
-        name: summaryFullName
-        description: full name of the node related to the summary of the story
-      - struct: AvatarImage
-        name: summaryAvatar
-        comment: avatar of the summary of the story
-      - type: String
-        name: summary
-        comment: user-readable summary of the story
-      - type: String
-        name: trackingId
-        comment: >
-          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
-      - type: String
-        name: remoteNodeName
-        comment: name of the node this story is about (may be absent)
-      - type: String
-        name: remoteFullName
-        comment: full name of the node this story is about (may be absent)
-      - type: String
-        name: remotePostingId
-        comment: ID of the posting at remote node this story is about (may be absent)
-      - type: String
-        name: remoteCommentId
-        comment: ID of the comment at remote node this story is about (may be absent)
-      - type: String -> String[]
-        name: operations
-        comment: list of the supported operations and the corresponding access hints
   - type: STORY_UPDATED
     description: A story was updated.
     fields:
@@ -684,7 +637,7 @@ events:
       - type: String
         name: remoteCommentId
         comment: ID of the comment at remote node this story is about (may be absent)
-      - type: String -> String[]
+      - type: String -> String
         name: operations
         comment: list of the supported operations and the corresponding access hints
   - type: SUBSCRIBER_ADDED
