@@ -112,8 +112,8 @@ objects:
             description: avatar is not found
   - name: Cartes object
     description: >
-      <a href="/development/protocols/carte.md">Cartes</a> - cryptographic tokens used for authentication on any node
-      besides the home node.
+      <a href="/development/protocols/access-controls.html#carte">Cartes</a> - cryptographic tokens used for
+      authentication on any node besides the home node.
     requests:
       - url: /cartes
         type: GET

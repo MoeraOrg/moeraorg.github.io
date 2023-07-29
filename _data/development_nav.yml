@@ -22,14 +22,14 @@
 - name: protocols/fingerprint
   title: Fingerprint
 
-- name: protocols/moment
-  title: Moment
-
-- name: protocols/carte
-  title: Carte
-
 - name: protocols/node-name
   title: Node Name
+
+- name: protocols/access-controls
+  title: Access Controls
+
+- name: protocols/moment
+  title: Moment
 
 - name: protocols/naming-api
   title: Naming API

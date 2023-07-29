@@ -2,11 +2,17 @@
 layout: development
 title: Protocols
 up: protocols
-subtitle: Carte
+subtitle: Access Controls
 body_class: body-pink
+redirect_from:
+  - /development/protocols/carte.html
 ---
 
-# Carte
+# Access Controls
+
+## Authentication
+
+### Carte
 
 **Carte** (from *carte-de-visite*) is a cryptographic token that allows
 client to authenticate on any node besides the home node. Since the
