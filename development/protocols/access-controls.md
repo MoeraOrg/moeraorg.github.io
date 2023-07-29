@@ -4,14 +4,14 @@ title: Protocols
 up: protocols
 subtitle: Access Controls
 body_class: body-pink
-redirect_from:
-  - /development/protocols/carte.html
+redirect_from: /development/protocols/carte.html
 ---
 
 # Access Controls
 
 ## Authentication
 
+<a name="carte"></a>
 ### Carte
 
 **Carte** (from *carte-de-visite*) is a cryptographic token that allows
