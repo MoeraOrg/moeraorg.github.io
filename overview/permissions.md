@@ -77,9 +77,9 @@ not all friends are subscribers.
 The above means that the "friendship" is not mutual. When somebody
 subscribes to you or gives you some permissions, you are not required to
 do the same. But she may send you a request asking to give her extended
-access. Since she usually do not know, what group of users you have, the
+access. Since she usually does not know, what group of users you have, the
 request has a generic form (maybe, with some personal message). It
-appears in your [notifications box][3] and you can accept, decline or
+appears in your [notifications box][3], and you can accept, decline or
 dismiss it (decline without informing the requester).
 
 ## Ban
@@ -90,7 +90,7 @@ of them:
 
 * Deny access to your public posts and comments - not possible in Moera.
 * Deny access to your non-public content - remove him from all groups
-  granting a special access rights.
+  granting special access rights.
 * Deny from commenting - if you, for example, allow comments from any
   authenticated user, you still can reject comments from some of them,
   without any explanation.

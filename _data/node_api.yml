@@ -112,8 +112,8 @@ objects:
             description: avatar is not found
   - name: Cartes object
     description: >
-      <a href="/development/protocols/access-controls.html#carte">Cartes</a> - cryptographic tokens used for
-      authentication on any node besides the home node.
+      <a href="authentication.html#carte">Cartes</a> - cryptographic tokens used to authenticate on any node besides
+      the home node.
     requests:
       - url: /cartes
         type: GET
@@ -1862,8 +1862,7 @@ objects:
         description: Search for subscriptions by the given criteria.
   - name: Tokens object
     description: >
-      The authentication token. <a href="/overview/authentication.html">Read more</a> about token-base authentication
-      in the Overview section.
+      The authentication token. <a href="authentication.html">Read more</a> about token-based authentication.
     requests:
       - url: /tokens/{token}
         type: GET

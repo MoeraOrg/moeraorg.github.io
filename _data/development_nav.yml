@@ -25,6 +25,9 @@
 - name: protocols/node-name
   title: Node Name
 
+- name: protocols/authentication
+  title: Authentication
+
 - name: protocols/access-controls
   title: Access Controls
 

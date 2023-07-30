@@ -33,15 +33,15 @@ body_class: body-pink
             If authentication is required, but not provided, <code>authentication.required</code> error is returned.
         </li>
         <li>
-            If invalid authentication token or root secret is provided, <code>authentication.invalid</code> error is
+            If an invalid authentication token or root secret is provided, <code>authentication.invalid</code> error is
             returned.
         </li>
         <li>
             If the provided signature is incorrect, <code>authentication.incorrect-signature</code> error is returned.
         </li>
         <li>
-            If the provided <a href="/development/protocols/access-controls.html#carte">carte</a> is incorrect, one of
-            the following error codes is returned:
+            If the provided <a href="authentication.html#carte">carte</a> is incorrect, one of the following error codes
+            is returned:
             <ul>
                 <li><code>carte.client-address-unknown</code> - cannot determine client IP address;</li>
                 <li><code>carte.unknown-fingerprint</code> - unknown fingerprint version encoded in the carte;</li>
@@ -77,8 +77,8 @@ body_class: body-pink
     </ul>
 </p>
 <p>
-    <a href="/overview/authentication.html">Authentication scheme</a>, if specified in the request description, may be
-    one of the following:
+    <a href="authentication.html">Authentication scheme</a>, if specified in the request description, may be one of
+    the following:
     <a name="auth"></a>
     <ul>
         <li>
