@@ -9,7 +9,7 @@ body_class: body-pink
 <h1>Events</h1>
 <p>
     Moera client may connect to WebSockets endpoint of a node to receive events about everything happening at the node
-    right now: new and updated posts, changed settings etc. This allows client to be more responsive. Typically
+    right now: new and updated posts, changed settings etc. This allows client to be more responsive. Typically,
     the client connects to the home node (authentication token is required) and to the node the user views at
     the moment.
 </p>
@@ -26,7 +26,7 @@ body_class: body-pink
             <code>host:</code> - is required to differentiate between
             <a href="node-api.html#Domains%20object">virtual domains</a> at the same server;
         </li>
-        <li><code>token:</code> - authentication token, if available</li>
+        <li><code>token:</code> - <a href="access-controls.html#tokens">authentication token</a>, if available</li>
         <li><code>heart-beat:</code> - recommended, as per STOMP specification.</li>
     </ul>
 </p>
