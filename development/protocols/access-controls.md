@@ -74,42 +74,192 @@ the owner of the object and owners of higher-level objects in the hierarchy.
 
 #### Level 1
 
-| node<br>owner | object<br>owner |           |
-|---------------|-----------------|-----------|
-| +             | +               | `private` |
-| +             | +               | `secret`  |
-| +             | +               | `enigma`  |
-| +             | -               | `senior`  |
-| +             | -               | `major`   |
-| +             | -               | `admin`   |
-| -             | +               | `owner`   |
-| -             | -               | `none`    |
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>node owner</th>
+      <th>object owner</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td><code>private</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td><code>secret</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td><code>enigma</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td><code>senior</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td><code>major</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td><code>admin</code></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>+</td>
+      <td><code>owner</code></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td><code>none</code></td>
+    </tr>
+  </tbody>
+</table>
 
 #### Level 2
 
-| node<br>owner | posting<br>owner | object<br>owner |           |
-|---------------|------------------|-----------------|-----------|
-| +             | +                | +               | `private` |
-| +             | -                | +               | `secret`  |
-| +             | -                | +               | `enigma`  |
-| +             | +                | -               | `senior`  |
-| +             | -                | -               | `major`   |
-| +             | -                | -               | `admin`   |
-| -             | -                | +               | `owner`   |
-| -             | -                | -               | `none`    |
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>node owner</th>
+      <th>posting owner</th>
+      <th>object owner</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td>+</td>
+      <td><code>private</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td>+</td>
+      <td><code>secret</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td>+</td>
+      <td><code>enigma</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td>-</td>
+      <td><code>senior</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td>-</td>
+      <td><code>major</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td>-</td>
+      <td><code>admin</code></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>+</td>
+      <td><code>owner</code></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td><code>none</code></td>
+    </tr>
+  </tbody>
+</table>
 
 #### Level 3
 
-| node<br>owner | posting<br>owner | comment<br>owner | object<br>owner |            |
-|---------------|------------------|------------------|-----------------|------------|
-| +             | +                | +                | +               | `private`  |
-| +             | +                | -                | +               | `secret`   |
-| +             | -                | -                | +               | `enigma`   |
-| +             | +                | +                | -               | `senior`   |
-| +             | +                | -                | -               | `major`    |
-| +             | -                | -                | -               | `admin`    |
-| -             | -                | -                | +               | `owner`    |
-| -             | -                | -                | -               | `none`     |
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>node owner</th>
+      <th>posting owner</th>
+      <th>comment owner</th>
+      <th>object owner</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td>+</td>
+      <td>+</td>
+      <td><code>private</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td>-</td>
+      <td>+</td>
+      <td><code>secret</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td>-</td>
+      <td>+</td>
+      <td><code>enigma</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td>+</td>
+      <td>-</td>
+      <td><code>senior</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>+</td>
+      <td>-</td>
+      <td>-</td>
+      <td><code>major</code></td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td><code>admin</code></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>+</td>
+      <td><code>owner</code></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td><code>none</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ### Complex Principals
 
