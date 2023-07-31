@@ -76,32 +76,27 @@ body_class: body-pink
         </li>
     </ul>
 </p>
-<p>
-    <a href="authentication.html">Authentication scheme</a>, if specified in the request description, may be one of
-    the following:
-    <a name="auth"></a>
+<p id="auth">
+    <a href="authentication.html">Authentication</a> requirements, if specified in the request description, may be one
+    of the following:
     <ul>
         <li>
-            <i>none</i> or not present - authentication is not required;
+            <i>none</i> or not present - authentication is not needed, it does not affect the request;
         </li>
         <li>
-            <i>root secret</i> - <code>Authorization: bearer secret:&lt;token></code> header must be provided with
-            <code>&lt;token></code> equal to the secret value set in the node configuration;
+            <i>optional</i> - authentication is not mandatory, but it does affect the request;
         </li>
         <li>
-            <i>admin</i> - admin token received after signing in must be passed in header
-            <code>Authorization: bearer [token:]&lt;token></code>;
+            <i>required</i> - authentication is required to perform the request;
         </li>
         <li>
-            <i>owner</i> - only the owner of the content (posting, comment etc.) may perform this request, use admin
-            token (for own content on the home node only), <a href="/development/protocols/carte.html">carte</a>
-            (passed in header <code>Authorization: bearer carte:&lt;token></code>) or signature (if present in the
-            input) for authentication.
+            <i>signature</i> - signature should be included in the request body;
         </li>
         <li>
-            <i>configurable</i> - access to the request is configurable, the client may refer to the corresponding
-            <a href="/overview/permissions.html">access hint</a> to clarify and use token, carte or signature for
-            authentication.
+            <i>root admin</i> - the client should authenticate as server administrator to perform the request;
+        </li>
+        <li>
+            <i>admin</i> - the client should authenticate as node administrator to perform the request.
         </li>
     </ul>
 </p>
@@ -176,12 +171,6 @@ body_class: body-pink
                 <dd>{{ req.auth }}</dd>
             {% else %}
                 <dd><i>none</i></dd>
-            {% endif %}
-            <dt>Name and signing key:</dt>
-            {% if req.entitled %}
-                <dd>required</dd>
-            {% else %}
-                <dd><i>not required</i></dd>
             {% endif %}
             {% if req.errors %}
                 <dt>Errors:</dt>

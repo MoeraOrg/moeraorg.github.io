@@ -124,7 +124,6 @@ objects:
         out:
           struct: CarteSet
         auth: admin
-        entitled: true
         description: >
           Get a set of cartes that correspond to successive periods of time. The node may decide to return less cartes
           than the given <code>limit</code>.
@@ -148,6 +147,7 @@ objects:
             description: maximum number of comments returned
         out:
           struct: CommentsSliceInfo
+        auth: optional
         description: >
           Get a slice of the list of comments, delimited by <code>before</code> or <code>after</code> moments (but not
           both) and the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided,
@@ -170,7 +170,7 @@ objects:
           struct: CommentText
         out:
           struct: CommentCreated
-        auth: owner
+        auth: required or signature
         description: >
           Create a comment from the given text and add it to the given posting. The comment owner must authenticate in
           some way. If the comment is not signed, it will be kept for a limited period of time and then erased. If
@@ -198,6 +198,7 @@ objects:
               </ul>
         out:
           struct: CommentInfo
+        auth: optional
         description: Get an individual comment.
         errors:
           - code: comment.not-found
@@ -217,7 +218,7 @@ objects:
           struct: CommentText
         out:
           struct: CommentInfo
-        auth: owner
+        auth: required or signature
         description: >
           Update the comment, creating a new revision of it. The text is processed just like in the <code>POST</code>
           request.
@@ -237,7 +238,7 @@ objects:
             description: ID of the comment
         out:
           struct: CommentTotalInfo
-        auth: admin or owner
+        auth: required
         description: >
           Delete the comment. The comment may not be purged from the database immediately, but preserved for some period
           of time to give a chance to restore it.
@@ -258,6 +259,7 @@ objects:
         out:
           struct: PostingInfo
           array: true
+        auth: optional
         description: Get all postings linked to media attached to the given comment.
         errors:
           - code: comment.not-found
@@ -279,7 +281,7 @@ objects:
         out:
           struct: CommentRevisionInfo
           array: true
-        auth: configurable
+        auth: optional
         description: Get all revisions of the comment.
         errors:
           - code: comment.not-found
@@ -300,7 +302,7 @@ objects:
             description: ID of the revision
         out:
           struct: CommentRevisionInfo
-        auth: configurable
+        auth: optional
         description: Get an individual revision of the comment.
         errors:
           - code: comment.not-found
@@ -325,7 +327,7 @@ objects:
           struct: ReactionDescription
         out:
           struct: ReactionCreated
-        auth: owner
+        auth: required or signature
         description: >
           Add a reaction to the given comment. The reaction owner must authenticate in some way. Only one reaction is
           allowed from each owner to a particular comment. If a reaction from the same owner to this comment already
@@ -363,6 +365,7 @@ objects:
             description: maximum number of reactions returned
         out:
           struct: ReactionsSliceInfo
+        auth: optional
         description: >
           Get a slice of the list of reactions to the given comment, optionally filtered by reaction type, delimited by
           <code>before</code> moment and the given <code>limit</code>. If <code>before</code> is not provided,
@@ -389,6 +392,7 @@ objects:
             description: reaction owner node name
         out:
           struct: ReactionInfo
+        auth: optional
         description: >
           Get the detailed information about the reaction of the given owner to the given comment. If no reaction with
           such owner exist, an empty structure with just <code>commentId</code> is returned.
@@ -429,7 +433,7 @@ objects:
             description: reaction owner node name
         out:
           struct: ReactionTotalsInfo
-        auth: admin or owner
+        auth: optional
         description: Delete the reaction of the given owner to the given comment.
         errors:
           - code: comment.not-found
@@ -450,6 +454,7 @@ objects:
             description: ID of the comment
         out:
           struct: ReactionTotalsInfo
+        auth: optional
         description: Get summary of reactions to the comment given.
         errors:
           - code: comment.not-found
@@ -471,6 +476,7 @@ objects:
         out:
           struct: ContactInfo
           array: true
+        auth: admin
         description: >
           Search for contacts matching the search <code>query</code>. Every space-delimited word in the query must
           case-insensitively match a beginning of the contact's node name or a beginning of any space-delimited word in
@@ -525,7 +531,7 @@ objects:
         type: DELETE
         out:
           struct: Result
-        auth: root secret
+        auth: root admin
         description: Delete credentials.
       - url: /credentials/reset
         type: POST
@@ -585,7 +591,6 @@ objects:
         out:
           struct: PostingInfo
         auth: admin
-        entitled: true
         description: >
           Restore a posting. A new revision is created with the same content as in the latest revision.
         errors:
@@ -609,7 +614,7 @@ objects:
         out:
           struct: DomainInfo
           array: true
-        auth: root secret
+        auth: root admin
         description: Get the list of registered domains.
       - url: /domains/{name}
         type: GET
@@ -619,7 +624,7 @@ objects:
             description: domain name
         out:
           struct: DomainInfo
-        auth: root secret or none
+        auth: root admin or none
         description: >
           Get information about the domain with the given hostname. If domain registration for this server is public,
           this request does not require authentication.
@@ -632,7 +637,7 @@ objects:
           struct: DomainAttributes
         out:
           struct: DomainInfo
-        auth: root secret or none
+        auth: root admin or none
         description: >
           Create a new domain with the given hostname. If <code>nodeId</code> is not passed, it is generated
           automatically. If domain registration for this server is public, this request does not require authentication.
@@ -651,7 +656,7 @@ objects:
           struct: DomainAttributes
         out:
           struct: DomainInfo
-        auth: root secret
+        auth: root admin
         description: >
           Update the domain with the given hostname. If the new hostname is not passed, the old hostname is preserved.
           (Note that you cannot pass a new name for the default hostname, because it cannot be renamed and
@@ -670,7 +675,7 @@ objects:
             description: domain name
         out:
           struct: Result
-        auth: root secret
+        auth: root admin
         description: >
           Delete the domain with the given hostname. This operation deletes the domain record only, the user's data
           related to the domain is preserved.
@@ -738,7 +743,6 @@ objects:
         out:
           struct: DraftInfo
         auth: admin
-        entitled: true
         description: Create a new draft from the text given.
       - url: /drafts/{id}
         type: GET
@@ -764,7 +768,6 @@ objects:
         out:
           struct: DraftInfo
         auth: admin
-        entitled: true
         description: Update the draft.
         errors:
           - code: draft.not-found
@@ -800,6 +803,7 @@ objects:
         out:
           struct: FeedInfo
           array: true
+        auth: admin or none
         description: Get general information about all feeds accessible by client.
       - url: /feeds/{feedName}
         type: GET
@@ -809,6 +813,7 @@ objects:
             description: name of the feed
         out:
           struct: FeedInfo
+        auth: admin or none
         description: Get general information about the feed.
         errors:
           - code: feed.not-found
@@ -858,6 +863,7 @@ objects:
             description: maximum number of stories returned
         out:
           struct: FeedSliceInfo
+        auth: admin or none
         description: >
           Get a slice of the feed, delimited by <code>before</code> or <code>after</code> moments (but not both) and
           the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest
@@ -881,7 +887,7 @@ objects:
         type: POST
         out:
           struct: PrivateMediaFileInfo
-        auth: owner
+        auth: required
         description: >
           Upload a new media file. Content of the file is passed in the request body
         errors:
@@ -897,6 +903,7 @@ objects:
           - type: String
             name: id
             description: media file ID
+        auth: optional
         description: >
           Get media file content (returned in the response body).
         errors:
@@ -910,6 +917,7 @@ objects:
             description: media file ID
         out:
           struct: PrivateMediaFileInfo
+        auth: optional
         description: >
           Get media file details.
         errors:
@@ -924,6 +932,7 @@ objects:
         out:
           struct: EntryInfo
           array: true
+        auth: optional
         description: >
           Get the list of all postings and comments the media file is attached to.
   - name: Media object (public)
@@ -934,7 +943,7 @@ objects:
         type: POST
         out:
           struct: PublicMediaFileInfo
-        auth: owner
+        auth: required
         description: >
           Upload a new media file. Content of the file is passed in the request body
         errors:
@@ -1039,6 +1048,7 @@ objects:
           struct: NotificationPacket
         out:
           struct: Result
+        auth: signature
         description: >
           Accept a notification packet from other node. Notification packets older than 10 minutes are ignored.
           The sending node should update the packet timestamp and the signature and send the packet again.
@@ -1050,6 +1060,7 @@ objects:
         type: GET
         out:
           struct: PeopleGeneralInfo
+        auth: optional
         description: Get general information about other nodes.
   - name: Postings object
     description: >
@@ -1062,8 +1073,7 @@ objects:
           struct: PostingText
         out:
           struct: PostingInfo
-        auth: owner
-        entitled: true
+        auth: required or signature
         description: >
           Create a new posting from the text given and publish it in the given feeds (if any). The heading and
           the preview of the posting are created automatically, if needed. The posting owner must authenticate in
@@ -1079,8 +1089,7 @@ objects:
           struct: PostingText
         out:
           struct: PostingInfo
-        auth: configurable
-        entitled: true
+        auth: required or signature
         description: >
           Update the posting, creating a new revision of it. The text is processed just like in the <code>POST</code>
           request.
@@ -1104,6 +1113,7 @@ objects:
               </ul>
         out:
           struct: PostingInfo
+        auth: optional
         description: Get an individual posting.
         errors:
           - code: posting.not-found
@@ -1116,7 +1126,7 @@ objects:
             description: ID of the posting
         out:
           struct: Result
-        auth: configurable
+        auth: optional
         description: >
           Delete the posting. The posting may not be purged from the database immediately, but preserved for some period
           of time to give a chance to restore it.
@@ -1132,6 +1142,7 @@ objects:
         out:
           struct: PostingInfo
           array: true
+        auth: optional
         description: Get all postings linked to media attached to the given posting.
         errors:
           - code: posting.not-found
@@ -1156,7 +1167,7 @@ objects:
         out:
           struct: PostingRevisionInfo
           array: true
-        auth: configurable
+        auth: optional
         description: >
           Get all revisions of the posting, but not more than <code>limit</code>. The node may decide to return less
           revisions than the given <code>limit</code>.
@@ -1174,7 +1185,7 @@ objects:
             description: ID of the revision
         out:
           struct: PostingRevisionInfo
-        auth: configurable
+        auth: optional
         description: Get an individual revision of the posting.
         errors:
           - code: posting.not-found
@@ -1192,8 +1203,7 @@ objects:
             description: ID of the revision
         out:
           struct: PostingRevisionInfo
-        auth: owner
-        entitled: true
+        auth: admin
         description: >
           Restore a revision of the posting. A new revision is created with the same content as in the given revision.
         errors:
@@ -1216,7 +1226,7 @@ objects:
           struct: ReactionDescription
         out:
           struct: ReactionCreated
-        auth: owner
+        auth: required or signature
         description: >
           Add a reaction to the given posting. The reaction owner must authenticate in some way. Only one reaction is
           allowed from each owner to a particular posting. If a reaction from the same owner to this posting already
@@ -1249,6 +1259,7 @@ objects:
             description: maximum number of reactions returned
         out:
           struct: ReactionsSliceInfo
+        auth: optional
         description: >
           Get a slice of the list of reactions to the given posting, optionally filtered by reaction type, delimited by
           <code>before</code> moment and the given <code>limit</code>. If <code>before</code> is not provided,
@@ -1270,6 +1281,7 @@ objects:
             description: reaction owner node name
         out:
           struct: ReactionInfo
+        auth: optional
         description: >
           Get the detailed information about the reaction of the given owner to the given posting. If no reaction with
           such owner exist, an empty structure with just <code>postingId</code> is returned.
@@ -1284,7 +1296,7 @@ objects:
             description: ID of the posting
         out:
           struct: Result
-        auth: admin
+        auth: optional
         description: Delete all reactions to the given posting.
         errors:
           - code: posting.not-found
@@ -1300,7 +1312,7 @@ objects:
             description: reaction owner node name
         out:
           struct: ReactionTotalsInfo
-        auth: admin or owner
+        auth: optional
         description: Delete the reaction of the given owner to the given posting.
         errors:
           - code: posting.not-found
@@ -1316,6 +1328,7 @@ objects:
             description: ID of the posting
         out:
           struct: ReactionTotalsInfo
+        auth: optional
         description: Get summary of reactions to the posting given.
         errors:
           - code: posting.not-found
@@ -1335,6 +1348,7 @@ objects:
               </ul>
         out:
           struct: ProfileInfo
+        auth: optional
         description: Get the profile.
       - url: /profile
         type: PUT
@@ -1447,7 +1461,6 @@ objects:
         out:
           struct: Result
         auth: admin
-        entitled: true
         description: Add a comment to the posting on the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}
         type: PUT
@@ -1466,7 +1479,6 @@ objects:
         out:
           struct: Result
         auth: admin
-        entitled: true
         description: Update a comment to the posting on the remote node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}
         type: DELETE
@@ -1514,7 +1526,6 @@ objects:
         out:
           struct: Result
         auth: admin
-        entitled: true
         description: Add a posting to the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}
         type: PUT
@@ -1530,7 +1541,6 @@ objects:
         out:
           struct: Result
         auth: admin
-        entitled: true
         description: Update a posting on the remote node.
       - url: /nodes/{nodeName}/postings/{postingId}
         type: DELETE
@@ -1591,7 +1601,6 @@ objects:
         out:
           struct: Result
         auth: admin
-        entitled: true
         description: Add a reaction to the posting on the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/reactions
         type: DELETE
@@ -1638,7 +1647,7 @@ objects:
           array: true
         out:
           struct: Result
-        auth: admin or root secret
+        auth: admin or root admin
         description:
           Update the given settings. If the input contains node settings, they are validated and the first validation
           error is returned, if any. The update is always performed as whole - if there is an error saving any one of
@@ -1700,7 +1709,7 @@ objects:
           array: true
         out:
           struct: Result
-        auth: root secret
+        auth: root admin
         description: Update node settings metadata, overriding built-in defaults.
         errors:
           - code: setting.deserialization-failed
@@ -1726,6 +1735,7 @@ objects:
             description: ID of the story
         out:
           struct: StoryInfo
+        auth: optional
         description: Get an individual story.
         errors:
           - code: story.not-found
@@ -1765,6 +1775,7 @@ objects:
         out:
           struct: SubscriberInfo
           array: true
+        auth: optional
         description: Get the list of all subscribers, optionally filtered by some criteria.
       - url: /people/subscribers
         type: POST
@@ -1772,7 +1783,7 @@ objects:
           struct: SubscriberDescription
         out:
           struct: SubscriberInfo
-        auth: owner
+        auth: required
         description: Subscribe to a particular group of notifications.
         errors:
           - code: subscriber.already-exists
@@ -1785,7 +1796,7 @@ objects:
             description: ID of the subscriber
         out:
           struct: SubscriberInfo
-        auth: admin or owner
+        auth: optional
         description: Get an individual subscriber.
         errors:
           - code: subscriber.not-found
@@ -1798,7 +1809,7 @@ objects:
             description: ID of the subscriber
         out:
           struct: Result
-        auth: admin or owner
+        auth: optional
         description: Delete a subscriber.
         errors:
           - code: subscriber.not-found
@@ -1822,6 +1833,7 @@ objects:
         out:
           struct: SubscriptionInfo
           array: true
+        auth: optional
         description: Get the list of all subscriptions, optionally filtered by some criteria.
       - url: /people/subscriptions
         type: POST
@@ -1830,7 +1842,6 @@ objects:
         out:
           struct: SubscriptionInfo
         auth: admin
-        entitled: true
         description: Register a subscription to notifications from a particular node.
         errors:
           - code: subscription.already-exists
@@ -1858,7 +1869,7 @@ objects:
         out:
           struct: SubscriptionInfo
           array: true
-        auth: admin
+        auth: optional
         description: Search for subscriptions by the given criteria.
   - name: Tokens object
     description: >
@@ -1872,6 +1883,7 @@ objects:
             description: the token
         out:
           struct: TokenInfo
+        auth: admin
         description: Get information about the token.
       - url: /tokens
         type: POST
