@@ -13,6 +13,9 @@ to use them. To authenticate, the client should provide a corresponding
 authentication token or sign the request body with the home node's private signing
 key.
 
+Read also [the overview of the authentication architecture](/overview/authentication.html)
+in Moera.
+
 <a name="tokens"></a>
 ## Types of tokens
 
