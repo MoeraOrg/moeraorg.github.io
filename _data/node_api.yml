@@ -1875,28 +1875,57 @@ objects:
     description: >
       The authentication token. <a href="authentication.html">Read more</a> about token-based authentication.
     requests:
-      - url: /tokens/{token}
+      - url: /tokens
         type: GET
-        params:
-          - type: String
-            name: token
-            description: the token
         out:
           struct: TokenInfo
+          array: true
         auth: admin
-        description: Get information about the token.
+        description: Get the list of all existing tokens.
       - url: /tokens
         type: POST
         in:
-          struct: Credentials
+          struct: TokenAttributes
         out:
-          struct: TokenCreated
+          struct: TokenInfo
         description: Sign in and create a token.
         errors:
           - code: credentials.not-created
             description: credentials are not created yet
           - code: credentials.login-incorrect
             description: login or password is incorrect
+      - url: /tokens/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the token
+        out:
+          struct: TokenInfo
+        auth: admin
+        description: Get information about the token.
+      - url: /tokens/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the token
+        in:
+          struct: TokenName
+        out:
+          struct: TokenInfo
+        auth: admin
+        description: Update the name of the token.
+      - url: /tokens/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the token
+        out:
+          struct: Result
+        auth: admin
+        description: Delete the token.
   - name: Who Am I object
     description: Brief information about the node.
     requests:
@@ -2213,7 +2242,7 @@ structures:
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the comment accepts
@@ -2364,6 +2393,9 @@ structures:
       - type: String
         name: repliedToId
         description: ID of the comment this comment is replying to
+      - type: String -> String
+        name: operations
+        description: list of <a href="#CommentInfo-operations">operations</a> and the corresponding principals
     errors:
       - code: commentText.bodySrc.blank
         description: body text is empty
@@ -2432,6 +2464,9 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
+      - type: String -> String
+        name: operations
+        description: list of <a href="#CommentInfo-operations">operations</a> and the corresponding principals
     errors:
       - code: commentText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -2475,6 +2510,8 @@ structures:
         description: list of accepted negative reactions has wrong format
       - code: commentText.repliedToId.not-found
         description: comment referred in `repliedToId` is not found
+      - code: commentText.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: CommentTotalInfo
     fields:
       - type: int
@@ -2605,16 +2642,6 @@ structures:
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
-      - type: boolean
-        name: reactionsVisible
-        description: >
-          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
-          posting and reaction owners, <code>false</code> otherwise
-      - type: boolean
-        name: reactionTotalsVisible
-        description: >
-          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
-          <code>false</code> otherwise
       - type: String
         name: bodySrc
         description: the source text of the draft, a string representation of a JSON structure
@@ -2644,6 +2671,9 @@ structures:
       - struct: UpdateInfo
         name: updateInfo
         description: description of the update
+      - type: String -> String
+        name: operations
+        description: draft of the list of operations and the corresponding principals
   - name: DraftText
     fields:
       - type: String
@@ -2669,16 +2699,6 @@ structures:
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
-      - type: boolean
-        name: reactionsVisible
-        description: >
-          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
-          posting and reaction owners, <code>false</code> otherwise
-      - type: boolean
-        name: reactionTotalsVisible
-        description: >
-          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
-          <code>false</code> otherwise
       - type: String
         name: bodySrc
         description: the source text of the draft, a string representation of a JSON structure
@@ -2697,6 +2717,9 @@ structures:
       - struct: UpdateInfo
         name: updateInfo
         description: description of the update
+      - type: String -> String
+        name: operations
+        description: draft of the list of operations and the corresponding principals
     errors:
       - code: draftText.postingId.blank
         description: posting ID is not set
@@ -2758,7 +2781,7 @@ structures:
         description: creation timestamp of the latest story in the feed
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: add
         default:
@@ -2785,7 +2808,7 @@ structures:
         name: operations
         description: >
           list of the supported operations (see <code><a href="#StoryInfo">StoryInfo</a>.operations</code>) and
-          the corresponding access hints for the story in the feed
+          the corresponding principals for the story in the feed
   - name: FeedSliceInfo
     fields:
       - type: int
@@ -2971,7 +2994,7 @@ structures:
         description: if the operation with the node name was failed, the human-readable description of the failure
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: manage
         default:
@@ -3124,7 +3147,7 @@ structures:
         description: array of references to the posting from stories in feeds
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
@@ -3134,16 +3157,6 @@ structures:
       - struct: ReactionTotalsInfo
         name: reactions
         description: reactions summary of the posting
-      - type: boolean
-        name: reactionsVisible
-        description: >
-          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
-          posting and reaction owners, <code>false</code> otherwise
-      - type: boolean
-        name: reactionTotalsVisible
-        description: >
-          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
-          <code>false</code> otherwise
       - struct: PostingSourceInfo
         array: true
         name: sources
@@ -3308,6 +3321,9 @@ structures:
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
+      - type: String -> String
+        name: operations
+        description: list of <a href="#PostingInfo-operations">operations</a> and the corresponding principals
   - name: PostingSubscriptionsInfo
     fields:
       - type: String
@@ -3355,16 +3371,6 @@ structures:
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
-      - type: boolean
-        name: reactionsVisible
-        description: >
-          <code>true</code>, if the posting allows to view detailed information about reactions to anybody except
-          posting and reaction owners, <code>false</code> otherwise
-      - type: boolean
-        name: reactionTotalsVisible
-        description: >
-          <code>true</code>, if the posting allows to view number of reactions to anybody except the posting owner,
-          <code>false</code> otherwise
       - struct: StoryAttributes
         array: true
         name: publications
@@ -3380,6 +3386,9 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
+      - type: String -> String
+        name: operations
+        description: list of <a href="#PostingInfo-operations">operations</a> and the corresponding principals
     errors:
       - code: postingText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -3421,6 +3430,8 @@ structures:
         description: list of accepted negative reactions has wrong format
       - code: postingText.publications.cannot-modify
         description: <code>publications</code> field is not allowed in posting modification query
+      - code: postingText.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: PrivateMediaFileInfo
     fields:
       - type: String
@@ -3530,7 +3541,7 @@ structures:
         description: list of fundraisers - methods of giving a donation to the node owner (may be absent)
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: edit
         default:
@@ -3668,7 +3679,7 @@ structures:
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: view
         default: public
@@ -3990,7 +4001,7 @@ structures:
         description: <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
       - type: String -> String
         name: operations
-        description: list of the supported operations (see below) and the corresponding access hints
+        description: list of the supported operations (see below) and the corresponding principals
       - type: String
         name: summaryNodeName
         description: name of the node related to the summary of the story
@@ -4208,27 +4219,71 @@ structures:
         description: >
           subscription reason (see the list of well-known values in
           <a href="#SubscriptionDescription"><code>SubscriptionDescription</code></a><code>.reason</code>
-  - name: TokenCreated
+  - name: TokenAttributes
     fields:
       - type: String
-        name: token
-        description: the token
-      - type: String[]
-        name: permissions
-        description: the list of <a href="/overview/permissions.html">permission groups</a> assigned to the token
+        name: login
+      - type: String
+        name: password
+      - type: int
+        name: authCategory
+        description: >
+          A bit mask describing which permissions should be granted to the token. If not set, all permissions of
+          the administrator are granted. The bits have the following meaning:
+          <ul>
+            <li><code>other (0x0001)</code> - any other permission not listed below;</li>
+            <li><code>view-media (0x0002)</code> - view media files.</li>
+          </ul>
+      - type: String
+        name: name
+        description: a user-readable name of the token, may be absent
+    errors:
+      - code: tokenAttributes.login.blank
+        description: the login is empty
+      - code: tokenAttributes.password.blank
+        description: the password is empty
   - name: TokenInfo
     fields:
       - type: String
+        name: id
+        description: token ID (this is not the token, just an ID)
+      - type: String
         name: token
         description: the token
-      - type: boolean
-        name: valid
-        description: <code>true</code> if the token is valid, <code>false</code> otherwise
+      - type: String
+        name: name
+        description: a user-readable name of the token, may be absent
       - type: String[]
         name: permissions
         description: >
-          The list of <a href="/overview/permissions.html">permission groups</a> assigned to the token. See also the
-          <a href="#standard-permission-groups">list of standard permission groups</a>.
+          The list of permissions granted to the token. The values are: 
+          <ul>
+            <li><code>other</code> - any other permission not listed below;</li>
+            <li><code>view-media</code> - view media files.</li>
+          </ul>
+      - type: String
+        name: pluginName
+        description: a plugin the token belongs to; if set, only this plugin may use the token
+      - type: timestamp
+        name: createdAt
+        description: token creation timestamp
+      - type: timestamp
+        name: deadline
+        description: timestamp of the end of the token's life
+      - type: timestamp
+        name: lastUsedAt
+        description: timestamp of the last time the token was used
+      - type: String
+        name: lastUsedBrowser
+        description: name of the browser used by the latest user of the token
+      - type: String
+        name: lastUsedIp
+        description: IP address of the latest user of the token
+  - name: TokenName
+    fields:
+      - type: String
+        name: name
+        description: a user-readable name of the token, may be absent
   - name: UpdateInfo
     fields:
       - type: boolean

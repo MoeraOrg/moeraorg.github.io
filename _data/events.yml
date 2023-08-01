@@ -560,7 +560,7 @@ events:
         comment: ID of the comment at remote node this story is about (may be absent)
       - type: String -> String
         name: operations
-        comment: list of the supported operations and the corresponding access hints
+        comment: list of the supported operations and the corresponding principals
   - type: STORY_DELETED
     description: A story was deleted.
     fields:
@@ -639,7 +639,7 @@ events:
         comment: ID of the comment at remote node this story is about (may be absent)
       - type: String -> String
         name: operations
-        comment: list of the supported operations and the corresponding access hints
+        comment: list of the supported operations and the corresponding principals
   - type: SUBSCRIBER_ADDED
     description: A node subscribed to notifications from this node.
     fields:

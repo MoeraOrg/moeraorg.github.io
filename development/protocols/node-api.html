@@ -112,8 +112,7 @@ body_class: body-pink
     <li><a href="#Structures">Structures</a></li>
 </ol>
 {% for object in site.data.node_api.objects %}
-    <a name="{{ object.name }}"></a>
-    <h2>{{ object.name }}</h2>
+    <h2 id="{{ object.name }}">{{ object.name }}</h2>
     <p>{{ object.description }}</p>
     {% for req in object.requests %}
         <h4 class="identifier">{{ req.type }} {{ req.url }}</h4>
@@ -198,11 +197,9 @@ body_class: body-pink
 {% endfor %}
 
 <br/><br/>
-<a name="Structures"></a>
-<h2>Structures</h2>
+<h2 id="Structures">Structures</h2>
 {% for struct in site.data.node_api.structures %}
-    <a name="{{ struct.name }}"></a>
-    <h4 class="identifier">{{ struct.name }}</h4>
+    <h4 id="{{ struct.name }}" class="identifier">{{ struct.name }}</h4>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -232,7 +229,7 @@ body_class: body-pink
         </tbody>
     </table>
     {% if struct.operations %}
-        <b>Operations (<a href="access-controls.html">read more</a>):</b>
+        <b id="{{ struct.name }}-operations">Operations (<a href="access-controls.html">read more</a>):</b>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -276,8 +273,7 @@ body_class: body-pink
 <br/><br/>
 <h2>Enums</h2>
 {% for enum in site.data.node_api.enums %}
-    <a name="{{ enum.name }}"></a>
-    <h4 class="identifier">{{ enum.name }}</h4>
+    <h4 id="{{ enum.name }}" class="identifier">{{ enum.name }}</h4>
     <p>{{ enum.description }}</p>
     <table class="table table-bordered">
         <thead>
@@ -298,8 +294,7 @@ body_class: body-pink
 {% endfor %}
 
 <br/><br/>
-<a name="http-status-codes"></a>
-<h2>HTTP status codes</h2>
+<h2 id="http-status-codes">HTTP status codes</h2>
 <table class="table table-bordered">
     <thead>
         <tr>
