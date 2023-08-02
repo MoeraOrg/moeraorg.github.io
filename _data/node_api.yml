@@ -120,12 +120,13 @@ objects:
         params:
           - type: int
             name: limit
-            description: maximum number of cartes returned
+            description: maximum number of sequential cartes returned
         out:
           struct: CarteSet
         auth: admin
         description: >
-          Get a set of cartes that correspond to successive periods of time. The node may decide to return less cartes
+          Get a set of cartes that correspond to successive periods of time. Two sequences of cartes are returned: one
+          with all permissions and another with `view-media` permission only. The node may decide to return less cartes
           than the given <code>limit</code>.
   - name: Comments object
     description: Comments to a posting.
@@ -2109,6 +2110,14 @@ structures:
       - type: timestamp
         name: deadline
         description: timestamp of the end of the carte's life
+      - type: String[]
+        name: permissions
+        description: >
+          The list of permissions granted to the carte. The values are: 
+          <ul>
+            <li><code>other</code> - any other permission not listed below;</li>
+            <li><code>view-media</code> - view media files.</li>
+          </ul>
   - name: CarteSet
     fields:
       - type: String
@@ -2243,6 +2252,16 @@ structures:
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
+      - type: String -> String
+        name: ownerOperations
+        description: >
+          list of the supported operations (see below) and the corresponding principals as defined by the comment's
+          owner
+      - type: String -> String
+        name: seniorOperations
+        description: >
+          list of the operations (see below) and the corresponding principals that are overridden by the posting's
+          owner ("senior")
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the comment accepts
@@ -2395,7 +2414,12 @@ structures:
         description: ID of the comment this comment is replying to
       - type: String -> String
         name: operations
-        description: list of <a href="#CommentInfo-operations">operations</a> and the corresponding principals
+        description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
+      - type: String -> String
+        name: seniorOperations
+        description: >
+          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
+          overridden by the posting's owner ("senior"); only the senior may set this
     errors:
       - code: commentText.bodySrc.blank
         description: body text is empty
@@ -2466,7 +2490,12 @@ structures:
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
-        description: list of <a href="#CommentInfo-operations">operations</a> and the corresponding principals
+        description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
+      - type: String -> String
+        name: seniorOperations
+        description: >
+          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
+          overridden by the posting's owner ("senior"); only the senior may set this
     errors:
       - code: commentText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -2807,8 +2836,8 @@ structures:
       - type: String -> String
         name: operations
         description: >
-          list of the supported operations (see <code><a href="#StoryInfo">StoryInfo</a>.operations</code>) and
-          the corresponding principals for the story in the feed
+          list of the supported <a href="#StoryInfo-operations">operations</a> and the corresponding principals for
+          the story in the feed
   - name: FeedSliceInfo
     fields:
       - type: int
@@ -3007,6 +3036,40 @@ structures:
       - type: int
         name: feedSubscriptionsTotal
         description: total number of subscriptions of the node
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+    operations:
+      - name: viewSubscribers
+        default: public
+        description: view the list of subscribers
+      - name: viewSubscriptions
+        default: public
+        description: view the list of subscriptions
+      - name: viewFriends
+        default: public
+        description: view the list of friends
+      - name: viewFriendOfs
+        default: public
+        description: view the list of those who added this node to friends
+      - name: viewBlocked
+        default: public
+        description: view the list of blocked nodes
+      - name: viewBlockedBy
+        default: admin
+        description: view the list of those who blocked this node
+      - name: viewSubscribersTotal
+        default: public
+        description: view the number of subscribers
+      - name: viewSubscriptionsTotal
+        default: public
+        description: view the number of subscriptions
+      - name: viewFriendsTotal
+        default: public
+        description: view the number of friends
+      - name: viewFriendOfsTotal
+        default: public
+        description: view the number of those who added this node to friends
   - name: PostingFeatures
     fields:
       - type: boolean
@@ -3148,6 +3211,16 @@ structures:
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
+      - type: String -> String
+        name: receiverOperations
+        description: >
+          list of the supported operations (see below) for the original posting and the corresponding principals
+          (for cached copies of remote postings only)
+      - type: String -> String
+        name: commentOperations
+        description: >
+          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in the posting's comments
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
@@ -3323,7 +3396,12 @@ structures:
         description: types of reactions that the posting accepts
       - type: String -> String
         name: operations
-        description: list of <a href="#PostingInfo-operations">operations</a> and the corresponding principals
+        description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
+      - type: String -> String
+        name: commentOperations
+        description: >
+          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in the posting's comments
   - name: PostingSubscriptionsInfo
     fields:
       - type: String
@@ -3388,7 +3466,12 @@ structures:
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
-        description: list of <a href="#PostingInfo-operations">operations</a> and the corresponding principals
+        description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
+      - type: String -> String
+        name: commentOperations
+        description: >
+          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in the posting's comments
     errors:
       - code: postingText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -3493,6 +3576,9 @@ structures:
         array: true
         name: fundraisers
         description: list of fundraisers - methods of giving a donation to the node owner (may be absent)
+      - type: String -> String
+        name: operations
+        description: list of <a href="#ProfileInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: profileAttributes.fullName.wrong-size
         description: the full name is too long
@@ -3915,6 +4001,9 @@ structures:
               <code>int</code> - integer
             </li>
             <li>
+              <code>Principal</code> - <a href="access-controls.html#principals">principal</a>
+            </li>
+            <li>
               <code>string</code> - string
             </li>
           </ul>
@@ -3935,6 +4024,20 @@ structures:
   - name: SettingTypeModifiers
     fields:
       - type: String
+        name: format
+        description: >
+          preferred format of displaying the value
+          <ul>
+            <li>
+              <code>int</code>:
+              <ul>
+                <li>
+                  <code>size</code> - data size in bytes/kilobytes/megabytes etc.
+                </li>
+              <ul>
+            </li>
+          <ul>
+      - type: String
         name: min
         description: (<code>int</code>, <code>Duration</code>) minimal value
       - type: String
@@ -3949,6 +4052,9 @@ structures:
       - type: boolean
         name: always
         description: (<code>Duration</code>) <code>true</code>, if value <code>always</code> is allowed
+      - type: String[]
+        name: principals
+        description: (<code>Principal</code>) list of allowed principals
   - name: StoryAttributes
     fields:
       - type: String

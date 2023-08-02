@@ -170,15 +170,6 @@ events:
   - type: NODE_SETTINGS_META_CHANGED
     description: Some node settings metadata was changed.
     auth: admin
-  - type: PEOPLE_CHANGED
-    description: People information was changed.
-    fields:
-      - type: int
-        name: feedSubscribersTotal
-        comment: total number of subscribers of the node
-      - type: int
-        name: feedSubscriptionsTotal
-        comment: total number of subscriptions of the node
   - type: PING
     description: Sent periodically to verify status of WebSockets connection.
     auth: admin

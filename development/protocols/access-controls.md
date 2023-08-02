@@ -53,11 +53,10 @@ Objects on higher levels may override permissions of the objects on lower levels
 For example, comment's author may disable negative reactions to his comment by
 setting `addNegativeReaction` operation to `none`. But posting's author may
 override this permission to force all comments to the posting to accept negative
-reactions. When the client queries an object, it will get both the object's own
-operations and the overrides coming from the higher levels of the hierarchy.
+reactions.
 
+<a name="principals"></a>
 ## Principals
-
 
 ### Simple Principals
 
@@ -263,17 +262,20 @@ the owner of the object and owners of higher-level objects in the hierarchy.
 
 ### Complex Principals
 
-`node:<list of node names>`
+`node:<list of node names>`\
+(in the list of allowed principals this principal is called `node`)
 
 Allows the operation to the node's admin and to all nodes in the list. Names in
 the list are separated by commas.
 
-`only:<list of node names>`
+`only:<list of node names>`\
+(in the list of allowed principals this principal is called `only`)
 
 Allows the operation to all nodes in the list. Names in the list are separated by
 commas.
 
-`f:<friend group ID>`
+`f:<friend group ID>`\
+(in the list of allowed principals this principal is called `friends`)
 
 Allows the operation to the node's admin and to the members of a particular group
 of friends.
