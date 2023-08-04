@@ -202,10 +202,28 @@ objects:
         auth: optional
         description: Get an individual comment.
         errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
           - code: comment.not-found
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
+      - url: /postings/{postingId}/comments
+        type: PUT
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+        in:
+          struct: CommentMassAttributes
+        out:
+          struct: Result
+        auth: optional
+        description: >
+          Update operation overrides for all comments in the posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
       - url: /postings/{postingId}/comments/{commentId}
         type: PUT
         params:
@@ -224,6 +242,8 @@ objects:
           Update the comment, creating a new revision of it. The text is processed just like in the <code>POST</code>
           request.
         errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
           - code: comment.not-found
             description: there is no comment with the given ID
           - code: comment.wrong-posting
@@ -244,6 +264,8 @@ objects:
           Delete the comment. The comment may not be purged from the database immediately, but preserved for some period
           of time to give a chance to restore it.
         errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
           - code: comment.not-found
             description: there is no comment with the given ID
           - code: comment.wrong-posting
@@ -263,6 +285,8 @@ objects:
         auth: optional
         description: Get all postings linked to media attached to the given comment.
         errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
           - code: comment.not-found
             description: there is no comment with the given ID
           - code: comment.wrong-posting
@@ -343,6 +367,32 @@ objects:
             description: cannot add a reaction to an unsigned comment
           - code: reaction.not-accepted
             description: the reaction is not acceptable
+      - url: /postings/{postingId}/comments/{commentId}/reactions/{ownerName}
+        type: PUT
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: commentId
+            description: ID of the comment
+          - type: String
+            name: ownerName
+            description: reaction owner node name
+        in:
+          struct: ReactionOverride
+        out:
+          struct: ReactionInfo
+        auth: optional
+        description: >
+          Update the reaction's operations or set operations' overrides.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: comment.not-found
+            description: there is no comment with the given ID
+          - code: comment.wrong-posting
+            description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}/reactions
         type: GET
         params:
@@ -1271,6 +1321,25 @@ objects:
             description: there is no posting with the given ID
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+      - url: /postings/{postingId}/reactions/{ownerName}
+        type: PUT
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: ownerName
+            description: reaction owner node name
+        in:
+          struct: ReactionOverride
+        out:
+          struct: ReactionInfo
+        auth: optional
+        description: >
+          Update the reaction's operations or set operations' overrides.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
       - url: /postings/{postingId}/reactions/{ownerName}
         type: GET
         params:
@@ -2253,6 +2322,11 @@ structures:
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
+        name: reactionOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in reactions to the comment
+      - type: String -> String
         name: ownerOperations
         description: >
           list of the supported operations (see below) and the corresponding principals as defined by the comment's
@@ -2308,6 +2382,16 @@ structures:
       - name: addNegativeReaction
         default: signed
         description: add a negative reaction to the comment
+  - name: CommentMassAttributes
+    fields:
+      - type: String -> String
+        name: seniorOperations
+        description: >
+          list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals that are
+          overridden by the posting's owner ("senior")
+    errors:
+      - code: commentMassAttributes.seniorOperations.wrong-principal
+        description: principal for one of senior operations is invalid
   - name: CommentRevisionInfo
     fields:
       - type: String
@@ -2492,6 +2576,11 @@ structures:
         name: operations
         description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
       - type: String -> String
+        name: reactionOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in reactions to the comment
+      - type: String -> String
         name: seniorOperations
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
@@ -2541,6 +2630,10 @@ structures:
         description: comment referred in `repliedToId` is not found
       - code: commentText.operations.wrong-principal
         description: principal for one of operations is invalid
+      - code: commentText.reactionOperations.wrong-principal
+        description: principal for one of reaction operations is invalid
+      - code: commentText.seniorOperations.wrong-principal
+        description: principal for one of senior operations is invalid
   - name: CommentTotalInfo
     fields:
       - type: int
@@ -3221,6 +3314,16 @@ structures:
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden in the posting's comments
+      - type: String -> String
+        name: reactionOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in reactions to the posting
+      - type: String -> String
+        name: commentReactionOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in reactions to the posting's comments
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
@@ -3472,6 +3575,16 @@ structures:
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden in the posting's comments
+      - type: String -> String
+        name: reactionOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in reactions to the posting
+      - type: String -> String
+        name: commentReactionOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden in reactions to the posting's comments
     errors:
       - code: postingText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -3515,6 +3628,12 @@ structures:
         description: <code>publications</code> field is not allowed in posting modification query
       - code: postingText.operations.wrong-principal
         description: principal for one of operations is invalid
+      - code: postingText.commentOperations.wrong-principal
+        description: principal for one of comment operations is invalid
+      - code: postingText.reactionOperations.wrong-principal
+        description: principal for one of reaction operations is invalid
+      - code: postingText.commentReactionOperations.wrong-principal
+        description: principal for one of comment reaction operations is invalid
   - name: PrivateMediaFileInfo
     fields:
       - type: String
@@ -3592,6 +3711,8 @@ structures:
         description: the title is too long
       - code: profileAttributes.bioSrc.wrong-size
         description: the bio is too long
+      - code: profileAttributes.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: ProfileInfo
     fields:
       - type: String
@@ -3682,6 +3803,9 @@ structures:
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
+      - type: String -> String
+        name: operations
+        description: list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals
   - name: ReactionCreated
     fields:
       - struct: ReactionInfo
@@ -3715,9 +3839,14 @@ structures:
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
+      - type: String -> String
+        name: operations
+        description: list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: reactionDescription.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
+      - code: reactionDescription.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: ReactionInfo
     fields:
       - type: String
@@ -3766,6 +3895,22 @@ structures:
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
+      - type: String -> String
+        name: ownerOperations
+        description: >
+          list of the supported operations (see below) and the corresponding principals as defined by the reaction's
+          owner
+      - type: String -> String
+        name: seniorOperations
+        description: >
+          list of the operations (see below) and the corresponding principals that are overridden by the reaction's
+          "senior": the posting's owner in the case of reaction to a posting or the comment's owner in the case of
+          reaction to a comment
+      - type: String -> String
+        name: majorOperations
+        description: >
+          list of the operations (see below) and the corresponding principals that are overridden by the posting's
+          owner ("major") in the case of reaction to a comment; not set in the case of reaction to a posting
     operations:
       - name: view
         default: public
@@ -3811,6 +3956,31 @@ structures:
         array: true
         name: negative
         description: summary of negative reactions
+  - name: ReactionOverride
+    fields:
+      - type: String -> String
+        name: operations
+        description: >
+          list of the supported <a href="#ReactionInfo-operations">operations</a> and the corresponding principals
+      - type: String -> String
+        name: seniorOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden by the reaction's "senior": the posting's owner in the case of reaction to a posting or
+          the comment's owner in the case of reaction to a comment
+      - type: String -> String
+        name: majorOperations
+        description: >
+          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
+          overridden by the posting's owner ("major") in the case of reaction to a comment; not set in the case of
+          reaction to a posting
+    errors:
+      - code: reactionOverride.operations.wrong-principal
+        description: principal for one of operations is invalid
+      - code: reactionOverride.seniorOperations.wrong-principal
+        description: principal for one of senior operations is invalid
+      - code: reactionOverride.majorOperations.wrong-principal
+        description: principal for one of major operations is invalid
   - name: RegisteredNameSecret
     fields:
       - type: String
@@ -4174,6 +4344,9 @@ structures:
       - type: timestamp
         name: lastUpdatedAt
         description: timestamp of the latest known state of the object, may be absent
+      - type: String -> String
+        name: operations
+        description: list of <a href="#SubscriberInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: subscriberDescription.type.blank
         description: type is empty
@@ -4187,6 +4360,8 @@ structures:
         description: posting is not found
       - code: subscriberDescription.ownerAvatar.mediaId.not-found
         description: subscriber's avatar is not found
+      - code: subscriberDescription.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: SubscriberInfo
     fields:
       - type: String
@@ -4215,6 +4390,25 @@ structures:
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+      - type: String -> String
+        name: ownerOperations
+        description: >
+          list of the supported operations (see below) and the corresponding principals as defined by the subscriber
+      - type: String -> String
+        name: adminOperations
+        description: >
+          list of the operations (see below) and the corresponding principals that are overridden by the node
+          administrator
+    operations:
+      - name: view
+        default: public
+        description: see the subscriber
+      - name: delete
+        default: private
+        description: delete the subscriber (this operation cannot be modified or overridden)
   - name: SubscriptionDescription
     fields:
       - type: String
@@ -4257,6 +4451,9 @@ structures:
             <li><code>mention</code> - node name was mentioned;</li>
             <li><code>comment</code> - node owner commented the posting.</li>
           </ul>
+      - type: String -> String
+        name: operations
+        description: list of <a href="#SubscriptionInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: subscriptionDescription.type.blank
         description: type is empty
@@ -4280,6 +4477,8 @@ structures:
         description: posting ID is too long
       - code: subscriptionDescription.reason.blank
         description: subscription reason is empty
+      - code: subscriptionDescription.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: SubscriptionFilter
     fields:
       - struct: RemotePosting
@@ -4325,6 +4524,16 @@ structures:
         description: >
           subscription reason (see the list of well-known values in
           <a href="#SubscriptionDescription"><code>SubscriptionDescription</code></a><code>.reason</code>
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+    operations:
+      - name: view
+        default: public
+        description: see the subscription
+      - name: delete
+        default: admin
+        description: delete the subscription (this operation cannot be modified or overridden)
   - name: TokenAttributes
     fields:
       - type: String

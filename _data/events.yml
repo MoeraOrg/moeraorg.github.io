@@ -685,6 +685,12 @@ events:
       - type: timestamp
         name: createdAt
         comment: subscription creation timestamp
+  - type: SUBSCRIBERS_TOTAL_CHANGED
+    description: Number of subscribers was changed.
+    fields:
+      - type: int
+        name: feedSubscribersTotal
+        comment: total number of subscribers of the node
   - type: SUBSCRIPTION_ADDED
     description: This node subscribed to notifications from a remote node.
     fields:
@@ -751,3 +757,9 @@ events:
       - type: timestamp
         name: createdAt
         comment: subscription creation timestamp
+  - type: SUBSCRIPTIONS_TOTAL_CHANGED
+    description: Numbers of subscriptions was changed.
+    fields:
+      - type: int
+        name: feedSubscriptionsTotal
+        comment: total number of subscriptions of the node
