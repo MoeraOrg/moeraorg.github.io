@@ -1113,6 +1113,138 @@ objects:
           struct: PeopleGeneralInfo
         auth: optional
         description: Get general information about other nodes.
+  - name: Plugins object
+    description: >
+      Plugins are web applications that integrate closely with the node or with the server as whole. Authenticating as
+      root admin or node admin, they may perform operations, receive internal events, extend node API with new requests
+      and add their own settings to the list of node settings. Every plugin registers its URL with the node, and
+      the node uses this URL to call it when necessary.
+    requests:
+      - url: /plugins
+        type: POST
+        in:
+          struct: PluginDescription
+        out:
+          struct: PluginInfo
+        auth: root admin or admin
+        description: >
+          Register the plugin. If the plugin authenticates as root admin, the plugin is registered at the server level.
+          If the plugin authenticates as node admin, the plugin is registered at the node level.
+        errors:
+          - code: plugin.already-exists
+            description: plugin with this name is already registered
+      - url: /plugins
+        type: GET
+        out:
+          struct: PluginInfo
+          array: true
+        auth: optional
+        description: Get information about all plugins registered for the node and server.
+      - url: /plugins/{pluginName}
+        type: GET
+        params:
+          - type: String
+            name: pluginName
+            description: name of the plugin
+        out:
+          struct: PluginInfo
+        auth: optional
+        description: Get information about the plugin.
+        errors:
+          - code: plugin.unknown
+            description: unknown plugin
+      - url: /plugins/{pluginName}/&lt;request location>
+        type: &lt;any>
+        params:
+          - type: String
+            name: pluginName
+            description: name of the plugin
+        auth: optional
+        description: >
+          Invoke API provided by the plugin. The request is passed through to the plugin with the original method to
+          the URL <code>&lt;plugin URL>/&lt;request location></code>. All headers, except <code>Host</code> and
+          <code>Authorization</code> are also passed through and two more headers are added: <code>X-Moera-Auth</code>
+          and <code>X-Moera-Origin</code>. <a href="headers.html>Read more about them.</a> The response from the plugin
+          is passed to the client as is.
+        errors:
+          - code: plugin.unknown
+            description: unknown plugin
+          - code: plugin.invocation-error
+            description: the request cannot be passed to the plugin
+      - url: /plugins/{pluginName}/events
+        type: GET
+        params:
+          - type: String
+            name: pluginName
+            description: name of the plugin
+          - type: int
+            name: after
+            description: >
+              moment of the latest event that has been seen by the plugin; may be passed in <code>Last-Event-ID</code>
+              header instead
+        auth: root admin or admin
+        description: >
+          <a name="internal-events">Get <a href="https://en.wikipedia.org/wiki/Server-sent_events">SSE stream</a> of
+          internal events from the node. The stream is filtered as defined in
+          <code><a href="#PluginDescription">PluginDescription</a>.acceptedEvents</code>. If the plugin is registered
+          on the node level, it can receive only events related to the node. A plugin registered on the server level
+          can receive any event related to any node in the server.
+          <br><br>
+          The events are not documented here, they correspond to
+          <a href="https://github.com/MoeraOrg/moera-node/tree/master/src/main/java/org/moera/node/liberin/model">liberin
+          objects in the source code of the node</a>. For example, `PostingUpdatedLiberin` corresponds to
+          `posting-updated` event.
+          <br><br>
+          Each SSE event has ID that is equal to the moment of the event, and content that is a serialized JSON object
+          with the following fields:
+          <br><br>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="col-3">Type</th>
+                <th class="col-3">Field</th>
+                <th class="col-6">Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>String</code></td>
+                <td><code>type</code></td>
+                <td>type of the event</td>
+              </tr>
+              <tr>
+                <td><code>String</code></td>
+                <td><code>nodeId</code></td>
+                <td>ID of the node in the server</td>
+              </tr>
+              <tr>
+                <td><code><a href="#PluginContext">PluginContext</a></code></td>
+                <td><code>context</code></td>
+                <td>request context, if the event was emitted as a result of an API call</td>
+              </tr>
+              <tr>
+                <td>...</td>
+                <td>...</td>
+                <td>other event-specific fields</td>
+              </tr>
+            </tbody>
+          </table>
+        errors:
+          - code: plugin.unknown
+            description: unknown plugin
+      - url: /plugins/{pluginName}
+        type: DELETE
+        params:
+          - type: String
+            name: pluginName
+            description: name of the plugin
+        out:
+          struct: Result
+        auth: root admin or admin
+        description: Unregister the plugin.
+        errors:
+          - code: plugin.unknown
+            description: unknown plugin
   - name: Postings object
     description: >
       All postings. Each posting may contain one or more revisions, a new revision is created every time the posting is
@@ -1842,6 +1974,12 @@ objects:
               filter by subscription type (see
               <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for the list of possible
               values), may be omitted
+          - type: String
+            name: feedName
+            description: filter by name of the feed subscribed to, may be omitted
+          - type: String
+            name: entryId
+            description: filter by ID of the entry subscribed to, may be omitted
         out:
           struct: SubscriberInfo
           array: true
@@ -1868,6 +2006,22 @@ objects:
           struct: SubscriberInfo
         auth: optional
         description: Get an individual subscriber.
+        errors:
+          - code: subscriber.not-found
+            description: there is no subscriber with the given ID
+      - url: /people/subscribers/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the subscriber
+        in:
+          struct: SubscriberOverride
+        out:
+          struct: SubscriberInfo
+        auth: required
+        description: >
+          Update the subscriber's operations or set operations' overrides.
         errors:
           - code: subscriber.not-found
             description: there is no subscriber with the given ID
@@ -1916,6 +2070,22 @@ objects:
         errors:
           - code: subscription.already-exists
             description: an identical subscription already exists
+      - url: /people/subscriptions/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the subscription
+        in:
+          struct: SubscriptionOverride
+        out:
+          struct: SubscriptionInfo
+        auth: required
+        description: >
+          Update the subscription's operations or set operations' overrides.
+        errors:
+          - code: subscription.not-found
+            description: there is no subscription with the given ID
       - url: /people/subscriptions
         type: DELETE
         params:
@@ -3163,6 +3333,113 @@ structures:
       - name: viewFriendOfsTotal
         default: public
         description: view the number of those who added this node to friends
+  - name: PluginContext
+    fields:
+      - type: boolean
+        name: rootAdmin
+        description: <code>true</code>, if the client has authenticated as root admin, <code>false</code> otherwise
+      - type: boolean
+        name: admin
+        description: <code>true</code>, if the client has authenticated as node admin, <code>false</code> otherwise
+      - type: String[]
+        name: authCategories
+        description: >
+          the list of permissions granted to the client, if it has authenticated as node admin; see
+          <code><a href="#TokenInfo">TokenInfo</a>.permissions</code> for the list of possible values
+      - type: String
+        name: clientName
+        description: node name of the client
+      - type: String
+        name: remoteAddress
+        description: IP address of the client
+      - type: String
+        name: userAgent
+        description: user agent (browser) used by the client
+      - type: String
+        name: userAgentOs
+        description: operating system used by the client
+      - type: String
+        name: nodeId
+        description: ID of the current node
+      - type: String
+        name: nodeName
+        description: node name of the current node
+      - type: String
+        name: domainName
+        description: domain name of the current node
+      - type: String
+        name: originUrl
+        description: full URL of the request
+  - name: PluginDescription
+    fields:
+      - type: String
+        name: name
+        description: a unique plugin name; can contain only small latin letters, digits or hyphen
+      - type: String
+        name: title
+        description: user-readable title of the plugin
+      - type: String
+        name: description
+        description: user-readable description of purpose of the plugin
+      - type: String
+        name: location
+        description: URL of the plugin; used by the node to call the plugin API
+      - type: String[]
+        name: acceptedEvents
+        description: >
+          list of types of internal events the plugin wants to receive; <a href="#internal-events">Read more about
+          internal events.</a>
+      - struct: SettingDescriptor
+        array: true
+        name: options
+        description: plugin settings to be added to the list of node settings
+    errors:
+      - code: pluginDescription.name.blank
+        description: plugin name is empty
+      - code: pluginDescription.name.wrong-size
+        description: plugin name is too long
+      - code: pluginDescription.name.wrong-pattern
+        description: plugin name format is incorrect
+      - code: pluginDescription.title.wrong-size
+        description: plugin title is too long
+      - code: pluginDescription.description.wrong-size
+        description: plugin description is too long
+      - code: pluginDescription.options.unknown-type
+        description: option has an unknown type
+  - name: PluginInfo
+    fields:
+      - type: String
+        name: nodeId
+        description: ID of the node this plugin is connected to
+      - type: boolean
+        name: local
+        description: >
+          <code>true</code> if the plugin is enabled for a particular node only, <code>false</code>, if it is enabled
+          for the whole server
+      - type: String
+        name: name
+        description: a unique plugin name
+      - type: String
+        name: title
+        description: user-readable title of the plugin
+      - type: String
+        name: description
+        description: user-readable description of purpose of the plugin
+      - type: String
+        name: location
+        description: URL of the plugin; used by the node to call the plugin API
+      - type: String[]
+        name: acceptedEvents
+        description: >
+          list of types of internal events the plugin wants to receive; <a href="#internal-events">Read more about
+          internal events.</a>
+      - struct: SettingMetaInfo
+        array: true
+        name: settings
+        description: plugin settings to be added to the list of node settings
+      - type: String
+        name: tokenId
+        description: ID of the token used to authenticate the plugin
   - name: PostingFeatures
     fields:
       - type: boolean
@@ -3666,6 +3943,13 @@ structures:
         array: true
         name: previews
         description: list of media previews - downscaled versions of the media
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+    operations:
+      - name: view
+        default: public
+        description: view the media file
   - name: ProfileAttributes
     fields:
       - type: String
@@ -4144,6 +4428,32 @@ structures:
         name: privileged
         description: >
           the setting should be privileged (if absent or <code>null</code>, the built-in value of the flag will be used)
+  - name: SettingDescriptor
+    fields:
+      - type: String
+        name: name
+        description: name of the setting
+      - type: String
+        name: type
+        description: >
+          type of the setting, see <code><a href="#SettingMetaInfo">SettingMetaInfo</a></code>.type for possible values
+      - type: String
+        name: defaultValue
+        description: default value of the setting
+      - type: boolean
+        name: internal
+        description: the setting is internal - not displayed to the user
+      - type: boolean
+        name: privileged
+        description: the setting is privileged - may be changed by server owner only
+      - type: String
+        name: title
+        description: human-friendly description of the setting
+      - struct: SettingTypeModifiers
+        name: modifiers
+        description: >
+          additional modifiers that may help to choose a proper UI component for the setting value and to validate the
+          input; meaning of the modifiers depend on the setting type
   - name: SettingMetaInfo
     fields:
       - type: String
@@ -4409,6 +4719,22 @@ structures:
       - name: delete
         default: private
         description: delete the subscriber (this operation cannot be modified or overridden)
+  - name: SubscriberOverride
+    fields:
+      - type: String -> String
+        name: operations
+        description: >
+          list of the supported <a href="#SubscriberInfo-operations">operations</a> and the corresponding principals
+      - type: String -> String
+        name: adminOperations
+        description: >
+          list of <a href="#SubscriberInfo-operations">the operations</a> and the corresponding principals that are
+          overridden by the node administrator
+    errors:
+      - code: subscriberOverride.operations.wrong-principal
+        description: principal for one of operations is invalid
+      - code: subscriberOverride.adminOperations.wrong-principal
+        description: principal for one of admin operations is invalid
   - name: SubscriptionDescription
     fields:
       - type: String
@@ -4534,6 +4860,15 @@ structures:
       - name: delete
         default: admin
         description: delete the subscription (this operation cannot be modified or overridden)
+  - name: SubscriptionOverride
+    fields:
+      - type: String -> String
+        name: operations
+        description: >
+          list of the supported <a href="#SubscriptionInfo-operations">operations</a> and the corresponding principals
+    errors:
+      - code: subscriptionOverride.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: TokenAttributes
     fields:
       - type: String

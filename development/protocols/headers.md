@@ -48,5 +48,30 @@ This header is sent by the client in HTTP request. It signals that the
 client supports Moera REST API of the given version. Currently only
 version `1.0` is defined.
 
+<h4 class="identifier">
+    X-Moera-Auth: [root-admin=&lt;true or false>]
+        [admin=&lt;true or false>]
+        [auth-category=&lt;comma-separated list>]
+        [client-name=&lt;name>]
+        [remote-address=&lt;IP address>]
+        [user-agent=&lt;browser name>]
+        [user-agent-os=&lt;OS name>]
+        [node-id=&lt;ID>]
+        [node-name=&lt;node name>]
+        [domain-name=&lt;domain name>]
+</h4>
+
+This header is sent by the node to a plugin when forwarding user request to it.
+All fields have the same meaning as corresponding fields of [`PluginContext`][3]
+structure.
+
+<h4 class="identifier">
+    X-Moera-Origin: &lt;url>
+</h4>
+
+This header is sent by the node to a plugin when forwarding user request to it.
+It contains the full URL of the user request.
+
 [1]: /overview/browser-extension.html
 [2]: /development/protocols/virtual-pages.html
+[3]: /development/protocols/node-api.html#PluginContext

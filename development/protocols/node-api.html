@@ -38,6 +38,10 @@ body_class: body-pink
         <li>If the request Content-Type is unknown, <code>invalid-content-type</code> error is returned.</li>
         <li>If incorrect JSON is provided, <code>invalid-syntax</code> error is returned.</li>
         <li>
+            If the request is correct, but the operation is not supported by the node, <code>not-supported</code> error
+            is returned.
+        </li>
+        <li>
             If value of one of the arguments does not correspond its type, <code>invalid-argument-value</code> error is
             returned.
         </li>

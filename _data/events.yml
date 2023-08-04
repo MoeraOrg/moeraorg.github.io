@@ -634,57 +634,21 @@ events:
   - type: SUBSCRIBER_ADDED
     description: A node subscribed to notifications from this node.
     fields:
-      - type: String
-        name: id
-        comment: subscriber ID
-      - type: String
-        name: subscriptionType
-        comment: subscription type
-      - type: String
-        name: feedName
-        comment: feed name, if the subscription type requires one
-      - type: String
-        name: postingId
-        comment: posting ID, if the subscription type requires one
-      - type: String
-        name: nodeName
-        comment: name of the subscribed node
-      - type: String
-        name: fullName
-        comment: full name of the subscribed node
-      - struct: AvatarImage
-        name: avatar
-        comment: avatar of the subscribed node
-      - type: timestamp
-        name: createdAt
-        comment: subscription creation timestamp
+      - struct: SubscriberInfo
+        name: subscriber
+        comment: subscriber information
   - type: SUBSCRIBER_DELETED
     description: A node unsubscribed from notifications from this node.
     fields:
-      - type: String
-        name: id
-        comment: subscriber ID
-      - type: String
-        name: subscriptionType
-        comment: subscription type
-      - type: String
-        name: feedName
-        comment: feed name, if the subscription type requires one
-      - type: String
-        name: postingId
-        comment: posting ID, if the subscription type requires one
-      - type: String
-        name: nodeName
-        comment: name of the subscribed node
-      - type: String
-        name: fullName
-        comment: full name of the subscribed node
-      - struct: AvatarImage
-        name: avatar
-        comment: avatar of the subscribed node
-      - type: timestamp
-        name: createdAt
-        comment: subscription creation timestamp
+      - struct: SubscriberInfo
+        name: subscriber
+        comment: subscriber information
+  - type: SUBSCRIBER_UPDATED
+    description: Subscriber information was updated.
+    fields:
+      - struct: SubscriberInfo
+        name: subscriber
+        comment: subscriber information
   - type: SUBSCRIBERS_TOTAL_CHANGED
     description: Number of subscribers was changed.
     fields:
@@ -692,71 +656,23 @@ events:
         name: feedSubscribersTotal
         comment: total number of subscribers of the node
   - type: SUBSCRIPTION_ADDED
-    description: This node subscribed to notifications from a remote node.
+    description: This node has subscribed to notifications from a remote node.
     fields:
-      - type: String
-        name: id
-        comment: subscription ID
-      - type: String
-        name: subscriptionType
-        comment: subscription type
-      - type: String
-        name: feedName
-        comment: feed name on this node that receives notifications
-      - type: String
-        name: remoteSubscriberId
-        comment: ID of the subscriber on the remote node
-      - type: String
-        name: remoteNodeName
-        comment: name of the node this node is subscribed to
-      - type: String
-        name: remoteFullName
-        comment: full name of the node this node is subscribed to
-      - struct: AvatarImage
-        name: remoteAvatar
-        comment: avatar of the node this node is subscribed to
-      - type: String
-        name: remoteFeedName
-        comment: feed name on the remote node, if the subscription type requires one
-      - type: String
-        name: remotePostingId
-        comment: posting ID on the remote node, if the subscription type requires one
-      - type: timestamp
-        name: createdAt
-        comment: subscription creation timestamp
+      - struct: SubscriptionInfo
+        name: subscription
+        comment: subscription information
   - type: SUBSCRIPTION_DELETED
-    description: This node unsubscribed from notifications from a remote node.
+    description: This node has unsubscribed from notifications from a remote node.
     fields:
-      - type: String
-        name: id
-        comment: subscription ID
-      - type: String
-        name: subscriptionType
-        comment: subscription type
-      - type: String
-        name: feedName
-        comment: feed name on this node that receives notifications
-      - type: String
-        name: remoteSubscriberId
-        comment: ID of the subscriber on the remote node
-      - type: String
-        name: remoteNodeName
-        comment: name of the node this node is subscribed to
-      - type: String
-        name: remoteFullName
-        comment: full name of the node this node is subscribed to
-      - struct: AvatarImage
-        name: remoteAvatar
-        comment: avatar of the node this node is subscribed to
-      - type: String
-        name: remoteFeedName
-        comment: feed name on the remote node, if the subscription type requires one
-      - type: String
-        name: remotePostingId
-        comment: posting ID on the remote node, if the subscription type requires one
-      - type: timestamp
-        name: createdAt
-        comment: subscription creation timestamp
+      - struct: SubscriptionInfo
+        name: subscription
+        comment: subscription information
+  - type: SUBSCRIPTION_UPDATED
+    description: Subscription information was updated.
+    fields:
+      - struct: SubscriptionInfo
+        name: subscription
+        comment: subscription information
   - type: SUBSCRIPTIONS_TOTAL_CHANGED
     description: Numbers of subscriptions was changed.
     fields:
