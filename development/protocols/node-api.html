@@ -11,6 +11,18 @@ body_class: body-pink
     Moera Node API is a JSON-based REST API. See <a href="/overview/node.html">introduction</a> to Node REST API in
     the Overview section.
 </p>
+
+<h2>Table of Contents</h2>
+<ol>
+    <li><a href="#general">General Information</a></li>
+    {% for object in site.data.node_api.objects %}
+    <li><a href="#{{ object.name }}">{{ object.name }}</a></li>
+    {% endfor %}
+    <li><a href="#Structures">Structures</a></li>
+</ol>
+
+
+<h2 id="general">General Information</h2>
 <p>
     <i>Timestamp</i> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
 </p>
@@ -104,14 +116,6 @@ body_class: body-pink
     <code>cid</code> parameter may be passed with any request. See
     <a href="/development/protocols/events.html">Events</a> page for the description of its purpose.
 </p>
-
-<h2>Table of Contents</h2>
-<ol>
-    {% for object in site.data.node_api.objects %}
-        <li><a href="#{{ object.name }}">{{ object.name }}</a></li>
-    {% endfor %}
-    <li><a href="#Structures">Structures</a></li>
-</ol>
 
 {% for object in site.data.node_api.objects %}
     <h2 id="{{ object.name }}">{{ object.name }}</h2>
