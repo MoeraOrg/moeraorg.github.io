@@ -1164,7 +1164,7 @@ objects:
           Invoke API provided by the plugin. The request is passed through to the plugin with the original method to
           the URL <code>&lt;plugin URL>/&lt;request location></code>. All headers, except <code>Host</code> and
           <code>Authorization</code> are also passed through and two more headers are added: <code>X-Moera-Auth</code>
-          and <code>X-Moera-Origin</code>. <a href="headers.html>Read more about them.</a> The response from the plugin
+          and <code>X-Moera-Origin</code>. <a href="headers.html">Read more about them.</a> The response from the plugin
           is passed to the client as is.
         errors:
           - code: plugin.unknown
