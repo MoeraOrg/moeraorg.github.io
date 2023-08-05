@@ -1154,7 +1154,7 @@ objects:
           - code: plugin.unknown
             description: unknown plugin
       - url: /plugins/{pluginName}/&lt;request location>
-        type: &lt;any>
+        type: "&lt;any>"
         params:
           - type: String
             name: pluginName
