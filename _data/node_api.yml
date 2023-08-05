@@ -1192,8 +1192,8 @@ objects:
           <br><br>
           The events are not documented here, they correspond to
           <a href="https://github.com/MoeraOrg/moera-node/tree/master/src/main/java/org/moera/node/liberin/model">liberin
-          objects in the source code of the node</a>. For example, `PostingUpdatedLiberin` corresponds to
-          `posting-updated` event.
+          objects in the source code of the node</a>. For example, <code>PostingUpdatedLiberin</code> corresponds to
+          <code>posting-updated</code> event.
           <br><br>
           Each SSE event has ID that is equal to the moment of the event, and content that is a serialized JSON object
           with the following fields:
