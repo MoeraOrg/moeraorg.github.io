@@ -532,7 +532,11 @@ events:
         comment: avatar of the summary of the story
       - type: String
         name: summary
-        comment: user-readable summary of the story
+        comment: >
+          user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
+      - struct: SummaryData
+        name: summaryData
+        comment: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
         name: trackingId
         comment: >
@@ -611,7 +615,11 @@ events:
         comment: avatar of the summary of the story
       - type: String
         name: summary
-        comment: user-readable summary of the story
+        comment: >
+          user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
+      - struct: SummaryData
+        name: summaryData
+        comment: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
         name: trackingId
         comment: >
@@ -679,3 +687,21 @@ events:
       - type: int
         name: feedSubscriptionsTotal
         comment: total number of subscriptions of the node
+  - type: TOKEN_ADDED
+    description: A token was created.
+    fields:
+      - struct: TokenInfo
+        name: token
+        comment: token information
+  - type: TOKEN_DELETED
+    description: A token was deleted.
+    fields:
+      - type: String
+        name: id
+        comment: ID of the token
+  - type: TOKEN_UPDATED
+    description: A token was updated.
+    fields:
+      - struct: TokenInfo
+        name: token
+        comment: token information

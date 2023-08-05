@@ -26,13 +26,27 @@ the given ID.
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
 
-`/media/private/<id>.<extension>`
+`/media/private/<id>.<extension>?width=<number>&download=<true or false>`
 
-Private media file. The `extension` does not affect the result.
+Private media file. The `<extension>` does not affect the result.
 
-`/media/public/<id>.<extension>`
+The optional `width` parameter is the preferred width of the media in pixels.
+The node will try to return the smallest in size, but the best in quality variant
+of the media, according to the width provided.
 
-Public media file. The `extension` does not affect the result.
+If the `download` parameter is present and set to `true`, the node will add
+`Content-Disposition: attachment` header to the output.
+
+`/media/public/<id>.<extension>?width=<number>&download=<true or false>`
+
+Public media file. The `<extension>` does not affect the result.
+
+The optional `width` parameter is the preferred width of the media in pixels.
+The node will try to return the smallest in size, but the best in quality variant
+of the media, according to the width provided.
+
+If the `download` parameter is present and set to `true`, the node will add
+`Content-Disposition: attachment` header to the output.
 
 `/news`
 
@@ -86,7 +100,7 @@ Settings page.
 
 `/settings/<tab>`
 
-Settings page with the given tab open (may be `node` or `client`).
+Settings page with the given tab open (one of `node` or `client`).
 
 `/timeline`
 

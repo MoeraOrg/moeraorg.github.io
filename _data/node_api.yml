@@ -837,6 +837,16 @@ objects:
         errors:
           - code: draft.not-found
             description: there is no draft with the given ID
+  - name: Features object
+    description: >
+      Information about features supported by the node.
+    requests:
+      - url: /features
+        type: GET
+        out:
+          struct: Features
+        auth: optional
+        description: Get information about features supported by the node.
   - name: Feeds object
     description: >
       Feed is a set of stories collected for some purpose. The stories are sorted by
@@ -954,6 +964,15 @@ objects:
           - type: String
             name: id
             description: media file ID
+          - type: int
+            name: width
+            description: >
+              preferred width of the media in pixels; if present, the node will try to return the smallest in size,
+              but the best in quality variant of the media, according to the width provided
+          - type: boolean
+            name: download
+            description: >
+              if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
         auth: optional
         description: >
           Get media file content (returned in the response body).
@@ -1010,6 +1029,15 @@ objects:
           - type: String
             name: id
             description: media file ID
+          - type: int
+            name: width
+            description: >
+              preferred width of the media in pixels; if present, the node will try to return the smallest in size,
+              but the best in quality variant of the media, according to the width provided
+          - type: boolean
+            name: download
+            description: >
+              if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
         description: >
           Get media file content (returned in the response body).
         errors:
@@ -1330,11 +1358,6 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
-      - url: /postings/features
-        type: GET
-        out:
-          struct: PostingFeatures
-        description: Get information about supported features of postings.
   - name: Posting Revisions object
     description: All revisions of the posting.
     requests:
@@ -1924,6 +1947,8 @@ objects:
             description: cannot set value of an internal setting
           - code: setting.unknown
             description: unknown setting
+          - code: setting.plugin
+            description: plugin setting metadata cannot be modified
   - name: Stories object
     description: >
       All stories. Each story describes something happening in Moera, stories are building blocks for feeds. A story may
@@ -2331,6 +2356,60 @@ structures:
       - type: String[]
         name: ids
         description: IDs of avatars
+  - name: BlockedUserInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: blockedOperation
+        description: >
+          operation that is blocked; the possible values are:
+          <ul>
+            <li><code>reaction</code> - add reactions to entries on the node;</li>
+            <li><code>comment</code> - add comments to postings on the node;</li>
+            <li><code>posting</code> - add postings to the node;</li>
+            <li><code>visibility</code> - be visible to the node;</li>
+            <li><code>instant</code> - be visible in stories added to the instants feed of the node.</li>
+          </ul>
+      - type: String
+        name: nodeName
+        description: name of the blocked node
+      - struct: ContactInfo
+        name: contact
+        description: information known about the blocked node
+      - type: String
+        name: entryId
+        description: >
+          ID of the local entry, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
+      - type: String
+        name: entryNodeName
+        description: >
+          node name of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is
+          blocked globally
+      - type: String
+        name: entryPostingId
+        description: >
+          ID of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is blocked
+          globally
+      - type: timestamp
+        name: createdAt
+        description: blocking timestamp - the real time when the node was blocked
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
+          is blocked permanently
+      - type: String
+        name: reasonSrc
+        description: source text of the reason of blocking, may be absent
+      - type: String
+        name: reasonSrcFormat
+        description: >
+          format of the source text of the reason of blocking, the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+      - type: String
+        name: reason
+        description: reason of blocking, may be absent
   - name: Body
     fields:
       - type: String
@@ -2352,7 +2431,7 @@ structures:
       - type: String[]
         name: permissions
         description: >
-          The list of permissions granted to the carte. The values are: 
+          the list of permissions granted to the carte; the possible values are: 
           <ul>
             <li><code>other</code> - any other permission not listed below;</li>
             <li><code>view-media</code> - view media files.</li>
@@ -3049,6 +3128,31 @@ structures:
       - struct: CommentInfo
         name: comment
         description: comment details, may be absent, if the entry is not a comment
+  - name: Features
+    fields:
+      - struct: PostingFeatures
+        name: posting
+        description: features of a posting
+      - type: String[]
+        name: plugins
+        description: list of names of plugins enabled for the node
+      - type: int
+        name: feedWidth
+        description: width of the feed in pixels
+      - struct: FriendGroupsFeatures
+        name: friendGroups
+        description: features of groups of friends
+      - type: String[]
+        name: ask
+        description: >
+          list of requests to the node owner accepted by the node; the possible values are:
+          <ul>
+            <li><code>subscribe</code> - "subscribe to me";</li>
+            <li><code>friend</code> - "add me to your friends".</li>
+          </ul>
+      - type: boolean
+        name: subscribed
+        description: <code>true</code>, if the node is subscribed to the client, <code>false</code> otherwise
   - name: FeedInfo
     fields:
       - type: String
@@ -3057,11 +3161,6 @@ structures:
       - type: String
         name: title
         description: title of the feed
-      - type: String
-        name: subscriberId
-        description: >
-          ID of the subscriber, if the client is subscribed to notifications about this feed, <code>null</code>
-          or absent otherwise
       - type: int
         name: total
         description: total number of stories in the feed
@@ -3158,6 +3257,53 @@ structures:
       - type: int
         name: notRead
         description: number of stories in the feed that have not been read yet
+  - name: FriendGroupDetails
+    fields:
+      - type: String
+        name: id
+        description: ID of the group of friends
+      - type: String
+        name: title
+        description: title of the group of friends
+      - type: timestamp
+        name: addedAt
+        description: the friendship timestamp - the real time when the user was added to the group of friends
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+    operations:
+      - name: view
+        default: public
+        description: view the membership of the user in the group of friends
+  - name: FriendGroupInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: title
+        description: >
+          title of the group of friends; the group with a title <code>t:friends</code> is a standard group "Friends"
+          that is created automatically
+      - type: timestamp
+        name: createdAt
+        description: the group creation timestamp - the real time when the group of friends was created
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+    operations:
+      - name: view
+        default: public
+        description: view the group of friends
+  - name: FriendGroupsFeatures
+    fields:
+      - struct: FriendGroupInfo
+        array: true
+        name: available
+        description: list of groups of friends existing on the node
+      - struct: FriendGroupDetails
+        array: true
+        name: memberOf
+        description: list of groups of friends the client is member of
   - name: FundraiserInfo
     fields:
       - type: String
@@ -3392,7 +3538,9 @@ structures:
       - struct: SettingDescriptor
         array: true
         name: options
-        description: plugin settings to be added to the list of node settings
+        description: >
+          plugin settings to be added to the list of node settings, the settings appear in the list with a prefix
+          <code>plugin.&lt;plugin name>.</code>
     errors:
       - code: pluginDescription.name.blank
         description: plugin name is empty
@@ -3442,6 +3590,9 @@ structures:
         description: ID of the token used to authenticate the plugin
   - name: PostingFeatures
     fields:
+      - type: boolean
+        name: post
+        description: <code>true</code> if the client is allowed to create postings, <code>false</code> otherwise
       - type: boolean
         name: subjectPresent
         description: <code>true</code> if new postings are recommended to have a subject, <code>false</code> otherwise
@@ -3929,10 +4080,16 @@ structures:
         description: MIME-type of the media
       - type: int
         name: width
-        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
-        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
+      - type: int
+        name: orientation
+        description: >
+          media orientation, the value should be interpreted like
+          <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
+          EXIF data</a> (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: size
         description: size of the media file in bytes
@@ -4052,10 +4209,16 @@ structures:
           <a href="virtual-pages.html">virtual page</a>
       - type: int
         name: width
-        description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
+        description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
-        description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
+        description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
+      - type: int
+        name: orientation
+        description: >
+          media orientation, the value should be interpreted like
+          <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
+          EXIF data</a> (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: size
         description: size of the media file in bytes
@@ -4407,6 +4570,11 @@ structures:
       - type: String
         name: message
         description: human-readable error message
+  - name: SheriffMark
+    fields:
+      - type: String
+        name: sheriffName
+        description: name of the sheriff that added the mark
   - name: SettingInfo
     fields:
       - type: String
@@ -4599,7 +4767,11 @@ structures:
         description: avatar of the summary of the story
       - type: String
         name: summary
-        description: user-readable summary of the story
+        description: >
+          user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
+      - struct: SummaryData
+        name: summaryData
+        description: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
         name: trackingId
         description: >
@@ -4632,6 +4804,135 @@ structures:
       - name: delete
         default: admin
         description: delete the story
+  - name: StorySummaryData
+    fields:
+      - struct: StorySummaryNode
+        name: node
+        description: a node
+      - struct: StorySummaryEntry
+        name: posting
+        description: a posting
+      - struct: StorySummaryEntry
+        name: comment
+        description: a comment
+      - struct: StorySummaryEntry
+        array: true
+        name: comments
+        description: list of comments
+      - type: int
+        name: totalComments
+        description: total number of comments
+      - struct: StorySummaryEntry
+        name: repliedTo
+        description: the comment replied to
+      - struct: StorySummaryEntry
+        name: parentPosting
+        description: the parent posting of the media
+      - struct: StorySummaryReaction
+        name: reaction
+        description: a reaction
+      - struct: StorySummaryReaction
+        array: true
+        name: reactions
+        description: list of reactions
+      - type: int
+        name: totalReactions
+        description: total number of reactions
+      - type: String
+        name: feedName
+        description: name of a feed
+      - type: String
+        name: subscriptionReason
+        description: >
+          subscription reason (see the list of well-known values in
+          <a href="#SubscriptionDescription"><code>SubscriptionDescription</code></a><code>.reason</code>
+      - struct: StorySummaryFriendGroup
+        name: friendGroup
+        description: a group of friends
+      - struct: StorySummaryBlocked
+        name: blocked
+        description: summary of blocking a user
+      - struct: StorySummarySheriff
+        name: sheriff
+        description: summary of an action of a sheriff
+      - type: String
+        name: description
+        description: additional descriptive text
+  - name: StorySummaryBlocked
+    fields:
+      - type: String[]
+        name: operations
+        description: >
+          list of the operations blocked; see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
+          for the list of possible values
+      - type: int
+        name: period
+        description: the period of blocking in seconds, may be absent
+  - name: StorySummaryFriendGroup
+    fields:
+      - type: String
+        name: id
+        description: ID of the group of friends
+      - type: String
+        name: title
+        description: title of the group of friends
+  - name: StorySummaryEntry
+    fields:
+      - type: String
+        name: ownerName
+        description: entry owner's name
+      - type: String
+        name: ownerFullName
+        description: entry owner's full name
+      - type: String
+        name: ownerGender
+        description: entry owner's gender
+      - type: String
+        name: heading
+        description: entry heading
+      - type: String[]
+        name: sheriffs
+        description: list of sheriffs supervising the entry
+      - struct: SheriffMark
+        array: true
+        name: sheriffMarks
+        description: list of sheriff marks on the entry
+  - name: StorySummaryNode
+    fields:
+      - type: String
+        name: ownerName
+        description: node owner's name
+      - type: String
+        name: ownerFullName
+        description: node owner's full name
+      - type: String
+        name: ownerGender
+        description: node owner's gender
+  - name: StorySummaryReaction
+    fields:
+      - type: String
+        name: ownerName
+        description: reaction owner's name
+      - type: String
+        name: ownerFullName
+        description: reaction owner's full name
+      - type: String
+        name: ownerGender
+        description: reaction owner's gender
+      - type: int
+        name: emoji
+        description: reaction code
+  - name: StorySummarySheriff
+    fields:
+      - type: String
+        name: sheriffName
+        description: name of the sheriff
+      - type: String
+        name: orderId
+        description: ID of the sheriff's order
+      - type: String
+        name: complainId
+        description: ID of the complaint, if any
   - name: SubscriberDescription
     fields:
       - type: String
