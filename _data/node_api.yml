@@ -937,6 +937,131 @@ objects:
             description: <code>before</code> and <code>after</code> parameters are not allowed together
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+  - name: Friend groups object
+    description: >
+      A friend may be member of one or more groups of friends. Each group as an ID and title. The group with a title
+      <code>t:friends</code> is a standard group "Friends" that is created automatically for every node.
+    requests:
+      - url: /people/friends/groups
+        type: GET
+        out:
+          struct: FriendGroupInfo
+          array: true
+        auth: optional
+        description: Get the list of all groups of friends that exist on the node.
+      - url: /people/friends/groups/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the group of friends
+        out:
+          struct: FriendGroupInfo
+        auth: optional
+        description: Get the information about the group of friends.
+        errors:
+          - code: friend-group.not-found
+            description: the group of friends is not found
+      - url: /people/friends/groups
+        type: POST
+        in:
+          struct: FriendGroupDescription
+        out:
+          struct: FriendGroupInfo
+        auth: admin
+        description: Create a group of friends.
+      - url: /people/friends/groups/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the group of friends
+        in:
+          struct: FriendGroupDescription
+        out:
+          struct: FriendGroupInfo
+        auth: admin
+        description: Update the details of the group of friends.
+        errors:
+          - code: friend-group.not-found
+            description: the group of friends is not found
+      - url: /people/friends/groups/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the group of friends
+        out:
+          struct: Result
+        auth: admin
+        description: Delete the group of friends.
+        errors:
+          - code: friend-group.not-found
+            description: the group of friends is not found
+  - name: Friends object
+    description: >
+      Friends are nodes that may have special permissions on this node. It is possible to write "friends only" posts or
+      to enable commenting to friends or to a group of friends only etc.
+    requests:
+      - url: /people/friends
+        type: GET
+        params:
+          - type: String
+            name: groupId
+            description: ID of a group of friends, may be absent
+        out:
+          struct: FriendInfo
+          array: true
+        auth: optional
+        description: Get the list of all friends of the node or friends belonging to a particular group.
+        errors:
+          - code: friend-group.not-found
+            description: the group of friends is not found
+      - url: /people/friends/{name}
+        type: GET
+        params:
+          - type: String
+            name: name
+            description: name of the node
+        out:
+          struct: FriendInfo
+        auth: optional
+        description: Get the friendship information for the node given.
+      - url: /people/friends
+        type: PUT
+        in:
+          struct: FriendDescription
+          array: true
+        out:
+          struct: FriendInfo
+          array: true
+        auth: admin
+        description: >
+          Update the friendship status of the nodes passed in the input. If some of the nodes passed in the input is not
+          a member of some of the groups of friends listed for it, the node is added to them. If it is a member of some
+          of the groups of friends that are not listed for it, the node is removed from them.
+  - name: Friend-ofs object
+    description: >
+      The node receives notifications from nodes that added it to their friends. This information is stored on the node
+      and can be requested.
+    requests:
+      - url: /people/friend-ofs
+        type: GET
+        out:
+          struct: FriendOfInfo
+          array: true
+        auth: optional
+        description: Get the list of all nodes that added this node to their friends.
+      - url: /people/friend-ofs/{name}
+        type: GET
+        params:
+          - type: String
+            name: name
+            description: name of the node
+        out:
+          struct: FriendOfInfo
+        auth: optional
+        description: Get the information for the node given, whether it has added this node to its friends.
   - name: Media object (private)
     description: >
       Media files that are bound to a particular uploader and may be inaccessible to other clients. Private media files
@@ -2040,9 +2165,6 @@ objects:
           struct: SubscriberInfo
         auth: required
         description: Subscribe to a particular group of notifications.
-        errors:
-          - code: subscriber.already-exists
-            description: an identical subscriber already exists
       - url: /people/subscribers/{id}
         type: GET
         params:
@@ -2079,9 +2201,9 @@ objects:
             name: id
             description: ID of the subscriber
         out:
-          struct: Result
+          struct: ContactInfo
         auth: optional
-        description: Delete a subscriber.
+        description: Delete the subscriber and return the updated information about the node that was subscribed.
         errors:
           - code: subscriber.not-found
             description: there is no subscriber with the given ID
@@ -2133,19 +2255,16 @@ objects:
         errors:
           - code: subscription.not-found
             description: there is no subscription with the given ID
-      - url: /people/subscriptions
+      - url: /people/subscriptions/{id}
         type: DELETE
         params:
           - type: String
-            name: remoteNodeName
-            description: name of the node this node is subscribed to
-          - type: String
-            name: remoteSubscriberId
-            description: ID of the subscriber on the remote node
+            name: id
+            description: ID of the subscription
         out:
-          struct: Result
+          struct: ContactInfo
         auth: admin
-        description: Delete the subscription described by the given parameters.
+        description: Delete the subscription and return the updated information about the node that was subscribed to.
         errors:
           - code: subscription.not-found
             description: there is no subscription with the given parameters.
@@ -2158,6 +2277,9 @@ objects:
           array: true
         auth: optional
         description: Search for subscriptions by the given criteria.
+        errors:
+          - code: subscription.filter.incomplete
+            description: the filter should contain at least one feed or posting
   - name: Tokens object
     description: >
       The authentication token. <a href="authentication.html">Read more</a> about token-based authentication.
@@ -3257,6 +3379,9 @@ structures:
         name: totalPinned
         description: total number of pinned stories
       - type: int
+        name: lastMoment
+        description: moment of the most recent story
+      - type: int
         name: notViewed
         description: number of stories that have not been viewed yet, admin only
       - type: int
@@ -3265,6 +3390,9 @@ structures:
       - type: int
         name: notViewedMoment
         description: moment of the oldest non-viewed story, admin only, may be absent
+      - type: int
+        name: notReadMoment
+        description: moment of the oldest non-read story, admin only, may be absent
   - name: FeedStatusChange
     fields:
       - type: boolean
@@ -3287,6 +3415,47 @@ structures:
       - type: int
         name: notRead
         description: number of stories in the feed that have not been read yet
+  - name: FriendDescription
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node
+      - struct: FriendGroupAssignment
+        array: true
+        name: groups
+        description: groups of friends the node is to be included into
+    errors:
+      - code: friendDescription.nodeName.blank
+        description: friend's node name is empty
+      - code: friendDescription.nodeName.wrong-size
+        description: friend's node name is too long
+      - code: friendDescription.groups.wrong-principal
+        description: principal for one of operations is invalid
+  - name: FriendGroupAssignment
+    fields:
+      - type: String
+        name: id
+        description: ID of the group of friends
+      - type: String -> String
+        name: operations
+        description: >
+          list of <a href="#FriendGroupDetails-operations">the operations</a> and the corresponding principals
+  - name: FriendGroupDescription
+    fields:
+      - type: String
+        name: title
+        description: title of the group of friends
+      - type: String -> String
+        name: operations
+        description: >
+          list of <a href="#FriendGroupInfo-operations">the operations</a> and the corresponding principals
+    errors:
+      - code: friendGroupDescription.title.blank
+        description: title of group of friends is empty
+      - code: friendGroupDescription.title.wrong-size
+        description: title of group of friends is too long
+      - code: friendGroupDescription.operations.wrong-principal
+        description: principal for one of operations is invalid
   - name: FriendGroupDetails
     fields:
       - type: String
@@ -3297,23 +3466,21 @@ structures:
         description: title of the group of friends
       - type: timestamp
         name: addedAt
-        description: the friendship timestamp - the real time when the user was added to the group of friends
+        description: the friendship timestamp - the real time when the node was added to the group of friends
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: view
         default: public
-        description: view the membership of the user in the group of friends
+        description: view the membership of the node in the group of friends
   - name: FriendGroupInfo
     fields:
       - type: String
         name: id
       - type: String
         name: title
-        description: >
-          title of the group of friends; the group with a title <code>t:friends</code> is a standard group "Friends"
-          that is created automatically
+        description: title of the group of friends
       - type: timestamp
         name: createdAt
         description: the group creation timestamp - the real time when the group of friends was created
@@ -3334,6 +3501,30 @@ structures:
         array: true
         name: memberOf
         description: list of groups of friends the client is member of
+  - name: FriendInfo
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node
+      - struct: ContactInfo
+        name: contact
+        description: information about the node
+      - struct: FriendGroupDetails
+        array: true
+        name: groups
+        description: groups of friends the node belongs to
+  - name: FriendOfInfo
+    fields:
+      - type: String
+        name: remoteNodeName
+        description: name of the remote node
+      - struct: ContactInfo
+        name: contact
+        description: information about the remote node
+      - struct: FriendGroupDetails
+        array: true
+        name: groups
+        description: groups of friends on the remote node this node was added to
   - name: FundraiserInfo
     fields:
       - type: String
@@ -4502,6 +4693,14 @@ structures:
       - type: String
         name: secret
         description: base64-encoded secret of the updating key
+  - name: RemoteFeed
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node
+      - type: String
+        name: feedName
+        description: name of the feed on the node
   - name: RemoteMedia
     fields:
       - type: String
@@ -5125,9 +5324,6 @@ structures:
         name: feedName
         description: feed name on this node that receives notifications
       - type: String
-        name: remoteSubscriberId
-        description: ID of the subscriber on the remote node
-      - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
       - type: String
@@ -5184,6 +5380,15 @@ structures:
         description: principal for one of operations is invalid
   - name: SubscriptionFilter
     fields:
+      - type: String
+        name: type
+        description: >
+          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          the list of possible values)
+      - struct: RemoteFeed
+        array: true
+        name: feeds
+        description: list of feeds
       - struct: RemotePosting
         array: true
         name: postings
@@ -5201,9 +5406,6 @@ structures:
       - type: String
         name: feedName
         description: feed name on this node that receives notifications
-      - type: String
-        name: remoteSubscriberId
-        description: ID of the subscriber on the remote node
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to

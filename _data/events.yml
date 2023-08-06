@@ -146,6 +146,30 @@ events:
       - struct: FeedStatus
         name: status
         comment: status of the feed
+  - type: FRIEND_GROUP_ADDED
+    description: A group of friends was added
+    fields:
+      - struct: FriendGroupInfo
+        name: friendGroup
+        comment: the group of friends
+  - type: FRIEND_GROUP_DELETED
+    description: A group of friends was deleted
+    fields:
+      - type: String
+        name: friendGroupId
+        comment: ID of the group of friends
+  - type: FRIEND_GROUP_UPDATED
+    description: A group of friends was updated
+    fields:
+      - struct: FriendGroupInfo
+        name: friendGroup
+        comment: the group of friends
+  - type: FRIENDSHIP_UPDATED
+    description: Friendship status of a node was updated
+    fields:
+      - struct: FriendInfo
+        name: friend
+        comment: friendship information
   - type: NODE_NAME_CHANGED
     description: The name of the node or one or more of important profile fields were changed.
     fields:
