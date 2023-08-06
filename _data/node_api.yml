@@ -4769,7 +4769,7 @@ structures:
         name: summary
         description: >
           user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
-      - struct: SummaryData
+      - struct: StorySummaryData
         name: summaryData
         description: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
