@@ -534,7 +534,7 @@ events:
         name: summary
         comment: >
           user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
-      - struct: SummaryData
+      - struct: StorySummaryData
         name: summaryData
         comment: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
@@ -617,7 +617,7 @@ events:
         name: summary
         comment: >
           user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
-      - struct: SummaryData
+      - struct: StorySummaryData
         name: summaryData
         comment: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
