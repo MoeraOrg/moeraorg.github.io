@@ -1542,6 +1542,17 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
+      - url: /postings/reactions/search
+        type: POST
+        in:
+          struct: ReactionsFilter
+        out:
+          struct: ReactionInfo
+          array: true
+        auth: optional
+        description: >
+          Search reactions by criteria provided. Both reaction owner and at least one posting ID should be provided to
+          search, otherwise an empty list is returned.
   - name: Posting Reaction Totals object
     description: Summary of reactions to a posting.
     requests:
@@ -1558,6 +1569,17 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
+      - url: /postings/reaction-totals/search
+        type: POST
+        in:
+          struct: ReactionTotalsFilter
+        out:
+          struct: ReactionTotalsInfo
+          array: true
+        auth: optional
+        description: >
+          Search summaries of reactions by criteria provided. At least one posting ID should be provided to search,
+          otherwise an empty list is returned.
   - name: Profile object
     description: The profile - the detailed information about the node's owner, node's purpose etc.
     requests:
@@ -4294,6 +4316,14 @@ structures:
         description: owner's avatar is not found
       - code: reactionDescription.operations.wrong-principal
         description: principal for one of operations is invalid
+  - name: ReactionsFilter
+    fields:
+      - type: String
+        name: ownerName
+        description: reaction owner's name
+      - type: String[]
+        name: postings
+        description: list of IDs of postings
   - name: ReactionInfo
     fields:
       - type: String
@@ -4393,8 +4423,16 @@ structures:
         description: >
           share the reactions with the given code stand from the total number of reactions (may be absent, if
           <code>total</code> is present)
+  - name: ReactionTotalsFilter
+    fields:
+      - type: String[]
+        name: postings
+        description: list of IDs of postings
   - name: ReactionTotalsInfo
     fields:
+      - type: String
+        name: entryId
+        description: ID of the entry
       - struct: ReactionTotalInfo
         array: true
         name: positive
