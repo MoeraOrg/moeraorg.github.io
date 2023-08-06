@@ -14,6 +14,9 @@ notifications:
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+      - type: String
+        name: ownerGender
+        comment: gender of the reaction owner
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
@@ -23,6 +26,18 @@ notifications:
       - type: int
         name: emoji
         comment: reaction code, usually interpreted by clients as emoji code point
+      - type: String
+        name: postingNodeName
+        comment: posting owner's node name
+      - type: String
+        name: postingFullName
+        comment: posting owner's full name
+      - type: String
+        name: postingGender
+        comment: posting owner's gender
+      - struct: AvatarImage
+        name: postingAvatar
+        comment: posting owner's avatar
       - type: String
         name: postingHeading
         comment: heading of the posting
@@ -44,6 +59,9 @@ notifications:
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+      - type: String
+        name: ownerGender
+        comment: gender of the reaction owner
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
@@ -81,17 +99,32 @@ notifications:
         name: commentId
         comment: ID of the comment on the sending node
       - type: String
+        name: postingOwnerName
+        comment: name of the posting's owner
+      - type: String
+        name: postingOwnerFullName
+        comment: full name of the posting's owner
+      - type: String
+        name: postingOwnerGender
+        comment: gender of the posting's owner
+      - struct: AvatarImage
+        name: postingOwnerAvatar
+        comment: avatar of the posting's owner
+      - type: String
         name: postingHeading
         comment: heading of the posting
       - type: String
         name: commentOwnerName
-        comment: name of the comment owner
+        comment: name of the comment's owner
       - type: String
         name: commentOwnerFullName
-        comment: full name of the comment owner
+        comment: full name of the comment's owner
+      - type: String
+        name: commentOwnerGender
+        comment: gender of the comment's owner
       - struct: AvatarImage
         name: commentOwnerAvatar
-        comment: avatar of the comment owner
+        comment: avatar of the comment's owner
       - type: String
         name: commentHeading
         comment: heading of the comment
@@ -111,6 +144,18 @@ notifications:
         name: postingId
         comment: ID of the posting on the sending node
       - type: String
+        name: ownerName
+        comment: name of the posting's owner
+      - type: String
+        name: ownerFullName
+        comment: full name of the posting's owner
+      - type: String
+        name: ownerGender
+        comment: gender of the posting's owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        comment: avatar of the posting's owner
+      - type: String
         name: heading
         comment: heading of the posting
   - type: MENTION_POSTING_DELETED
@@ -129,6 +174,21 @@ notifications:
         name: postingId
         comment: ID of the posting on the sending node
       - type: String
+        name: postingOwnerName
+        comment: name of the posting owner
+      - type: String
+        name: postingOwnerFullName
+        comment: full name of the posting owner
+      - type: String
+        name: postingOwnerGender
+        comment: gender of the posting owner
+      - struct: AvatarImage
+        name: postingOwnerAvatar
+        comment: avatar of the posting owner
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+      - type: String
         name: commentId
         comment: ID of the comment on the sending node
       - type: String
@@ -137,12 +197,12 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - type: String
+        name: commentOwnerGender
+        comment: gender of the comment owner
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
-      - type: String
-        name: postingHeading
-        comment: heading of the posting
       - type: String
         name: commentHeading
         comment: heading of the comment
@@ -167,6 +227,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - type: String
+        name: commentOwnerGender
+        comment: gender of the comment owner
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
@@ -202,6 +265,18 @@ notifications:
         name: postingId
         comment: ID of the posting on the sending node
       - type: String
+        name: postingOwnerName
+        comment: name of the posting owner
+      - type: String
+        name: postingOwnerFullName
+        comment: full name of the posting owner
+      - type: String
+        name: postingOwnerGender
+        comment: gender of the posting owner
+      - struct: AvatarImage
+        name: postingOwnerAvatar
+        comment: avatar of the posting owner
+      - type: String
         name: postingHeading
         comment: heading of the posting
       - type: String
@@ -234,6 +309,9 @@ notifications:
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+      - type: String
+        name: ownerGender
+        comment: gender of the reaction owner
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
@@ -244,8 +322,20 @@ notifications:
         name: emoji
         comment: reaction code, usually interpreted by clients as emoji code point
       - type: String
+        name: parentPostingNodeName
+        comment: parent's owner node name (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+      - type: String
+        name: parentPostingFullName
+        comment: parent's owner full name (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+      - type: String
+        name: parentPostingGender
+        comment: parent's owner gender (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+      - struct: AvatarImage
+        name: parentPostingAvatar
+        comment: parent's owner avatar (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+      - type: String
         name: parentHeading
-        comment: heading of the posting
+        comment: heading of the parent (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
       - type: String
         name: postingHeading
         comment: heading of the posting
@@ -276,6 +366,9 @@ notifications:
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+      - type: String
+        name: ownerGender
+        comment: gender of the reaction owner
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
@@ -343,6 +436,18 @@ notifications:
         name: repliedToId
         comment: ID of the comment on the sending node that is replied to
       - type: String
+        name: postingOwnerName
+        comment: name of the posting owner
+      - type: String
+        name: postingOwnerFullName
+        comment: full name of the posting owner
+      - type: String
+        name: postingOwnerGender
+        comment: gender of the posting owner
+      - struct: AvatarImage
+        name: postingOwnerAvatar
+        comment: avatar of the posting owner
+      - type: String
         name: postingHeading
         comment: heading of the posting
       - type: String
@@ -351,6 +456,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - type: String
+        name: commentOwnerGender
+        comment: gender of the comment owner
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
@@ -359,7 +467,7 @@ notifications:
         comment: heading of the comment
       - type: String
         name: repliedToHeading
-        comment: heading of the comment that is repliedTo
+        comment: heading of the comment that is replied to
   - type: REPLY_COMMENT_DELETED
     description: A reply to a comment of the receiver on the sending node deleted.
     fields:
@@ -378,6 +486,9 @@ notifications:
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+      - type: String
+        name: commentOwnerGender
+        comment: gender of the comment owner
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner

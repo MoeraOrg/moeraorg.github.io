@@ -2509,6 +2509,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the comment's owner
+      - type: String
+        name: ownerGender
+        description: gender of the comment's owner
       - struct: AvatarImage
         name: ownerAvatar
         description: avatar of the comment's owner
@@ -2798,6 +2801,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the comment's owner
+      - type: String
+        name: ownerGender
+        description: gender of the comment's owner
       - struct: AvatarDescription
         name: ownerAvatar
         description: avatar of the comment's owner
@@ -2916,6 +2922,8 @@ structures:
         name: nodeName
       - type: String
         name: fullName
+      - type: String
+        name: gender
       - struct: AvatarImage
         name: avatar
       - type: float
@@ -3414,6 +3422,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the sending node
+      - type: String
+        name: gender
+        description: gender of the sending node
       - struct: AvatarImage
         name: avatar
         description: avatar of the sending node
@@ -3656,6 +3667,9 @@ structures:
       - type: String
         name: receiverFullName
         description: full name of the node where the posting was published (for cached copies of remote postings only)
+      - type: String
+        name: receiverGender
+        description: gender of the node where the posting was published (for cached copies of remote postings only)
       - struct: AvatarImage
         name: receiverAvatar
         description: avatar of the node where the posting was published (for cached copies of remote postings only)
@@ -3671,6 +3685,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the posting's owner
+      - type: String
+        name: ownerGender
+        description: gender of the posting's owner
       - struct: AvatarImage
         name: ownerAvatar
         description: avatar of the posting's owner
@@ -3968,6 +3985,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the posting's owner
+      - type: String
+        name: ownerGender
+        description: gender of the posting's owner
       - struct: AvatarDescription
         name: ownerAvatar
         description: avatar of the posting's owner
@@ -4291,6 +4311,9 @@ structures:
       - type: String
         name: ownerFullName
         description: reaction owner's full name
+      - type: String
+        name: ownerGender
+        description: reaction owner's gender
       - struct: AvatarDescription
         name: ownerAvatar
         description: reaction owner's avatar
@@ -4332,6 +4355,9 @@ structures:
       - type: String
         name: ownerFullName
         description: reaction owner's full name
+      - type: String
+        name: ownerGender
+        description: reaction owner's gender
       - struct: AvatarImage
         name: ownerAvatar
         description: reaction owner's avatar
@@ -4591,6 +4617,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the comment's owner
+      - type: String
+        name: gender
+        description: gender of the comment's owner
       - struct: AvatarImage
         name: avatar
         description: avatar of the comment's owner
@@ -4987,6 +5016,9 @@ structures:
       - type: String
         name: ownerFullName
         description: full name of the subscriber
+      - type: String
+        name: ownerGender
+        description: gender of the subscriber
       - struct: AvatarDescription
         name: ownerAvatar
         description: avatar of the subscriber
@@ -5033,6 +5065,9 @@ structures:
       - type: String
         name: fullName
         description: full name of the subscribed node
+      - type: String
+        name: gender
+        description: gender of the subscribed node
       - struct: AvatarImage
         name: avatar
         description: avatar of the subscribed node
@@ -5098,6 +5133,9 @@ structures:
       - type: String
         name: remoteFullName
         description: full name of the node this node is subscribed to
+      - type: String
+        name: remoteGender
+        description: gender of the node this node is subscribed to
       - struct: AvatarDescription
         name: remoteAvatar
         description: avatar of the node this node is subscribed to
@@ -5172,6 +5210,9 @@ structures:
       - type: String
         name: remoteFullName
         description: full name of the node this node is subscribed to
+      - type: String
+        name: remoteGender
+        description: gender of the node this node is subscribed to
       - struct: AvatarImage
         name: remoteAvatar
         description: avatar of the node this node is subscribed to
