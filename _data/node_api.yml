@@ -937,7 +937,7 @@ objects:
             description: <code>before</code> and <code>after</code> parameters are not allowed together
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
-  - name: Friend groups object
+  - name: Friend Groups object
     description: >
       A friend may be member of one or more groups of friends. Each group as an ID and title. The group with a title
       <code>t:friends</code> is a standard group "Friends" that is created automatically for every node.
@@ -1816,6 +1816,22 @@ objects:
         errors:
           - code: push.not-found
             description: push client is not found
+  - name: Remote Ask object
+    description: >
+      The node may send requests to other nodes asking to subscribe to it, to add it to friends etc.
+    requests:
+      - url: /nodes/{nodeName}/ask
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+        in:
+          struct: AskDescription
+        out:
+          struct: Result
+        auth: admin
+        description: Send a request to the remote node.
   - name: Remote Comments object
     description: Comments to postings located on other nodes.
     requests:
@@ -2385,6 +2401,31 @@ structures:
       - type: timestamp
         name: createdAt
         description: reaction creation timestamp - the real time when the reaction was created
+  - name: AskDescription
+    fields:
+      - type: String
+        name: subject
+        description: >
+          request subject; the possible values are:
+          <ul>
+            <li><code>subscribe</code> - "subscribe to me" - asking remote node to subscribe to this node;</li>
+            <li><code>friend</code> - "add me to your friends" - asking remote node to add this node to friends.</li>
+          </ul>
+      - type: String
+        name: friendGroupId
+        description: >
+          if the request is to add this node to friends, this field contains ID of the corresponding group of friends on
+          the remote node
+      - type: String
+        name: message
+        description: optional message to the node admin
+    errors:
+      - code: askDescription.friendGroupId.blank
+        description: friend group ID is empty
+      - code: askDescription.friendGroupId.wrong-size
+        description: friend group ID is too long
+      - code: askDescription.message.wrong-size
+        description: message is too long
   - name: AsyncOperationCreated
     fields:
       - type: String
@@ -3053,6 +3094,51 @@ structures:
         description: >
           closeness of the contact to the node, which is calculated from the number of reactions and comments and
           their age
+      - type: boolean
+        name: hasFeedSubscriber
+        description: the contact is subscribed to at least one of the node's feeds
+      - type: boolean
+        name: hasFeedSubscription
+        description: the node is subscribed to at least one of the contact's feeds
+      - type: boolean
+        name: hasFriend
+        description: the contact is a friend of the node
+      - type: boolean
+        name: hasFriendOf
+        description: the node is a friend of the contact
+      - type: boolean
+        name: hasBlock
+        description: the contact is blocked by the node
+      - type: boolean
+        name: hasBlockBy
+        description: the node is blocked by the contact
+      - type: String -> String
+        name: operations
+        description: list of the supported operations (see below) and the corresponding principals
+      - type: String -> String
+        name: adminOperations
+        description: >
+          list of the operations (see below) and the corresponding principals that are overridden by the node
+          administrator
+    operations:
+      - name: viewFeedSubscriber
+        default: public
+        description: see the subscriber information
+      - name: viewFeedSubscription
+        default: public
+        description: see the subscription information
+      - name: viewFriend
+        default: public
+        description: see the friend information
+      - name: viewFriendOf
+        default: public
+        description: see the friend-of information (this operation can be modified by admin only)
+      - name: viewBlock
+        default: public
+        description: see the blocking information (this operation can be modified by admin only)
+      - name: viewBlockBy
+        default: public
+        description: see the blocked-by information (this operation can be modified by admin only)
   - name: Credentials
     fields:
       - type: String
@@ -3297,11 +3383,8 @@ structures:
       - type: String[]
         name: ask
         description: >
-          list of requests to the node owner accepted by the node; the possible values are:
-          <ul>
-            <li><code>subscribe</code> - "subscribe to me";</li>
-            <li><code>friend</code> - "add me to your friends".</li>
-          </ul>
+          list of requests to the node owner that are accepted by the node, see
+          <code><a href="#AskDescription">AskDescription</a>.subject</code> for possible values
       - type: boolean
         name: subscribed
         description: <code>true</code>, if the node is subscribed to the client, <code>false</code> otherwise
@@ -3669,6 +3752,18 @@ structures:
       - type: int
         name: feedSubscriptionsTotal
         description: total number of subscriptions of the node
+      - type: String -> int
+        name: friendsTotal
+        description: total number of friends in every group
+      - type: int
+        name: friendOfsTotal
+        description: total number of nodes that added this node to their friends
+      - type: int
+        name: blockedTotal
+        description: total number of blocked nodes
+      - type: int
+        name: blockedByTotal
+        description: total number of nodes that blocked this node
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
@@ -3998,9 +4093,6 @@ structures:
       - type: int
         name: totalComments
         description: total number of comments to the posting
-      - struct: PostingSubscriptionsInfo
-        name: subscriptions
-        description: existing subscriptions of the client's owner
     operations:
       - name: view
         default: public
@@ -4163,11 +4255,6 @@ structures:
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden in the posting's comments
-  - name: PostingSubscriptionsInfo
-    fields:
-      - type: String
-        name: comments
-        description: ID of the existing subscription to posting comments, if any
   - name: PostingText
     fields:
       - type: String
@@ -4870,7 +4957,7 @@ structures:
       - type: String
         name: type
         description: >
-          type of the setting, see <code><a href="#SettingMetaInfo">SettingMetaInfo</a></code>.type for possible values
+          type of the setting, see <code><a href="#SettingMetaInfo">SettingMetaInfo</a>.type</code> for possible values
       - type: String
         name: defaultValue
         description: default value of the setting
@@ -4988,6 +5075,9 @@ structures:
       - type: boolean
         name: read
         description: value of the <code>read</code> flag (<code>null</code>, if the flag is not changed)
+      - type: boolean
+        name: satisfied
+        description: value of the <code>satisfied</code> flag (<code>null</code>, if the flag is not changed)
   - name: StoryInfo
     fields:
       - type: String
@@ -5019,6 +5109,11 @@ structures:
       - type: boolean
         name: read
         description: <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: satisfied
+        description: >
+          if the story is associated with a user action (for example, it contains a form that should be submitted), this
+          flag is set to <code>true</code>, if the action is done already, and <code>false</code> otherwise
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
@@ -5212,15 +5307,6 @@ structures:
       - type: String
         name: postingId
         description: posting ID, if the subscription type requires one
-      - type: String
-        name: ownerFullName
-        description: full name of the subscriber
-      - type: String
-        name: ownerGender
-        description: gender of the subscriber
-      - struct: AvatarDescription
-        name: ownerAvatar
-        description: avatar of the subscriber
       - type: timestamp
         name: lastUpdatedAt
         description: timestamp of the latest known state of the object, may be absent
@@ -5261,15 +5347,9 @@ structures:
       - type: String
         name: nodeName
         description: name of the subscribed node
-      - type: String
-        name: fullName
-        description: full name of the subscribed node
-      - type: String
-        name: gender
-        description: gender of the subscribed node
-      - struct: AvatarImage
-        name: avatar
-        description: avatar of the subscribed node
+      - struct: ContactInfo
+        name: contact
+        description: information known about the subscribed node
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
@@ -5326,15 +5406,6 @@ structures:
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
-      - type: String
-        name: remoteFullName
-        description: full name of the node this node is subscribed to
-      - type: String
-        name: remoteGender
-        description: gender of the node this node is subscribed to
-      - struct: AvatarDescription
-        name: remoteAvatar
-        description: avatar of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one
@@ -5409,15 +5480,9 @@ structures:
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
-      - type: String
-        name: remoteFullName
-        description: full name of the node this node is subscribed to
-      - type: String
-        name: remoteGender
-        description: gender of the node this node is subscribed to
-      - struct: AvatarImage
-        name: remoteAvatar
-        description: avatar of the node this node is subscribed to
+      - struct: ContactInfo
+        name: contact
+        description: information known about the remote node
       - type: String
         name: remoteFeedName
         description: feed name on the remote node, if the subscription type requires one

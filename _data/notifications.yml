@@ -1,4 +1,20 @@
 notifications:
+  - type: ASKED
+    description: A remote node asks this node for something.
+    fields:
+      - type: String
+        name: subject
+        comment: >
+          request subject, see <code><a href="node-api.html#AskDescription">AskDescription</a>.subject</code> for
+          possible values
+      - type: String
+        name: friendGroupId
+        comment: >
+          if the request is to add this node to friends, this field contains ID of the corresponding group of friends on
+          the remote node
+      - type: String
+        name: message
+        comment: optional message to the node admin
   - type: COMMENT_REACTION_ADDED
     description: Reaction added to a comment owned by the receiver.
     fields:
@@ -77,18 +93,6 @@ notifications:
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
-  - type: FEED_POSTING_ADDED
-    description: A new posting added in a feed the receiver is subscribed to.
-    fields:
-      - type: String
-        name: subscriberId
-        comment: subscriber ID of the receiving node on the sending node
-      - type: String
-        name: feedName
-        comment: name of the feed on the sending node
-      - type: String
-        name: postingId
-        comment: ID of the posting on the sending node
   - type: MENTION_COMMENT_ADDED
     description: A mention of the receiver in a comment on the sending node added.
     fields:
@@ -492,3 +496,20 @@ notifications:
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
+  - type: STORY_ADDED
+    description: A new story has been added to a feed the receiver is subscribed to.
+    fields:
+      - type: String
+        name: storyId
+        comment: ID of the story on the sending node
+      - type: String
+        name: feedName
+        comment: name of the feed on the sending node
+      - type: String
+        name: storyType
+        comment: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node, if the story is related to a posting

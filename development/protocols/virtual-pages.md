@@ -15,6 +15,23 @@ Virtual pages are located under `/moera` subdirectory of the *Moera
 root* of the website (matches the website root by default, may be
 changed by [`X-Moera` header][2]).
 
+`/api-docs`
+
+Node API specification in OpenAPI format.
+
+`/api-ui.html`
+
+Web interface for executing node API requests.
+
+`/complains`
+
+(for sheriffs only) Complaints management interface.
+
+`/complains/<id>`
+
+(for sheriffs only) Management interface for a particular group of complaints,
+related to the same posting or comment.
+
 `/compose?id=<id>`
 
 Post composer. If `id` is not provided, the composer is opened for
@@ -25,6 +42,12 @@ the given ID.
 
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
+
+`/gotoname?client=<client URL>&name=<node name>&location=<path>&trackingId=<id>`
+
+Resolve the given node `name` and open the given `location` at it. If `client` is
+given, it is opened and the location is passed to it. If `trackingId` is given,
+the story with this tracking ID is marked as read.
 
 `/media/private/<id>.<extension>?width=<number>&download=<true or false>`
 
@@ -68,6 +91,23 @@ Information about subscribers of this node.
 `/people/subscriptions`
 
 Information about subscriptions of this node.
+
+`/people/friend-ofs`
+
+Information about nodes that added this node to their friends.
+
+`/people/blocked`
+
+Information about nodes blocked by this node.
+
+`/people/blocked-by`
+
+Information about nodes that blocked this node.
+
+`/people/<id>`
+
+Information about friends of this node that are members of the group of friends
+with the given ID.
 
 `/post/<id>`
 

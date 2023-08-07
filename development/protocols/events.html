@@ -106,14 +106,6 @@ body_class: body-pink
 {% for event in site.data.events.events %}
     <h4 class="identifier">{{ event.type }}</h4>
     <p>{{ event.description }}</p>
-    <dl>
-        <dt>Authentication:</dt>
-        {% if event.auth %}
-            <dd>{{ event.auth }}</dd>
-        {% else %}
-            <dd>none</dd>
-        {% endif %}
-    </dl>
     {% if event.fields %}
         <table class="table table-bordered">
             <thead>

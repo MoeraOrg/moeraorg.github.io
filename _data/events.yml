@@ -1,4 +1,6 @@
 events:
+  - type: ASK_SUBJECTS_CHANGED
+    description: the list of requests to the node owner, that are accepted by the node, was changed.
   - type: AVATAR_ADDED
     description: An avatar was added.
     fields:
@@ -76,10 +78,8 @@ events:
         comment: moment of the comment
   - type: CLIENT_SETTINGS_CHANGED
     description: Some client settings were changed.
-    auth: admin
   - type: DRAFT_ADDED
     description: A draft was added.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -99,7 +99,6 @@ events:
         comment: ID of the comment, set for <code>comment-update</code> type
   - type: DRAFT_DELETED
     description: A draft was deleted.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -119,7 +118,6 @@ events:
         comment: ID of the comment, set for <code>comment-update</code> type
   - type: DRAFT_UPDATED
     description: A draft was updated.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -190,13 +188,10 @@ events:
         comment: the new avatar
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
-    auth: admin
   - type: NODE_SETTINGS_META_CHANGED
     description: Some node settings metadata was changed.
-    auth: admin
   - type: PING
     description: Sent periodically to verify status of WebSockets connection.
-    auth: admin
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
@@ -241,17 +236,14 @@ events:
   - type: SUBSCRIBED
     description: >
       Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.
-    auth: the subscriber only
     fields:
       - type: String
         name: sessionId
         comment: STOMP session ID
   - type: REGISTERED_NAME_OPERATION_STATUS
     description: Status of an operation on the registered name of the node was changed.
-    auth: admin
   - type: REMOTE_COMMENT_ADDED
     description: This node added a comment on a remote node
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -264,7 +256,6 @@ events:
         comment: the remote comment ID
   - type: REMOTE_COMMENT_DELETED
     description: This node deleted a comment on a remote node
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -277,7 +268,6 @@ events:
         comment: the remote comment ID
   - type: REMOTE_COMMENT_UPDATED
     description: This node updated a comment on a remote node
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -290,7 +280,6 @@ events:
         comment: the remote comment ID
   - type: REMOTE_COMMENT_VERIFICATION_FAILED
     description: Verification of the signature of a comment on a remote node failed.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -312,7 +301,6 @@ events:
         comment: error message
   - type: REMOTE_COMMENT_VERIFIED
     description: Signature of a comment on a remote node was verified.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -348,7 +336,6 @@ events:
         name: fullName
         comment: the remote node full name
   - type: REMOTE_POSTING_ADDED
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -357,7 +344,6 @@ events:
         name: remotePostingId
         comment: the posting ID
   - type: REMOTE_POSTING_DELETED
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -366,7 +352,6 @@ events:
         name: remotePostingId
         comment: the posting ID
   - type: REMOTE_POSTING_UPDATED
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -376,7 +361,6 @@ events:
         comment: the posting ID
   - type: REMOTE_POSTING_VERIFICATION_FAILED
     description: Verification of the signature of a posting on a remote node failed.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -401,7 +385,6 @@ events:
         comment: error message
   - type: REMOTE_POSTING_VERIFIED
     description: Signature of a posting on a remote node was verified.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -423,7 +406,6 @@ events:
         comment: verification result
   - type: REMOTE_REACTION_ADDED
     description: This node added a reaction on a remote node
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -442,7 +424,6 @@ events:
         comment: reaction creation timestamp - the real time when the reaction was created
   - type: REMOTE_REACTION_DELETED
     description: This node deleted a reaction on a remote node
-    auth: admin
     fields:
       - type: String
         name: remoteNodeName
@@ -452,7 +433,6 @@ events:
         comment: the remote posting ID
   - type: REMOTE_REACTION_VERIFICATION_FAILED
     description: Verification of the signature of a reaction on a remote node failed.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -477,7 +457,6 @@ events:
         comment: error message
   - type: REMOTE_REACTION_VERIFIED
     description: Signature of a reaction on a remote node was verified.
-    auth: admin
     fields:
       - type: String
         name: id
@@ -499,7 +478,6 @@ events:
         comment: verification result
   - type: STORIES_STATUS_UPDATED
     description: Viewed/read status of a group of stories in a feed was changed.
-    auth: admin
     fields:
       - type: String
         name: feedName
@@ -545,6 +523,12 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: satisfied
+        comment: >
+          (admin only) if the story is associated with a user action (for example, it contains a form that should be
+          submitted), this flag is set to <code>true</code>, if the action is done already, and <code>false</code>
+          otherwise
       - type: String
         name: summaryNodeName
         description: name of the node related to the summary of the story
@@ -628,6 +612,12 @@ events:
         name: read
         comment: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+      - type: boolean
+        name: satisfied
+        comment: >
+          (admin only) if the story is associated with a user action (for example, it contains a form that should be
+          submitted), this flag is set to <code>true</code>, if the action is done already, and <code>false</code>
+          otherwise
       - type: String
         name: summaryNodeName
         description: name of the node related to the summary of the story
