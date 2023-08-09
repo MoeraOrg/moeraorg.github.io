@@ -28,6 +28,18 @@ events:
       - type: int
         name: ordinal
         comment: ordinal of the avatar
+  - type: BLOCKED_INSTANT_ADDED
+    description: Blocking of an instant was added.
+    fields:
+      - struct: BlockedInstantInfo
+        name: blockedInstant
+        comment: information about the blocking
+  - type: BLOCKED_INSTANT_DELETED
+    description: Blocking of an instant was deleted.
+    fields:
+      - struct: BlockedInstantInfo
+        name: blockedInstant
+        comment: information about the blocking
   - type: COMMENT_ADDED
     description: A comment was added.
     fields:

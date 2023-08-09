@@ -15,6 +15,46 @@ notifications:
       - type: String
         name: message
         comment: optional message to the node admin
+  - type: BLOCKING_ADDED
+    description: A remote node has blocked this node.
+    fields:
+      - type: String
+        name: blockedOperation
+        description: >
+          operation that is blocked (see
+          <code><a href="node-api.html#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible
+          values)
+      - type: String
+        name: postingId
+        description: >
+          ID of the posting, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
+      - type: String
+        name: postingHeading
+        description: heading of the posting, where the node is blocked; may be absent
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
+          is blocked permanently
+      - type: String
+        name: reason
+        description: reason of blocking, may be absent
+  - type: BLOCKING_DELETED
+    description: A remote node has unblocked this node.
+    fields:
+      - type: String
+        name: blockedOperation
+        description: >
+          operation that is unblocked (see
+          <code><a href="node-api.html#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible
+          values)
+      - type: String
+        name: postingId
+        description: >
+          ID of the posting, where the node was blocked; <code>null</code> or absent, if the node was blocked globally
+      - type: String
+        name: postingHeading
+        description: heading of the posting, where the node was blocked; may be absent
   - type: COMMENT_REACTION_ADDED
     description: Reaction added to a comment owned by the receiver.
     fields:

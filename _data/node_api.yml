@@ -110,6 +110,147 @@ objects:
         errors:
           - code: avatar.not-found
             description: avatar is not found
+  - name: Blocked Instants object
+    description: It is possible to block creation of some types of stories in the instants feed.
+    requests:
+      - url: /blocked-instants
+        type: POST
+        in:
+          struct: BlockedInstantAttributes
+        out:
+          struct: BlockedInstantInfo
+        auth: admin
+        description: >
+          Blocks creation of instants of the given story type, related to the given entry, optionally unblocking at
+          the given time in the future.
+        errors:
+          - code: entry.not-found
+            description: entry is not found
+      - url: /blocked-instants/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the blocked instant
+        out:
+          struct: BlockedInstantInfo
+        auth: admin
+        description: Get details about the given blocked instant.
+        errors:
+          - code: blocked-instant.not-found
+            description: blocked instant is not found
+      - url: /blocked-instants/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the blocked instant
+        out:
+          struct: Result
+        auth: admin
+        description: Unblock the given instant.
+        errors:
+          - code: blocked-instant.not-found
+            description: blocked instant is not found
+      - url: /blocked-instants/search
+        type: POST
+        in:
+          struct: BlockedInstantFilter
+        out:
+          struct: BlockedInstantInfo
+          array: true
+        auth: admin
+        description: Search blocked instants by the given criteria.
+  - name: Blocked Users object
+    description: >
+      It is possible to block particular nodes from performing some operations on this node, even if they are otherwise
+      permitted to do so. It is also possible to mark some nodes to be invisible (in discussions, for example), the
+      client should fetch the list of invisible nodes to perform filtering on the client side.
+    requests:
+      - url: /people/blocked-users
+        type: POST
+        in:
+          struct: BlockedUserAttributes
+        out:
+          struct: BlockedUserInfo
+        auth: admin
+        description: >
+          Blocks the given node from performing the given operations, in a particular posting or globally, optionally
+          unblocking at the given time in the future.
+        errors:
+          - code: entry.not-found
+            description: entry is not found
+      - url: /people/blocked-users/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the blocked user
+        out:
+          struct: BlockedUserInfo
+        auth: optional
+        description: Get details about the given blocked user.
+        errors:
+          - code: blocked-user.not-found
+            description: blocked user is not found
+      - url: /people/blocked-users/{id}
+        type: DELETE
+        params:
+          - type: String
+            name: id
+            description: ID of the blocked user
+        out:
+          struct: Result
+        auth: admin
+        description: Unblock the given user.
+        errors:
+          - code: blocked-user.not-found
+            description: blocked user is not found
+      - url: /people/blocked-users/search
+        type: POST
+        in:
+          struct: BlockedUserFilter
+        out:
+          struct: BlockedUserInfo
+          array: true
+        auth: optional
+        description: Search blocked users by the given criteria.
+      - url: /people/blocked-users/checksums
+        type: GET
+        out:
+          struct: BlockedUsersChecksums
+          array: true
+        auth: admin
+        description: >
+          Get checksums of the information about the blocked users. This request may be used to quickly detect the
+          changes in the blocked users list to update the cache on the client side.
+  - name: Blocked-by Users object
+    description: >
+      The node receives notifications from nodes that blocked it. This information is stored on the node and can be
+      requested.
+    requests:
+      - url: /people/blocked-by-users/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the blocked-by user
+        out:
+          struct: BlockedByUserInfo
+        auth: optional
+        description: Get details about the given node that blocked this node.
+        errors:
+          - code: blocked-by-user.not-found
+            description: blocked-by user is not found
+      - url: /people/blocked-by-users/search
+        type: POST
+        in:
+          struct: BlockedByUserFilter
+        out:
+          struct: BlockedByUserInfo
+          array: true
+        auth: optional
+        description: Search nodes, that blocked this node, by the given criteria.
   - name: Cartes object
     description: >
       <a href="authentication.html#carte">Cartes</a> - cryptographic tokens used to authenticate on any node besides
@@ -2541,6 +2682,215 @@ structures:
       - type: String[]
         name: ids
         description: IDs of avatars
+  - name: BlockedInstantAttributes
+    fields:
+      - type: String
+        name: storyType
+        description: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
+      - type: String
+        name: entryId
+        description: ID of the local entry the blocked story should be related to; may be absent
+      - type: String
+        name: remoteNodeName
+        description: node name of the remote posting the blocked story should be related to; may be absent
+      - type: String
+        name: remotePostingId
+        description: ID of the remote posting the blocked story should be related to; may be absent
+      - type: String
+        name: remoteOwnerName
+        description: owner name of the remote object the blocked story should be related to; may be absent
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
+          the story is blocked permanently
+    errors:
+      - code: blockedInstantAttributes.storyType.blank
+        description: story type is not set
+  - name: BlockedByUserFilter
+    fields:
+      - type: String[]
+        name: blockedOperations
+        description: >
+          operations that are blocked (see
+          <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible values)
+      - struct: RemotePosting
+        array: true
+        name: postings
+        description: the postings, where the node is blocked
+      - type: boolean
+        name: strict
+        description: >
+          if set to <code>true</code>, only the blockings that strictly fit the criteria are returned; otherwise global
+          blockings are returned even if the search is limited to a particular posting
+  - name: BlockedByUserInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: blockedOperation
+        description: >
+          operation that is blocked (see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
+          for the possible values)
+      - struct: ContactInfo
+        name: contact
+        description: information known about the blocking node
+      - type: String
+        name: nodeName
+        description: name of the blocking node
+      - type: String
+        name: postingId
+        description: >
+          ID of the posting, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
+      - type: timestamp
+        name: createdAt
+        description: blocking timestamp - the real time when the node was blocked
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
+          is blocked permanently
+      - type: String
+        name: reason
+        description: reason of blocking, may be absent
+  - name: BlockedInstantFilter
+    fields:
+      - type: String
+        name: storyType
+        description: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
+      - type: String
+        name: entryId
+        description: ID of the local entry the blocked story should be related to
+      - type: String
+        name: remoteNodeName
+        description: node name of the remote posting the blocked story should be related to
+      - type: String
+        name: remotePostingId
+        description: ID of the remote posting the blocked story should be related to
+      - type: String
+        name: remoteOwnerName
+        description: owner name of the remote object the blocked story should be related to
+  - name: BlockedInstantInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: storyType
+        description: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
+      - type: String
+        name: entryId
+        description: ID of the local entry the blocked story should be related to; may be absent
+      - type: String
+        name: remoteNodeName
+        description: node name of the remote posting the blocked story should be related to; may be absent
+      - type: String
+        name: remotePostingId
+        description: ID of the remote posting the blocked story should be related to; may be absent
+      - type: String
+        name: remoteOwnerName
+        description: owner name of the remote object the blocked story should be related to; may be absent
+      - type: timestamp
+        name: createdAt
+        description: blocking timestamp - the real time when the story was blocked
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
+          the story is blocked permanently
+  - name: BlockedPostingInstantInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: storyType
+        description: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
+      - type: String
+        name: remoteOwnerName
+        description: owner name of the remote object the blocked story should be related to; may be absent
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
+          the story is blocked permanently
+  - name: BlockedUserAttributes
+    fields:
+      - type: String
+        name: blockedOperation
+        description: >
+          operation that is to be blocked (see
+          <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible values)
+      - type: String
+        name: nodeName
+        description: name of the blocked node
+      - type: String
+        name: entryId
+        description: >
+          ID of the local entry, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
+      - type: String
+        name: entryNodeName
+        description: >
+          node name of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is
+          blocked globally
+      - type: String
+        name: entryPostingId
+        description: >
+          ID of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is blocked
+          globally
+      - type: timestamp
+        name: deadline
+        description: >
+          unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
+          is blocked permanently
+      - type: String
+        name: reasonSrc
+        description: source text of the reason of blocking, may be absent
+      - type: String
+        name: reasonSrcFormat
+        description: >
+          format of the source text of the reason of blocking, the list of available formats is returned in
+          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+    errors:
+      - code: blockedUserAttributes.blockedOperation.blank
+        description: blocked operation is not set
+      - code: blockedUserAttributes.reasonSrc.wrong-size
+        description: reason is too long
+  - name: BlockedUserFilter
+    fields:
+      - type: String[]
+        name: blockedOperations
+        description: >
+          operations that are blocked (see
+          <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible values)
+      - type: String
+        name: nodeName
+        description: name of the blocked node
+      - type: String
+        name: entryId
+        description: >
+          ID of the local entry, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
+      - type: String
+        name: entryNodeName
+        description: >
+          node name of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is
+          blocked globally
+      - type: String
+        name: entryPostingId
+        description: >
+          ID of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is blocked
+          globally
+      - type: boolean
+        name: strict
+        description: >
+          if set to <code>true</code>, only the blockings that strictly fit the criteria are returned; otherwise global
+          blockings are returned even if the search is limited to a particular posting
   - name: BlockedUserInfo
     fields:
       - type: String
@@ -2595,6 +2945,11 @@ structures:
       - type: String
         name: reason
         description: reason of blocking, may be absent
+  - name: BlockedUsersChecksums
+    fields:
+      - type: int
+        name: visibility
+        description: checksum of the list of users that are hidden
   - name: Body
     fields:
       - type: String
@@ -2773,6 +3128,9 @@ structures:
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the posting's
           owner ("senior")
+      - type: String[]
+        name: blockedOperations
+        description: operations on the comment (from the list below) that are blocked for the client
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the comment accepts
@@ -4054,6 +4412,10 @@ structures:
         array: true
         name: feedReferences
         description: array of references to the posting from stories in feeds
+      - struct: BlockedPostingInstantInfo
+        array: true
+        name: blockedInstants
+        description: instants related to the posting that are blocked (for admin only)
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
@@ -4077,6 +4439,13 @@ structures:
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the posting's comments
+      - type: String[]
+        name: blockedOperations
+        description: operations on the posting (from the list below) that are blocked for the client
+      - type: String[]
+        name: blockedCommentOperations
+        description: >
+          <a href="#CommentInfo-operations">operations</a> on the posting's comments that are blocked for the client
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts

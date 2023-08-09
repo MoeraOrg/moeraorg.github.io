@@ -14,26 +14,129 @@ but the meaning of fields depends on the story type. A story may
 reference a posting, a remote object etc. Some feeds may not allow some
 types of stories.
 
-`POSTING_ADDED`
+`ASKED_TO_FRIEND`
 
-A posting was added. `posting` field refers to the posting. This type of
-story is used for feeds containing postings.
+A remote node asked to add it to friends.
 
-`REACTION_ADDED_POSITIVE`
+`ASKED_TO_SUBSCRIBE`
 
-A positive reaction was added to user's posting. `posting` field refers
-to the posting.
+A remote node asked to subscribe to it.
 
-`REACTION_ADDED_NEGATIVE`
+`BLOCKED_USER`
 
-A negative reaction was added to user's posting. `posting` field refers
-to the posting.
+A remote node has blocked the user globally.
+
+`BLOCKED_USER_IN_POSTING`
+
+A remote node has blocked the user in a posting.
+
+`COMMENT_ADDED`
+
+A comment was added under user's posting.
+
+`COMMENT_MEDIA_REACTION_ADDED_NEGATIVE`
+
+A positive reaction was added to a media attached to a comment.
+
+`COMMENT_MEDIA_REACTION_ADDED_POSITIVE`
+
+A positive reaction was added to a media attached to a comment.
+
+`COMMENT_MEDIA_REACTION_FAILED`
+
+A failed attempt to add a reaction to a media attached to a comment.
+
+`COMMENT_POST_TASK_FAILED`
+
+A failed attempt to post a comment.
+
+`COMMENT_REACTION_ADDED_NEGATIVE`
+
+A negative reaction was added to user's comment.
+
+`COMMENT_REACTION_ADDED_POSITIVE`
+
+A positive reaction was added to user's comment.
+
+`COMMENT_REACTION_TASK_FAILED`
+
+A failed attempt to post a reaction to a comment.
+
+`COMMENT_UPDATE_TASK_FAILED`
+
+A failed attempt to update a comment.
+
+`FRIEND_ADDED`
+
+A remote node has added the user to friends.
+
+`FRIEND_DELETED`
+
+A remote node has removed the user from friends.
+
+`FRIEND_GROUP_DELETED`
+
+A remote group of friends, the user was a member of, has been deleted.
+
+`MENTION_COMMENT`
+
+The user was mentioned in a comment.
 
 `MENTION_POSTING`
 
-The user was mentioned in a posting on another node. `remoteNodeName`
-and `remotePostingId` fields refer to the node and the posting on it,
-respectively.
+The user was mentioned in a posting on another node.
+
+`POSTING_ADDED`
+
+A posting was added. **This type of story is used for feeds containing postings.**
+
+`POSTING_MEDIA_REACTION_ADDED_NEGATIVE`
+
+A negative reaction was added to a media attached to a posting.
+
+`POSTING_MEDIA_REACTION_ADDED_POSITIVE`
+
+A positive reaction was added to a media attached to a posting.
+
+`POSTING_MEDIA_REACTION_FAILED`
+
+A failed attempt to add a reaction to a media attached to a posting.
+
+`POSTING_POST_TASK_FAILED`
+
+A failed attempt to create a posting.
+
+`POSTING_REACTION_TASK_FAILED`
+
+A failed attempt to post a reaction to a posting.
+
+`POSTING_SUBSCRIBE_TASK_FAILED`
+
+A failed attempt to subscribe to a posting.
+
+`POSTING_UPDATE_TASK_FAILED`
+
+A failed attempt to update a posting.
+
+`POSTING_UPDATED`
+
+A posting was updated.
+
+`REACTION_ADDED_NEGATIVE`
+
+A negative reaction was added to user's posting.
+
+`REACTION_ADDED_POSITIVE`
+
+A positive reaction was added to user's posting.
+
+`REMOTE_COMMENT_ADDED`
+
+A comment was added under a posting the user is subscribed to.
+
+`REPLY_COMMENT`
+
+A reply was added to user's comment.
 
 `SUBSCRIBER_ADDED`
 
@@ -43,82 +146,10 @@ Another node subscribed to user's feed.
 
 Another node unsubscribed from user's feed.
 
-`COMMENT_ADDED`
+`UNBLOCKED_USER`
 
-A comment was added under user's posting.
+A remote node has unblocked the user globally.
 
-`MENTION_COMMENT`
+`UNBLOCKED_USER_IN_POSTING`
 
-The user was mentioned in a comment.
-
-`REPLY_COMMENT`
-
-A reply was added to user's comment.
-
-`COMMENT_REACTION_ADDED_POSITIVE`
-
-A positive reaction was added to user's comment.
-
-`COMMENT_REACTION_ADDED_NEGATIVE`
-
-A negative reaction was added to user's comment.
-
-`REMOTE_COMMENT_ADDED`
-
-A comment was added under a posting the user is subscribed to.
-
-`COMMENT_POST_TASK_FAILED`
-
-A failed attempt to post a comment.
-
-`COMMENT_UPDATE_TASK_FAILED`
-
-A failed attempt to update a comment.
-
-`POSTING_UPDATED`
-
-A posting was updated.
-
-`POSTING_POST_TASK_FAILED`
-
-A failed attempt to create a posting.
-
-`POSTING_UPDATE_TASK_FAILED`
-
-A failed attempt to update a posting.
-
-`POSTING_MEDIA_REACTION_ADDED_POSITIVE`
-
-A positive reaction was added to a media attached to a posting.
-
-`POSTING_MEDIA_REACTION_ADDED_NEGATIVE`
-
-A negative reaction was added to a media attached to a posting.
-
-`COMMENT_MEDIA_REACTION_ADDED_POSITIVE`
-
-A positive reaction was added to a media attached to a comment.
-
-`COMMENT_MEDIA_REACTION_ADDED_NEGATIVE`
-
-A positive reaction was added to a media attached to a comment.
-
-`POSTING_MEDIA_REACTION_FAILED`
-
-A failed attempt to add a reaction to a media attached to a posting.
-
-`COMMENT_MEDIA_REACTION_FAILED`
-
-A failed attempt to add a reaction to a media attached to a comment.
-
-`POSTING_SUBSCRIBE_TASK_FAILED`
-
-A failed attempt to subscribe to a posting.
-
-`POSTING_REACTION_TASK_FAILED`
-
-A failed attempt to post a reaction to a posting.
-
-`COMMENT_REACTION_TASK_FAILED`
-
-A failed attempt to post a reaction to a comment.
+A remote node has unblocked the user in a posting.
