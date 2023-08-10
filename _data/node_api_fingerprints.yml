@@ -204,3 +204,29 @@ objects:
             field: negative
           - type: int
             field: emoji
+  - name: SheriffOrder
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: SHERIFF_ORDER
+          - type: String
+            field: sheriffName
+          - type: String
+            field: nodeName
+          - type: String
+            field: feedName
+          - type: byte[]
+            field: entryFingerprint
+            comment: >
+              hash of <a href="#Posting"><code>Posting</code></a> or <a href="#Comment"><code>Comment</code></a>
+              fingerprint
+          - type: String
+            field: category
+          - type: String
+            field: reasonCode
+          - type: String
+            field: reasonDetails
+          - type: timestamp
+            field: createdAt

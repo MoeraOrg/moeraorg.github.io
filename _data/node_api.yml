@@ -2041,6 +2041,62 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the given comment to the posting on the remote node.
+  - name: Remote Comment Reactions object
+    description: Reactions to comments located on other nodes.
+    requests:
+      - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: commentId
+            description: ID of the comment on the remote node
+        in:
+          struct: ReactionAttributes
+        out:
+          struct: Result
+        auth: admin
+        description: Add a reaction to the comment on the remote node and register it in the registry at the local node.
+      - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions
+        type: DELETE
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: commentId
+            description: ID of the comment on the remote node
+        out:
+          struct: Result
+        auth: admin
+        description: Delete a reaction from the registry of all reactions at the local node.
+      - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions/{ownerName}/verify
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+          - type: String
+            name: commentId
+            description: ID of the comment on the remote node
+          - type: String
+            name: ownerName
+            description: reaction owner node name
+        out:
+          struct: AsyncOperationCreated
+        auth: admin
+        description: Verify the signature of the reaction of the given owner to the comment on the remote node.
   - name: Remote Postings object
     description: Postings located on other nodes.
     requests:
@@ -2160,6 +2216,40 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the reaction of the given owner to the posting on the remote node.
+  - name: Remote Sheriff Orders object
+    description: >
+      Sheriff API to send orders to remote nodes. Add orders are stored on the sheriff's node and may be requested by
+      anybody.
+    requests:
+      - url: /nodes/{nodeName}/sheriff/orders
+        type: POST
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+        in:
+          struct: SheriffOrderAttributes
+        out:
+          struct: Result
+        auth: admin
+        description: Sign and send the order to the remote node and store it in the registry at the local node.
+      - url: /nodes/{nodeName}/sheriff/orders/{id}
+        type: GET
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: id
+            description: ID of the order
+        out:
+          struct: SheriffOrderInfo
+        description: Get the details of the given sheriff's order
+        errors:
+          - code: sheriff-order.not-found
+            description: sheriff's order is not found
+          - code: sheriff-order.wrong-node
+            description: the sheriff's order is related to a different node
   - name: Settings object
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
@@ -2253,6 +2343,30 @@ objects:
             description: unknown setting
           - code: setting.plugin
             description: plugin setting metadata cannot be modified
+  - name: Sheriff Orders object
+    description: >
+      Orders sent by a sheriff to the node. The node must obey the orders if it accepted supervision by the sheriff.
+      <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Overview section.
+    requests:
+      - url: /sheriff/orders
+        type: POST
+        in:
+          struct: SheriffOrderDetails
+        out:
+          struct: Result
+        auth: signature
+        description: Receive and execute the sheriff's order.
+        errors:
+          - code: sheriff-order.wrong-feed
+            description: the posting is not included into the designated feed
+          - code: posting.not-found
+            description: posting is not found
+          - code: posting.not-signed
+            description: posting is not signed
+          - code: comment.not-found
+            description: comment is not found
+          - code: comment.wrong-posting
+            description: comment is located under a different posting
   - name: Stories object
     description: >
       All stories. Each story describes something happening in Moera, stories are building blocks for feeds. A story may
@@ -2733,7 +2847,7 @@ structures:
         name: blockedOperation
         description: >
           operation that is blocked (see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
-          for the possible values)
+          for the list of possible values)
       - struct: ContactInfo
         name: contact
         description: information known about the blocking node
@@ -3101,7 +3215,9 @@ structures:
           comment purging timestamp - the time when the deleted comment will be purged from the database, may be absent
       - type: byte[]
         name: digest
-        description: cryptographic digest of the comment
+        description: >
+          cryptographic digest of the comment (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          fingerprint)
       - type: byte[]
         name: signature
         description: >
@@ -3131,6 +3247,10 @@ structures:
       - type: String[]
         name: blockedOperations
         description: operations on the comment (from the list below) that are blocked for the client
+      - struct: SheriffMark
+        array: true
+        name: sheriffMarks
+        description: list of sheriff marks on the comment
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the comment accepts
@@ -3232,7 +3352,9 @@ structures:
           its place, may be absent
       - type: byte[]
         name: digest
-        description: cryptographic digest of the revision
+        description: >
+          cryptographic digest of the revision (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          fingerprint)
       - type: byte[]
         name: signature
         description: >
@@ -3766,6 +3888,13 @@ structures:
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
+      - type: String[]
+        name: sheriffs
+        description: list of sheriffs supervising the feed
+      - struct: SheriffMark
+        array: true
+        name: sheriffMarks
+        description: list of sheriff marks on the feed
     operations:
       - name: add
         default:
@@ -4401,6 +4530,11 @@ structures:
         description: >
           posting purging timestamp - the time when the deleted posting will be purged from the database, may be absent
       - type: byte[]
+        name: digest
+        description: >
+          cryptographic digest of the posting (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          fingerprint)
+      - type: byte[]
         name: signature
         description: >
           the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
@@ -4446,6 +4580,13 @@ structures:
         name: blockedCommentOperations
         description: >
           <a href="#CommentInfo-operations">operations</a> on the posting's comments that are blocked for the client
+      - type: String[]
+        name: sheriffs
+        description: list of sheriffs supervising the posting
+      - struct: SheriffMark
+        array: true
+        name: sheriffMarks
+        description: list of sheriff marks on the posting
       - struct: AcceptedReactions
         name: acceptedReactions
         description: types of reactions that the posting accepts
@@ -4562,6 +4703,11 @@ structures:
       - type: timestamp
         name: receiverDeletedAt
         description: original revision deletion timestamp (for cached copies of remote postings only)
+      - type: byte[]
+        name: digest
+        description: >
+          cryptographic digest of the revision (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          fingerprint)
       - type: byte[]
         name: signature
         description: >
@@ -5283,7 +5429,9 @@ structures:
         description: heading of the comment
       - type: byte[]
         name: digest
-        description: cryptographic digest of the comment
+        description: >
+          cryptographic digest of the comment (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          fingerprint)
   - name: Result
     fields:
       - type: String
@@ -5326,7 +5474,8 @@ structures:
       - type: String
         name: type
         description: >
-          type of the setting, see <code><a href="#SettingMetaInfo">SettingMetaInfo</a>.type</code> for possible values
+          type of the setting (see <code><a href="#SettingMetaInfo">SettingMetaInfo</a>.type</code> for the list of
+          possible values)
       - type: String
         name: defaultValue
         description: default value of the setting
@@ -5425,6 +5574,203 @@ structures:
       - type: String[]
         name: principals
         description: (<code>Principal</code>) list of allowed principals
+  - name: SheriffOrderAttributes
+    fields:
+      - type: boolean
+        name: delete
+        description: >
+          <code>true</code>, if the order is to cancel the previous order of this type, <code>false</code> otherwise
+      - type: String
+        name: feedName
+        description: name of the feed the order is related to
+      - type: String
+        name: postingId
+        description: ID of the posting the order is related to; may be absent
+      - type: String
+        name: commentId
+        description: ID of the comment the order is related to; may be absent
+      - type: String
+        name: category
+        description: >
+          category of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.category</code> for
+          the list of possible values)
+      - type: String
+        name: reasonCode
+        description: >
+          reason of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
+          the list of possible values)
+      - type: String
+        name: reasonDetails
+        description: detailed explanation of reason of the order in user-readable form
+    errors:
+      - code: sheriffOrderAttributes.feedName.blank
+        description: feed name is empty
+      - code: sheriffOrderAttributes.feedName.wrong-size
+        description: feed name is too long
+      - code: sheriffOrderAttributes.reasonDetails.wrong-size
+        description: reason details are too long
+  - name: SheriffOrderDetails
+    fields:
+      - type: String
+        name: id
+      - type: boolean
+        name: delete
+        description: >
+          <code>true</code>, if the order is to cancel the previous order of this type, <code>false</code> otherwise
+      - type: String
+        name: sheriffName
+        description: node name of the sheriff
+      - struct: AvatarDescription
+        name: sheriffAvatar
+        description: sheriff's avatar
+      - type: String
+        name: feedName
+        description: name of the feed the order is related to
+      - type: String
+        name: postingId
+        description: ID of the posting the order is related to; may be absent
+      - type: String
+        name: commentId
+        description: ID of the comment the order is related to; may be absent
+      - type: String
+        name: category
+        description: >
+          category of the order; the possible values are:
+          <ul>
+            <li><code>visibility</code> - hide the feed or the entry.</li>
+          </ul>
+      - type: String
+        name: reasonCode
+        description: >
+          reason of the order; the possible values are:
+          <ul>
+            <li><code>unlawful</code> - violation of a law;</li>
+            <li><code>defamatory</code> - defamatory content;</li>
+            <li><code>threat</code> - contains a threat against a person;</li>
+            <li><code>spam</code> - spam;</li>
+            <li><code>scam</code> - fraudulent content;</li>
+            <li><code>malware</code> - distribution of a malware;</li>
+            <li><code>copyright</code> - copyright infringement;</li>
+            <li><code>impersonating</code> - the author pretends to be someone else;</li>
+            <li><code>privacy</code> - violation of someone's privacy;</li>
+            <li><code>other</code> - any other reason.</li>
+          </ul>
+      - type: String
+        name: reasonDetails
+        description: detailed explanation of reason of the order in user-readable form
+      - type: timestamp
+        name: createdAt
+        description: order creation timestamp - the real time when the order was created
+      - type: byte[]
+        name: signature
+        description: >
+          the sheriff's signature (use <a href="node-api-fingerprints.html#SheriffOrder"><code>SheriffOrder</code></a>
+          fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
+    errors:
+      - code: sheriffOrderDetails.id.blank
+        description: ID is empty
+      - code: sheriffOrderDetails.id.wrong-size
+        description: ID is too long
+      - code: sheriffOrderDetails.sheriffName.blank
+        description: sheriff name is empty
+      - code: sheriffOrderDetails.sheriffName.wrong-size
+        description: sheriff name is too long
+      - code: sheriffOrderDetails.sheriffAvatar.mediaId.not-found
+        description: sheriff's avatar is not found
+      - code: sheriffOrderDetails.feedName.blank
+        description: feed name is empty
+      - code: sheriffOrderDetails.feedName.wrong-size
+        description: feed name is too long
+      - code: sheriffOrderDetails.reasonDetails.wrong-size
+        description: reason details are too long
+      - code: sheriffOrderDetails.createdAt.out-of-range
+        description: order creation timestamp is too far from the current timestamp
+  - name: SheriffOrderInfo
+    fields:
+      - type: String
+        name: id
+      - type: boolean
+        name: delete
+        description: >
+          <code>true</code>, if the order is to cancel the previous order of this type, <code>false</code> otherwise
+      - type: String
+        name: sheriffName
+        description: node name of the sheriff
+      - type: String
+        name: nodeName
+        description: name of the node the order was sent to
+      - type: String
+        name: nodeFullName
+        description: full name of the node the order was sent to
+      - type: String
+        name: feedName
+        description: name of the feed the order is related to
+      - type: String
+        name: postingId
+        description: ID of the posting the order is related to; may be absent
+      - type: String
+        name: postingRevisionId
+        description: ID of the posting's revision the order is related to
+      - type: String
+        name: postingOwnerName
+        description: posting owner's node name
+      - type: String
+        name: postingOwnerFullName
+        description: posting owner's full name
+      - type: String
+        name: postingOwnerGender
+        description: posting owner's gender
+      - type: String
+        name: postingHeading
+        description: heading of the posting
+      - type: String
+        name: commentId
+        description: ID of the comment the order is related to; may be absent
+      - type: String
+        name: commentRevisionId
+        description: ID of the comment's revision the order is related to
+      - type: String
+        name: commentOwnerName
+        description: comment owner's node name
+      - type: String
+        name: commentOwnerFullName
+        description: comment owner's full name
+      - type: String
+        name: commentOwnerGender
+        description: comment owner's gender
+      - type: String
+        name: commentHeading
+        description: heading of the comment
+      - type: String
+        name: category
+        description: >
+          category of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.category</code> for
+          the list of possible values)
+      - type: String
+        name: reasonCode
+        description: >
+          reason of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
+          the list of possible values)
+      - type: String
+        name: reasonDetails
+        description: detailed explanation of reason of the order in user-readable form
+      - type: timestamp
+        name: createdAt
+        description: order creation timestamp - the real time when the order was created
+      - type: byte[]
+        name: signature
+        description: >
+          the sheriff's signature (use <a href="node-api-fingerprints.html#SheriffOrder"><code>SheriffOrder</code></a>
+          fingerprint)
+      - type: int
+        name: signatureVersion
+        description: signature version (i.e. fingerprint version)
+      - type: String
+        name: complainGroupId
+        description: ID of the groups of complaints that were the cause of the order; may be absent
   - name: StoryAttributes
     fields:
       - type: String
@@ -5593,8 +5939,8 @@ structures:
       - type: String[]
         name: operations
         description: >
-          list of the operations blocked; see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
-          for the list of possible values
+          list of the operations blocked (see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
+          for the list of possible values)
       - type: int
         name: period
         description: the period of blocking in seconds, may be absent
@@ -5668,7 +6014,7 @@ structures:
       - type: String
         name: type
         description: >
-          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
           the list of possible values)
       - type: String
         name: feedName
@@ -5705,7 +6051,7 @@ structures:
       - type: String
         name: type
         description: >
-          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
           the list of possible values)
       - type: String
         name: feedName
@@ -5823,7 +6169,7 @@ structures:
       - type: String
         name: type
         description: >
-          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
           the list of possible values)
       - struct: RemoteFeed
         array: true
@@ -5841,7 +6187,7 @@ structures:
       - type: String
         name: type
         description: >
-          subscription type, (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
+          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
           the list of possible values)
       - type: String
         name: feedName

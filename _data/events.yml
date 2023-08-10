@@ -147,6 +147,19 @@ events:
       - type: String
         name: receiverCommentId
         comment: ID of the comment, set for <code>comment-update</code> type
+  - type: FEED_SHERIFF_DATA_UPDATED
+    description: Supervising sheriff or sheriff marks of a feed were updated
+    fields:
+      - type: String
+        name: feedName
+        comment: name of the feed
+      - type: String[]
+        name: sheriffs
+        description: list of sheriffs supervising the feed
+      - struct: SheriffMark
+        array: true
+        name: sheriffMarks
+        description: list of sheriff marks on the feed
   - type: FEED_STATUS_UPDATED
     description: Status of a feed was updated.
     fields:
