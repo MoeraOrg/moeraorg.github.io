@@ -25,6 +25,12 @@
 - name: permissions
   title: Permissions
 
+- name: supervision
+  title: Supervision
+
+- name: permissions
+  title: Permissions
+
 - name: other
   title: Other Features
 
