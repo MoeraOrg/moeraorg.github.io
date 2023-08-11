@@ -576,6 +576,42 @@ notifications:
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
+  - type: SHERIFF_COMPLAIN_DECIDED
+    description: The sheriff made a decision on the receiver's complaint
+    fields:
+      - type: String
+        name: remoteNodeName
+        description: name of the node the complaint is related to
+      - type: String
+        name: remoteFeedName
+        description: name of the feed the complaint is related to
+      - type: String
+        name: postingOwnerName
+        description: posting owner's node name
+      - type: String
+        name: postingOwnerFullName
+        description: posting owner's full name
+      - type: String
+        name: postingHeading
+        description: heading of the posting
+      - type: String
+        name: postingId
+        description: ID of the posting the complaint is related to
+      - type: String
+        name: commentOwnerName
+        description: comment owner's node name
+      - type: String
+        name: commentOwnerFullName
+        description: comment owner's full name
+      - type: String
+        name: commentHeading
+        description: heading of the comment
+      - type: String
+        name: commentId
+        description: ID of the comment the complaint is related to
+      - type: String
+        name: complainGroupId
+        description: ID of the group of complaints the complaint was included into
   - type: SHERIFF_ORDER_FOR_COMMENT_ADDED
     description: The sending node got a sheriff's order related to the receiver's comment
     fields:

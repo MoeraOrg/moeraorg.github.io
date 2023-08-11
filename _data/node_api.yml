@@ -2343,6 +2343,92 @@ objects:
             description: unknown setting
           - code: setting.plugin
             description: plugin setting metadata cannot be modified
+  - name: Sheriff Complaint Groups object
+    description: >
+      Similar complaints sent to the sheriff are grouped together and the sheriff makes decisions on a group as whole.
+      <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Overview section.
+    requests:
+      - url: /sheriff/complains/groups
+        type: GET
+        params:
+          - type: int
+            name: before
+            description: filter groups created at or before this moment
+          - type: int
+            name: after
+            description: filter groups created strongly after this moment
+          - type: int
+            name: limit
+            description: maximum number of groups returned
+          - type: String
+            name: status
+            description: >
+              filter groups by status (see
+              <code><a href="#SheriffComplainGroupInfo">SheriffComplainGroupInfo</a>.status</code> for the list of
+              possible values)
+        out:
+          struct: SheriffComplainGroupsSliceInfo
+        description: >
+          Get a slice of the list of groups of complaints, optionally filtered by status, delimited by
+          <code>before</code> or <code>after</code> moment and the given <code>limit</code>. If neither
+          <code>before</code> nor <code>after</code> are provided, the latest groups are returned. The node may decide
+          to return less groups than the given <code>limit</code>. The groups are always sorted by moment, descending.
+        errors:
+          - code: sheriff-complain-groups.before-after-exclusive
+            description: before and after parameters are mutually exclusive
+      - url: /sheriff/complains/groups/{id}
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the group of complaints
+        out:
+          struct: SheriffComplainGroupInfo
+        description: Get details of the given group of complaints.
+        errors:
+          - code: sheriff-complain-group.not-found
+            name: the group of complaints is not found
+      - url: /sheriff/complains/groups/{id}/complains
+        type: GET
+        params:
+          - type: String
+            name: id
+            description: ID of the group of complaints
+        out:
+          struct: SheriffComplainInfo
+          array: true
+        description: Get complaints included into the given group of complaints.
+        errors:
+          - code: sheriff-complain-group.not-found
+            name: the group of complaints is not found
+      - url: /sheriff/complains/groups/{id}
+        type: PUT
+        params:
+          - type: String
+            name: id
+            description: ID of the group of complaints
+        in:
+          struct: SheriffComplainDecisionText
+        out:
+          struct: SheriffComplainGroupInfo
+        auth: admin
+        description: Make decision on the given group of complaints.
+        errors:
+          - code: sheriff-complain-group.not-found
+            name: the group of complaints is not found
+  - name: Sheriff Complaints object
+    description: >
+      Complaints are sent to the sheriff via sheriff's node. <a href="/overview/supervision.html">Read more</a> about
+      sheriff supervision in the Overview section.
+    requests:
+      - url: /sheriff/complains
+        type: POST
+        in:
+          struct: SheriffComplainText
+        out:
+          struct: SheriffComplainInfo
+        auth: required
+        description: Send a complaint to the sheriff.
   - name: Sheriff Orders object
     description: >
       Orders sent by a sheriff to the node. The node must obey the orders if it accepted supervision by the sheriff.
@@ -5574,6 +5660,261 @@ structures:
       - type: String[]
         name: principals
         description: (<code>Principal</code>) list of allowed principals
+  - name: SheriffComplainDecisionText
+    fields:
+      - type: boolean
+        name: reject
+        description: <code>true</code>, if the complaints in the group are to be rejected, <code>false</code> otherwise
+      - type: String
+        name: decisionCode
+        description: >
+          the decision (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for the list of
+          possible values)
+      - type: String
+        name: decisionDetails
+        description: detailed explanation of the decision in user-readable form
+      - type: boolean
+        name: anonymous
+        description: >
+          <code>true</code>, if the complaints' owners' names are not to be published, <code>false</code> otherwise
+    errors:
+      - code: sheriffComplainDecisionText.decisionCode.blank
+        description: decision code is not set
+      - code: sheriffComplainDecisionText.decisionDetails.wrong-size
+        description: decision details are too long
+  - name: SheriffComplainGroupInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: remoteNodeName
+        description: name of the node the complaints are related to
+      - type: String
+        name: remoteFullName
+        description: full name of the node the complaints are related to
+      - type: String
+        name: remoteFeedName
+        description: name of the feed the complaints are related to
+      - type: String
+        name: remotePostingId
+        description: ID of the posting the complaints are related to; may be absent
+      - type: String
+        name: remotePostingRevisionId
+        description: ID of the posting's revision the complaints are related to
+      - type: String
+        name: remotePostingOwnerName
+        description: posting owner's node name
+      - type: String
+        name: remotePostingOwnerFullName
+        description: posting owner's full name
+      - type: String
+        name: remotePostingOwnerGender
+        description: posting owner's gender
+      - type: String
+        name: remotePostingHeading
+        description: heading of the posting
+      - type: String
+        name: remoteCommentId
+        description: ID of the comment the complaints are related to; may be absent
+      - type: String
+        name: remoteCommentRevisionId
+        description: ID of the comment's revision the complaints are related to
+      - type: String
+        name: remoteCommentOwnerName
+        description: comment owner's node name
+      - type: String
+        name: remoteCommentOwnerFullName
+        description: comment owner's full name
+      - type: String
+        name: remoteCommentOwnerGender
+        description: comment owner's gender
+      - type: String
+        name: remoteCommentHeading
+        description: heading of the comment
+      - type: timestamp
+        name: createdAt
+        description: the group of complaints creation timestamp - the real time when the group was created
+      - type: int
+        name: moment
+        description: moment of the group of complaints
+      - type: String
+        name: status
+        description: >
+          status of the group of complaints; the possible values are:
+          <ul>
+            <li><code>posted</code> - the group is just added;</li>
+            <li><code>prepared</code> - automatic preprocessing is done;</li>
+            <li><code>prepare-failed</code> - automatic preprocessing is failed;</li>
+            <li><code>not-found</code> - the entry the group is related to is not found;</li>
+            <li><code>invalid-target</code> - the entry the group is related to is specified incorrectly;</li>
+            <li><code>not-original</code> - the posting the group is related to is a copy of the original posting;</li>
+            <li><code>not-sheriff</code> - the entry the group is related to is not under supervision of the sheriff;</li>
+            <li><code>approved</code> - the group is approved by the sheriff;</li>
+            <li><code>rejected</code> - the group is rejected by the sheriff.</li>
+          </ul>
+      - type: String
+        name: decisionCode
+        description: >
+          sheriff's decision (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
+          the list of possible values)
+      - type: String
+        name: decisionDetails
+        description: detailed explanation of sheriff's decision in user-readable form
+      - type: timestamp
+        name: decidedAt
+        description: sheriff's decision timestamp - the real time when the decision was made
+      - type: boolean
+        name: anonymous
+        description: >
+          <code>true</code>, if the complaints' owners' names are not published, <code>false</code> otherwise
+  - name: SheriffComplainGroupsSliceInfo
+    fields:
+      - type: int
+        name: before
+        description: the slice contains all groups before this moment, inclusive. May be the far future.
+      - type: int
+        name: after
+        description: the slice contains all groups after this moment, exclusive. May be the far past.
+      - struct: SheriffComplainGroupInfo
+        array: true
+        name: groups
+        description: the groups
+      - type: int
+        name: total
+        description: total number of groups
+      - type: int
+        name: totalInPast
+        description: number of groups before this slice till the far past
+      - type: int
+        name: totalInFuture
+        description: number of groups after this slice till the far future
+  - name: SheriffComplainInfo
+    fields:
+      - type: String
+        name: id
+      - type: String
+        name: ownerName
+        description: complaint owner's node name
+      - type: String
+        name: ownerFullName
+        description: complaint owner's full name
+      - type: String
+        name: ownerGender
+        description: complaint owner's gender
+      - struct: SheriffComplainGroupInfo
+        name: group
+        description: the group of complains this complaint belongs to
+      - type: String
+        name: reasonCode
+        description: >
+          reason of the complaint (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
+          the list of possible values)
+      - type: String
+        name: reasonDetails
+        description: detailed explanation of reason of the complaint in user-readable form
+      - type: boolean
+        name: anonymousRequested
+        description: >
+          <code>true</code>, if the complaint's owner wants his name not to be published, <code>false</code> otherwise
+      - type: timestamp
+        name: createdAt
+        description: complaint creation timestamp - the real time when the order was created
+  - name: SheriffComplainText
+    fields:
+      - type: String
+        name: ownerFullName
+        description: complaint owner's full name
+      - type: String
+        name: ownerGender
+        description: complaint owner's gender
+      - type: String
+        name: nodeName
+        description: name of the node the complaint is related to
+      - type: String
+        name: fullName
+        description: full name of the node the complaint is related to
+      - type: String
+        name: feedName
+        description: name of the feed the complaint is related to
+      - type: String
+        name: postingId
+        description: ID of the posting the complaint is related to; may be absent
+      - type: String
+        name: postingOwnerName
+        description: posting owner's node name
+      - type: String
+        name: postingOwnerFullName
+        description: posting owner's full name
+      - type: String
+        name: postingOwnerGender
+        description: posting owner's gender
+      - type: String
+        name: postingHeading
+        description: heading of the posting
+      - type: String
+        name: commentId
+        description: ID of the comment the complaint is related to; may be absent
+      - type: String
+        name: commentOwnerName
+        description: comment owner's node name
+      - type: String
+        name: commentOwnerFullName
+        description: comment owner's full name
+      - type: String
+        name: commentOwnerGender
+        description: comment owner's gender
+      - type: String
+        name: commentHeading
+        description: heading of the comment
+      - type: String
+        name: reasonCode
+        description: >
+          reason of the complaint (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
+          the list of possible values)
+      - type: String
+        name: reasonDetails
+        description: detailed explanation of reason of the complaint in user-readable form
+      - type: boolean
+        name: anonymous
+        description: >
+          <code>true</code>, if the complaint's owner wants his name not to be published, <code>false</code> otherwise
+    errors:
+      - code: sheriffComplainText.ownerFullName.wrong-size
+        description: owner's full name is too long
+      - code: sheriffComplainText.ownerGender.wrong-size
+        description: owner's gender is too long
+      - code: sheriffComplainText.nodeName.blank
+        description: node name is empty
+      - code: sheriffComplainText.nodeName.wrong-size
+        description: node name is too long
+      - code: sheriffComplainText.fullName.wrong-size
+        description: node's full name is too long
+      - code: sheriffComplainText.feedName.blank
+        description: feed name is empty
+      - code: sheriffComplainText.feedName.wrong-size
+        description: feed name is too long
+      - code: sheriffComplainText.postingOwnerName.wrong-size
+        description: posting owner's name is too long
+      - code: sheriffComplainText.postingOwnerFullName.wrong-size
+        description: posting owner's full name is too long
+      - code: sheriffComplainText.postingOwnerGender.wrong-size
+        description: posting owner's gender is too long
+      - code: sheriffComplainText.postingHeading.wrong-size
+        description: posting heading is too long
+      - code: sheriffComplainText.postingId.wrong-size
+        description: posting ID is too long
+      - code: sheriffComplainText.commentOwnerName.wrong-size
+        description: comment owner's name is too long
+      - code: sheriffComplainText.commentOwnerFullName.wrong-size
+        description: comment owner's full name is too long
+      - code: sheriffComplainText.commentOwnerGender.wrong-size
+        description: comment owner's gender is too long
+      - code: sheriffComplainText.commentHeading.wrong-size
+        description: comment heading is too long
+      - code: sheriffComplainText.commentId.wrong-size
+        description: comment ID is too long
+      - code: sheriffComplainText.reasonDetails.wrong-size
+        description: reason details are too long
   - name: SheriffOrderAttributes
     fields:
       - type: boolean

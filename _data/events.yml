@@ -501,6 +501,27 @@ events:
       - type: boolean
         name: correct
         comment: verification result
+  - type: SHERIFF_COMPLAIN_ADDED
+    description: A new complaint was received.
+    fields:
+      - struct: SheriffComplainInfo
+        name: complain
+        comment: the complaint
+      - type: String
+        name: groupId
+        comment: ID of the group of complaints this complaint was added to
+  - type: SHERIFF_COMPLAIN_GROUP_ADDED
+    description: A new group of complaints was added.
+    fields:
+      - struct: SheriffComplainGroupInfo
+        name: group
+        comment: the group of complaints
+  - type: SHERIFF_COMPLAIN_GROUP_UPDATED
+    description: A group of complaints was updated.
+    fields:
+      - struct: SheriffComplainGroupInfo
+        name: group
+        comment: the group of complaints
   - type: STORIES_STATUS_UPDATED
     description: Viewed/read status of a group of stories in a feed was changed.
     fields:
