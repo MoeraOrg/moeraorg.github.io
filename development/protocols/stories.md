@@ -138,6 +138,22 @@ A comment was added under a posting the user is subscribed to.
 
 A reply was added to user's comment.
 
+`SHERIFF_COMPLAIN_ADDED`
+
+A new complaint was received.
+
+`SHERIFF_COMPLAIN_DECIDED`
+
+A decision was made on user's complaint.
+
+`SHERIFF_MARKED`
+
+User's entry was marked by a sheriff.
+
+`SHERIFF_UNMARKED`
+
+User's entry was unmarked by a sheriff.
+
 `SUBSCRIBER_ADDED`
 
 Another node subscribed to user's feed.

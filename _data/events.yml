@@ -28,6 +28,18 @@ events:
       - type: int
         name: ordinal
         comment: ordinal of the avatar
+  - type: BLOCKED_BY_USER_ADDED
+    description: A node has blocked the user.
+    fields:
+      - struct: BlockedByUserInfo
+        name: blockedByUser
+        comment: information about the blocking
+  - type: BLOCKED_BY_USER_DELETED
+    description: A node has unblocked the user.
+    fields:
+      - struct: BlockedByUserInfo
+        name: blockedByUser
+        comment: information about the blocking
   - type: BLOCKED_INSTANT_ADDED
     description: Blocking of an instant was added.
     fields:
@@ -40,6 +52,20 @@ events:
       - struct: BlockedInstantInfo
         name: blockedInstant
         comment: information about the blocking
+  - type: BLOCKED_USER_ADDED
+    description: Blocked a node.
+    fields:
+      - struct: BlockedUserInfo
+        name: blockedUser
+        comment: information about the blocking
+  - type: BLOCKED_USER_DELETED
+    description: Unblocked a node.
+    fields:
+      - struct: BlockedUserInfo
+        name: blockedUser
+        comment: information about the blocking
+  - type: CLIENT_SETTINGS_CHANGED
+    description: Some client settings were changed.
   - type: COMMENT_ADDED
     description: A comment was added.
     fields:
@@ -88,8 +114,6 @@ events:
       - type: int
         name: moment
         comment: moment of the comment
-  - type: CLIENT_SETTINGS_CHANGED
-    description: Some client settings were changed.
   - type: DRAFT_ADDED
     description: A draft was added.
     fields:
@@ -217,6 +241,8 @@ events:
     description: Some node settings metadata was changed.
   - type: PING
     description: Sent periodically to verify status of WebSockets connection.
+  - type: PLUGINS_UPDATED
+    description: The list of active plugins was updated.
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
@@ -258,13 +284,6 @@ events:
         comment: the posting ID
   - type: PROFILE_UPDATED
     description: Profile was updated.
-  - type: SUBSCRIBED
-    description: >
-      Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.
-    fields:
-      - type: String
-        name: sessionId
-        comment: STOMP session ID
   - type: REGISTERED_NAME_OPERATION_STATUS
     description: Status of an operation on the registered name of the node was changed.
   - type: REMOTE_COMMENT_ADDED
@@ -342,6 +361,12 @@ events:
       - type: boolean
         name: correct
         comment: verification result
+  - type: REMOTE_FRIENDSHIP_UPDATED
+    description: Friendship status of the user on a remote node was updated
+    fields:
+      - struct: FriendOfInfo
+        name: friendOf
+        comment: remote node friendship information
   - type: REMOTE_NODE_AVATAR_CHANGED
     description: Avatar of a remote node was changed.
     fields:
@@ -699,6 +724,13 @@ events:
       - type: String -> String
         name: operations
         comment: list of the supported operations and the corresponding principals
+  - type: SUBSCRIBED
+    description: >
+      Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.
+    fields:
+      - type: String
+        name: sessionId
+        comment: STOMP session ID
   - type: SUBSCRIBER_ADDED
     description: A node subscribed to notifications from this node.
     fields:

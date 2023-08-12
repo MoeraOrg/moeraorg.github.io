@@ -2692,6 +2692,93 @@ objects:
           struct: Result
         auth: admin
         description: Delete the token.
+  - name: User Lists object
+    description: >
+      Any node may keep lists of users, and all other nodes can read these lists, search in them and subscribe to them
+      to receive notifications about changes. The lists may be used, for example, to fight spam or to create
+      decentralized communities. The sheriff uses such a list to inform all nodes that some specific user violates
+      the rules too often, and because of that all his comments should be marked by the sheriff's mark automatically.
+    requests:
+      - url: /user-lists/{name}
+        type: GET
+        params:
+          - type: String
+            name: name
+            description: the name of the list
+        out:
+          struct: UserListInfo
+        description: Get the general information about the user list given.
+      - url: /user-lists/{name}/items
+        type: GET
+        params:
+          - type: String
+            name: name
+            description: the name of the list
+          - type: int
+            name: before
+            description: filter items created at or before this moment
+          - type: int
+            name: after
+            description: filter items created strongly after this moment
+          - type: int
+            name: limit
+            description: maximum number of items returned
+        out:
+          struct: UserListSliceInfo
+        description: >
+          Get a slice of the user list, delimited by <code>before</code> or <code>after</code> moment and the given
+          <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest items are
+          returned. The node may decide to return less items than the given <code>limit</code>. The items are always
+          sorted by moment, descending.
+        errors:
+          - code: user-list-items.before-after-exclusive
+            description: before and after parameters are mutually exclusive
+      - url: /user-lists/{name}/items/{nodeName}
+        type: GET
+        params:
+          - type: String
+            name: name
+            description: the name of the list
+          - type: String
+            name: nodeName
+            description: the node name to get information about
+        out:
+          struct: UserListItemInfo
+        description: Get the information from the user list about the node given.
+        errors:
+          - code: user-list-item.not-found
+            description: user list item is not found
+      - url: /user-lists/{name}/items
+        type: POST
+        params:
+          - type: String
+            name: name
+            description: the name of the list
+        in:
+          struct: UserListItemAttributes
+        out:
+          struct: UserListItemInfo
+        auth: admin
+        description: Add a node to the user list.
+        errors:
+          - code: user-list-item.already-exists
+            description: node is in the user list already
+      - url: /user-lists/{name}/items/{nodeName}
+        type: DELETE
+        params:
+          - type: String
+            name: name
+            description: the name of the list
+          - type: String
+            name: nodeName
+            description: the node name to delete
+        out:
+          struct: Result
+        auth: admin
+        description: Delete a node from the user list
+        errors:
+          - code: user-list-item.not-found
+            description: user list item is not found
   - name: Who Am I object
     description: Brief information about the node.
     requests:
@@ -4298,9 +4385,18 @@ structures:
     fields:
       - type: String
         name: name
-      - enum: OperationStatus
+      - type: String
         name: operationStatus
-        description: status of the latest operation with the node name
+        description: >
+          status of the latest operation with the node name; the possible values are:
+          <ul>
+            <li><code>waiting</code> - the operation is waiting to be sent to the naming server;</li>
+            <li><code>added</code> - the operation was accepted by the naming server;</li>
+            <li><code>started</code> - the naming server started to proceed the operation;</li>
+            <li><code>succeeded</code> - the operation completed successfully;</li>
+            <li><code>failed</code> - the operation failed;</li>
+            <li><code>unknown</code> - the operation status is unknown.</li>
+          </ul>
       - type: timestamp
         name: operationStatusUpdated
         description: the last time the operation status was updated
@@ -5148,7 +5244,7 @@ structures:
       - type: String
         name: type
         description: >
-          type of the notification, one of:
+          type of the notification; the possible values are:
           <ul>
             <li><code>story-added</code> - a story was added to a feed;</li>
             <li><code>story-deleted</code> - a story was deleted from a feed;</li>
@@ -5433,20 +5529,12 @@ structures:
       - type: String
         name: status
         description: >
-          status of the operation, may be one of:
+          status of the operation; the possible values are:
           <ul>
-            <li>
-              <code>running</code> - the verification is pending;
-            </li>
-            <li>
-              <code>correct</code> - the signature is correct;
-            </li>
-            <li>
-              <code>incorrect</code> - the signature is incorrect;
-            </li>
-            <li>
-              <code>error</code> - the verification cannot be performed due to an error.
-            </li>
+            <li><code>running</code> - the verification is pending;</li>
+            <li><code>correct</code> - the signature is correct;</li>
+            <li><code>incorrect</code> - the signature is incorrect;</li>
+            <li><code>error</code> - the verification cannot be performed due to an error.</li>
           </ul>
       - type: String
         name: errorCode
@@ -5469,20 +5557,12 @@ structures:
       - type: String
         name: status
         description: >
-          status of the operation, may be one of:
+          status of the operation; the possible values are:
           <ul>
-            <li>
-              <code>running</code> - the verification is pending;
-            </li>
-            <li>
-              <code>correct</code> - the signature is correct;
-            </li>
-            <li>
-              <code>incorrect</code> - the signature is incorrect;
-            </li>
-            <li>
-              <code>error</code> - the verification cannot be performed due to an error.
-            </li>
+            <li><code>running</code> - the verification is pending;</li>
+            <li><code>correct</code> - the signature is correct;</li>
+            <li><code>incorrect</code> - the signature is incorrect;</li>
+            <li><code>error</code> - the verification cannot be performed due to an error.</li>
           </ul>
       - type: String
         name: errorCode
@@ -6454,7 +6534,11 @@ structures:
             <li><code>feed</code> - subscribe to new stories in the feed;</li>
             <li><code>posting</code> - subscribe to updates to the posting;</li>
             <li><code>posting-comments</code> - subscribe to new comments to the posting;</li>
-            <li><code>profile</code> - subscribe to updates to the node profile.</li>
+            <li><code>profile</code> - subscribe to updates to the node profile;</li>
+            <li>
+              <code>user-list</code> - subscribe to updates to the user list (its name is passed in
+              <code>feedName</code> field).
+          </li>
           </ul>
       - type: String
         name: feedName
@@ -6645,6 +6729,59 @@ structures:
       - type: String
         name: description
         description: description of the update
+  - name: UserListInfo
+    fields:
+      - type: String
+        name: name
+        description: name of the user list
+      - type: int
+        name: total
+        description: number of items in the user list
+  - name: UserListItemAttributes
+    fields:
+      - type: String
+        name: nodeName
+        description: the name of the node
+    errors:
+      - code: userListItemAttributes.nodeName.blank
+        description: node name is empty
+      - code: userListItemAttributes.nodeName.wrong-size
+        description: node name is too long
+  - name: UserListItemInfo
+    fields:
+      - type: String
+        name: nodeName
+        description: the name of the node
+      - type: timestamp
+        name: createdAt
+        description: the node addition timestamp - the real time when the node was added to the list
+      - type: int
+        name: moment
+        description: moment of the node
+  - name: UserListSliceInfo
+    fields:
+      - type: String
+        name: listName
+        description: the name of the list
+      - type: int
+        name: before
+        description: the slice contains all items before this moment, inclusive. May be the far future.
+      - type: int
+        name: after
+        description: the slice contains all items after this moment, exclusive. May be the far past.
+      - struct: UserListItemInfo
+        array: true
+        name: items
+        description: the items
+      - type: int
+        name: total
+        description: total number of items
+      - type: int
+        name: totalInPast
+        description: number of items before this slice till the far past
+      - type: int
+        name: totalInFuture
+        description: number of items after this slice till the far future
   - name: WhoAmI
     fields:
       - type: String
@@ -6664,24 +6801,6 @@ structures:
       - struct: AvatarImage
         name: avatar
         description: node owners's avatar
-
-enums:
-  - name: OperationStatus
-    description: >
-      This enum is used to designate the operation status both by the naming server and by the node.
-    values:
-      - name: WAITING
-        description: operation is waiting to be sent to the naming server
-      - name: ADDED
-        description: operation was accepted by the naming server
-      - name: STARTED
-        description: the naming server started to proceed the operation
-      - name: SUCCEEDED
-        description: operation completed successfully
-      - name: FAILED
-        description: operation failed
-      - name: UNKNOWN
-        description: operation status is unknown
 
 http-codes:
   - code: 200

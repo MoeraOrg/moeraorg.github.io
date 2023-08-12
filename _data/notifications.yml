@@ -725,3 +725,21 @@ notifications:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node, if the story is related to a posting
+  - type: USER_LIST_ITEM_ADDED
+    description: A node was added to a user list the receiver is subscribed to
+    fields:
+      - type: String
+        name: listName
+        comment: name of the user list
+      - type: String
+        name: nodeName
+        comment: name of the node
+  - type: USER_LIST_ITEM_DELETE
+    description: A node was deleted from a user list the receiver is subscribed to
+    fields:
+      - type: String
+        name: listName
+        comment: name of the user list
+      - type: String
+        name: nodeName
+        comment: name of the node
