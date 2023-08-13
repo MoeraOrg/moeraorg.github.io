@@ -3769,6 +3769,11 @@ structures:
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
+        name: ownerOperations
+        description: >
+          list of the supported operations (see below) and the corresponding principals as defined by the contact's
+          owner
+      - type: String -> String
         name: adminOperations
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the node
