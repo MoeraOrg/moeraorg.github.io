@@ -2,7 +2,7 @@
 layout: overview
 title: Commercialization
 body_class: body-green
-next: moera
+next: difference
 ---
 
 # Commercialization
