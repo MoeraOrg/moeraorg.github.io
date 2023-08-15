@@ -8,7 +8,7 @@ next: moera
 # What's a difference?
 
 The question asked very often: What's a difference between Moera and other
-decentralized social networks that already exist? Why it was needed to create
+decentralized social networks that already exist? Why was it needed to create
 another one?
 
 There is no much sense to make comparison to every social network one-by-one. So
@@ -22,7 +22,7 @@ small communities - _pods_ that have their own rules. A new user should first fi
 a pod that accepts new members and register a new account at it. From now and then
 the user's network name will be bound to the pod, his social connections will be
 limited by connections of the pod itself and most of the social life will happen
-inside the pod. And since the pod keeps the account and responsible to
+inside the pod. And since the pod keeps the account and is responsible for
 authentication, migration from the pod means losing the name, social connections
 and probably all the data.
 
@@ -40,7 +40,7 @@ the installation process as easy as possible.
 ### Standardized API
 
 Moera server software does not provide a web interface of its own. Users access
-Moera with a client software that may be a web application, a mobile app or any
+Moera with client software that may be a web application, a mobile app or any
 other tool or script that may be written. All clients use the same well-documented
 standard Moera API.
 
@@ -50,15 +50,15 @@ clients without making any changes in its internals. Integration of popular
 publishing platforms, like WordPress, into Moera should be as easy as installing
 a plugin.
 
-Obviously, the standard API makes easy to create a gateway between Moera and any
-other social network, centralized or decentralized.
+Obviously, the standard API makes it easy to create a gateway between Moera and
+any other social network, centralized or decentralized.
 
 ### Simple technologies
 
 Moera API is a thin layer over the standard HTTP protocol. Moera did not create
 any special low-level protocol for decentralized storage, mesh networks or message
 brokers. This makes it easy to implement the API, integrate into existing systems
-and host at any server. And makes client software simple as well.
+and host at any server. And makes client software simpler as well.
 
 Blockchain is a great tool for decentralization. But storing all data in
 a blockchain is costly, so not really achievable without compromising
@@ -73,8 +73,8 @@ a single place, creating a node by a click, simplifying complex things to make
 user experience even better than in the best centralized social networks.
 
 Many existing decentralized social networks provide no more than a Twitter-like
-interface. Moera makes a goal to provide all advanced social features - access
-rights, friendships, groups, discussions, recommendations etc. For most users
+interface. Moera has a goal to provide all advanced social features - access
+rights, friendship, groups, discussions, recommendations etc. For most users
 decentralization is not enough to choose to migrate to a new social network.
 That's why user experience and unique features is a key factor to success.  
 
