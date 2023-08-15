@@ -1,6 +1,6 @@
 ---
 layout: overview
-title: Difference
+title: What's a difference?
 body_class: body-green
 next: moera
 ---
