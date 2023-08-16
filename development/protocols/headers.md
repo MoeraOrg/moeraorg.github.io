@@ -30,7 +30,7 @@ subdirectory of the Moera root, the REST API endpoint is located at
 </h4>
 
 This header is sent by a standalone web client in HTTP response. If
-browser extension detects it, it immediately performs HTTP redirect to
+the browser extension detects it, it immediately performs HTTP redirect to
 the `<url>` specified in the `redirect` parameter. If `connectedOnly`
 parameter is set to `true` and the browser extension has no connection
 data yet, the redirect is delayed until the web client starts and
@@ -61,7 +61,7 @@ version `1.0` is defined.
         [domain-name=&lt;domain name>]
 </h4>
 
-This header is sent by the node to a plugin when forwarding user request to it.
+This header is sent by the node to a plugin when forwarding a user request to it.
 All fields have the same meaning as corresponding fields of [`PluginContext`][3]
 structure.
 
@@ -69,7 +69,7 @@ structure.
     X-Moera-Origin: &lt;url>
 </h4>
 
-This header is sent by the node to a plugin when forwarding user request to it.
+This header is sent by the node to a plugin when forwarding a user request to it.
 It contains the full URL of the user request.
 
 [1]: /overview/browser-extension.html

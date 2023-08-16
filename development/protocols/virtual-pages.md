@@ -35,7 +35,7 @@ related to the same posting or comment.
 `/compose?id=<id>`
 
 Post composer. If `id` is not provided, the composer is opened for
-creating a new post, otherwise it is opened for editing the post with
+creating a new post; otherwise it is opened for editing the post with
 the given ID.
 
 `/compose?draft=<id>`
@@ -73,7 +73,7 @@ If the `download` parameter is present and set to `true`, the node will add
 
 `/news`
 
-Newsfeed - publications from the nodes this node is subscribed to in
+Newsfeed — publications from the nodes this node is subscribed to in
 reverse chronological order.
 
 `/news?before=<moment>`
@@ -127,7 +127,7 @@ View of the media with the given ID attached to the given comment to the given p
 
 `/profile`
 
-Profile - the detailed information about the node's owner, node's
+Profile — the detailed information about the node's owner, node's
 purpose etc.
 
 `/profile?edit=true`

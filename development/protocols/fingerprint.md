@@ -15,8 +15,8 @@ data is called the *fingerprint* of the object. It is signed with the
 private key of the respective user.
 
 The encoding is designed in such a way so that any two different objects
-produce different fingerprints. This prevents object malleability - to
-make impossible to change the object while the signature remains valid.
+produce different fingerprints. This prevents object malleability — to
+make it impossible to change the object while the signature remains valid.
 
 The fingerprint is a structure consisting of fields in a fixed order.
 Every field may be of one of primitive types, a structure, or an array
@@ -66,12 +66,12 @@ Boolean value is one byte: `0x00` for `False` and `0x01` for `True`.
 
 ##### Digest (cryptographic hash)
 
-Encoded as array of bytes. The length of the array is present, as for
+Encoded as an array of bytes. The length of the array is present, as for
 every other array of bytes, but will be the same for all hashes using
 the same [algorithm][1].
 
 ##### InetAddress
 
-IPv4 or IPv6 address, encoded as array of bytes in network order.
+IPv4 or IPv6 address, encoded as an array of bytes in network order.
 
 [1]: /development/protocols/cryptography.html

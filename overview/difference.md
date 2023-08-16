@@ -18,7 +18,7 @@ solutions that exist in decentralized world.
 ### Personal node
 
 A popular approach for decentralization is to build the network as a federation of
-small communities - _pods_ that have their own rules. A new user should first find
+small communities — _pods_ that have their own rules. A new user should first find
 a pod that accepts new members and register a new account at it. From now and then
 the user's network name will be bound to the pod, his social connections will be
 limited by connections of the pod itself and most of the social life will happen
@@ -29,12 +29,12 @@ and probably all the data.
 As a contrast, Moera has a registration process independent of the server, where
 the user stores his data. These servers are not communities, but just _providers_,
 their job is to provide software and storage to the user for profit. Providers do
-not impose any rules of their own and user is free to migrate from one provider to
+not impose any rules of their own, and user is free to migrate from one provider to
 another while keeping his name, social connections and data. Moera treats every
 user as an individual, not as a part of some community. Moera _node_ is a personal
 space in the cloud that has no ties to other nodes on the same server.
 
-And if a user prefers to use his personal server as a node, Moera software makes
+And if a user prefers to use their personal server as a node, Moera software makes
 the installation process as easy as possible.
 
 ### Standardized API
@@ -58,7 +58,7 @@ any other social network, centralized or decentralized.
 Moera API is a thin layer over the standard HTTP protocol. Moera did not create
 any special low-level protocol for decentralized storage, mesh networks or message
 brokers. This makes it easy to implement the API, integrate into existing systems
-and host at any server. And makes client software simpler as well.
+and host on any server. And makes client software simpler as well.
 
 Blockchain is a great tool for decentralization. But storing all data in
 a blockchain is costly, so not really achievable without compromising
@@ -73,30 +73,30 @@ a single place, creating a node by a click, simplifying complex things to make
 user experience even better than in the best centralized social networks.
 
 Many existing decentralized social networks provide no more than a Twitter-like
-interface. Moera has a goal to provide all advanced social features - access
-rights, friendship, groups, discussions, recommendations etc. For most users
+interface. Moera has a goal to provide all advanced social features — access
+rights, friendship, groups, discussions, recommendations etc. For most users, 
 decentralization is not enough to choose to migrate to a new social network.
-That's why user experience and unique features is a key factor to success.  
+That's why user experience and unique features are a key factor to success.  
 
 ### Fighting malicious actors
 
 Many decentralized social networks suffer from malicious actors, like spammers.
-Moera from very beginning is built to prevent fraud and attacks. It uses
-cryptography to verify ownership of posts and comments. It limits rate of
+Moera from the very beginning is built to prevent scam and attacks. It uses
+cryptography to verify ownership of posts and comments. It limits the rate of
 requests and allows to block clients to prevent DoS attacks. It uses spam lists
 to fight spam. It provides a decentralized approach to detect unlawful activity
-and fraud, while maintaining freedom of choice and freedom of speech.
+and scam, while maintaining freedom of choice and freedom of speech.
 
 ### Universal
 
 Moera API is made to be universal. It allows the client to present the user's
-data in any form, making possible to create different social networks with
+data in any form, making it possible to create different social networks with
 different interfaces and social mechanics. If some social network becomes outdated
 and boring, the user may switch to another one by simply installing a different
-client. All data on server's side will be left untouched.
+client. All data on the server's side will be left untouched.
 
 And social networks is not the only usage of the Moera node, it is just one of
-an infinite number of applications. The node may become a file or document
+the infinite number of applications. The node may become a file or document
 storage, a photo galley, a notebook, a password manager and so on. And if you
 have a smart device, it would be much more secure to connect it to your Moera
 node and store your personal data on it, instead of somewhere in the device

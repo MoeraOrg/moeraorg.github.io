@@ -12,9 +12,9 @@ be implemented in Moera.
 
 ## User search
 
-All public data including the public part of user profiles is indexed by
-web search engines. So it is possible to use Google, Bing, DuckDuckGo
-etc. to find a Moera user or a public post. But sometimes it is easier
+Web search engines index all public data, including the public part of
+user profiles. So it is possible to use Google, Bing, DuckDuckGo, etc.
+to find a Moera user or a public post. But sometimes it is easier
 to have a simple search that allows to quickly find a user by his name
 right from the Moera client interface.
 
@@ -56,8 +56,8 @@ display a warning if somebody tries.
 ## Polls
 
 You can publish a poll like any other post. You may allow anybody to
-vote or require every voter to authenticate to be sure nobody have voted
-several times. In this case you will know who voted and how. That's your
+vote or require every voter to authenticate to be sure nobody has voted
+several times. In this case, you will know who voted and how. That's your
 decision whether to publish the detailed results.
 
 Anonymous (but fair) voting is more complicated, because the voter must
@@ -70,15 +70,15 @@ cryptographic algorithms that may be useful for this. For example,
 It is possible to create a service that will recommend you people that
 may be your friends or posts that you may like. But to make it working,
 you will need to compromise your privacy and allow this service to see
-your list of friends and the list of posts you've liked. Do this on your
+your list of friends and the list of posts you've liked. Do this at your
 own risk.
 
 ## Verified users
 
-How can you be sure that some Moera user is indeed the person he
-pretends to be?
+How can you be sure that some Moera user is indeed the person they
+pretend to be?
 
-1. If user wants his identity to be verified, he turns to an
+1. If a user wants their identity to be verified, they turn to an
    authoritative organization (or person).
 2. The authoritative organization verifies that user's ID.
 3. The authoritative organization signs the user's registered name and
@@ -87,7 +87,7 @@ pretends to be?
    as verified.
    
 You can choose which organizations or persons you trust to verify
-identity of others.
+the identity of others.
 
 ## Spam
 
@@ -108,11 +108,11 @@ following:
    the list from posting anything on your node.
 6. The user may appeal to the service to be excluded from the list. The
    signed copies of his comments are used as a proof.
-7. The nodes that sent false spam complains too many times may be banned
+7. The nodes that sent false spam complaints too many times may be banned
    from using the service.
 
 There may be many different services that use various definitions of
-"unwanted behavior". You may choose which of them to trust.
+"unwanted behavior." You may choose which of them to trust.
 
 [1]: /overview/newsfeed.html
 [2]: https://en.m.wikipedia.org/wiki/Blind_signature

@@ -11,7 +11,7 @@ Stories describe something happening in Moera, they are building blocks
 for feeds. All stories have
 [the same structure](node-api.html#StoryInfo)<!-- @IGNORE PREVIOUS: anchor -->,
 but the meaning of fields depends on the story type. A story may
-reference a posting, a remote object etc. Some feeds may not allow some
+reference a posting, a remote object, etc. Some feeds may not allow some
 types of stories.
 
 `ASKED_TO_FRIEND`
@@ -32,7 +32,7 @@ A remote node has blocked the user in a posting.
 
 `COMMENT_ADDED`
 
-A comment was added under user's posting.
+A comment was added under the user's posting.
 
 `COMMENT_MEDIA_REACTION_ADDED_NEGATIVE`
 
@@ -52,11 +52,11 @@ A failed attempt to post a comment.
 
 `COMMENT_REACTION_ADDED_NEGATIVE`
 
-A negative reaction was added to user's comment.
+A negative reaction was added to the user's comment.
 
 `COMMENT_REACTION_ADDED_POSITIVE`
 
-A positive reaction was added to user's comment.
+A positive reaction was added to the user's comment.
 
 `COMMENT_REACTION_TASK_FAILED`
 
@@ -124,11 +124,11 @@ A posting was updated.
 
 `REACTION_ADDED_NEGATIVE`
 
-A negative reaction was added to user's posting.
+A negative reaction was added to the user's posting.
 
 `REACTION_ADDED_POSITIVE`
 
-A positive reaction was added to user's posting.
+A positive reaction was added to the user's posting.
 
 `REMOTE_COMMENT_ADDED`
 
@@ -136,7 +136,7 @@ A comment was added under a posting the user is subscribed to.
 
 `REPLY_COMMENT`
 
-A reply was added to user's comment.
+A reply was added to the user's comment.
 
 `SHERIFF_COMPLAIN_ADDED`
 
@@ -144,7 +144,7 @@ A new complaint was received.
 
 `SHERIFF_COMPLAIN_DECIDED`
 
-A decision was made on user's complaint.
+A decision was made on the user's complaint.
 
 `SHERIFF_MARKED`
 

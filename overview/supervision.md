@@ -19,7 +19,7 @@ must be reviewed and, if the rules are indeed violated, the content must stop
 being displayed.
 
 In the case of Moera, point 3 had to be thought about for an obvious reason: the
-network is decentralized, there is no supervisor over it and there is no even
+network is decentralized, there is no supervisor over it, and there is no even
 a physical possibility to delete content from it.
 
 Therefore, the following solution was proposed, which seems quite reasonable,
@@ -29,9 +29,9 @@ preserves decentralization and freedom in the network, and is quite universal.
 sheriff". Such sheriffs can also be created for other purposes, but for now let's
 focus on Google Play. An app installed not through Google Play will be free of
 restrictions.
-2. A user who wants his blog to be visible through the app must approve the
-supervision of his blog by the sheriff. This means that the sheriff has extended
-access to all content, except for private (Only me), and the node must obey to
+2. A user who wants their blog to be visible through the app must approve the
+supervision of their blog by the sheriff. This means that the sheriff has extended
+access to all content, except for private (Only me), and the node must obey
 the sheriff's orders. Blogs that have not approved the supervision will not be
 visible through the app.
 3. At the moment, there is only one type of order: to place a sheriff's mark on

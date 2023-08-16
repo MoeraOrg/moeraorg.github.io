@@ -34,7 +34,7 @@ Transactions in the Moera blockchain operate on names. After some user
 takes ownership of a name, further operations on this name are not
 possible without knowledge of a key. This key we call *updating key*.
 
-The private updating key is used very rarely - only when it is needed to
+The private updating key is used very rarely — only when it is needed to
 make changes in the naming database. Keeping it on a computer is
 unnecessary and poses a security risk. Instead of this, we display the
 key to the user in a human-readable form ([as a sequence of 24 English
@@ -46,7 +46,7 @@ the paper somewhere in a secure place.
 ## Signing key invalidation
 
 The private signing key must always be present on the home node to be
-able to sign messages. What to do, if due to some security breach it is
+able to sign messages. What to do if due to some security breach it is
 stolen?
 
 If the updating key is not stored in the computer, it will be safe. The
@@ -61,11 +61,11 @@ some operations (post messages, delete them etc.) before the hack was
 revealed, these operations may be undone.
 
 Nodes should be aware of this possibility. For every name they deal with
-\- to validate signature, give access or collect information - they
+\- to validate signature, give access or collect information — they
 should subscribe to [notifications][3] to know if the corresponding key
-have been changed. They should store enough information to undo the
-operations that can be undone - content of deleted messages, previous
-versions of the edited ones and so on. We limit the undo feature to up
+has been changed. They should store enough information to undo the
+operations that can be undone — content of deleted messages, previous
+versions of the edited ones, and so on. We limit the undo feature to up
 to 1 week in the past. It will be enough for most cases and will not
 require nodes to store too much of extra data or to follow too many
 names.
@@ -73,7 +73,7 @@ names.
 ## Recap of the consensus rules
 
 (We are skipping all details related to empty values, data format,
-maximal length etc.)
+maximal length, etc.)
 
 A transaction is considered invalid if and only if at least one of these
 conditions is true:
@@ -88,7 +88,7 @@ conditions is true:
 
 Note that inclusion of the transaction into the blockchain takes time.
 If *activation date* is set to the current time, it may be in the past
-at the moment when the transaction is being included into the
+at the moment when the transaction is being included in the
 blockchain. To avoid the transaction invalidation for this reason, it is
 recommended to set *activation date* in the future.
 
@@ -96,7 +96,7 @@ recommended to set *activation date* in the future.
 
 Integration with the blockchain requires installation of special
 software and a lot of disk and CPU resources. It would be excessive to
-require from every node to interact with the blockchain directly.
+require every node to interact with the blockchain directly.
 Instead of that, only Moera *naming servers* will integrate with the
 blockchain, and nodes will talk to them using a simple protocol.
 
@@ -104,7 +104,7 @@ Anybody can run a naming server, and a node may select from these
 servers on the basis of latency, uptime, trust or any other
 considerations. If you don't trust any naming server, you can always run
 your own - that's why naming servers have almost no reason to provide
-incorrect information to the nodes. Rare occasions of fraud will be
+incorrect information to the nodes. Rare occasions of forgery will be
 quickly revealed.
 
 Moera clients may also use naming servers to get the information about

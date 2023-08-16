@@ -8,7 +8,7 @@ body_class: body-pink
 
 # Authentication
 
-Access to some Node API calls is restricted and the client should authenticate
+Access to some Node API calls is restricted, and the client should authenticate
 to use them. To authenticate, the client should provide a corresponding
 authentication token or sign the request body with the home node's private signing
 key.
@@ -36,7 +36,7 @@ The client should get login and password from the user and then
 ### Carte
 
 _Carte_ (from *carte-de-visite*) is a cryptographic token that allows
-client to authenticate on any node besides the home node.
+the client to authenticate on any node besides the home node.
 
 Nodes in Moera use public key cryptography to authenticate one another. Since
 the client does not have access to the private signing key (giving such
@@ -57,8 +57,8 @@ carte = fingerprint + signature
 
 The fingerprint contains the name of the home node, the IP address of the client,
 optional name of the target node, beginning and end timestamps of the carte's life
-and a random salt. Binding to time, IP address and target node minimizes ability
-of an attacker to use a carte that was intercepted somehow. For the same reason
+and a random salt. Binding to time, IP address and target node minimizes the ability
+of an attacker to use a carte that was intercepted somehow. For the same reason, 
 it is recommended to use cartes with a short lifetime (several minutes).
 If the client needs to work longer, it can request several cartes in a single
 request that correspond to successive periods of time. When one carte expires,
@@ -67,11 +67,11 @@ the client throws it off and uses the next one in the sequence.
 ## Signature
 
 If the client wants to post a content (comment, reaction etc.) to a node, carte
-authentication is not enough, because the content needs its own signature.
+authentication is not enough because the content needs its own signature.
 To provide better user experience, the client may use carte to post a temporary
 content without a signature and then ask the home node to post its signed version.
-If during a short period of time the signed content do not arrive, the node erases
-the temporary version.
+If during a short period of time the signed content does not arrive, the node
+erases the temporary version.
 
 ## Passing the token
 
@@ -88,7 +88,7 @@ Authorization: bearer carte:<carte>
 
 In situations, when the client cannot change request headers, it can use `auth=`
 parameter in the URL of the request to pass the token. This method is not
-recommended, because request URLs usually appear in server and proxy logs.
+recommended because request URLs usually appear in server and proxy logs.
 
 For example:
 

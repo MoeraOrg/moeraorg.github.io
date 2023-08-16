@@ -8,7 +8,7 @@ body_class: body-pink
 
 # Node Name
 
-Node name is registered at the [naming service][1]. Currently Moera
+Node name is registered at the [naming service][1]. Currently, Moera
 supports only *registered names* (you may [read about them][1] in the
 Overview section), but there are many other [name types][2] possible.
 Every name type has a unique syntax that distinguishes it from others.
