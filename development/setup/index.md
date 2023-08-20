@@ -21,9 +21,6 @@ until you plan to make changes to the code. These components are:
    browser extension you can use [web.moera.org][17] standalone client.
    For development, build and run [moera-client-react][7] (see
    [README.md][8] for details).
-4. (Optional) **Browser extension.** Install from the [Firefox][13] or
-   [Chrome][15] store. For development, build and install
-   [moera-browser-extension][9] (see [README.md][10] for details).
 
 Naming service and node use [moera-commons][1] package. By default, it
 is downloaded from GitHub Maven repository, but you can build and
@@ -66,8 +63,6 @@ problem.
 [10]: https://github.com/MoeraOrg/moera-browser-extension/blob/master/README.md
 [11]: http://naming.moera.org/
 [12]: https://client.moera.org/
-[13]: https://addons.mozilla.org/en-US/firefox/addon/moera/
 [14]: https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content
-[15]: https://chrome.google.com/webstore/detail/moera/endpkknmpgamhhlojbgifimfcleeeghb
 [16]: https://moera.blog
 [17]: https://web.moera.org
