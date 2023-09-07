@@ -2,11 +2,9 @@ notifications:
   - type: ASKED
     description: A remote node asks this node for something.
     fields:
-      - type: String
+      - enum: AskSubject
         name: subject
-        comment: >
-          request subject, see <code><a href="node-api.html#AskDescription">AskDescription</a>.subject</code> for
-          possible values
+        comment: request subject
       - type: String
         name: friendGroupId
         comment: >

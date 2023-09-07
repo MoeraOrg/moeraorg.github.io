@@ -993,9 +993,9 @@ objects:
       </p><p>
       These are the standard feeds that have special meaning:
       <ul>
-      <li><code>timeline</code> - the main feed of publications;</li>
-      <li><code>instant</code> - the feed of instant notifications;</li>
-      <li><code>news</code> - the main feed of publications gathered from other nodes.</li>
+        <li><code>timeline</code> - the main feed of publications;</li>
+        <li><code>instant</code> - the feed of instant notifications;</li>
+        <li><code>news</code> - the main feed of publications gathered from other nodes.</li>
       </ul>
     requests:
       - url: /feeds
@@ -2829,14 +2829,9 @@ structures:
         description: reaction creation timestamp - the real time when the reaction was created
   - name: AskDescription
     fields:
-      - type: String
+      - enum: AskSubject
         name: subject
-        description: >
-          request subject; the possible values are:
-          <ul>
-            <li><code>subscribe</code> - "subscribe to me" - asking remote node to subscribe to this node;</li>
-            <li><code>friend</code> - "add me to your friends" - asking remote node to add this node to friends.</li>
-          </ul>
+        description: request subject
       - type: String
         name: friendGroupId
         description: >
@@ -3870,16 +3865,9 @@ structures:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: DraftType
         name: draftType
-        description: >
-          type of the draft, one of:
-          <ul>
-            <li><code>new-posting</code> - draft of a new posting;</li>
-            <li><code>posting-update</code> - draft of an update to a posting;</li>
-            <li><code>new-comment</code> - draft of a new comment;</li>
-            <li><code>comment-update</code> - draft of an update to a comment.</li>
-          </ul>
+        description: type of the draft
       - type: String
         name: receiverName
         description: name of the node the draft is related to
@@ -4034,11 +4022,10 @@ structures:
       - struct: FriendGroupsFeatures
         name: friendGroups
         description: features of groups of friends
-      - type: String[]
+      - enum: AskSubject
+        array: true
         name: ask
-        description: >
-          list of requests to the node owner that are accepted by the node, see
-          <code><a href="#AskDescription">AskDescription</a>.subject</code> for possible values
+        description: list of requests to the node owner that are accepted by the node
       - type: boolean
         name: subscribed
         description: <code>true</code>, if the node is subscribed to the client, <code>false</code> otherwise
@@ -4386,18 +4373,9 @@ structures:
     fields:
       - type: String
         name: name
-      - type: String
+      - enum: OperationStatus
         name: operationStatus
-        description: >
-          status of the latest operation with the node name; the possible values are:
-          <ul>
-            <li><code>waiting</code> - the operation is waiting to be sent to the naming server;</li>
-            <li><code>added</code> - the operation was accepted by the naming server;</li>
-            <li><code>started</code> - the naming server started to proceed the operation;</li>
-            <li><code>succeeded</code> - the operation completed successfully;</li>
-            <li><code>failed</code> - the operation failed;</li>
-            <li><code>unknown</code> - the operation status is unknown.</li>
-          </ul>
+        description: status of the latest operation with the node name
       - type: timestamp
         name: operationStatusUpdated
         description: the last time the operation status was updated
@@ -5242,15 +5220,9 @@ structures:
         description: size of the media file in bytes
   - name: PushContent
     fields:
-      - type: String
+      - enum: PushContentType
         name: type
-        description: >
-          type of the notification; the possible values are:
-          <ul>
-            <li><code>story-added</code> - a story was added to a feed;</li>
-            <li><code>story-deleted</code> - a story was deleted from a feed;</li>
-            <li><code>feed-updated</code> - feed status was updated.</li>
-          </ul>
+        description: type of the notification
       - type: String
         name: id
         description: ID of the story (<code>story-deleted</code> notifications only)
@@ -6804,6 +6776,14 @@ structures:
         description: node owners's avatar
 
 enums:
+  - name: AskSubject
+    values:
+      - name: subscribe
+        description: >
+          "subscribe to me" - asking remote node to subscribe to this node
+      - name: friend
+        description: >
+          "add me to your friends" - asking remote node to add this node to friends
   - name: DraftType
     values:
       - name: new-posting
@@ -6814,6 +6794,28 @@ enums:
         description: draft of a new comment
       - name: comment-update
         description: draft of an update to a comment
+  - name: OperationStatus
+    values:
+      - name: waiting
+        description: the operation is waiting to be sent to the naming server
+      - name: added
+        description: the operation was accepted by the naming server
+      - name: started
+        description: the naming server started to proceed the operation
+      - name: succeeded
+        description: the operation completed successfully
+      - name: failed
+        description: the operation failed
+      - name: unknown
+        description: the operation status is unknown
+  - name: PushContentType
+    values:
+      - name: story-added
+        description: a story was added to a feed
+      - name: story-deleted
+        description: a story was deleted from a feed
+      - name: feed-updated
+        description: feed status was updated
 
 http-codes:
   - code: 200

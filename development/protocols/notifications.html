@@ -39,6 +39,9 @@ body_class: body-pink
                             {% if field.type %}
                                 <code>{{ field.type }}</code>
                             {% endif %}
+                            {% if field.enum %}
+                                <code>String{% if field.array == true %}[]{% endif %}</code>
+                            {% endif %}
                             {% if field.struct %}
                                 <code>
                                     <a href="node-api.html#{{ field.struct }}">
@@ -48,7 +51,13 @@ body_class: body-pink
                             {% endif %}
                         </td>
                         <td><code>{{ field.name }}</code></td>
-                        <td>{{ field.comment }}</td>
+                        <td>
+                            {{ field.comment }}
+                            {% if field.enum %}
+                                (see <code><a href="node-api.html#{{ field.enum }}">{{ field.enum }}</a></code> for
+                                the list of possible values)
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
