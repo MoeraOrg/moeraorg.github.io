@@ -119,11 +119,9 @@ events:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: DraftType
         name: draftType
-        comment: >
-          type of the draft (see <code><a href="node-api.html#DraftInfo">DraftInfo</a>.draftType</code> for the list of
-          possible values)
+        comment: type of the draft
       - type: String
         name: receiverName
         comment: name of the node the draft is related to
@@ -138,11 +136,9 @@ events:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: DraftType
         name: draftType
-        comment: >
-          type of the draft (see <code><a href="node-api.html#DraftInfo">DraftInfo</a>.draftType</code> for the list of
-          possible values)
+        comment: type of the draft
       - type: String
         name: receiverName
         comment: name of the node the draft is related to
@@ -157,11 +153,9 @@ events:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: DraftType
         name: draftType
-        comment: >
-          type of the draft (see <code><a href="node-api.html#DraftInfo">DraftInfo</a>.draftType</code> for the list of
-          possible values)
+        comment: type of the draft
       - type: String
         name: receiverName
         comment: name of the node the draft is related to

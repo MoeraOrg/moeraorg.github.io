@@ -19,6 +19,8 @@ body_class: body-pink
     <li><a href="#{{ object.name }}">{{ object.name }}</a></li>
     {% endfor %}
     <li><a href="#Structures"><b>Structures</b></a></li>
+    <li><a href="#Enums"><b>Enums</b></a></li>
+    <li><a href="#http-status-codes"><b>HTTP status codes</b></a></li>
 </ol>
 
 
@@ -135,9 +137,16 @@ body_class: body-pink
                 <dt>Parameters:</dt>
                 {% for param in req.params %}
                     <dd>
-                        <code>{{ param.type }} {{ param.name }}</code>
+                        <code>
+                            {% if param.enum %}String{% else %}{{ param.type }}{% endif %}
+                            {{ param.name }}
+                        </code>
                         {% if param.description %}
                             - {{ param.description }}
+                        {% endif %}
+                        {% if param.enum %}
+                            (see <code><a href="#{{ param.enum }}">{{ param.enum }}</a></code> for the list of
+                            possible values)
                         {% endif %}
                     </dd>
                 {% endfor %}
@@ -228,12 +237,21 @@ body_class: body-pink
                     {% if field.type %}
                         <code>{{ field.type }}</code>
                     {% endif %}
+                    {% if field.enum %}
+                        <code>String</code>
+                    {% endif %}
                     {% if field.struct %}
                         <code><a href="#{{ field.struct }}">{{ field.struct }}{% if field.array == true %}[]{% endif %}</a></code>
                     {% endif %}
                 </td>
                 <td><code>{{ field.name }}</code></td>
-                <td>{{ field.description }}</td>
+                <td>
+                    {{ field.description }}
+                    {% if field.enum %}
+                        (see <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code> for the list of
+                        possible values)
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -278,6 +296,29 @@ body_class: body-pink
             </tbody>
         </table>
     {% endif %}
+{% endfor %}
+
+
+<br/><br/>
+<h2 id="Enums">Enums</h2>
+{% for enum in site.data.node_api.enums %}
+    <h4 id="{{ enum.name }}" class="identifier">{{ enum.name }}</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="col-4">Value</th>
+                <th class="col-8">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for value in enum.values %}
+                <tr>
+                    <td><code>{{ value.name }}</code></td>
+                    <td>{{ value.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endfor %}
 
 <br/><br/>

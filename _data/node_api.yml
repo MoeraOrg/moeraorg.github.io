@@ -896,11 +896,9 @@ objects:
       - url: /drafts
         type: GET
         params:
-          - type: String
+          - enum: DraftType
             name: draftType
-            description: >
-              type of the drafts, mandatory (see <code><a href="#DraftInfo">DraftInfo</a>.draftType</code> for the list
-              of possible values)
+            description: type of the drafts, mandatory
           - type: String
             name: nodeName
             description: name of the node the drafts are related to, mandatory
@@ -3943,11 +3941,9 @@ structures:
         description: draft of the list of operations and the corresponding principals
   - name: DraftText
     fields:
-      - type: String
+      - enum: DraftType
         name: draftType
-        description: >
-          type of the draft (see <code><a href="#DraftInfo">DraftInfo</a>.draftType</code> for the list of possible
-          values)
+        description: type of the draft
       - type: String
         name: receiverName
         description: name of the node the draft is related to
@@ -6806,6 +6802,18 @@ structures:
       - struct: AvatarImage
         name: avatar
         description: node owners's avatar
+
+enums:
+  - name: DraftType
+    values:
+      - name: new-posting
+        description: draft of a new posting
+      - name: posting-update
+        description: draft of an update to a posting
+      - name: new-comment
+        description: draft of a new comment
+      - name: comment-update
+        description: draft of an update to a comment
 
 http-codes:
   - code: 200
