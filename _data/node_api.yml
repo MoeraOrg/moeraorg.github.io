@@ -261,6 +261,7 @@ objects:
         params:
           - type: int
             name: limit
+            optional: true
             description: maximum number of sequential cartes returned
         out:
           struct: CarteSet
@@ -280,12 +281,15 @@ objects:
             description: ID of the posting
           - type: int
             name: before
+            optional: true
             description: filter comments posted at or before this moment
           - type: int
             name: after
+            optional: true
             description: filter comments posted strongly after this moment
           - type: int
             name: limit
+            optional: true
             description: maximum number of comments returned
         out:
           struct: CommentsSliceInfo
@@ -333,6 +337,7 @@ objects:
             description: ID of the comment
           - type: String
             name: include
+            optional: true
             description: >
               Comma-separated list of additional blocks of information that are needed. The values are:
               <ul>
@@ -545,15 +550,19 @@ objects:
             description: ID of the comment
           - type: boolean
             name: negative
+            optional: true
             description: <code>true</code>, to filter negative reactions, <code>false</code>, to filter positive ones
           - type: int
             name: emoji
+            optional: true
             description: filter by reaction code, usually interpreted by clients as emoji code point
           - type: int
             name: before
+            optional: true
             description: filter reactions created at or before this moment
           - type: int
             name: limit
+            optional: true
             description: maximum number of reactions returned
         out:
           struct: ReactionsSliceInfo
@@ -661,9 +670,11 @@ objects:
         params:
           - type: String
             name: query
+            optional: true
             description: the search query
           - type: int
             name: limit
+            optional: true
             description: maximum number of contacts returned
         out:
           struct: ContactInfo
@@ -745,9 +756,11 @@ objects:
         params:
           - type: int
             name: page
+            optional: true
             description: page number, 0 by default
           - type: int
             name: limit
+            optional: true
             description: page size (maximum number of postings returned), the default is defined by the node
         out:
           struct: PostingInfo
@@ -898,21 +911,25 @@ objects:
         params:
           - enum: DraftType
             name: draftType
-            description: type of the drafts, mandatory
+            description: type of the drafts
           - type: String
             name: nodeName
-            description: name of the node the drafts are related to, mandatory
+            description: name of the node the drafts are related to
           - type: String
             name: postingId
+            optional: true
             description: ID of the posting, mandatory for all types, except <code>new-posting</code>
           - type: String
             name: commentId
+            optional: true
             description: ID of the comment, mandatory for <code>comment-update</code> type
           - type: int
             name: page
+            optional: true
             description: page number, 0 by default
           - type: int
             name: limit
+            optional: true
             description: page size (maximum number of postings returned), the default is defined by the node
         out:
           struct: DraftInfo
@@ -1054,12 +1071,15 @@ objects:
             description: name of the feed
           - type: int
             name: before
+            optional: true
             description: filter stories posted at or before this moment
           - type: int
             name: after
+            optional: true
             description: filter stories posted strongly after this moment
           - type: int
             name: limit
+            optional: true
             description: maximum number of stories returned
         out:
           struct: FeedSliceInfo
@@ -1147,7 +1167,8 @@ objects:
         params:
           - type: String
             name: groupId
-            description: ID of a group of friends, may be absent
+            optional: true
+            description: ID of a group of friends
         out:
           struct: FriendInfo
           array: true
@@ -1230,11 +1251,13 @@ objects:
             description: media file ID
           - type: int
             name: width
+            optional: true
             description: >
               preferred width of the media in pixels; if present, the node will try to return the smallest in size,
               but the best in quality variant of the media, according to the width provided
           - type: boolean
             name: download
+            optional: true
             description: >
               if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
         auth: optional
@@ -1295,11 +1318,13 @@ objects:
             description: media file ID
           - type: int
             name: width
+            optional: true
             description: >
               preferred width of the media in pixels; if present, the node will try to return the smallest in size,
               but the best in quality variant of the media, according to the width provided
           - type: boolean
             name: download
+            optional: true
             description: >
               if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
         description: >
@@ -1471,6 +1496,7 @@ objects:
             description: name of the plugin
           - type: int
             name: after
+            optional: true
             description: >
               moment of the latest event that has been seen by the plugin; may be passed in <code>Last-Event-ID</code>
               header instead
@@ -1581,6 +1607,7 @@ objects:
             description: ID of the posting
           - type: String
             name: include
+            optional: true
             description: >
               Comma-separated list of additional blocks of information that are needed. The values are:
               <ul>
@@ -1633,6 +1660,7 @@ objects:
             description: ID of the posting
           - type: int
             name: limit
+            optional: true
             description: maximum number of revisions returned
         out:
           struct: PostingRevisionInfo
@@ -1717,15 +1745,19 @@ objects:
             description: ID of the posting
           - type: boolean
             name: negative
+            optional: true
             description: <code>true</code>, to filter negative reactions, <code>false</code>, to filter positive ones
           - type: int
             name: emoji
+            optional: true
             description: filter by reaction code, usually interpreted by clients as emoji code point
           - type: int
             name: before
+            optional: true
             description: filter reactions created at or before this moment
           - type: int
             name: limit
+            optional: true
             description: maximum number of reactions returned
         out:
           struct: ReactionsSliceInfo
@@ -1852,6 +1884,7 @@ objects:
         params:
           - type: String
             name: include
+            optional: true
             description: >
               Comma-separated list of additional blocks of information that are needed. The values are:
               <ul>
@@ -1920,6 +1953,7 @@ objects:
             description: ID of the client
           - type: int
             name: after
+            optional: true
             description: >
               moment of the last notification already received by the client (<code>Last-Event-ID</code> header may be
               used instead of this parameter)
@@ -2288,6 +2322,7 @@ objects:
         params:
           - type: String
             name: prefix
+            optional: true
             description: >
               filter settings whose names start with the given prefix, case-sensitive (<code>client.</code> prefix
               must be included)
@@ -2301,6 +2336,7 @@ objects:
         params:
           - type: String
             name: prefix
+            optional: true
             description: filter settings whose names start with the given prefix, case-sensitive
         out:
           struct: SettingInfo
@@ -2313,6 +2349,7 @@ objects:
         params:
           - type: String
             name: prefix
+            optional: true
             description: filter settings whose names start with the given prefix, case-sensitive
         out:
           struct: SettingMetaInfo
@@ -2351,15 +2388,19 @@ objects:
         params:
           - type: int
             name: before
+            optional: true
             description: filter groups created at or before this moment
           - type: int
             name: after
+            optional: true
             description: filter groups created strongly after this moment
           - type: int
             name: limit
+            optional: true
             description: maximum number of groups returned
           - enum: SheriffComplainStatus
             name: status
+            optional: true
             description: filter groups by status
         out:
           struct: SheriffComplainGroupsSliceInfo
@@ -2491,16 +2532,20 @@ objects:
         params:
           - type: String
             name: nodeName
-            description: filter by subscribed node name, may be omitted
+            optional: true
+            description: filter by subscribed node name
           - enum: SubscriptionType
             name: type
-            description: filter by subscription type, may be omitted
+            optional: true
+            description: filter by subscription type
           - type: String
             name: feedName
-            description: filter by name of the feed subscribed to, may be omitted
+            optional: true
+            description: filter by name of the feed subscribed to
           - type: String
             name: entryId
-            description: filter by ID of the entry subscribed to, may be omitted
+            optional: true
+            description: filter by ID of the entry subscribed to
         out:
           struct: SubscriberInfo
           array: true
@@ -2565,10 +2610,12 @@ objects:
         params:
           - type: String
             name: nodeName
-            description: filter by node name, may be omitted
+            optional: true
+            description: filter by node name
           - enum: SubscriptionType
             name: type
-            description: filter by subscription type, may be omitted
+            optional: true
+            description: filter by subscription type
         out:
           struct: SubscriptionInfo
           array: true
@@ -2705,12 +2752,15 @@ objects:
             description: the name of the list
           - type: int
             name: before
+            optional: true
             description: filter items created at or before this moment
           - type: int
             name: after
+            optional: true
             description: filter items created strongly after this moment
           - type: int
             name: limit
+            optional: true
             description: maximum number of items returned
         out:
           struct: UserListSliceInfo

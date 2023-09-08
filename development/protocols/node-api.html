@@ -142,7 +142,9 @@ body_class: body-pink
                             {{ param.name }}
                         </code>
                         {% if param.description %}
-                            - {{ param.description }}
+                            - {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                        {% else %}
+                            {% if param.optional == true %}- <i>(optional)</i>{% endif %}
                         {% endif %}
                         {% if param.enum %}
                             (see <code><a href="#{{ param.enum }}">{{ param.enum }}</a></code> for the list of
