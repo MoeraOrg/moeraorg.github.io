@@ -248,6 +248,7 @@ body_class: body-pink
                 </td>
                 <td><code>{{ field.name }}</code></td>
                 <td>
+                    {% if field.optional == true %}<i>(optional)</i>{% endif %}
                     {{ field.description }}
                     {% if field.enum %}
                         (see <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code> for the list of

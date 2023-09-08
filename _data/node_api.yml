@@ -2844,6 +2844,7 @@ structures:
       - struct: RemotePosting
         array: true
         name: postings
+        optional: true
         description: include only reactions to remote postings from this list
   - name: ActivityReactionInfo
     fields:
@@ -2852,9 +2853,11 @@ structures:
         description: name of the remote node
       - type: String
         name: remoteFullName
+        optional: true
         description: full name of the remote node
       - struct: AvatarImage
         name: remoteAvatar
+        optional: true
         description: avatar of the remote node
       - type: String
         name: remotePostingId
@@ -2875,12 +2878,14 @@ structures:
         description: request subject
       - type: String
         name: friendGroupId
+        optional: true
         description: >
           if the request is to add this node to friends, this field contains ID of the corresponding group of friends on
           the remote node
       - type: String
         name: message
-        description: optional message to the node admin
+        optional: true
+        description: message to the node admin
     errors:
       - code: askDescription.friendGroupId.blank
         description: friend group ID is empty
@@ -2915,9 +2920,11 @@ structures:
         description: rotation angle of the source image
       - type: String
         name: shape
+        optional: true
         description: shape of the avatar
       - type: int
         name: ordinal
+        optional: true
         description: ordinal of the avatar, may be absent
     errors:
       - code: avatarAttributes.mediaId.blank
@@ -2942,6 +2949,7 @@ structures:
         description: shape of the avatar
       - type: bool
         name: optional
+        optional: true
         description: >
           if set to <code>true</code>, the node will ignore the absence of the media file referenced in
           <code>mediaId</code> field (empty avatar will be used in this case); if set to <code>false</code> or absent,
@@ -2958,12 +2966,15 @@ structures:
           <a href="virtual-pages.html">virtual page</a>
       - type: int
         name: width
+        optional: true
         description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
       - type: int
         name: height
+        optional: true
         description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
       - type: String
         name: shape
+        optional: true
         description: shape of the avatar
   - name: AvatarInfo
     fields:
@@ -2980,12 +2991,15 @@ structures:
           <a href="virtual-pages.html">virtual page</a>
       - type: int
         name: width
+        optional: true
         description: width of the media in pixels (<code>null</code>, if the media file is not an image/video)
       - type: int
         name: height
+        optional: true
         description: height of the media in pixels (<code>null</code>, if the media file is not an image/video)
       - type: String
         name: shape
+        optional: true
         description: shape of the avatar
       - type: int
         name: ordinal
@@ -3003,45 +3017,21 @@ structures:
       - type: String[]
         name: ids
         description: IDs of avatars
-  - name: BlockedInstantAttributes
-    fields:
-      - type: String
-        name: storyType
-        description: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
-      - type: String
-        name: entryId
-        description: ID of the local entry the blocked story should be related to; may be absent
-      - type: String
-        name: remoteNodeName
-        description: node name of the remote posting the blocked story should be related to; may be absent
-      - type: String
-        name: remotePostingId
-        description: ID of the remote posting the blocked story should be related to; may be absent
-      - type: String
-        name: remoteOwnerName
-        description: owner name of the remote object the blocked story should be related to; may be absent
-      - type: timestamp
-        name: deadline
-        description: >
-          unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
-          the story is blocked permanently
-    errors:
-      - code: blockedInstantAttributes.storyType.blank
-        description: story type is not set
   - name: BlockedByUserFilter
     fields:
       - enum: BlockedOperation
         array: true
         name: blockedOperations
+        optional: true
         description: operations that are blocked
       - struct: RemotePosting
         array: true
         name: postings
+        optional: true
         description: the postings, where the node is blocked
       - type: boolean
         name: strict
+        optional: true
         description: >
           if set to <code>true</code>, only the blockings that strictly fit the criteria are returned; otherwise global
           blockings are returned even if the search is limited to a particular posting
@@ -3054,12 +3044,14 @@ structures:
         description: operation that is blocked
       - struct: ContactInfo
         name: contact
+        optional: true
         description: information known about the blocking node
       - type: String
         name: nodeName
         description: name of the blocking node
       - type: String
         name: postingId
+        optional: true
         description: >
           ID of the posting, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
       - type: timestamp
@@ -3067,12 +3059,46 @@ structures:
         description: blocking timestamp - the real time when the node was blocked
       - type: timestamp
         name: deadline
+        optional: true
         description: >
           unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
           is blocked permanently
       - type: String
         name: reason
-        description: reason of blocking, may be absent
+        optional: true
+        description: reason of blocking
+  - name: BlockedInstantAttributes
+    fields:
+      - type: String
+        name: storyType
+        description: >
+          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
+          their meaning)
+      - type: String
+        name: entryId
+        optional: true
+        description: ID of the local entry the blocked story should be related to
+      - type: String
+        name: remoteNodeName
+        optional: true
+        description: node name of the remote posting the blocked story should be related to
+      - type: String
+        name: remotePostingId
+        optional: true
+        description: ID of the remote posting the blocked story should be related to
+      - type: String
+        name: remoteOwnerName
+        optional: true
+        description: owner name of the remote object the blocked story should be related to
+      - type: timestamp
+        name: deadline
+        optional: true
+        description: >
+          unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
+          the story is blocked permanently
+    errors:
+      - code: blockedInstantAttributes.storyType.blank
+        description: story type is not set
   - name: BlockedInstantFilter
     fields:
       - type: String
@@ -3082,15 +3108,19 @@ structures:
           their meaning)
       - type: String
         name: entryId
+        optional: true
         description: ID of the local entry the blocked story should be related to
       - type: String
         name: remoteNodeName
+        optional: true
         description: node name of the remote posting the blocked story should be related to
       - type: String
         name: remotePostingId
+        optional: true
         description: ID of the remote posting the blocked story should be related to
       - type: String
         name: remoteOwnerName
+        optional: true
         description: owner name of the remote object the blocked story should be related to
   - name: BlockedInstantInfo
     fields:
@@ -3103,21 +3133,26 @@ structures:
           their meaning)
       - type: String
         name: entryId
-        description: ID of the local entry the blocked story should be related to; may be absent
+        optional: true
+        description: ID of the local entry the blocked story should be related to
       - type: String
         name: remoteNodeName
-        description: node name of the remote posting the blocked story should be related to; may be absent
+        optional: true
+        description: node name of the remote posting the blocked story should be related to
       - type: String
         name: remotePostingId
-        description: ID of the remote posting the blocked story should be related to; may be absent
+        optional: true
+        description: ID of the remote posting the blocked story should be related to
       - type: String
         name: remoteOwnerName
-        description: owner name of the remote object the blocked story should be related to; may be absent
+        optional: true
+        description: owner name of the remote object the blocked story should be related to
       - type: timestamp
         name: createdAt
         description: blocking timestamp - the real time when the story was blocked
       - type: timestamp
         name: deadline
+        optional: true
         description: >
           unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
           the story is blocked permanently
@@ -3132,9 +3167,11 @@ structures:
           their meaning)
       - type: String
         name: remoteOwnerName
-        description: owner name of the remote object the blocked story should be related to; may be absent
+        optional: true
+        description: owner name of the remote object the blocked story should be related to
       - type: timestamp
         name: deadline
+        optional: true
         description: >
           unblocking timestamp - the real time when the story will be unblocked; <code>null</code> or absent, if
           the story is blocked permanently
@@ -3148,28 +3185,34 @@ structures:
         description: name of the blocked node
       - type: String
         name: entryId
+        optional: true
         description: >
           ID of the local entry, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
       - type: String
         name: entryNodeName
+        optional: true
         description: >
           node name of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is
           blocked globally
       - type: String
         name: entryPostingId
+        optional: true
         description: >
           ID of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is blocked
           globally
       - type: timestamp
         name: deadline
+        optional: true
         description: >
           unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
           is blocked permanently
       - type: String
         name: reasonSrc
-        description: source text of the reason of blocking, may be absent
+        optional: true
+        description: source text of the reason of blocking
       - type: String
         name: reasonSrcFormat
+        optional: true
         description: >
           format of the source text of the reason of blocking, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
@@ -3183,26 +3226,32 @@ structures:
       - enum: BlockedOperation
         array: true
         name: blockedOperations
+        optional: true
         description: operations that are blocked
       - type: String
         name: nodeName
+        optional: true
         description: name of the blocked node
       - type: String
         name: entryId
+        optional: true
         description: >
           ID of the local entry, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
       - type: String
         name: entryNodeName
+        optional: true
         description: >
           node name of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is
           blocked globally
       - type: String
         name: entryPostingId
+        optional: true
         description: >
           ID of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is blocked
           globally
       - type: boolean
         name: strict
+        optional: true
         description: >
           if set to <code>true</code>, only the blockings that strictly fit the criteria are returned; otherwise global
           blockings are returned even if the search is limited to a particular posting
@@ -3218,18 +3267,22 @@ structures:
         description: name of the blocked node
       - struct: ContactInfo
         name: contact
+        optional: true
         description: information known about the blocked node
       - type: String
         name: entryId
+        optional: true
         description: >
           ID of the local entry, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
       - type: String
         name: entryNodeName
+        optional: true
         description: >
           node name of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is
           blocked globally
       - type: String
         name: entryPostingId
+        optional: true
         description: >
           ID of the remote posting, where the node is blocked; <code>null</code> or absent, if the node is blocked
           globally
@@ -3238,20 +3291,24 @@ structures:
         description: blocking timestamp - the real time when the node was blocked
       - type: timestamp
         name: deadline
+        optional: true
         description: >
           unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
           is blocked permanently
       - type: String
         name: reasonSrc
-        description: source text of the reason of blocking, may be absent
+        optional: true
+        description: source text of the reason of blocking
       - type: String
         name: reasonSrcFormat
+        optional: true
         description: >
           format of the source text of the reason of blocking, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: reason
-        description: reason of blocking, may be absent
+        optional: true
+        description: reason of blocking
   - name: BlockedUsersChecksums
     fields:
       - type: int
@@ -3261,10 +3318,17 @@ structures:
     fields:
       - type: String
         name: subject
-        description: plain text
+        optional: true
+        description: the subject (plain text)
       - type: String
         name: text
-        description: HTML
+        optional: true
+        description: the text (HTML)
+      - struct: LinkPreview
+        array: true
+        name: linkPreviews
+        optional: true
+        description: link previews
   - name: CarteInfo
     fields:
       - type: String
@@ -3277,6 +3341,7 @@ structures:
         description: timestamp of the end of the carte's life
       - type: String[]
         name: permissions
+        optional: true
         description: >
           the list of permissions granted to the carte; the possible values are: 
           <ul>
@@ -3315,6 +3380,7 @@ structures:
         description: reaction creation timestamp - the real time when the reaction was created
       - type: timestamp
         name: deadline
+        optional: true
         description: if present, the reaction will be erased at this time
   - name: CommentCreated
     fields:
@@ -3333,12 +3399,15 @@ structures:
         description: node name of the comment's owner
       - type: String
         name: ownerFullName
+        optional: true
         description: full name of the comment's owner
       - type: String
         name: ownerGender
+        optional: true
         description: gender of the comment's owner
       - struct: AvatarImage
         name: ownerAvatar
+        optional: true
         description: avatar of the comment's owner
       - type: String
         name: postingId
@@ -3354,9 +3423,11 @@ structures:
         description: total number of revisions the comment has
       - type: String
         name: bodyPreview
-        description: preview of the comment's body, a string representation of a JSON structure, may be absent
+        optional: true
+        description: preview of the comment's body, a string representation of a JSON structure
       - type: String
         name: bodySrc
+        optional: true
         description: >
           the source text of the comment, a string representation of a JSON structure, may be absent if not requested
       - type: byte[]
@@ -3364,6 +3435,7 @@ structures:
         description: hash of the source text of the comment
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the comment, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
@@ -3372,6 +3444,7 @@ structures:
         description: body of the comment, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the comment, may have any value meaningful for the client, including:
           <ul>
@@ -3381,13 +3454,15 @@ structures:
       - struct: MediaAttachment
         array: true
         name: media
+        optional: true
         description: list of the media attached to the comment
       - type: String
         name: heading
         description: heading of the comment
       - struct: RepliedTo
         name: repliedTo
-        description: information about the comment this comment is replying to, may be absent
+        optional: true
+        description: information about the comment this comment is replying to
       - type: int
         name: moment
       - type: timestamp
@@ -3395,17 +3470,19 @@ structures:
         description: comment creation timestamp - the real time when the comment was created
       - type: timestamp
         name: editedAt
+        optional: true
         description: comment editing timestamp - the last time the comment was updated
       - type: timestamp
         name: deletedAt
-        description: comment deletion timestamp - the time when the comment was deleted, may be absent
+        optional: true
+        description: comment deletion timestamp - the time when the comment was deleted
       - type: timestamp
         name: revisionCreatedAt
         description: creation timestamp of the current revision of the comment
       - type: timestamp
         name: deadline
-        description: >
-          comment purging timestamp - the time when the deleted comment will be purged from the database, may be absent
+        optional: true
+        description: comment purging timestamp - the time when the deleted comment will be purged from the database
       - type: byte[]
         name: digest
         description: >
@@ -3413,48 +3490,60 @@ structures:
           fingerprint)
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
         name: reactionOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the comment
       - type: String -> String
         name: ownerOperations
+        optional: true
         description: >
           list of the supported operations (see below) and the corresponding principals as defined by the comment's
           owner
       - type: String -> String
         name: seniorOperations
+        optional: true
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the posting's
           owner ("senior")
       - type: String[]
         name: blockedOperations
+        optional: true
         description: operations on the comment (from the list below) that are blocked for the client
       - struct: SheriffMark
         array: true
         name: sheriffMarks
+        optional: true
         description: list of sheriff marks on the comment
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the comment accepts
       - struct: ClientReactionInfo
         name: clientReaction
+        optional: true
         description: details of the existing reaction (if any) of the client's owner
       - struct: ClientReactionInfo
         name: seniorReaction
+        optional: true
         description: details of the existing reaction (if any) of the posting's owner ("senior") to the comment
       - struct: ReactionTotalsInfo
         name: reactions
+        optional: true
         description: reactions summary of the comment
     operations:
       - name: view
@@ -3494,6 +3583,7 @@ structures:
     fields:
       - type: String -> String
         name: seniorOperations
+        optional: true
         description: >
           list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals that are
           overridden by the posting's owner ("senior")
@@ -4300,6 +4390,23 @@ structures:
       - type: any
         name: any
         description: any other fields understood by Moera clients
+  - name: LinkPreview
+    fields:
+      - type: String
+        name: siteName
+        description: name of the site
+      - type: String
+        name: url
+        description: canonical URL of the page
+      - type: String
+        name: title
+        description: title of the page
+      - type: String
+        name: description
+        description: description of the page
+      - type: String
+        name: imageHash
+        description: hash of the image presenting the page
   - name: LinkPreviewInfo
     fields:
       - type: String
