@@ -2358,12 +2358,9 @@ objects:
           - type: int
             name: limit
             description: maximum number of groups returned
-          - type: String
+          - enum: SheriffComplainStatus
             name: status
-            description: >
-              filter groups by status (see
-              <code><a href="#SheriffComplainGroupInfo">SheriffComplainGroupInfo</a>.status</code> for the list of
-              possible values)
+            description: filter groups by status
         out:
           struct: SheriffComplainGroupsSliceInfo
         description: >
@@ -2495,12 +2492,9 @@ objects:
           - type: String
             name: nodeName
             description: filter by subscribed node name, may be omitted
-          - type: String
+          - enum: SubscriptionType
             name: type
-            description: >
-              filter by subscription type (see
-              <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for the list of possible
-              values), may be omitted
+            description: filter by subscription type, may be omitted
           - type: String
             name: feedName
             description: filter by name of the feed subscribed to, may be omitted
@@ -2572,12 +2566,9 @@ objects:
           - type: String
             name: nodeName
             description: filter by node name, may be omitted
-          - type: String
+          - enum: SubscriptionType
             name: type
-            description: >
-              filter by subscription type (see
-              <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for the list of possible
-              values), may be omitted
+            description: filter by subscription type, may be omitted
         out:
           struct: SubscriptionInfo
           array: true
@@ -2991,11 +2982,10 @@ structures:
         description: story type is not set
   - name: BlockedByUserFilter
     fields:
-      - type: String[]
+      - enum: BlockedOperation
+        array: true
         name: blockedOperations
-        description: >
-          operations that are blocked (see
-          <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible values)
+        description: operations that are blocked
       - struct: RemotePosting
         array: true
         name: postings
@@ -3009,11 +2999,9 @@ structures:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: BlockedOperation
         name: blockedOperation
-        description: >
-          operation that is blocked (see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
-          for the list of possible values)
+        description: operation that is blocked
       - struct: ContactInfo
         name: contact
         description: information known about the blocking node
@@ -3102,11 +3090,9 @@ structures:
           the story is blocked permanently
   - name: BlockedUserAttributes
     fields:
-      - type: String
+      - enum: BlockedOperation
         name: blockedOperation
-        description: >
-          operation that is to be blocked (see
-          <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible values)
+        description: operation that is to be blocked
       - type: String
         name: nodeName
         description: name of the blocked node
@@ -3144,11 +3130,10 @@ structures:
         description: reason is too long
   - name: BlockedUserFilter
     fields:
-      - type: String[]
+      - enum: BlockedOperation
+        array: true
         name: blockedOperations
-        description: >
-          operations that are blocked (see
-          <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible values)
+        description: operations that are blocked
       - type: String
         name: nodeName
         description: name of the blocked node
@@ -3175,17 +3160,9 @@ structures:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: BlockedOperation
         name: blockedOperation
-        description: >
-          operation that is blocked; the possible values are:
-          <ul>
-            <li><code>reaction</code> - add reactions to entries on the node;</li>
-            <li><code>comment</code> - add comments to postings on the node;</li>
-            <li><code>posting</code> - add postings to the node;</li>
-            <li><code>visibility</code> - be visible to the node;</li>
-            <li><code>instant</code> - be visible in stories added to the instants feed of the node.</li>
-          </ul>
+        description: operation that is blocked
       - type: String
         name: nodeName
         description: name of the blocked node
@@ -5499,16 +5476,9 @@ structures:
         name: postingId
       - type: String
         name: revisionId
-      - type: String
+      - enum: VerificationStatus
         name: status
-        description: >
-          status of the operation; the possible values are:
-          <ul>
-            <li><code>running</code> - the verification is pending;</li>
-            <li><code>correct</code> - the signature is correct;</li>
-            <li><code>incorrect</code> - the signature is incorrect;</li>
-            <li><code>error</code> - the verification cannot be performed due to an error.</li>
-          </ul>
+        description: status of the operation
       - type: String
         name: errorCode
         description: error code
@@ -5527,16 +5497,9 @@ structures:
       - type: String
         name: reactionOwnerName
         description: node name of the reaction's owner
-      - type: String
+      - enum: VerificationStatus
         name: status
-        description: >
-          status of the operation; the possible values are:
-          <ul>
-            <li><code>running</code> - the verification is pending;</li>
-            <li><code>correct</code> - the signature is correct;</li>
-            <li><code>incorrect</code> - the signature is incorrect;</li>
-            <li><code>error</code> - the verification cannot be performed due to an error.</li>
-          </ul>
+        description: status of the operation
       - type: String
         name: errorCode
         description: error code
@@ -5692,9 +5655,9 @@ structures:
                 <li>
                   <code>size</code> - data size in bytes/kilobytes/megabytes etc.
                 </li>
-              <ul>
+              </ul>
             </li>
-          <ul>
+          </ul>
       - type: String
         name: min
         description: (<code>int</code>, <code>Duration</code>) minimal value
@@ -5718,11 +5681,9 @@ structures:
       - type: boolean
         name: reject
         description: <code>true</code>, if the complaints in the group are to be rejected, <code>false</code> otherwise
-      - type: String
+      - enum: SheriffOrderReason
         name: decisionCode
-        description: >
-          the decision (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for the list of
-          possible values)
+        description: the decision
       - type: String
         name: decisionDetails
         description: detailed explanation of the decision in user-readable form
@@ -5790,26 +5751,12 @@ structures:
       - type: int
         name: moment
         description: moment of the group of complaints
-      - type: String
+      - enum: SheriffComplainStatus
         name: status
-        description: >
-          status of the group of complaints; the possible values are:
-          <ul>
-            <li><code>posted</code> - the group is just added;</li>
-            <li><code>prepared</code> - automatic preprocessing is done;</li>
-            <li><code>prepare-failed</code> - automatic preprocessing is failed;</li>
-            <li><code>not-found</code> - the entry the group is related to is not found;</li>
-            <li><code>invalid-target</code> - the entry the group is related to is specified incorrectly;</li>
-            <li><code>not-original</code> - the posting the group is related to is a copy of the original posting;</li>
-            <li><code>not-sheriff</code> - the entry the group is related to is not under supervision of the sheriff;</li>
-            <li><code>approved</code> - the group is approved by the sheriff;</li>
-            <li><code>rejected</code> - the group is rejected by the sheriff.</li>
-          </ul>
-      - type: String
+        description: status of the group of complaints
+      - enum: SheriffOrderReason
         name: decisionCode
-        description: >
-          sheriff's decision (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
-          the list of possible values)
+        description: sheriff's decision
       - type: String
         name: decisionDetails
         description: detailed explanation of sheriff's decision in user-readable form
@@ -5857,11 +5804,9 @@ structures:
       - struct: SheriffComplainGroupInfo
         name: group
         description: the group of complains this complaint belongs to
-      - type: String
+      - enum: SheriffOrderReason
         name: reasonCode
-        description: >
-          reason of the complaint (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
-          the list of possible values)
+        description: reason of the complaint
       - type: String
         name: reasonDetails
         description: detailed explanation of reason of the complaint in user-readable form
@@ -5919,11 +5864,9 @@ structures:
       - type: String
         name: commentHeading
         description: heading of the comment
-      - type: String
+      - enum: SheriffOrderReason
         name: reasonCode
-        description: >
-          reason of the complaint (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
-          the list of possible values)
+        description: reason of the complaint
       - type: String
         name: reasonDetails
         description: detailed explanation of reason of the complaint in user-readable form
@@ -5983,16 +5926,12 @@ structures:
       - type: String
         name: commentId
         description: ID of the comment the order is related to; may be absent
-      - type: String
+      - enum: SheriffOrderCategory
         name: category
-        description: >
-          category of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.category</code> for
-          the list of possible values)
-      - type: String
+        description: category of the order
+      - enum: SheriffOrderReason
         name: reasonCode
-        description: >
-          reason of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
-          the list of possible values)
+        description: reason of the order
       - type: String
         name: reasonDetails
         description: detailed explanation of reason of the order in user-readable form
@@ -6026,29 +5965,12 @@ structures:
       - type: String
         name: commentId
         description: ID of the comment the order is related to; may be absent
-      - type: String
+      - enum: SheriffOrderCategory
         name: category
-        description: >
-          category of the order; the possible values are:
-          <ul>
-            <li><code>visibility</code> - hide the feed or the entry.</li>
-          </ul>
-      - type: String
+        description: category of the order
+      - enum: SheriffOrderReason
         name: reasonCode
-        description: >
-          reason of the order; the possible values are:
-          <ul>
-            <li><code>unlawful</code> - violation of a law;</li>
-            <li><code>defamatory</code> - defamatory content;</li>
-            <li><code>threat</code> - contains a threat against a person;</li>
-            <li><code>spam</code> - spam;</li>
-            <li><code>scam</code> - fraudulent content;</li>
-            <li><code>malware</code> - distribution of a malware;</li>
-            <li><code>copyright</code> - copyright infringement;</li>
-            <li><code>impersonating</code> - the author pretends to be someone else;</li>
-            <li><code>privacy</code> - violation of someone's privacy;</li>
-            <li><code>other</code> - any other reason.</li>
-          </ul>
+        description: reason of the order
       - type: String
         name: reasonDetails
         description: detailed explanation of reason of the order in user-readable form
@@ -6138,16 +6060,12 @@ structures:
       - type: String
         name: commentHeading
         description: heading of the comment
-      - type: String
+      - enum: SheriffOrderCategory
         name: category
-        description: >
-          category of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.category</code> for
-          the list of possible values)
-      - type: String
+        description: category of the order
+      - enum: SheriffOrderReason
         name: reasonCode
-        description: >
-          reason of the order (see <code><a href="#SheriffOrderDetails">SheriffOrderDetails</a>.reason</code> for
-          the list of possible values)
+        description: reason of the order
       - type: String
         name: reasonDetails
         description: detailed explanation of reason of the order in user-readable form
@@ -6311,11 +6229,9 @@ structures:
       - type: String
         name: feedName
         description: name of a feed
-      - type: String
+      - enum: SubscriptionReason
         name: subscriptionReason
-        description: >
-          subscription reason (see the list of well-known values in
-          <a href="#SubscriptionDescription"><code>SubscriptionDescription</code></a><code>.reason</code>
+        description: subscription reason
       - struct: StorySummaryFriendGroup
         name: friendGroup
         description: a group of friends
@@ -6330,11 +6246,10 @@ structures:
         description: additional descriptive text
   - name: StorySummaryBlocked
     fields:
-      - type: String[]
+      - enum: BlockedOperation
+        array: true
         name: operations
-        description: >
-          list of the operations blocked (see <code><a href="#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code>
-          for the list of possible values)
+        description: list of the operations blocked
       - type: int
         name: period
         description: the period of blocking in seconds, may be absent
@@ -6405,11 +6320,9 @@ structures:
         description: ID of the complaint, if any
   - name: SubscriberDescription
     fields:
-      - type: String
+      - enum: SubscriptionType
         name: type
-        description: >
-          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
-          the list of possible values)
+        description: subscription type
       - type: String
         name: feedName
         description: feed name, if the subscription type requires one
@@ -6442,11 +6355,9 @@ structures:
       - type: String
         name: id
         description: subscriber ID
-      - type: String
+      - enum: SubscriptionType
         name: type
-        description: >
-          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
-          the list of possible values)
+        description: subscription type
       - type: String
         name: feedName
         description: feed name, if the subscription type requires one
@@ -6499,20 +6410,9 @@ structures:
         description: principal for one of admin operations is invalid
   - name: SubscriptionDescription
     fields:
-      - type: String
+      - enum: SubscriptionType
         name: type
-        description: >
-          subscription type, the possible values are:
-          <ul>
-            <li><code>feed</code> - subscribe to new stories in the feed;</li>
-            <li><code>posting</code> - subscribe to updates to the posting;</li>
-            <li><code>posting-comments</code> - subscribe to new comments to the posting;</li>
-            <li><code>profile</code> - subscribe to updates to the node profile;</li>
-            <li>
-              <code>user-list</code> - subscribe to updates to the user list (its name is passed in
-              <code>feedName</code> field).
-          </li>
-          </ul>
+        description: subscription type
       - type: String
         name: feedName
         description: feed name on this node that receives notifications
@@ -6525,15 +6425,9 @@ structures:
       - type: String
         name: remotePostingId
         description: posting ID on the remote node, if the subscription type requires one
-      - type: String
+      - enum: SubscriptionReason
         name: reason
-        description: >
-          subscription reason, the well-known values are:
-          <ul>
-            <li><code>user</code> - node owner asked to subscribe;</li>
-            <li><code>mention</code> - node name was mentioned;</li>
-            <li><code>comment</code> - node owner commented the posting.</li>
-          </ul>
+        description: subscription reason
       - type: String -> String
         name: operations
         description: list of <a href="#SubscriptionInfo-operations">the operations</a> and the corresponding principals
@@ -6564,11 +6458,9 @@ structures:
         description: principal for one of operations is invalid
   - name: SubscriptionFilter
     fields:
-      - type: String
+      - enum: SubscriptionType
         name: type
-        description: >
-          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
-          the list of possible values)
+        description: subscription type
       - struct: RemoteFeed
         array: true
         name: feeds
@@ -6582,11 +6474,9 @@ structures:
       - type: String
         name: id
         description: subscription ID
-      - type: String
+      - enum: SubscriptionType
         name: type
-        description: >
-          subscription type (see <code><a href="#SubscriptionDescription">SubscriptionDescription</a>.type</code> for
-          the list of possible values)
+        description: subscription type
       - type: String
         name: feedName
         description: feed name on this node that receives notifications
@@ -6605,11 +6495,9 @@ structures:
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
-      - type: String
+      - enum: SubscriptionReason
         name: reason
-        description: >
-          subscription reason (see the list of well-known values in
-          <a href="#SubscriptionDescription"><code>SubscriptionDescription</code></a><code>.reason</code>
+        description: subscription reason
       - type: String -> String
         name: operations
         description: list of the supported operations (see below) and the corresponding principals
@@ -6784,6 +6672,18 @@ enums:
       - name: friend
         description: >
           "add me to your friends" - asking remote node to add this node to friends
+  - name: BlockedOperation
+    values:
+      - name: reaction
+        description: add reactions to entries on the node
+      - name: comment
+        description: add comments to postings on the node
+      - name: posting
+        description: add postings to the node
+      - name: visibility
+        description: be visible to the node
+      - name: instant
+        description: be visible in stories added to the instants feed of the node
   - name: DraftType
     values:
       - name: new-posting
@@ -6816,6 +6716,82 @@ enums:
         description: a story was deleted from a feed
       - name: feed-updated
         description: feed status was updated
+  - name: SheriffComplainStatus
+    values:
+      - name: posted
+        description: the group is just added
+      - name: prepared
+        description: automatic preprocessing is done
+      - name: prepare-failed
+        description: automatic preprocessing is failed
+      - name: not-found
+        description: the entry the group is related to is not found
+      - name: invalid-target
+        description: the entry the group is related to is specified incorrectly
+      - name: not-original
+        description: the posting the group is related to is a copy of the original posting
+      - name: not-sheriff
+        description: the entry the group is related to is not under supervision of the sheriff
+      - name: approved
+        description: the group is approved by the sheriff
+      - name: rejected
+        description: the group is rejected by the sheriff
+  - name: SheriffOrderCategory
+    values:
+      - name: visibility
+        description: hide the feed or the entry
+  - name: SheriffOrderReason
+    values:
+      - name: unlawful
+        description: violation of a law
+      - name: defamatory
+        description: defamatory content
+      - name: threat
+        description: contains a threat against a person
+      - name: spam
+        description: spam
+      - name: scam
+        description: fraudulent content
+      - name: malware
+        description: distribution of a malware
+      - name: copyright
+        description: copyright infringement
+      - name: impersonating
+        description: the author pretends to be someone else
+      - name: privacy
+        description: violation of someone's privacy
+      - name: other
+        description: any other reason
+  - name: SubscriptionReason
+    values:
+      - name: user
+        description: node owner asked to subscribe
+      - name: mention
+        description: node name was mentioned
+      - name: comment
+        description: node owner commented the posting
+  - name: SubscriptionType
+    values:
+      - name: feed
+        description: subscribe to new stories in the feed
+      - name: posting
+        description: subscribe to updates to the posting
+      - name: posting-comments
+        description: subscribe to new comments to the posting
+      - name: profile
+        description: subscribe to updates to the node profile
+      - name: user-list
+        description: subscribe to updates to the user list (its name is passed in <code>feedName</code> field)
+  - name: VerificationStatus
+    values:
+      - name: running
+        description: the verification is pending
+      - name: correct
+        description: the signature is correct
+      - name: incorrect
+        description: the signature is incorrect
+      - name: error
+        description: the verification cannot be performed due to an error
 
 http-codes:
   - code: 200

@@ -16,12 +16,9 @@ notifications:
   - type: BLOCKING_ADDED
     description: A remote node has blocked this node.
     fields:
-      - type: String
+      - enum: BlockedOperation
         name: blockedOperation
-        description: >
-          operation that is blocked (see
-          <code><a href="node-api.html#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible
-          values)
+        description: operation that is blocked
       - type: String
         name: postingId
         description: >
@@ -40,12 +37,9 @@ notifications:
   - type: BLOCKING_DELETED
     description: A remote node has unblocked this node.
     fields:
-      - type: String
+      - enum: BlockedOperation
         name: blockedOperation
-        description: >
-          operation that is unblocked (see
-          <code><a href="node-api.html#BlockedUserInfo">BlockedUserInfo</a>.blockedOperation</code> for the possible
-          values)
+        description: operation that is unblocked
       - type: String
         name: postingId
         description: >

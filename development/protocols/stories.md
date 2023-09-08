@@ -8,8 +8,7 @@ body_class: body-pink
 
 # Stories
 Stories describe something happening in Moera, they are building blocks
-for feeds. All stories have
-[the same structure](node-api.html#StoryInfo)<!-- @IGNORE PREVIOUS: anchor -->,
+for feeds. All stories have [the same structure](node-api.html#StoryInfo)
 but the meaning of fields depends on the story type. A story may
 reference a posting, a remote object, etc. Some feeds may not allow some
 types of stories.
