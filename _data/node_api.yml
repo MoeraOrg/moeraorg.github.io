@@ -3490,12 +3490,10 @@ structures:
         name: operations
         optional: true
         description: the supported operations and the corresponding principals
-      - type: String -> String
+      - struct: ReactionOperations
         name: reactionOperations
         optional: true
-        description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in reactions to the comment
+        description: the operations and the corresponding principals that are overridden in reactions to the comment
       - struct: CommentOperations
         name: ownerOperations
         optional: true
@@ -3533,12 +3531,11 @@ structures:
         description: reactions summary of the comment
   - name: CommentMassAttributes
     fields:
-      - type: String -> String
+      - type: CommentOperations
         name: seniorOperations
         optional: true
         description: >
-          list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals that are
-          overridden by the posting's owner ("senior")
+          the operations and the corresponding principals that are overridden by the comment's owner ("senior")
     errors:
       - code: commentMassAttributes.seniorOperations.wrong-principal
         description: principal for one of senior operations is invalid
@@ -3753,12 +3750,10 @@ structures:
         name: operations
         optional: true
         description: the operations and the corresponding principals
-      - type: String -> String
+      - struct: ReactionOperations
         name: reactionOperations
         optional: true
-        description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in reactions to the comment
+        description: the operations and the corresponding principals that are overridden in reactions to the comment
       - struct: CommentOperations
         name: seniorOperations
         optional: true
@@ -3861,41 +3856,18 @@ structures:
         name: hasBlockBy
         optional: true
         description: the node is blocked by the contact
-      - type: String -> String
+      - struct: ContactOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-      - type: String -> String
+        description: the supported operations and the corresponding principals
+      - struct: ContactOperations
         name: ownerOperations
         optional: true
-        description: >
-          list of the supported operations (see below) and the corresponding principals as defined by the contact's
-          owner
-      - type: String -> String
+        description: the supported operations and the corresponding principals as defined by the contact's owner
+      - struct: ContactOperations
         name: adminOperations
         optional: true
-        description: >
-          list of the operations (see below) and the corresponding principals that are overridden by the node
-          administrator
-    operations:
-      - name: viewFeedSubscriber
-        default: public
-        description: see the subscriber information
-      - name: viewFeedSubscription
-        default: public
-        description: see the subscription information
-      - name: viewFriend
-        default: public
-        description: see the friend information
-      - name: viewFriendOf
-        default: public
-        description: see the friend-of information (this operation can be modified by admin only)
-      - name: viewBlock
-        default: public
-        description: see the blocking information (this operation can be modified by admin only)
-      - name: viewBlockBy
-        default: public
-        description: see the blocked-by information (this operation can be modified by admin only)
+        description: the operations and the corresponding principals that are overridden by the node administrator
   - name: Credentials
     fields:
       - type: String
@@ -4029,12 +4001,10 @@ structures:
       - type: String
         name: body
         description: body of the draft, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the draft, see detailed description in
-          <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
+        description: format of the body of the draft
       - struct: MediaAttachment
         array: true
         name: media
@@ -4051,11 +4021,11 @@ structures:
         name: updateInfo
         optional: true
         description: description of the update
-      - type: String -> String
+      - struct: PostingOperations
         name: operations
         optional: true
         description: draft of the list of operations and the corresponding principals
-      - type: String -> String
+      - struct: CommentOperations
         name: commentOperations
         optional: true
         description: >
@@ -4116,11 +4086,11 @@ structures:
         name: updateInfo
         optional: true
         description: description of the update
-      - type: String -> String
+      - struct: PostingOperations
         name: operations
         optional: true
         description: draft of the list of operations and the corresponding principals
-      - type: String -> String
+      - struct: CommentOperations
         name: commentOperations
         optional: true
         description: >
@@ -4210,10 +4180,10 @@ structures:
         name: lastCreatedAt
         optional: true
         description: creation timestamp of the latest story in the feed
-      - type: String -> String
+      - struct: FeedOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
+        description: the supported operations and the corresponding principals
       - type: String[]
         name: sheriffs
         optional: true
@@ -4223,10 +4193,6 @@ structures:
         name: sheriffMarks
         optional: true
         description: list of sheriff marks on the feed
-    operations:
-      - name: add
-        default:
-        description: add stories to the feed
   - name: FeedReference
     fields:
       - type: String
@@ -4246,12 +4212,10 @@ structures:
       - type: String
         name: storyId
         description: ID of the story
-      - type: String -> String
+      - struct: StoryOperations
         name: operations
         optional: true
-        description: >
-          list of the supported <a href="#StoryInfo-operations">operations</a> and the corresponding principals for
-          the story in the feed
+        description: the supported operations and the corresponding principals for the story in the feed
   - name: FeedSliceInfo
     fields:
       - type: int
@@ -4344,21 +4308,19 @@ structures:
       - type: String
         name: id
         description: ID of the group of friends
-      - type: String -> String
+      - struct: FriendOperations
         name: operations
         optional: true
-        description: >
-          list of <a href="#FriendGroupDetails-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
   - name: FriendGroupDescription
     fields:
       - type: String
         name: title
         description: title of the group of friends
-      - type: String -> String
+      - struct: FriendGroupOperations
         name: operations
         optional: true
-        description: >
-          list of <a href="#FriendGroupInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
     errors:
       - code: friendGroupDescription.title.blank
         description: title of group of friends is empty
@@ -4378,14 +4340,10 @@ structures:
       - type: timestamp
         name: addedAt
         description: the friendship timestamp - the real time when the node was added to the group of friends
-      - type: String -> String
+      - struct: FriendOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: view
-        default: public
-        description: view the membership of the node in the group of friends
+        description: list of the supported operations and the corresponding principals
   - name: FriendGroupInfo
     fields:
       - type: String
@@ -4397,14 +4355,10 @@ structures:
       - type: timestamp
         name: createdAt
         description: the group creation timestamp - the real time when the group of friends was created
-      - type: String -> String
+      - struct: FriendGroupOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: view
-        default: public
-        description: view the group of friends
+        description: list of the supported operations and the corresponding principals
   - name: FriendGroupsFeatures
     fields:
       - struct: FriendGroupInfo
@@ -4615,14 +4569,10 @@ structures:
         name: operationErrorMessage
         optional: true
         description: if the operation with the node name was failed, the human-readable description of the failure
-      - type: String -> String
+      - struct: NodeNameOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: manage
-        default:
-        description: any modification of the node name, prolonging it etc
+        description: the supported operations and the corresponding principals
   - name: PeopleGeneralInfo
     fields:
       - type: int
@@ -4649,41 +4599,10 @@ structures:
         name: blockedByTotal
         optional: true
         description: total number of nodes that blocked this node
-      - type: String -> String
+      - struct: PeopleOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: viewSubscribers
-        default: public
-        description: view the list of subscribers
-      - name: viewSubscriptions
-        default: public
-        description: view the list of subscriptions
-      - name: viewFriends
-        default: public
-        description: view the list of friends
-      - name: viewFriendOfs
-        default: public
-        description: view the list of those who added this node to friends
-      - name: viewBlocked
-        default: public
-        description: view the list of blocked nodes
-      - name: viewBlockedBy
-        default: admin
-        description: view the list of those who blocked this node
-      - name: viewSubscribersTotal
-        default: public
-        description: view the number of subscribers
-      - name: viewSubscriptionsTotal
-        default: public
-        description: view the number of subscriptions
-      - name: viewFriendsTotal
-        default: public
-        description: view the number of friends
-      - name: viewFriendOfsTotal
-        default: public
-        description: view the number of those who added this node to friends
+        description: the supported operations and the corresponding principals
   - name: PluginContext
     fields:
       - type: boolean
@@ -4983,32 +4902,29 @@ structures:
         name: blockedInstants
         optional: true
         description: instants related to the posting that are blocked (for admin only)
-      - type: String -> String
+      - struct: PostingOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-      - type: String -> String
+        description: the supported operations and the corresponding principals
+      - struct: PostingOperations
         name: receiverOperations
         optional: true
         description: >
-          list of the supported operations (see below) for the original posting and the corresponding principals
-          (for cached copies of remote postings only)
+          the supported operations for the original posting and the corresponding principals (for cached copies of
+          remote postings only)
       - struct: CommentOperations
         name: commentOperations
         optional: true
         description: the operations and the corresponding principals that are overridden in the posting's comments
-      - type: String -> String
+      - struct: ReactionOperations
         name: reactionOperations
         optional: true
-        description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in reactions to the posting
-      - type: String -> String
+        description: the operations and the corresponding principals that are overridden in reactions to the posting
+      - struct: ReactionOperations
         name: commentReactionOperations
         optional: true
         description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in reactions to the posting's comments
+          the operations and the corresponding principals that are overridden in reactions to the posting's comments
       - enum: BlockedEntryOperation
         array: true
         name: blockedOperations
@@ -5049,58 +4965,6 @@ structures:
         name: totalComments
         optional: true
         description: total number of comments to the posting
-    operations:
-      - name: view
-        default: public
-        description: view the posting
-      - name: edit
-        default: owner
-        description: edit the posting
-      - name: delete
-        default: private
-        description: delete the posting
-      - name: viewComments
-        default: public
-        description: view the posting's comments
-      - name: addComment
-        default: signed
-        description: add a comment to the posting
-      - name: overrideComment
-        default: owner
-        description: override the permissions of the posting's comments
-      - name: viewReactions
-        default: public
-        description: view the posting's reactions
-      - name: viewNegativeReactions
-        default: public
-        description: view the posting's negative reactions
-      - name: viewReactionTotals
-        default: public
-        description: view the number of the posting's reactions
-      - name: viewNegativeReactionTotals
-        default: public
-        description: view the number of the posting's negative reactions
-      - name: viewReactionTotals
-        default: public
-        description: view the number of the posting's reactions
-      - name: viewReactionRatios
-        default: public
-        description: view the relative number of different types of the posting's reactions
-      - name: viewNegativeReactionRatios
-        default: public
-        description: view the relative number of different types of the posting's negative reactions
-      - name: addReaction
-        default: signed
-        description: add a reaction to the posting
-      - name: addNegativeReaction
-        default: signed
-        description: add a negative reaction to the posting
-      - name: overrideReaction
-        default: owner
-        description: override the permissions of the posting's reactions
-      - name: overrideCommentReaction
-        default: owner
-        description: override the permissions of the posting's comment's reactions
   - name: PostingRevisionInfo
     fields:
       - type: String
@@ -5125,12 +4989,10 @@ structures:
       - type: String
         name: body
         description: body of the revision, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the revision, see detailed description in
-          <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
+        description: format of the body of the revision
       - struct: MediaAttachment
         array: true
         name: media
@@ -5228,10 +5090,10 @@ structures:
         name: acceptedReactions
         optional: true
         description: types of reactions that the posting accepts
-      - type: String -> String
+      - struct: PostingOperations
         name: operations
         optional: true
-        description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
       - struct: CommentOperations
         name: commentOperations
         optional: true
@@ -5307,26 +5169,23 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
-      - type: String -> String
+      - struct: PostingOperations
         name: operations
         optional: true
-        description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
       - struct: CommentOperations
         name: commentOperations
         optional: true
         description: the operations and the corresponding principals that are overridden in the posting's comments
-      - type: String -> String
+      - struct: ReactionOperations
         name: reactionOperations
         optional: true
-        description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in reactions to the posting
-      - type: String -> String
+        description: the operations and the corresponding principals that are overridden in reactions to the posting
+      - struct: ReactionOperations
         name: commentReactionOperations
         optional: true
         description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in reactions to the posting's comments
+          the operations and the corresponding principals that are overridden in reactions to the posting's comments
     errors:
       - code: postingText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -5419,14 +5278,10 @@ structures:
         name: previews
         optional: true
         description: list of media previews - downscaled versions of the media
-      - type: String -> String
+      - struct: PrivateMediaFileOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: view
-        default: public
-        description: view the media file
+        description: the supported operations and the corresponding principals
   - name: ProfileAttributes
     fields:
       - type: String
@@ -5464,10 +5319,10 @@ structures:
         name: fundraisers
         optional: true
         description: list of fundraisers - methods of giving a donation to the node owner
-      - type: String -> String
+      - struct: ProfileOperations
         name: operations
         optional: true
-        description: list of <a href="#ProfileInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
     errors:
       - code: profileAttributes.fullName.wrong-size
         description: the full name is too long
@@ -5525,17 +5380,10 @@ structures:
         name: fundraisers
         optional: true
         description: list of fundraisers - methods of giving a donation to the node owner
-      - type: String -> String
+      - struct: ProfileOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: edit
-        default:
-        description: change the profile
-      - name: viewEmail
-        default:
-        description: view the e-mail address in the profile
+        description: the supported operations and the corresponding principals
   - name: PublicMediaFileInfo
     fields:
       - type: String
@@ -5589,10 +5437,10 @@ structures:
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
-      - type: String -> String
+      - struct: ReactionOperations
         name: operations
         optional: true
-        description: list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
   - name: ReactionCreated
     fields:
       - struct: ReactionInfo
@@ -5636,10 +5484,10 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
-      - type: String -> String
+      - struct: ReactionOperations
         name: operations
         optional: true
-        description: list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
     errors:
       - code: reactionDescription.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -5718,36 +5566,26 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
-      - type: String -> String
+      - struct: ReactionOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-      - type: String -> String
+        description: the supported operations and the corresponding principals
+      - struct: ReactionOperations
         name: ownerOperations
         optional: true
-        description: >
-          list of the supported operations (see below) and the corresponding principals as defined by the reaction's
-          owner
-      - type: String -> String
+        description: the supported operations and the corresponding principals as defined by the reaction's owner
+      - struct: ReactionOperations
         name: seniorOperations
         optional: true
         description: >
-          list of the operations (see below) and the corresponding principals that are overridden by the reaction's
-          "senior": the posting's owner in the case of reaction to a posting or the comment's owner in the case of
-          reaction to a comment
-      - type: String -> String
+          the operations and the corresponding principals that are overridden by the reaction's "senior": the posting's
+          owner in the case of reaction to a posting or the comment's owner in the case of reaction to a comment
+      - struct: ReactionOperations
         name: majorOperations
         optional: true
         description: >
-          list of the operations (see below) and the corresponding principals that are overridden by the posting's
-          owner ("major") in the case of reaction to a comment; not set in the case of reaction to a posting
-    operations:
-      - name: view
-        default: public
-        description: view the reaction
-      - name: delete
-        default: private
-        description: delete the reaction
+          the operations and the corresponding principals that are overridden by the posting's owner ("major") in
+          the case of reaction to a comment; not set in the case of reaction to a posting
   - name: ReactionsSliceInfo
     fields:
       - type: int
@@ -5798,25 +5636,22 @@ structures:
         description: summary of negative reactions
   - name: ReactionOverride
     fields:
-      - type: String -> String
+      - struct: ReactionOperations
         name: operations
         optional: true
-        description: >
-          list of the supported <a href="#ReactionInfo-operations">operations</a> and the corresponding principals
-      - type: String -> String
+        description: the supported operations and the corresponding principals
+      - struct: ReactionOperations
         name: seniorOperations
         optional: true
         description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden by the reaction's "senior": the posting's owner in the case of reaction to a posting or
-          the comment's owner in the case of reaction to a comment
-      - type: String -> String
+          the operations and the corresponding principals that are overridden by the reaction's "senior": the posting's
+          owner in the case of reaction to a posting or the comment's owner in the case of reaction to a comment
+      - struct: ReactionOperations
         name: majorOperations
         optional: true
         description: >
-          list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
-          overridden by the posting's owner ("major") in the case of reaction to a comment; not set in the case of
-          reaction to a posting
+          the operations and the corresponding principals that are overridden by the posting's owner ("major") in
+          the case of reaction to a comment; not set in the case of reaction to a posting
     errors:
       - code: reactionOverride.operations.wrong-principal
         description: principal for one of operations is invalid
@@ -6633,10 +6468,6 @@ structures:
         description: >
           if the story is associated with a user action (for example, it contains a form that should be submitted), this
           flag is set to <code>true</code>, if the action is done already, and <code>false</code> otherwise
-      - type: String -> String
-        name: operations
-        optional: true
-        description: list of the supported operations (see below) and the corresponding principals
       - type: String
         name: summaryNodeName
         optional: true
@@ -6691,13 +6522,10 @@ structures:
         name: remoteMediaId
         optional: true
         description: ID of the media at remote node this story is about
-    operations:
-      - name: edit
-        default: admin
-        description: update the story
-      - name: delete
-        default: admin
-        description: delete the story
+      - struct: StoryOperations
+        name: operations
+        optional: true
+        description: the supported operations and the corresponding principals
   - name: StorySummaryData
     fields:
       - struct: StorySummaryNode
@@ -6875,10 +6703,10 @@ structures:
         name: lastUpdatedAt
         optional: true
         description: timestamp of the latest known state of the object
-      - type: String -> String
+      - struct: SubscriberOperations
         name: operations
         optional: true
-        description: list of <a href="#SubscriberInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
     errors:
       - code: subscriberDescription.type.blank
         description: type is empty
@@ -6920,41 +6748,28 @@ structures:
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
-      - type: String -> String
+      - struct: SubscriberOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-      - type: String -> String
+        description: the supported operations and the corresponding principals
+      - struct: SubscriberOperations
         name: ownerOperations
         optional: true
-        description: >
-          list of the supported operations (see below) and the corresponding principals as defined by the subscriber
-      - type: String -> String
+        description: the supported operations and the corresponding principals as defined by the subscriber
+      - struct: SubscriberOperations
         name: adminOperations
         optional: true
-        description: >
-          list of the operations (see below) and the corresponding principals that are overridden by the node
-          administrator
-    operations:
-      - name: view
-        default: public
-        description: see the subscriber
-      - name: delete
-        default: private
-        description: delete the subscriber (this operation cannot be modified or overridden)
+        description: the operations and the corresponding principals that are overridden by the node administrator
   - name: SubscriberOverride
     fields:
-      - type: String -> String
+      - struct: SubscriberOperations
         name: operations
         optional: true
-        description: >
-          list of the supported <a href="#SubscriberInfo-operations">operations</a> and the corresponding principals
-      - type: String -> String
+        description: the supported operations and the corresponding principals
+      - struct: SubscriberOperations
         name: adminOperations
         optional: true
-        description: >
-          list of <a href="#SubscriberInfo-operations">the operations</a> and the corresponding principals that are
-          overridden by the node administrator
+        description: the operations and the corresponding principals that are overridden by the node administrator
     errors:
       - code: subscriberOverride.operations.wrong-principal
         description: principal for one of operations is invalid
@@ -6984,10 +6799,10 @@ structures:
         name: reason
         optional: true
         description: subscription reason
-      - type: String -> String
+      - struct: SubscriptionOperations
         name: operations
         optional: true
-        description: list of <a href="#SubscriptionInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
     errors:
       - code: subscriptionDescription.type.blank
         description: type is empty
@@ -7062,24 +6877,16 @@ structures:
       - enum: SubscriptionReason
         name: reason
         description: subscription reason
-      - type: String -> String
+      - struct: SubscriptionOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
-    operations:
-      - name: view
-        default: public
-        description: see the subscription
-      - name: delete
-        default: admin
-        description: delete the subscription (this operation cannot be modified or overridden)
+        description: the supported operations and the corresponding principals
   - name: SubscriptionOverride
     fields:
-      - type: String -> String
+      - struct: SubscriptionOperations
         name: operations
         optional: true
-        description: >
-          list of the supported <a href="#SubscriptionInfo-operations">operations</a> and the corresponding principals
+        description: the supported operations and the corresponding principals
     errors:
       - code: subscriptionOverride.operations.wrong-principal
         description: principal for one of operations is invalid
@@ -7282,6 +7089,176 @@ operations:
       - name: addNegativeReaction
         default: signed
         description: add a negative reaction to the comment
+  - name: ContactOperations
+    fields:
+      - name: viewFeedSubscriber
+        default: public
+        description: see the subscriber information
+      - name: viewFeedSubscription
+        default: public
+        description: see the subscription information
+      - name: viewFriend
+        default: public
+        description: see the friend information
+      - name: viewFriendOf
+        default: public
+        description: see the friend-of information (this operation can be modified by admin only)
+      - name: viewBlock
+        default: public
+        description: see the blocking information (this operation can be modified by admin only)
+      - name: viewBlockBy
+        default: public
+        description: see the blocked-by information (this operation can be modified by admin only)
+  - name: FeedOperations
+    fields:
+      - name: add
+        default:
+        description: add stories to the feed
+  - name: FriendOperations
+    fields:
+      - name: view
+        default: public
+        description: view the membership of the node in the group of friends
+  - name: FriendGroupOperations
+    fields:
+      - name: view
+        default: public
+        description: view the group of friends
+  - name: NodeNameOperations
+    fields:
+      - name: manage
+        default:
+        description: any modification of the node name, prolonging it etc
+  - name: PeopleOperations
+    fields:
+      - name: viewSubscribers
+        default: public
+        description: view the list of subscribers
+      - name: viewSubscriptions
+        default: public
+        description: view the list of subscriptions
+      - name: viewFriends
+        default: public
+        description: view the list of friends
+      - name: viewFriendOfs
+        default: public
+        description: view the list of those who added this node to friends
+      - name: viewBlocked
+        default: public
+        description: view the list of blocked nodes
+      - name: viewBlockedBy
+        default: admin
+        description: view the list of those who blocked this node
+      - name: viewSubscribersTotal
+        default: public
+        description: view the number of subscribers
+      - name: viewSubscriptionsTotal
+        default: public
+        description: view the number of subscriptions
+      - name: viewFriendsTotal
+        default: public
+        description: view the number of friends
+      - name: viewFriendOfsTotal
+        default: public
+        description: view the number of those who added this node to friends
+  - name: PostingOperations
+    fields:
+      - name: view
+        default: public
+        description: view the posting
+      - name: edit
+        default: owner
+        description: edit the posting
+      - name: delete
+        default: private
+        description: delete the posting
+      - name: viewComments
+        default: public
+        description: view the posting's comments
+      - name: addComment
+        default: signed
+        description: add a comment to the posting
+      - name: overrideComment
+        default: owner
+        description: override the permissions of the posting's comments
+      - name: viewReactions
+        default: public
+        description: view the posting's reactions
+      - name: viewNegativeReactions
+        default: public
+        description: view the posting's negative reactions
+      - name: viewReactionTotals
+        default: public
+        description: view the number of the posting's reactions
+      - name: viewNegativeReactionTotals
+        default: public
+        description: view the number of the posting's negative reactions
+      - name: viewReactionTotals
+        default: public
+        description: view the number of the posting's reactions
+      - name: viewReactionRatios
+        default: public
+        description: view the relative number of different types of the posting's reactions
+      - name: viewNegativeReactionRatios
+        default: public
+        description: view the relative number of different types of the posting's negative reactions
+      - name: addReaction
+        default: signed
+        description: add a reaction to the posting
+      - name: addNegativeReaction
+        default: signed
+        description: add a negative reaction to the posting
+      - name: overrideReaction
+        default: owner
+        description: override the permissions of the posting's reactions
+      - name: overrideCommentReaction
+        default: owner
+        description: override the permissions of the posting's comment's reactions
+  - name: PrivateMediaFileOperations
+    fields:
+      - name: view
+        default: public
+        description: view the media file
+  - name: ProfileOperations
+    fields:
+      - name: edit
+        default:
+        description: change the profile
+      - name: viewEmail
+        default:
+        description: view the e-mail address in the profile
+  - name: ReactionOperations
+    fields:
+      - name: view
+        default: public
+        description: view the reaction
+      - name: delete
+        default: private
+        description: delete the reaction
+  - name: StoryOperations
+    fields:
+      - name: edit
+        default: admin
+        description: update the story
+      - name: delete
+        default: admin
+        description: delete the story
+  - name: SubscriberOperations
+    fields:
+      - name: view
+        default: public
+        description: see the subscriber
+      - name: delete
+        default: private
+        description: delete the subscriber (this operation cannot be modified or overridden)
+  - name: SubscriptionOperations
+    fields:
+      - name: view
+        default: public
+        description: see the subscription
+      - name: delete
+        default: admin
+        description: delete the subscription (this operation cannot be modified or overridden)
 
 enums:
   - name: AskSubject

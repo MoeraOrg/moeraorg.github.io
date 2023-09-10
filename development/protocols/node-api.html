@@ -260,27 +260,6 @@ body_class: body-pink
             {% endfor %}
         </tbody>
     </table>
-    {% if struct.operations %}
-        <b id="{{ struct.name }}-operations">Operations (<a href="access-controls.html">read more</a>):</b>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="col-4">Name</th>
-                    <th class="col-2">Default</th>
-                    <th class="col-6">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for op in struct.operations %}
-                    <tr>
-                        <td><code>{{ op.name }}</code></td>
-                        <td><code>{{ op.default }}</code></td>
-                        <td>{{ op.description }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
     {% if struct.errors %}
         <b>Validation errors:</b>
         <table class="table table-bordered">
