@@ -3203,7 +3203,7 @@ structures:
         name: reasonSrc
         optional: true
         description: source text of the reason of blocking
-      - type: String
+      - enum: SourceFormat
         name: reasonSrcFormat
         optional: true
         description: >
@@ -3292,7 +3292,7 @@ structures:
         name: reasonSrc
         optional: true
         description: source text of the reason of blocking
-      - type: String
+      - enum: SourceFormat
         name: reasonSrcFormat
         optional: true
         description: >
@@ -3426,7 +3426,7 @@ structures:
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the comment
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -3435,15 +3435,10 @@ structures:
       - type: String
         name: body
         description: body of the comment, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the comment, may have any value meaningful for the client, including:
-          <ul>
-            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
-            <li><code>application</code> - an application-specific structure.</li>
-          </ul>
+        description: format of the body of the comment, may have any value meaningful for the client
       - struct: MediaAttachment
         array: true
         name: media
@@ -3513,10 +3508,11 @@ structures:
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the posting's
           owner ("senior")
-      - type: String[]
+      - enum: BlockedEntryOperation
+        array: true
         name: blockedOperations
         optional: true
-        description: operations on the comment (from the list below) that are blocked for the client
+        description: operations on the comment that are blocked for the client
       - struct: SheriffMark
         array: true
         name: sheriffMarks
@@ -3597,7 +3593,7 @@ structures:
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -3606,15 +3602,10 @@ structures:
       - type: String
         name: body
         description: body of the revision, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the revision, may have any value meaningful for the client, including:
-          <ul>
-            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
-            <li><code>application</code> - an application-specific structure.</li>
-          </ul>
+        description: format of the body of the revision, may have any value meaningful for the client
       - type: String
         name: heading
         description: heading of the revision
@@ -3685,7 +3676,7 @@ structures:
         name: bodySrc
         optional: true
         description: the source text of the comment, a string representation of a JSON structure
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -3755,7 +3746,7 @@ structures:
         name: bodySrc
         optional: true
         description: the source text of the comment, a string representation of a JSON structure
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -3765,15 +3756,10 @@ structures:
         name: body
         optional: true
         description: body of the comment, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the comment, may have any value meaningful for the client, including:
-          <ul>
-            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
-            <li><code>application</code> - an application-specific structure.</li>
-          </ul>
+        description: format of the body of the comment, may have any value meaningful for the client
       - type: String[]
         name: media
         optional: true
@@ -4071,7 +4057,7 @@ structures:
         name: bodySrc
         optional: true
         description: the source text of the draft, a string representation of a JSON structure
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -4148,7 +4134,7 @@ structures:
         name: bodySrc
         optional: true
         description: the source text of the draft, a string representation of a JSON structure
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -4948,7 +4934,7 @@ structures:
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the posting
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -4957,15 +4943,10 @@ structures:
       - type: String
         name: body
         description: body of the posting, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the posting, may have any value meaningful for the client, including:
-          <ul>
-            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
-            <li><code>application</code> - an application-specific structure.</li>
-          </ul>
+        description: format of the body of the posting, may have any value meaningful for the client
       - struct: MediaAttachment
         array: true
         name: media
@@ -5067,15 +5048,16 @@ structures:
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the posting's comments
-      - type: String[]
+      - enum: BlockedEntryOperation
+        array: true
         name: blockedOperations
         optional: true
-        description: operations on the posting (from the list below) that are blocked for the client
-      - type: String[]
+        description: operations on the posting that are blocked for the client
+      - enum: BlockedEntryOperation
+        array: true
         name: blockedCommentOperations
         optional: true
-        description: >
-          <a href="#CommentInfo-operations">operations</a> on the posting's comments that are blocked for the client
+        description: operations on the posting's comments that are blocked for the client
       - type: String[]
         name: sheriffs
         optional: true
@@ -5173,7 +5155,7 @@ structures:
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -5270,7 +5252,7 @@ structures:
         name: bodySrc
         optional: true
         description: the source text of the posting, a string representation of a JSON structure
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -5321,7 +5303,7 @@ structures:
         name: bodySrc
         optional: true
         description: the source text of the posting, a string representation of a JSON structure
-      - type: String
+      - enum: SourceFormat
         name: bodySrcFormat
         optional: true
         description: >
@@ -5331,15 +5313,10 @@ structures:
         name: body
         optional: true
         description: body of the posting, a string representation of a JSON structure
-      - type: String
+      - enum: BodyFormat
         name: bodyFormat
         optional: true
-        description: >
-          format of the body of the posting, may have any value meaningful for the client, including:
-          <ul>
-            <li><code>message</code> - <a href="#Body"><code>Body</code></a> structure;</li>
-            <li><code>application</code> - an application-specific structure.</li>
-          </ul>
+        description: format of the body of the posting, may have any value meaningful for the client
       - type: String[]
         name: media
         optional: true
@@ -5515,7 +5492,7 @@ structures:
         name: bioSrc
         optional: true
         description: the source text of node owner's bio (arbitrary text)
-      - type: String
+      - enum: SourceFormat
         name: bioSrcFormat
         optional: true
         description: >
@@ -5571,7 +5548,7 @@ structures:
         name: bioSrc
         optional: true
         description: the source text of node owner's bio (arbitrary text), may be absent if not requested
-      - type: String
+      - enum: SourceFormat
         name: bioSrcFormat
         optional: true
         description: >
@@ -6065,11 +6042,9 @@ structures:
       - type: String
         name: name
         description: name of the setting
-      - type: String
+      - enum: SettingType
         name: type
-        description: >
-          type of the setting (see <code><a href="#SettingMetaInfo">SettingMetaInfo</a>.type</code> for the list of
-          possible values)
+        description: type of the setting
       - type: String
         name: defaultValue
         optional: true
@@ -6097,34 +6072,9 @@ structures:
       - type: String
         name: name
         description: name of the setting
-      - type: String
+      - enum: SettingType
         name: type
-        description: >
-          type of the setting, may be one of:
-          <ul>
-            <li>
-              <code>bool</code> - boolean, may have value <code>true</code> or <code>false</code>
-            </li>
-            <li>
-              <code>Duration</code> - period of time, an non-negative integer followed by a single character
-              designating a measurement unit:
-              <ul>
-                <li><code>s</code> - seconds;</li>
-                <li><code>m</code> - minutes;</li>
-                <li><code>h</code> - hours;</li>
-                <li><code>d</code> - days.</li>
-              </ul>
-            </li>
-            <li>
-              <code>int</code> - integer
-            </li>
-            <li>
-              <code>Principal</code> - <a href="access-controls.html#principals">principal</a>
-            </li>
-            <li>
-              <code>string</code> - string
-            </li>
-          </ul>
+        description: type of the setting
       - type: String
         name: defaultValue
         optional: true
@@ -6179,7 +6129,8 @@ structures:
         name: always
         optional: true
         description: (<code>Duration</code>) <code>true</code>, if value <code>always</code> is allowed
-      - type: String[]
+      - enum: PrincipalFlag
+        array: true
         name: principals
         optional: true
         description: (<code>Principal</code>) list of allowed principals
@@ -7347,6 +7298,12 @@ enums:
       - name: friend
         description: >
           "add me to your friends" - asking remote node to add this node to friends
+  - name: BlockedEntryOperation
+    values:
+      - name: addComment
+        description: add a comment
+      - name: addReaction
+        description: add a reaction
   - name: BlockedOperation
     values:
       - name: reaction
@@ -7359,6 +7316,12 @@ enums:
         description: be visible to the node
       - name: instant
         description: be visible in stories added to the instants feed of the node
+  - name: BodyFormat
+    values:
+      - name: message
+        description: <a href="#Body"><code>Body</code></a> structure
+      - name: application
+        description: an application-specific structure
   - name: DraftType
     values:
       - name: new-posting
@@ -7383,6 +7346,34 @@ enums:
         description: the operation failed
       - name: unknown
         description: the operation status is unknown
+  - name: PrincipalFlag
+    values:
+      - name: none
+        description:
+      - name: private
+        description:
+      - name: admin
+        description:
+      - name: owner
+        description:
+      - name: secret
+        description:
+      - name: senior
+        description:
+      - name: enigma
+        description:
+      - name: major
+        description:
+      - name: signed
+        description:
+      - name: subscribed
+        description:
+      - name: public
+        description:
+      - name: friends
+        description:
+      - name: unset
+        description:
   - name: PushContentType
     values:
       - name: story-added
@@ -7391,6 +7382,36 @@ enums:
         description: a story was deleted from a feed
       - name: feed-updated
         description: feed status was updated
+  - name: SettingType
+    values:
+      - name: bool
+        description: boolean, may have value <code>true</code> or <code>false</code>
+      - name: int
+        description: integer
+      - name: string
+        description: string
+      - name: json
+        description: string representation of a JSON structure
+      - name: Duration
+        description: >
+          period of time, an non-negative integer followed by a single character
+          designating a measurement unit:
+          <ul>
+            <li><code>s</code> - seconds;</li>
+            <li><code>m</code> - minutes;</li>
+            <li><code>h</code> - hours;</li>
+            <li><code>d</code> - days.</li>
+          </ul>
+      - name: PrivateKey
+        description: a private cryptographic key
+      - name: PublicKey
+        description: a public cryptographic key
+      - name: Timestamp
+        description: timestamp
+      - name: UUID
+        description: UUID
+      - name: Principal
+        description: <a href="access-controls.html#principals">principal</a>
   - name: SheriffComplainStatus
     values:
       - name: posted
@@ -7437,6 +7458,16 @@ enums:
         description: violation of someone's privacy
       - name: other
         description: any other reason
+  - name: SourceFormat
+    values:
+      - name: plain-text
+        description: plain text with newlines and paragraphs delimited by empty line
+      - name: html
+        description: HTML-formatted text, the node may allow only limited set of tags
+      - name: markdown
+        description: text in Markdown format
+      - name: application
+        description: application-specific format
   - name: StoryType
     values:
       - name: asked-to-friend
