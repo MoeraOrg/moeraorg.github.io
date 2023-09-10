@@ -3486,28 +3486,25 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
-      - type: String -> String
+      - struct: CommentOperations
         name: operations
         optional: true
-        description: list of the supported operations (see below) and the corresponding principals
+        description: the supported operations and the corresponding principals
       - type: String -> String
         name: reactionOperations
         optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the comment
-      - type: String -> String
+      - struct: CommentOperations
         name: ownerOperations
         optional: true
-        description: >
-          list of the supported operations (see below) and the corresponding principals as defined by the comment's
-          owner
-      - type: String -> String
+        description: the supported operations and the corresponding principals as defined by the comment's owner
+      - struct: CommentOperations
         name: seniorOperations
         optional: true
         description: >
-          list of the operations (see below) and the corresponding principals that are overridden by the posting's
-          owner ("senior")
+          the operations and the corresponding principals that are overridden by the posting's owner ("senior")
       - enum: BlockedEntryOperation
         array: true
         name: blockedOperations
@@ -3534,40 +3531,6 @@ structures:
         name: reactions
         optional: true
         description: reactions summary of the comment
-    operations:
-      - name: view
-        default: public
-        description: view the comment
-      - name: edit
-        default: owner
-        description: edit the comment
-      - name: delete
-        default: private
-        description: delete the comment
-      - name: viewReactions
-        default: public
-        description: view the comment's reactions
-      - name: viewNegativeReactions
-        default: public
-        description: view the comment's negative reactions
-      - name: viewReactionTotals
-        default: public
-        description: view the number of the comment's reactions
-      - name: viewNegativeReactionTotals
-        default: public
-        description: view the number of the comment's negative reactions
-      - name: viewReactionRatios
-        default: public
-        description: view the relative number of different types of the comment's reactions
-      - name: viewNegativeReactionRatios
-        default: public
-        description: view the relative number of different types of the comment's negative reactions
-      - name: addReaction
-        default: signed
-        description: add a reaction to the comment
-      - name: addNegativeReaction
-        default: signed
-        description: add a negative reaction to the comment
   - name: CommentMassAttributes
     fields:
       - type: String -> String
@@ -3695,16 +3658,16 @@ structures:
         name: repliedToId
         optional: true
         description: ID of the comment this comment is replying to
-      - type: String -> String
+      - struct: CommentOperations
         name: operations
         optional: true
-        description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
-      - type: String -> String
+        description: the operations and the corresponding principals
+      - struct: CommentOperations
         name: seniorOperations
         optional: true
         description: >
-          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
-          overridden by the posting's owner ("senior"); only the senior may set this
+          the operations and the corresponding principals that are overridden by the posting's owner ("senior"); only
+          the senior may set this
     errors:
       - code: commentText.bodySrc.blank
         description: body text is empty
@@ -3786,22 +3749,22 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
-      - type: String -> String
+      - struct: CommentOperations
         name: operations
         optional: true
-        description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
+        description: the operations and the corresponding principals
       - type: String -> String
         name: reactionOperations
         optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the comment
-      - type: String -> String
+      - struct: CommentOperations
         name: seniorOperations
         optional: true
         description: >
-          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
-          overridden by the posting's owner ("senior"); only the senior may set this
+          the operations and the corresponding principals that are overridden by the posting's owner ("senior"); only
+          the senior may set this
     errors:
       - code: commentText.ownerAvatar.mediaId.not-found
         description: owner's avatar is not found
@@ -5030,12 +4993,10 @@ structures:
         description: >
           list of the supported operations (see below) for the original posting and the corresponding principals
           (for cached copies of remote postings only)
-      - type: String -> String
+      - struct: CommentOperations
         name: commentOperations
         optional: true
-        description: >
-          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in the posting's comments
+        description: the operations and the corresponding principals that are overridden in the posting's comments
       - type: String -> String
         name: reactionOperations
         optional: true
@@ -5271,12 +5232,10 @@ structures:
         name: operations
         optional: true
         description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
-      - type: String -> String
+      - struct: CommentOperations
         name: commentOperations
         optional: true
-        description: >
-          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in the posting's comments
+        description: the operations and the corresponding principals that are overridden in the posting's comments
   - name: PostingText
     fields:
       - type: String
@@ -5352,12 +5311,10 @@ structures:
         name: operations
         optional: true
         description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
-      - type: String -> String
+      - struct: CommentOperations
         name: commentOperations
         optional: true
-        description: >
-          list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
-          overridden in the posting's comments
+        description: the operations and the corresponding principals that are overridden in the posting's comments
       - type: String -> String
         name: reactionOperations
         optional: true
@@ -7288,6 +7245,43 @@ structures:
         name: avatar
         optional: true
         description: node owners's avatar
+
+operations:
+  - name: CommentOperations
+    fields:
+      - name: view
+        default: public
+        description: view the comment
+      - name: edit
+        default: owner
+        description: edit the comment
+      - name: delete
+        default: private
+        description: delete the comment
+      - name: viewReactions
+        default: public
+        description: view the comment's reactions
+      - name: viewNegativeReactions
+        default: public
+        description: view the comment's negative reactions
+      - name: viewReactionTotals
+        default: public
+        description: view the number of the comment's reactions
+      - name: viewNegativeReactionTotals
+        default: public
+        description: view the number of the comment's negative reactions
+      - name: viewReactionRatios
+        default: public
+        description: view the relative number of different types of the comment's reactions
+      - name: viewNegativeReactionRatios
+        default: public
+        description: view the relative number of different types of the comment's negative reactions
+      - name: addReaction
+        default: signed
+        description: add a reaction to the comment
+      - name: addNegativeReaction
+        default: signed
+        description: add a negative reaction to the comment
 
 enums:
   - name: AskSubject
