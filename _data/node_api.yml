@@ -2925,7 +2925,7 @@ structures:
       - type: int
         name: ordinal
         optional: true
-        description: ordinal of the avatar, may be absent
+        description: ordinal of the avatar
     errors:
       - code: avatarAttributes.mediaId.blank
         description: media ID is not set
@@ -3600,7 +3600,7 @@ structures:
       - type: String
         name: bodyPreview
         optional: true
-        description: preview of the revision's body, a string representation of a JSON structure, may be absent
+        description: preview of the revision's body, a string representation of a JSON structure
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
@@ -4351,11 +4351,11 @@ structures:
       - type: int
         name: notViewedMoment
         optional: true
-        description: moment of the oldest non-viewed story, admin only, may be absent
+        description: moment of the oldest non-viewed story, admin only
       - type: int
         name: notReadMoment
         optional: true
-        description: moment of the oldest non-read story, admin only, may be absent
+        description: moment of the oldest non-read story, admin only
   - name: FeedStatusChange
     fields:
       - type: boolean
@@ -4510,15 +4510,15 @@ structures:
       - type: String
         name: qrCode
         optional: true
-        description: text or URI to be encoded and displayed as QR-code, may be absent
+        description: text or URI to be encoded and displayed as QR-code
       - type: String
         name: text
         optional: true
-        description: arbitrary text to be displayed, may be absent
+        description: arbitrary text to be displayed
       - type: String
         name: href
         optional: true
-        description: link to the fundraiser, may be absent
+        description: link to the fundraiser
       - type: any
         name: any
         description: any other fields understood by Moera clients
@@ -5307,7 +5307,7 @@ structures:
       - type: String
         name: ownerName
         optional: true
-        description: node name of the posting's owner, may be absent
+        description: node name of the posting's owner
       - type: String
         name: ownerFullName
         optional: true
@@ -6230,7 +6230,7 @@ structures:
       - type: String
         name: remotePostingId
         optional: true
-        description: ID of the posting the complaints are related to; may be absent
+        description: ID of the posting the complaints are related to
       - type: String
         name: remotePostingRevisionId
         optional: true
@@ -6254,7 +6254,7 @@ structures:
       - type: String
         name: remoteCommentId
         optional: true
-        description: ID of the comment the complaints are related to; may be absent
+        description: ID of the comment the complaints are related to
       - type: String
         name: remoteCommentRevisionId
         optional: true
@@ -6379,7 +6379,7 @@ structures:
       - type: String
         name: postingId
         optional: true
-        description: ID of the posting the complaint is related to; may be absent
+        description: ID of the posting the complaint is related to
       - type: String
         name: postingOwnerName
         optional: true
@@ -6399,7 +6399,7 @@ structures:
       - type: String
         name: commentId
         optional: true
-        description: ID of the comment the complaint is related to; may be absent
+        description: ID of the comment the complaint is related to
       - type: String
         name: commentOwnerName
         optional: true
@@ -6479,11 +6479,11 @@ structures:
       - type: String
         name: postingId
         optional: true
-        description: ID of the posting the order is related to; may be absent
+        description: ID of the posting the order is related to
       - type: String
         name: commentId
         optional: true
-        description: ID of the comment the order is related to; may be absent
+        description: ID of the comment the order is related to
       - enum: SheriffOrderCategory
         name: category
         description: category of the order
@@ -6524,11 +6524,11 @@ structures:
       - type: String
         name: postingId
         optional: true
-        description: ID of the posting the order is related to; may be absent
+        description: ID of the posting the order is related to
       - type: String
         name: commentId
         optional: true
-        description: ID of the comment the order is related to; may be absent
+        description: ID of the comment the order is related to
       - enum: SheriffOrderCategory
         name: category
         description: category of the order
@@ -6595,7 +6595,7 @@ structures:
       - type: String
         name: postingId
         optional: true
-        description: ID of the posting the order is related to; may be absent
+        description: ID of the posting the order is related to
       - type: String
         name: postingRevisionId
         optional: true
@@ -6619,7 +6619,7 @@ structures:
       - type: String
         name: commentId
         optional: true
-        description: ID of the comment the order is related to; may be absent
+        description: ID of the comment the order is related to
       - type: String
         name: commentRevisionId
         optional: true
@@ -6665,7 +6665,7 @@ structures:
       - type: String
         name: complainGroupId
         optional: true
-        description: ID of the groups of complaints that were the cause of the order; may be absent
+        description: ID of the groups of complaints that were the cause of the order
   - name: StoryAttributes
     fields:
       - type: String
@@ -6767,31 +6767,31 @@ structures:
       - struct: PostingInfo
         name: posting
         optional: true
-        description: the posting this story is about (may be absent or contain only ID)
+        description: the posting this story is about (may contain only an ID)
       - struct: CommentInfo
         name: comment
         optional: true
-        description: the comment this story is about (may be absent or contain only ID)
+        description: the comment this story is about (may contain only an ID)
       - type: String
         name: remoteNodeName
         optional: true
-        description: name of the node this story is about (may be absent)
+        description: name of the node this story is about
       - type: String
         name: remoteFullName
         optional: true
-        description: full name of the node this story is about (may be absent)
+        description: full name of the node this story is about
       - type: String
         name: remotePostingId
         optional: true
-        description: ID of the posting at remote node this story is about (may be absent)
+        description: ID of the posting at remote node this story is about
       - type: String
         name: remoteCommentId
         optional: true
-        description: ID of the comment at remote node this story is about (may be absent)
+        description: ID of the comment at remote node this story is about
       - type: String
         name: remoteMediaId
         optional: true
-        description: ID of the media at remote node this story is about (may be absent)
+        description: ID of the media at remote node this story is about
     operations:
       - name: edit
         default: admin
@@ -6876,7 +6876,7 @@ structures:
       - type: int
         name: period
         optional: true
-        description: the period of blocking in seconds, may be absent
+        description: the period of blocking in seconds
   - name: StorySummaryFriendGroup
     fields:
       - type: String
@@ -7203,7 +7203,7 @@ structures:
       - type: String
         name: name
         optional: true
-        description: a user-readable name of the token, may be absent
+        description: a user-readable name of the token
     errors:
       - code: tokenAttributes.login.blank
         description: the login is empty
@@ -7220,7 +7220,7 @@ structures:
       - type: String
         name: name
         optional: true
-        description: a user-readable name of the token, may be absent
+        description: a user-readable name of the token
       - type: String[]
         name: permissions
         description: >
