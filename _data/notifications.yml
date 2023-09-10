@@ -18,35 +18,35 @@ notifications:
     fields:
       - enum: BlockedOperation
         name: blockedOperation
-        description: operation that is blocked
+        comment: operation that is blocked
       - type: String
         name: postingId
-        description: >
+        comment: >
           ID of the posting, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
       - type: String
         name: postingHeading
-        description: heading of the posting, where the node is blocked; may be absent
+        comment: heading of the posting, where the node is blocked; may be absent
       - type: timestamp
         name: deadline
-        description: >
+        comment: >
           unblocking timestamp - the real time when the node will be unblocked; <code>null</code> or absent, if the node
           is blocked permanently
       - type: String
         name: reason
-        description: reason of blocking, may be absent
+        comment: reason of blocking, may be absent
   - type: BLOCKING_DELETED
     description: A remote node has unblocked this node.
     fields:
       - enum: BlockedOperation
         name: blockedOperation
-        description: operation that is unblocked
+        comment: operation that is unblocked
       - type: String
         name: postingId
-        description: >
+        comment: >
           ID of the posting, where the node was blocked; <code>null</code> or absent, if the node was blocked globally
       - type: String
         name: postingHeading
-        description: heading of the posting, where the node was blocked; may be absent
+        comment: heading of the posting, where the node was blocked; may be absent
   - type: COMMENT_REACTION_ADDED
     description: Reaction added to a comment owned by the receiver.
     fields:
@@ -151,11 +151,11 @@ notifications:
         comment: heading of the posting
       - type: String[]
         name: postingSheriffs
-        description: list of sheriffs supervising the posting
+        comment: list of sheriffs supervising the posting
       - struct: SheriffMark
         array: true
         name: postingSheriffMarks
-        description: list of sheriff marks on the posting
+        comment: list of sheriff marks on the posting
       - type: String
         name: commentOwnerName
         comment: name of the comment's owner
@@ -174,7 +174,7 @@ notifications:
       - struct: SheriffMark
         array: true
         name: commentSheriffMarks
-        description: list of sheriff marks on the comment
+        comment: list of sheriff marks on the comment
   - type: MENTION_COMMENT_DELETED
     description: A mention of the receiver in a comment on the sending node deleted.
     fields:
@@ -207,11 +207,11 @@ notifications:
         comment: heading of the posting
       - type: String[]
         name: sheriffs
-        description: list of sheriffs supervising the posting
+        comment: list of sheriffs supervising the posting
       - struct: SheriffMark
         array: true
         name: sheriffMarks
-        description: list of sheriff marks on the posting
+        comment: list of sheriff marks on the posting
   - type: MENTION_POSTING_DELETED
     description: A mention of the receiver in a posting on the sending node deleted.
     fields:
@@ -244,11 +244,11 @@ notifications:
         comment: heading of the posting
       - type: String[]
         name: postingSheriffs
-        description: list of sheriffs supervising the posting
+        comment: list of sheriffs supervising the posting
       - struct: SheriffMark
         array: true
         name: postingSheriffMarks
-        description: list of sheriff marks on the posting
+        comment: list of sheriff marks on the posting
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
@@ -270,7 +270,7 @@ notifications:
       - struct: SheriffMark
         array: true
         name: commentSheriffMarks
-        description: list of sheriff marks on the comment
+        comment: list of sheriff marks on the comment
       - type: String
         name: commentRepliedTo
         comment: ID of the comment on the sending node this comment replies to
@@ -517,11 +517,11 @@ notifications:
         comment: heading of the posting
       - type: String[]
         name: postingSheriffs
-        description: list of sheriffs supervising the posting
+        comment: list of sheriffs supervising the posting
       - struct: SheriffMark
         array: true
         name: postingSheriffMarks
-        description: list of sheriff marks on the posting
+        comment: list of sheriff marks on the posting
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
@@ -540,7 +540,7 @@ notifications:
       - struct: SheriffMark
         array: true
         name: commentSheriffMarks
-        description: list of sheriff marks on the comment
+        comment: list of sheriff marks on the comment
       - type: String
         name: repliedToHeading
         comment: heading of the comment that is replied to
@@ -573,133 +573,133 @@ notifications:
     fields:
       - type: String
         name: remoteNodeName
-        description: name of the node the complaint is related to
+        comment: name of the node the complaint is related to
       - type: String
         name: remoteFeedName
-        description: name of the feed the complaint is related to
+        comment: name of the feed the complaint is related to
       - type: String
         name: postingOwnerName
-        description: posting owner's node name
+        comment: posting owner's node name
       - type: String
         name: postingOwnerFullName
-        description: posting owner's full name
+        comment: posting owner's full name
       - type: String
         name: postingHeading
-        description: heading of the posting
+        comment: heading of the posting
       - type: String
         name: postingId
-        description: ID of the posting the complaint is related to
+        comment: ID of the posting the complaint is related to
       - type: String
         name: commentOwnerName
-        description: comment owner's node name
+        comment: comment owner's node name
       - type: String
         name: commentOwnerFullName
-        description: comment owner's full name
+        comment: comment owner's full name
       - type: String
         name: commentHeading
-        description: heading of the comment
+        comment: heading of the comment
       - type: String
         name: commentId
-        description: ID of the comment the complaint is related to
+        comment: ID of the comment the complaint is related to
       - type: String
         name: complainGroupId
-        description: ID of the group of complaints the complaint was included into
+        comment: ID of the group of complaints the complaint was included into
   - type: SHERIFF_ORDER_FOR_COMMENT_ADDED
     description: The sending node got a sheriff's order related to the receiver's comment
     fields:
       - type: String
         name: remoteNodeName
-        description: name of the node the order was sent to
+        comment: name of the node the order was sent to
       - type: String
         name: remoteFeedName
-        description: name of the feed the order is related to
+        comment: name of the feed the order is related to
       - type: String
         name: postingOwnerName
-        description: posting owner's node name
+        comment: posting owner's node name
       - type: String
         name: postingOwnerFullName
-        description: posting owner's full name
+        comment: posting owner's full name
       - type: String
         name: postingHeading
-        description: heading of the posting
+        comment: heading of the posting
       - type: String
         name: postingId
-        description: ID of the posting the order is related to
+        comment: ID of the posting the order is related to
       - type: String
         name: commentHeading
-        description: heading of the comment
+        comment: heading of the comment
       - type: String
         name: commentId
-        description: ID of the comment the order is related to
+        comment: ID of the comment the order is related to
       - type: String
         name: orderId
-        description: ID of the order
+        comment: ID of the order
   - type: SHERIFF_ORDER_FOR_COMMENT_DELETED
     description: The sending node got a cancellation of a sheriff's order related to the receiver's comment
     fields:
       - type: String
         name: remoteNodeName
-        description: name of the node the order was sent to
+        comment: name of the node the order was sent to
       - type: String
         name: remoteFeedName
-        description: name of the feed the order is related to
+        comment: name of the feed the order is related to
       - type: String
         name: postingOwnerName
-        description: posting owner's node name
+        comment: posting owner's node name
       - type: String
         name: postingOwnerFullName
-        description: posting owner's full name
+        comment: posting owner's full name
       - type: String
         name: postingHeading
-        description: heading of the posting
+        comment: heading of the posting
       - type: String
         name: postingId
-        description: ID of the posting the order is related to
+        comment: ID of the posting the order is related to
       - type: String
         name: commentHeading
-        description: heading of the comment
+        comment: heading of the comment
       - type: String
         name: commentId
-        description: ID of the comment the order is related to
+        comment: ID of the comment the order is related to
       - type: String
         name: orderId
-        description: ID of the order
+        comment: ID of the order
   - type: SHERIFF_ORDER_FOR_POSTING_ADDED
     description: The sending node got a sheriff's order related to the receiver's posting
     fields:
       - type: String
         name: remoteNodeName
-        description: name of the node the order was sent to
+        comment: name of the node the order was sent to
       - type: String
         name: remoteFeedName
-        description: name of the feed the order is related to
+        comment: name of the feed the order is related to
       - type: String
         name: postingHeading
-        description: heading of the posting
+        comment: heading of the posting
       - type: String
         name: postingId
-        description: ID of the posting the order is related to
+        comment: ID of the posting the order is related to
       - type: String
         name: orderId
-        description: ID of the order
+        comment: ID of the order
   - type: SHERIFF_ORDER_FOR_POSTING_DELETED
     description: The sending node got a cancellation of a sheriff's order related to the receiver's posting
     fields:
       - type: String
         name: remoteNodeName
-        description: name of the node the order was sent to
+        comment: name of the node the order was sent to
       - type: String
         name: remoteFeedName
-        description: name of the feed the order is related to
+        comment: name of the feed the order is related to
       - type: String
         name: postingHeading
-        description: heading of the posting
+        comment: heading of the posting
       - type: String
         name: postingId
-        description: ID of the posting the order is related to
+        comment: ID of the posting the order is related to
       - type: String
         name: orderId
-        description: ID of the order
+        comment: ID of the order
   - type: STORY_ADDED
     description: A new story has been added to a feed the receiver is subscribed to.
     fields:
