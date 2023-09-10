@@ -3599,12 +3599,14 @@ structures:
         description: ID of the posting revision that was actual at the moment of creation of this comment revision
       - type: String
         name: bodyPreview
+        optional: true
         description: preview of the revision's body, a string representation of a JSON structure, may be absent
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the revision, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
@@ -3613,6 +3615,7 @@ structures:
         description: body of the revision, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the revision, may have any value meaningful for the client, including:
           <ul>
@@ -3627,12 +3630,14 @@ structures:
         description: revision creation timestamp - the real time when the revision was created
       - type: timestamp
         name: deletedAt
-        description: revision deletion timestamp - the time when the revision was deleted, may be absent
+        optional: true
+        description: revision deletion timestamp - the time when the revision was deleted
       - type: timestamp
         name: deadline
+        optional: true
         description: >
           revision deletion timestamp - the time when the revision will be deleted and the previous revision will take
-          its place, may be absent
+          its place
       - type: byte[]
         name: digest
         description: >
@@ -3640,17 +3645,21 @@ structures:
           fingerprint)
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - struct: ClientReactionInfo
         name: clientReaction
+        optional: true
         description: details of the existing reaction (if any) of the client's owner
       - struct: ReactionTotalsInfo
         name: reactions
+        optional: true
         description: reactions summary of the revision
   - name: CommentsSliceInfo
     fields:
@@ -3677,30 +3686,38 @@ structures:
     fields:
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: avatar of the comment's owner
       - type: String
         name: bodySrc
+        optional: true
         description: the source text of the comment, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - struct: MediaWithDigest
         array: true
         name: media
+        optional: true
         description: array of IDs and digests of private media to be attached to the comment
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the comment accepts
       - type: String
         name: repliedToId
+        optional: true
         description: ID of the comment this comment is replying to
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
       - type: String -> String
         name: seniorOperations
+        optional: true
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden by the posting's owner ("senior"); only the senior may set this
@@ -3723,32 +3740,41 @@ structures:
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: node name of the comment's owner
       - type: String
         name: ownerFullName
+        optional: true
         description: full name of the comment's owner
       - type: String
         name: ownerGender
+        optional: true
         description: gender of the comment's owner
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: avatar of the comment's owner
       - type: String
         name: bodyPreview
+        optional: true
         description: preview of the comment's body, a string representation of a JSON structure
       - type: String
         name: bodySrc
+        optional: true
         description: the source text of the comment, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: body
+        optional: true
         description: body of the comment, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the comment, may have any value meaningful for the client, including:
           <ul>
@@ -3757,34 +3783,43 @@ structures:
           </ul>
       - type: String[]
         name: media
+        optional: true
         description: array of IDs of private media to be attached to the comment
       - type: timestamp
         name: createdAt
+        optional: true
         description: comment creation timestamp - the real time when the comment was created
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the comment accepts
       - type: String
         name: repliedToId
+        optional: true
         description: ID of the comment this comment is replying to
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals
       - type: String -> String
         name: reactionOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the comment
       - type: String -> String
         name: seniorOperations
+        optional: true
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden by the posting's owner ("senior"); only the senior may set this
@@ -3848,10 +3883,13 @@ structures:
         name: nodeName
       - type: String
         name: fullName
+        optional: true
       - type: String
         name: gender
+        optional: true
       - struct: AvatarImage
         name: avatar
+        optional: true
       - type: float
         name: closeness
         description: >
@@ -3859,32 +3897,41 @@ structures:
           their age
       - type: boolean
         name: hasFeedSubscriber
+        optional: true
         description: the contact is subscribed to at least one of the node's feeds
       - type: boolean
         name: hasFeedSubscription
+        optional: true
         description: the node is subscribed to at least one of the contact's feeds
       - type: boolean
         name: hasFriend
+        optional: true
         description: the contact is a friend of the node
       - type: boolean
         name: hasFriendOf
+        optional: true
         description: the node is a friend of the contact
       - type: boolean
         name: hasBlock
+        optional: true
         description: the contact is blocked by the node
       - type: boolean
         name: hasBlockBy
+        optional: true
         description: the node is blocked by the contact
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
         name: ownerOperations
+        optional: true
         description: >
           list of the supported operations (see below) and the corresponding principals as defined by the contact's
           owner
       - type: String -> String
         name: adminOperations
+        optional: true
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the node
           administrator
@@ -3922,9 +3969,11 @@ structures:
     fields:
       - type: String
         name: token
+        optional: true
         description: credentials reset token
       - type: String
         name: oldPassword
+        optional: true
         description: the current password
       - type: String
         name: login
@@ -3944,9 +3993,11 @@ structures:
     fields:
       - type: String
         name: name
+        optional: true
         description: domain's hostname or <code>_default_</code> for the default domain
       - type: UUID
         name: nodeId
+        optional: true
         description: domain's node ID
     errors:
       - code: domainAttributes.name.blank
@@ -3990,33 +4041,46 @@ structures:
         description: name of the node the draft is related to
       - type: String
         name: receiverPostingId
+        optional: true
         description: ID of the posting, set for all types, except <code>new-posting</code>
       - type: String
         name: receiverCommentId
+        optional: true
         description: ID of the comment, set for <code>comment-update</code> type
+      - type: String
+        name: repliedToId
+        optional: true
+        description: ID of the comment replied to, set for comment drafts, if needed
       - type: timestamp
         name: createdAt
         description: draft creation timestamp - the real time when the draft was created
       - type: timestamp
         name: editedAt
+        optional: true
         description: draft editing timestamp - the last time the draft was updated
       - type: timestamp
         name: deadline
+        optional: true
         description: draft purging timestamp - the time when the draft will be purged from the database, if not updated
       - type: String
         name: ownerFullName
+        optional: true
         description: full name of the posting's/comment's owner
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: avatar of the posting's/comment's owner
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the posting accepts
       - type: String
         name: bodySrc
+        optional: true
         description: the source text of the draft, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
@@ -4025,25 +4089,36 @@ structures:
         description: body of the draft, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the draft, see detailed description in
           <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
       - struct: MediaAttachment
         array: true
         name: media
+        optional: true
         description: list of the media attached to the draft
       - type: String
         name: heading
         description: heading of the draft
       - type: int
         name: publishAt
+        optional: true
         description: story publication timestamp - the time the story must be published under in the feed
       - struct: UpdateInfo
         name: updateInfo
+        optional: true
         description: description of the update
       - type: String -> String
         name: operations
+        optional: true
         description: draft of the list of operations and the corresponding principals
+      - type: String -> String
+        name: commentOperations
+        optional: true
+        description: >
+          draft of the list of operations and the corresponding principals that are overridden in the posting's
+          comments, set for posting drafts, if needed
   - name: DraftText
     fields:
       - enum: DraftType
@@ -4054,40 +4129,61 @@ structures:
         description: name of the node the draft is related to
       - type: String
         name: receiverPostingId
+        optional: true
         description: ID of the posting, mandatory for all types, except <code>new-posting</code>
       - type: String
         name: receiverCommentId
+        optional: true
         description: ID of the comment, mandatory for <code>comment-update</code> type
       - type: String
+        name: repliedToId
+        optional: true
+        description: ID of the comment replied to
+      - type: String
         name: ownerFullName
+        optional: true
         description: full name of the posting's/comment's owner
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: avatar of the posting's/comment's owner
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the posting accepts
       - type: String
         name: bodySrc
+        optional: true
         description: the source text of the draft, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - struct: RemoteMedia
         array: true
         name: media
+        optional: true
         description: list of the media attached to the draft, the media may be located on another node
       - type: int
         name: publishAt
+        optional: true
         description: story publication timestamp - the time the story must be published under in the feed
       - struct: UpdateInfo
         name: updateInfo
+        optional: true
         description: description of the update
       - type: String -> String
         name: operations
+        optional: true
         description: draft of the list of operations and the corresponding principals
+      - type: String -> String
+        name: commentOperations
+        optional: true
+        description: >
+          draft of the list of operations and the corresponding principals that are overridden in the posting's
+          comments
     errors:
       - code: draftText.postingId.blank
         description: posting ID is not set
@@ -4121,10 +4217,12 @@ structures:
     fields:
       - struct: PostingInfo
         name: posting
-        description: posting details, may be absent, if the entry is not a posting
+        optional: true
+        description: posting details, set if the entry is a posting
       - struct: CommentInfo
         name: comment
-        description: comment details, may be absent, if the entry is not a comment
+        optional: true
+        description: comment details, set if the entry is a comment
   - name: Features
     fields:
       - struct: PostingFeatures
@@ -4132,19 +4230,23 @@ structures:
         description: features of a posting
       - type: String[]
         name: plugins
+        optional: true
         description: list of names of plugins enabled for the node
       - type: int
         name: feedWidth
         description: width of the feed in pixels
       - struct: FriendGroupsFeatures
         name: friendGroups
+        optional: true
         description: features of groups of friends
       - enum: AskSubject
         array: true
         name: ask
+        optional: true
         description: list of requests to the node owner that are accepted by the node
       - type: boolean
         name: subscribed
+        optional: true
         description: <code>true</code>, if the node is subscribed to the client, <code>false</code> otherwise
   - name: FeedInfo
     fields:
@@ -4153,25 +4255,31 @@ structures:
         description: name of the feed
       - type: String
         name: title
+        optional: true
         description: title of the feed
       - type: int
         name: total
         description: total number of stories in the feed
       - type: timestamp
         name: firstCreatedAt
+        optional: true
         description: creation timestamp of the earliest story in the feed
       - type: timestamp
         name: lastCreatedAt
+        optional: true
         description: creation timestamp of the latest story in the feed
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String[]
         name: sheriffs
+        optional: true
         description: list of sheriffs supervising the feed
       - struct: SheriffMark
         array: true
         name: sheriffMarks
+        optional: true
         description: list of sheriff marks on the feed
     operations:
       - name: add
@@ -4187,6 +4295,7 @@ structures:
         description: story publication timestamp - the time the story is published under in the feed
       - type: boolean
         name: pinned
+        optional: true
         description: >
           <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
@@ -4197,6 +4306,7 @@ structures:
         description: ID of the story
       - type: String -> String
         name: operations
+        optional: true
         description: >
           list of the supported <a href="#StoryInfo-operations">operations</a> and the corresponding principals for
           the story in the feed
@@ -4228,26 +4338,33 @@ structures:
         description: total number of pinned stories
       - type: int
         name: lastMoment
+        optional: true
         description: moment of the most recent story
       - type: int
         name: notViewed
+        optional: true
         description: number of stories that have not been viewed yet, admin only
       - type: int
         name: notRead
+        optional: true
         description: number of stories that have not been read yet, admin only
       - type: int
         name: notViewedMoment
+        optional: true
         description: moment of the oldest non-viewed story, admin only, may be absent
       - type: int
         name: notReadMoment
+        optional: true
         description: moment of the oldest non-read story, admin only, may be absent
   - name: FeedStatusChange
     fields:
       - type: boolean
         name: viewed
+        optional: true
         description: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed)
       - type: boolean
         name: read
+        optional: true
         description: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed)
       - type: int
         name: before
@@ -4271,6 +4388,7 @@ structures:
       - struct: FriendGroupAssignment
         array: true
         name: groups
+        optional: true
         description: groups of friends the node is to be included into
     errors:
       - code: friendDescription.nodeName.blank
@@ -4286,6 +4404,7 @@ structures:
         description: ID of the group of friends
       - type: String -> String
         name: operations
+        optional: true
         description: >
           list of <a href="#FriendGroupDetails-operations">the operations</a> and the corresponding principals
   - name: FriendGroupDescription
@@ -4295,6 +4414,7 @@ structures:
         description: title of the group of friends
       - type: String -> String
         name: operations
+        optional: true
         description: >
           list of <a href="#FriendGroupInfo-operations">the operations</a> and the corresponding principals
     errors:
@@ -4311,12 +4431,14 @@ structures:
         description: ID of the group of friends
       - type: String
         name: title
+        optional: true
         description: title of the group of friends
       - type: timestamp
         name: addedAt
         description: the friendship timestamp - the real time when the node was added to the group of friends
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: view
@@ -4328,12 +4450,14 @@ structures:
         name: id
       - type: String
         name: title
+        optional: true
         description: title of the group of friends
       - type: timestamp
         name: createdAt
         description: the group creation timestamp - the real time when the group of friends was created
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: view
@@ -4348,6 +4472,7 @@ structures:
       - struct: FriendGroupDetails
         array: true
         name: memberOf
+        optional: true
         description: list of groups of friends the client is member of
   - name: FriendInfo
     fields:
@@ -4356,10 +4481,12 @@ structures:
         description: name of the node
       - struct: ContactInfo
         name: contact
+        optional: true
         description: information about the node
       - struct: FriendGroupDetails
         array: true
         name: groups
+        optional: true
         description: groups of friends the node belongs to
   - name: FriendOfInfo
     fields:
@@ -4368,10 +4495,12 @@ structures:
         description: name of the remote node
       - struct: ContactInfo
         name: contact
+        optional: true
         description: information about the remote node
       - struct: FriendGroupDetails
         array: true
         name: groups
+        optional: true
         description: groups of friends on the remote node this node was added to
   - name: FundraiserInfo
     fields:
@@ -4380,12 +4509,15 @@ structures:
         description: fundraiser title
       - type: String
         name: qrCode
+        optional: true
         description: text or URI to be encoded and displayed as QR-code, may be absent
       - type: String
         name: text
+        optional: true
         description: arbitrary text to be displayed, may be absent
       - type: String
         name: href
+        optional: true
         description: link to the fundraiser, may be absent
       - type: any
         name: any
@@ -4394,43 +4526,55 @@ structures:
     fields:
       - type: String
         name: siteName
+        optional: true
         description: name of the site
       - type: String
         name: url
+        optional: true
         description: canonical URL of the page
       - type: String
         name: title
+        optional: true
         description: title of the page
       - type: String
         name: description
+        optional: true
         description: description of the page
       - type: String
         name: imageHash
+        optional: true
         description: hash of the image presenting the page
   - name: LinkPreviewInfo
     fields:
       - type: String
         name: siteName
+        optional: true
         description: name of the site
       - type: String
         name: url
+        optional: true
         description: canonical URL of the page
       - type: String
         name: title
+        optional: true
         description: title of the page
       - type: String
         name: description
+        optional: true
         description: description of the page
       - type: String
         name: imageUrl
+        optional: true
         description: URL of the image presenting the page
   - name: MediaAttachment
     fields:
       - struct: PrivateMediaFileInfo
         name: media
+        optional: true
         description: details of the attached media, may be absent, if the media is not located on the node
       - struct: RemoteMediaInfo
         name: remoteMedia
+        optional: true
         description: details of the media, if it is located on another node
       - type: boolean
         name: embedded
@@ -4449,6 +4593,7 @@ structures:
         description: actual height of the preview in pixels
       - type: boolean
         name: original
+        optional: true
         description: <code>true</code> if the preview is identical to the original media, <code>false</code> otherwise
   - name: MediaWithDigest
     fields:
@@ -4457,6 +4602,7 @@ structures:
         description: ID of the media file
       - type: String
         name: digest
+        optional: true
         description: cryptographic digest of the media file
   - name: NameToRegister
     fields:
@@ -4477,12 +4623,15 @@ structures:
         description: name of the sending node
       - type: String
         name: fullName
+        optional: true
         description: full name of the sending node
       - type: String
         name: gender
+        optional: true
         description: gender of the sending node
       - struct: AvatarImage
         name: avatar
+        optional: true
         description: avatar of the sending node
       - type: timestamp
         name: createdAt
@@ -4507,20 +4656,26 @@ structures:
     fields:
       - type: String
         name: name
+        optional: true
       - enum: OperationStatus
         name: operationStatus
+        optional: true
         description: status of the latest operation with the node name
       - type: timestamp
         name: operationStatusUpdated
+        optional: true
         description: the last time the operation status was updated
       - type: String
         name: operationErrorCode
+        optional: true
         description: if the operation with the node name was failed, the code of the failure
       - type: String
         name: operationErrorMessage
+        optional: true
         description: if the operation with the node name was failed, the human-readable description of the failure
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: manage
@@ -4530,24 +4685,31 @@ structures:
     fields:
       - type: int
         name: feedSubscribersTotal
+        optional: true
         description: total number of subscribers of the node
       - type: int
         name: feedSubscriptionsTotal
+        optional: true
         description: total number of subscriptions of the node
       - type: String -> int
         name: friendsTotal
+        optional: true
         description: total number of friends in every group
       - type: int
         name: friendOfsTotal
+        optional: true
         description: total number of nodes that added this node to their friends
       - type: int
         name: blockedTotal
+        optional: true
         description: total number of blocked nodes
       - type: int
         name: blockedByTotal
+        optional: true
         description: total number of nodes that blocked this node
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: viewSubscribers
@@ -4624,21 +4786,26 @@ structures:
         description: a unique plugin name; can contain only small latin letters, digits or hyphen
       - type: String
         name: title
+        optional: true
         description: user-readable title of the plugin
       - type: String
         name: description
+        optional: true
         description: user-readable description of purpose of the plugin
       - type: String
         name: location
+        optional: true
         description: URL of the plugin; used by the node to call the plugin API
       - type: String[]
         name: acceptedEvents
+        optional: true
         description: >
           list of types of internal events the plugin wants to receive; <a href="#internal-events">Read more about
           internal events.</a>
       - struct: SettingDescriptor
         array: true
         name: options
+        optional: true
         description: >
           plugin settings to be added to the list of node settings, the settings appear in the list with a prefix
           <code>plugin.&lt;plugin name>.</code>
@@ -4670,29 +4837,36 @@ structures:
         description: a unique plugin name
       - type: String
         name: title
+        optional: true
         description: user-readable title of the plugin
       - type: String
         name: description
+        optional: true
         description: user-readable description of purpose of the plugin
       - type: String
         name: location
+        optional: true
         description: URL of the plugin; used by the node to call the plugin API
       - type: String[]
         name: acceptedEvents
+        optional: true
         description: >
           list of types of internal events the plugin wants to receive; <a href="#internal-events">Read more about
           internal events.</a>
       - struct: SettingMetaInfo
         array: true
         name: settings
+        optional: true
         description: plugin settings to be added to the list of node settings
       - type: String
         name: tokenId
+        optional: true
         description: ID of the token used to authenticate the plugin
   - name: PostingFeatures
     fields:
       - type: boolean
         name: post
+        optional: true
         description: <code>true</code> if the client is allowed to create postings, <code>false</code> otherwise
       - type: boolean
         name: subjectPresent
@@ -4725,45 +4899,57 @@ structures:
         description: ID of the current revision of the posting
       - type: String
         name: receiverRevisionId
+        optional: true
         description: ID of the current revision of the original posting (for cached copies of remote postings only)
       - type: int
         name: totalRevisions
         description: total number of revisions the posting has
       - type: String
         name: receiverName
+        optional: true
         description: name of the node where the posting was published (for cached copies of remote postings only)
       - type: String
         name: receiverFullName
+        optional: true
         description: full name of the node where the posting was published (for cached copies of remote postings only)
       - type: String
         name: receiverGender
+        optional: true
         description: gender of the node where the posting was published (for cached copies of remote postings only)
       - struct: AvatarImage
         name: receiverAvatar
+        optional: true
         description: avatar of the node where the posting was published (for cached copies of remote postings only)
       - type: String
         name: receiverPostingId
+        optional: true
         description: ID of the original posting (for cached copies of remote postings only)
       - type: String
         name: parentMediaId
+        optional: true
         description: ID of the media the posting is linked to, if any
       - type: String
         name: ownerName
         description: node name of the posting's owner
       - type: String
         name: ownerFullName
+        optional: true
         description: full name of the posting's owner
       - type: String
         name: ownerGender
+        optional: true
         description: gender of the posting's owner
       - struct: AvatarImage
         name: ownerAvatar
+        optional: true
         description: avatar of the posting's owner
       - type: String
         name: bodyPreview
-        description: preview of the posting's body, a string representation of a JSON structure, may be absent
+        optional: true
+        description: preview of the posting's body, a string representation of a JSON structure
       - type: String
         name: bodySrc
+        optional: true
         description: >
           the source text of the posting, a string representation of a JSON structure, may be absent if not requested
       - type: byte[]
@@ -4771,6 +4957,7 @@ structures:
         description: hash of the source text of the posting
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the posting, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
@@ -4779,6 +4966,7 @@ structures:
         description: body of the posting, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the posting, may have any value meaningful for the client, including:
           <ul>
@@ -4788,42 +4976,51 @@ structures:
       - struct: MediaAttachment
         array: true
         name: media
+        optional: true
         description: list of the media attached to the posting
       - type: String
         name: heading
         description: heading of the posting
       - struct: UpdateInfo
         name: updateInfo
+        optional: true
         description: description of the latest update
       - type: timestamp
         name: createdAt
         description: posting creation timestamp - the real time when the posting was created
       - type: timestamp
         name: editedAt
+        optional: true
         description: posting editing timestamp - the last time the posting was updated
       - type: timestamp
         name: deletedAt
-        description: posting deletion timestamp - the time when the posting was deleted, may be absent
+        optional: true
+        description: posting deletion timestamp - the time when the posting was deleted
       - type: timestamp
         name: receiverCreatedAt
+        optional: true
         description: original posting creation timestamp (for cached copies of remote postings only)
       - type: timestamp
         name: receiverEditedAt
+        optional: true
         description: original posting editing timestamp (for cached copies of remote postings only)
       - type: timestamp
         name: receiverDeletedAt
+        optional: true
         description: original posting deletion timestamp (for cached copies of remote postings only)
       - type: timestamp
         name: revisionCreatedAt
         description: creation timestamp of the current revision of the posting
       - type: timestamp
         name: receiverRevisionCreatedAt
+        optional: true
         description: >
           creation timestamp of the current revision of the original posting (for cached copies of remote postings only)
       - type: timestamp
         name: deadline
+        optional: true
         description: >
-          posting purging timestamp - the time when the deleted posting will be purged from the database, may be absent
+          posting purging timestamp - the time when the deleted posting will be purged from the database
       - type: byte[]
         name: digest
         description: >
@@ -4831,72 +5028,90 @@ structures:
           fingerprint)
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - struct: FeedReference
         array: true
         name: feedReferences
+        optional: true
         description: array of references to the posting from stories in feeds
       - struct: BlockedPostingInstantInfo
         array: true
         name: blockedInstants
+        optional: true
         description: instants related to the posting that are blocked (for admin only)
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
         name: receiverOperations
+        optional: true
         description: >
           list of the supported operations (see below) for the original posting and the corresponding principals
           (for cached copies of remote postings only)
       - type: String -> String
         name: commentOperations
+        optional: true
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden in the posting's comments
       - type: String -> String
         name: reactionOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the posting
       - type: String -> String
         name: commentReactionOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the posting's comments
       - type: String[]
         name: blockedOperations
+        optional: true
         description: operations on the posting (from the list below) that are blocked for the client
       - type: String[]
         name: blockedCommentOperations
+        optional: true
         description: >
           <a href="#CommentInfo-operations">operations</a> on the posting's comments that are blocked for the client
       - type: String[]
         name: sheriffs
+        optional: true
         description: list of sheriffs supervising the posting
       - struct: SheriffMark
         array: true
+        optional: true
         name: sheriffMarks
         description: list of sheriff marks on the posting
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the posting accepts
       - struct: ClientReactionInfo
         name: clientReaction
+        optional: true
         description: details of the existing reaction (if any) of the client's owner
       - struct: ReactionTotalsInfo
         name: reactions
+        optional: true
         description: reactions summary of the posting
       - struct: PostingSourceInfo
         array: true
         name: sources
+        optional: true
         description: details of the sources the posting was received from (for cached copies of remote postings only)
       - type: int
         name: totalComments
+        optional: true
         description: total number of comments to the posting
     operations:
       - name: view
@@ -4956,15 +5171,18 @@ structures:
         name: id
       - type: String
         name: receiverId
+        optional: true
         description: ID of the original revision (for cached copies of remote postings only)
       - type: String
         name: bodyPreview
-        description: preview of the revisions's body, a string representation of a JSON structure, may be absent
+        optional: true
+        description: preview of the revisions's body, a string representation of a JSON structure
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the revision, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
@@ -4973,30 +5191,36 @@ structures:
         description: body of the revision, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the revision, see detailed description in
           <a href="#PostingInfo"><code>PostingInfo</code></a><code>.bodyFormat</code>
       - struct: MediaAttachment
         array: true
         name: media
+        optional: true
         description: list of the media attached to the revision
       - type: String
         name: heading
         description: heading of the revision
       - struct: UpdateInfo
         name: updateInfo
+        optional: true
         description: description of the latest update
       - type: timestamp
         name: createdAt
         description: revision creation timestamp - the real time when the revision was created
       - type: timestamp
         name: deletedAt
-        description: revision deletion timestamp - the time when the revision was deleted, may be absent
+        optional: true
+        description: revision deletion timestamp - the time when the revision was deleted
       - type: timestamp
         name: receiverCreatedAt
+        optional: true
         description: original revision creation timestamp (for cached copies of remote postings only)
       - type: timestamp
         name: receiverDeletedAt
+        optional: true
         description: original revision deletion timestamp (for cached copies of remote postings only)
       - type: byte[]
         name: digest
@@ -5005,17 +5229,21 @@ structures:
           fingerprint)
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the revision's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - struct: ClientReactionInfo
         name: clientReaction
+        optional: true
         description: details of the existing reaction (if any) of the client's owner
       - struct: ReactionTotalsInfo
         name: reactions
+        optional: true
         description: reactions summary of the posting revision
   - name: PostingSourceInfo
     fields:
@@ -5024,9 +5252,11 @@ structures:
         description: name of the remote node
       - type: String
         name: fullName
+        optional: true
         description: full name of the remote node
       - struct: AvatarImage
         name: avatar
+        optional: true
         description: avatar of the remote node
       - type: String
         name: feedName
@@ -5041,27 +5271,34 @@ structures:
     fields:
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: avatar of the posting's owner
       - type: String
         name: bodySrc
+        optional: true
         description: the source text of the posting, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - struct: MediaWithDigest
         array: true
         name: media
+        optional: true
         description: array of IDs and digests of private media to be attached to the posting
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the posting accepts
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
       - type: String -> String
         name: commentOperations
+        optional: true
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden in the posting's comments
@@ -5069,32 +5306,41 @@ structures:
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: node name of the posting's owner, may be absent
       - type: String
         name: ownerFullName
+        optional: true
         description: full name of the posting's owner
       - type: String
         name: ownerGender
+        optional: true
         description: gender of the posting's owner
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: avatar of the posting's owner
       - type: String
         name: bodyPreview
+        optional: true
         description: preview of the posting's body, a string representation of a JSON structure
       - type: String
         name: bodySrc
+        optional: true
         description: the source text of the posting, a string representation of a JSON structure
       - type: String
         name: bodySrcFormat
+        optional: true
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: body
+        optional: true
         description: body of the posting, a string representation of a JSON structure
       - type: String
         name: bodyFormat
+        optional: true
         description: >
           format of the body of the posting, may have any value meaningful for the client, including:
           <ul>
@@ -5103,43 +5349,54 @@ structures:
           </ul>
       - type: String[]
         name: media
+        optional: true
         description: array of IDs of private media to be attached to the posting
       - type: timestamp
         name: createdAt
+        optional: true
         description: posting creation timestamp - the real time when the posting was created
       - struct: AcceptedReactions
         name: acceptedReactions
+        optional: true
         description: types of reactions that the posting accepts
       - struct: StoryAttributes
         array: true
         name: publications
+        optional: true
         description: list of publications in feeds that must be made after creating the posting (for new postings only)
       - struct: UpdateInfo
         name: updateInfo
+        optional: true
         description: description of the update
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#PostingInfo-operations">the operations</a> and the corresponding principals
       - type: String -> String
         name: commentOperations
+        optional: true
         description: >
           list of <a href="#CommentInfo-operations">the operations</a> and the corresponding principals that are
           overridden in the posting's comments
       - type: String -> String
         name: reactionOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the posting
       - type: String -> String
         name: commentReactionOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden in reactions to the posting's comments
@@ -5210,12 +5467,15 @@ structures:
         description: MIME-type of the media
       - type: int
         name: width
+        optional: true
         description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
+        optional: true
         description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: orientation
+        optional: true
         description: >
           media orientation, the value should be interpreted like
           <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
@@ -5225,13 +5485,16 @@ structures:
         description: size of the media file in bytes
       - type: String
         name: postingId
-        description: ID of the posting linked to the media (may be absent)
+        optional: true
+        description: ID of the posting linked to the media
       - struct: MediaFilePreviewInfo
         array: true
         name: previews
+        optional: true
         description: list of media previews - downscaled versions of the media
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: view
@@ -5241,33 +5504,42 @@ structures:
     fields:
       - type: String
         name: fullName
+        optional: true
         description: node owner's full name
       - type: String
         name: gender
+        optional: true
         description: node owners's gender
       - type: String
         name: email
+        optional: true
         description: node owner's E-mail address
       - type: String
         name: title
+        optional: true
         description: node title
       - type: String
         name: bioSrc
+        optional: true
         description: the source text of node owner's bio (arbitrary text)
       - type: String
         name: bioSrcFormat
+        optional: true
         description: >
           format of the source text of node owner's bio, <code>markdown</code> by default; the list of available formats
           is returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: avatarId
+        optional: true
         description: node owner's avatar ID
       - struct: FundraiserInfo
         array: true
         name: fundraisers
-        description: list of fundraisers - methods of giving a donation to the node owner (may be absent)
+        optional: true
+        description: list of fundraisers - methods of giving a donation to the node owner
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#ProfileInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: profileAttributes.fullName.wrong-size
@@ -5288,37 +5560,47 @@ structures:
     fields:
       - type: String
         name: fullName
+        optional: true
         description: node owner's full name
       - type: String
         name: gender
+        optional: true
         description: node owners's gender
       - type: String
         name: email
+        optional: true
         description: node owner's E-mail address
       - type: String
         name: title
+        optional: true
         description: node title
       - type: String
         name: bioSrc
+        optional: true
         description: the source text of node owner's bio (arbitrary text), may be absent if not requested
       - type: String
         name: bioSrcFormat
+        optional: true
         description: >
           format of the source text of node owner's bio, <code>markdown</code> by default, may be absent if not
           requested; the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
       - type: String
         name: bioHtml
+        optional: true
         description: HTML representation of node owner's bio
       - struct: AvatarInfo
         name: avatar
+        optional: true
         description: node owner's avatar
       - struct: FundraiserInfo
         array: true
         name: fundraisers
-        description: list of fundraisers - methods of giving a donation to the node owner (may be absent)
+        optional: true
+        description: list of fundraisers - methods of giving a donation to the node owner
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: edit
@@ -5339,12 +5621,15 @@ structures:
           <a href="virtual-pages.html">virtual page</a>
       - type: int
         name: width
+        optional: true
         description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
+        optional: true
         description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: orientation
+        optional: true
         description: >
           media orientation, the value should be interpreted like
           <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
@@ -5359,12 +5644,15 @@ structures:
         description: type of the notification
       - type: String
         name: id
+        optional: true
         description: ID of the story (<code>story-deleted</code> notifications only)
       - struct: StoryInfo
         name: story
+        optional: true
         description: the story (<code>story-added</code> notifications only)
       - struct: FeedWithStatus
         name: feedStatus
+        optional: true
         description: status of the feed (<code>feed-updated</code> notifications only)
   - name: ReactionAttributes
     fields:
@@ -5376,11 +5664,13 @@ structures:
         description: reaction code, usually interpreted by clients as emoji code point
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals
   - name: ReactionCreated
     fields:
       - struct: ReactionInfo
         name: reaction
+        optional: true
         description: details of the reaction created
       - struct: ReactionTotalsInfo
         name: totals
@@ -5389,15 +5679,19 @@ structures:
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: reaction owner's node name
       - type: String
         name: ownerFullName
+        optional: true
         description: reaction owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: reaction owner's gender
       - struct: AvatarDescription
         name: ownerAvatar
+        optional: true
         description: reaction owner's avatar
       - type: boolean
         name: negative
@@ -5407,14 +5701,17 @@ structures:
         description: reaction code, usually interpreted by clients as emoji code point
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the reaction owner signature (use <a href="node-api-fingerprints.html#Reaction"><code>Reaction</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: reactionDescription.ownerAvatar.mediaId.not-found
@@ -5425,74 +5722,95 @@ structures:
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: reaction owner's name
       - type: String[]
         name: postings
+        optional: true
         description: list of IDs of postings
   - name: ReactionInfo
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: reaction owner's node name
       - type: String
         name: ownerFullName
+        optional: true
         description: reaction owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: reaction owner's gender
       - struct: AvatarImage
         name: ownerAvatar
+        optional: true
         description: reaction owner's avatar
       - type: String
         name: postingId
+        optional: true
         description: ID of the posting
       - type: String
         name: postingRevisionId
+        optional: true
         description: ID of the posting revision, if relevant
       - type: String
         name: commentId
+        optional: true
         description: ID of the comment, if relevant
       - type: String
         name: commentRevisionId
+        optional: true
         description: ID of the comment revision, if relevant
       - type: boolean
         name: negative
+        optional: true
         description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
       - type: int
         name: emoji
+        optional: true
         description: reaction code, usually interpreted by clients as emoji code point
       - type: int
         name: moment
+        optional: true
       - type: timestamp
         name: createdAt
+        optional: true
         description: reaction creation timestamp - the real time when the reaction was created
       - type: timestamp
         name: deadline
+        optional: true
         description: if present, the reaction will be erased at this time
       - type: byte[]
         name: signature
+        optional: true
         description: >
           the reaction owner signature (use <a href="node-api-fingerprints.html#Reaction"><code>Reaction</code></a>
           fingerprint)
       - type: int
         name: signatureVersion
+        optional: true
         description: signature version (i.e. fingerprint version)
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
         name: ownerOperations
+        optional: true
         description: >
           list of the supported operations (see below) and the corresponding principals as defined by the reaction's
           owner
       - type: String -> String
         name: seniorOperations
+        optional: true
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the reaction's
           "senior": the posting's owner in the case of reaction to a posting or the comment's owner in the case of
           reaction to a comment
       - type: String -> String
         name: majorOperations
+        optional: true
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the posting's
           owner ("major") in the case of reaction to a comment; not set in the case of reaction to a posting
@@ -5525,9 +5843,11 @@ structures:
         description: reaction code, usually interpreted by clients as emoji code point
       - type: int
         name: total
-        description: total number of reactions with the given code (may be absent)
+        optional: true
+        description: total number of reactions with the given code
       - type: float
         name: share
+        optional: true
         description: >
           share the reactions with the given code stand from the total number of reactions (may be absent, if
           <code>total</code> is present)
@@ -5553,16 +5873,19 @@ structures:
     fields:
       - type: String -> String
         name: operations
+        optional: true
         description: >
           list of the supported <a href="#ReactionInfo-operations">operations</a> and the corresponding principals
       - type: String -> String
         name: seniorOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden by the reaction's "senior": the posting's owner in the case of reaction to a posting or
           the comment's owner in the case of reaction to a comment
       - type: String -> String
         name: majorOperations
+        optional: true
         description: >
           list of <a href="#ReactionInfo-operations">the operations</a> and the corresponding principals that are
           overridden by the posting's owner ("major") in the case of reaction to a comment; not set in the case of
@@ -5599,9 +5922,11 @@ structures:
         description: ID of the media file
       - type: String
         name: hash
+        optional: true
         description: SHA-1 hash of the media file
       - type: String
         name: digest
+        optional: true
         description: cryptographic digest of the media file
   - name: RemoteMediaInfo
     fields:
@@ -5610,9 +5935,11 @@ structures:
         description: ID of the media file
       - type: String
         name: hash
+        optional: true
         description: SHA-1 hash of the media file
       - type: String
         name: digest
+        optional: true
         description: cryptographic digest of the media file
   - name: RemotePosting
     fields:
@@ -5633,14 +5960,18 @@ structures:
         name: postingId
       - type: String
         name: revisionId
+        optional: true
       - enum: VerificationStatus
         name: status
+        optional: true
         description: status of the operation
       - type: String
         name: errorCode
+        optional: true
         description: error code
       - type: String
         name: errorMessage
+        optional: true
         description: human-readable error message
   - name: RemoteReactionVerificationInfo
     fields:
@@ -5656,12 +5987,15 @@ structures:
         description: node name of the reaction's owner
       - enum: VerificationStatus
         name: status
+        optional: true
         description: status of the operation
       - type: String
         name: errorCode
+        optional: true
         description: error code
       - type: String
         name: errorMessage
+        optional: true
         description: human-readable error message
   - name: RepliedTo
     fields:
@@ -5670,21 +6004,26 @@ structures:
         description: ID of the comment
       - type: String
         name: revisionId
+        optional: true
         description: ID of the comment revision
       - type: String
         name: name
         description: node name of the comment's owner
       - type: String
         name: fullName
+        optional: true
         description: full name of the comment's owner
       - type: String
         name: gender
+        optional: true
         description: gender of the comment's owner
       - struct: AvatarImage
         name: avatar
+        optional: true
         description: avatar of the comment's owner
       - type: String
         name: heading
+        optional: true
         description: heading of the comment
       - type: byte[]
         name: digest
@@ -5711,6 +6050,7 @@ structures:
         description: name of the setting
       - type: String
         name: value
+        optional: true
         description: value of the setting
   - name: SettingMetaAttributes
     fields:
@@ -5719,10 +6059,12 @@ structures:
         description: name of the setting
       - type: String
         name: defaultValue
+        optional: true
         description: >
           default value of the setting (if absent or <code>null</code>, the built-in default value will be used)
       - type: boolean
         name: privileged
+        optional: true
         description: >
           the setting should be privileged (if absent or <code>null</code>, the built-in value of the flag will be used)
   - name: SettingDescriptor
@@ -5737,18 +6079,23 @@ structures:
           possible values)
       - type: String
         name: defaultValue
+        optional: true
         description: default value of the setting
       - type: boolean
         name: internal
+        optional: true
         description: the setting is internal - not displayed to the user
       - type: boolean
         name: privileged
+        optional: true
         description: the setting is privileged - may be changed by server owner only
       - type: String
         name: title
+        optional: true
         description: human-friendly description of the setting
       - struct: SettingTypeModifiers
         name: modifiers
+        optional: true
         description: >
           additional modifiers that may help to choose a proper UI component for the setting value and to validate the
           input; meaning of the modifiers depend on the setting type
@@ -5787,15 +6134,18 @@ structures:
           </ul>
       - type: String
         name: defaultValue
+        optional: true
         description: default value of the setting
       - type: boolean
         name: privileged
+        optional: true
         description: the setting is privileged - may be changed by server owner only
       - type: String
         name: title
         description: human-friendly description of the setting
       - struct: SettingTypeModifiers
         name: modifiers
+        optional: true
         description: >
           additional modifiers that may help to choose a proper UI component for the setting value and to validate the
           input; meaning of the modifiers depend on the setting type
@@ -5803,6 +6153,7 @@ structures:
     fields:
       - type: String
         name: format
+        optional: true
         description: >
           preferred format of displaying the value
           <ul>
@@ -5817,21 +6168,27 @@ structures:
           </ul>
       - type: String
         name: min
+        optional: true
         description: (<code>int</code>, <code>Duration</code>) minimal value
       - type: String
         name: max
+        optional: true
         description: (<code>int</code>, <code>Duration</code>) maximal value
       - type: boolean
         name: multiline
+        optional: true
         description: (<code>string</code>) <code>true</code>, if the value is a multiline text
       - type: boolean
         name: never
+        optional: true
         description: (<code>Duration</code>) <code>true</code>, if value <code>never</code> is allowed
       - type: boolean
         name: always
+        optional: true
         description: (<code>Duration</code>) <code>true</code>, if value <code>always</code> is allowed
       - type: String[]
         name: principals
+        optional: true
         description: (<code>Principal</code>) list of allowed principals
   - name: SheriffComplainDecisionText
     fields:
@@ -5840,12 +6197,15 @@ structures:
         description: <code>true</code>, if the complaints in the group are to be rejected, <code>false</code> otherwise
       - enum: SheriffOrderReason
         name: decisionCode
+        optional: true
         description: the decision
       - type: String
         name: decisionDetails
+        optional: true
         description: detailed explanation of the decision in user-readable form
       - type: boolean
         name: anonymous
+        optional: true
         description: >
           <code>true</code>, if the complaints' owners' names are not to be published, <code>false</code> otherwise
     errors:
@@ -5862,45 +6222,58 @@ structures:
         description: name of the node the complaints are related to
       - type: String
         name: remoteFullName
+        optional: true
         description: full name of the node the complaints are related to
       - type: String
         name: remoteFeedName
         description: name of the feed the complaints are related to
       - type: String
         name: remotePostingId
+        optional: true
         description: ID of the posting the complaints are related to; may be absent
       - type: String
         name: remotePostingRevisionId
+        optional: true
         description: ID of the posting's revision the complaints are related to
       - type: String
         name: remotePostingOwnerName
+        optional: true
         description: posting owner's node name
       - type: String
         name: remotePostingOwnerFullName
+        optional: true
         description: posting owner's full name
       - type: String
         name: remotePostingOwnerGender
+        optional: true
         description: posting owner's gender
       - type: String
         name: remotePostingHeading
+        optional: true
         description: heading of the posting
       - type: String
         name: remoteCommentId
+        optional: true
         description: ID of the comment the complaints are related to; may be absent
       - type: String
         name: remoteCommentRevisionId
+        optional: true
         description: ID of the comment's revision the complaints are related to
       - type: String
         name: remoteCommentOwnerName
+        optional: true
         description: comment owner's node name
       - type: String
         name: remoteCommentOwnerFullName
+        optional: true
         description: comment owner's full name
       - type: String
         name: remoteCommentOwnerGender
+        optional: true
         description: comment owner's gender
       - type: String
         name: remoteCommentHeading
+        optional: true
         description: heading of the comment
       - type: timestamp
         name: createdAt
@@ -5913,15 +6286,19 @@ structures:
         description: status of the group of complaints
       - enum: SheriffOrderReason
         name: decisionCode
+        optional: true
         description: sheriff's decision
       - type: String
         name: decisionDetails
+        optional: true
         description: detailed explanation of sheriff's decision in user-readable form
       - type: timestamp
         name: decidedAt
+        optional: true
         description: sheriff's decision timestamp - the real time when the decision was made
       - type: boolean
         name: anonymous
+        optional: true
         description: >
           <code>true</code>, if the complaints' owners' names are not published, <code>false</code> otherwise
   - name: SheriffComplainGroupsSliceInfo
@@ -5954,21 +6331,26 @@ structures:
         description: complaint owner's node name
       - type: String
         name: ownerFullName
+        optional: true
         description: complaint owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: complaint owner's gender
       - struct: SheriffComplainGroupInfo
         name: group
+        optional: true
         description: the group of complains this complaint belongs to
       - enum: SheriffOrderReason
         name: reasonCode
         description: reason of the complaint
       - type: String
         name: reasonDetails
+        optional: true
         description: detailed explanation of reason of the complaint in user-readable form
       - type: boolean
         name: anonymousRequested
+        optional: true
         description: >
           <code>true</code>, if the complaint's owner wants his name not to be published, <code>false</code> otherwise
       - type: timestamp
@@ -5978,57 +6360,73 @@ structures:
     fields:
       - type: String
         name: ownerFullName
+        optional: true
         description: complaint owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: complaint owner's gender
       - type: String
         name: nodeName
         description: name of the node the complaint is related to
       - type: String
         name: fullName
+        optional: true
         description: full name of the node the complaint is related to
       - type: String
         name: feedName
         description: name of the feed the complaint is related to
       - type: String
         name: postingId
+        optional: true
         description: ID of the posting the complaint is related to; may be absent
       - type: String
         name: postingOwnerName
+        optional: true
         description: posting owner's node name
       - type: String
         name: postingOwnerFullName
+        optional: true
         description: posting owner's full name
       - type: String
         name: postingOwnerGender
+        optional: true
         description: posting owner's gender
       - type: String
         name: postingHeading
+        optional: true
         description: heading of the posting
       - type: String
         name: commentId
+        optional: true
         description: ID of the comment the complaint is related to; may be absent
       - type: String
         name: commentOwnerName
+        optional: true
         description: comment owner's node name
       - type: String
         name: commentOwnerFullName
+        optional: true
         description: comment owner's full name
       - type: String
         name: commentOwnerGender
+        optional: true
         description: comment owner's gender
       - type: String
         name: commentHeading
+        optional: true
         description: heading of the comment
       - enum: SheriffOrderReason
         name: reasonCode
+        optional: true
         description: reason of the complaint
       - type: String
         name: reasonDetails
+        optional: true
         description: detailed explanation of reason of the complaint in user-readable form
       - type: boolean
         name: anonymous
+        optional: true
         description: >
           <code>true</code>, if the complaint's owner wants his name not to be published, <code>false</code> otherwise
     errors:
@@ -6072,6 +6470,7 @@ structures:
     fields:
       - type: boolean
         name: delete
+        optional: true
         description: >
           <code>true</code>, if the order is to cancel the previous order of this type, <code>false</code> otherwise
       - type: String
@@ -6079,18 +6478,22 @@ structures:
         description: name of the feed the order is related to
       - type: String
         name: postingId
+        optional: true
         description: ID of the posting the order is related to; may be absent
       - type: String
         name: commentId
+        optional: true
         description: ID of the comment the order is related to; may be absent
       - enum: SheriffOrderCategory
         name: category
         description: category of the order
       - enum: SheriffOrderReason
         name: reasonCode
+        optional: true
         description: reason of the order
       - type: String
         name: reasonDetails
+        optional: true
         description: detailed explanation of reason of the order in user-readable form
     errors:
       - code: sheriffOrderAttributes.feedName.blank
@@ -6105,6 +6508,7 @@ structures:
         name: id
       - type: boolean
         name: delete
+        optional: true
         description: >
           <code>true</code>, if the order is to cancel the previous order of this type, <code>false</code> otherwise
       - type: String
@@ -6112,24 +6516,29 @@ structures:
         description: node name of the sheriff
       - struct: AvatarDescription
         name: sheriffAvatar
+        optional: true
         description: sheriff's avatar
       - type: String
         name: feedName
         description: name of the feed the order is related to
       - type: String
         name: postingId
+        optional: true
         description: ID of the posting the order is related to; may be absent
       - type: String
         name: commentId
+        optional: true
         description: ID of the comment the order is related to; may be absent
       - enum: SheriffOrderCategory
         name: category
         description: category of the order
       - enum: SheriffOrderReason
         name: reasonCode
+        optional: true
         description: reason of the order
       - type: String
         name: reasonDetails
+        optional: true
         description: detailed explanation of reason of the order in user-readable form
       - type: timestamp
         name: createdAt
@@ -6167,6 +6576,7 @@ structures:
         name: id
       - type: boolean
         name: delete
+        optional: true
         description: >
           <code>true</code>, if the order is to cancel the previous order of this type, <code>false</code> otherwise
       - type: String
@@ -6177,54 +6587,69 @@ structures:
         description: name of the node the order was sent to
       - type: String
         name: nodeFullName
+        optional: true
         description: full name of the node the order was sent to
       - type: String
         name: feedName
         description: name of the feed the order is related to
       - type: String
         name: postingId
+        optional: true
         description: ID of the posting the order is related to; may be absent
       - type: String
         name: postingRevisionId
+        optional: true
         description: ID of the posting's revision the order is related to
       - type: String
         name: postingOwnerName
+        optional: true
         description: posting owner's node name
       - type: String
         name: postingOwnerFullName
+        optional: true
         description: posting owner's full name
       - type: String
         name: postingOwnerGender
+        optional: true
         description: posting owner's gender
       - type: String
         name: postingHeading
+        optional: true
         description: heading of the posting
       - type: String
         name: commentId
+        optional: true
         description: ID of the comment the order is related to; may be absent
       - type: String
         name: commentRevisionId
+        optional: true
         description: ID of the comment's revision the order is related to
       - type: String
         name: commentOwnerName
+        optional: true
         description: comment owner's node name
       - type: String
         name: commentOwnerFullName
+        optional: true
         description: comment owner's full name
       - type: String
         name: commentOwnerGender
+        optional: true
         description: comment owner's gender
       - type: String
         name: commentHeading
+        optional: true
         description: heading of the comment
       - enum: SheriffOrderCategory
         name: category
         description: category of the order
       - enum: SheriffOrderReason
         name: reasonCode
+        optional: true
         description: reason of the order
       - type: String
         name: reasonDetails
+        optional: true
         description: detailed explanation of reason of the order in user-readable form
       - type: timestamp
         name: createdAt
@@ -6239,28 +6664,35 @@ structures:
         description: signature version (i.e. fingerprint version)
       - type: String
         name: complainGroupId
+        optional: true
         description: ID of the groups of complaints that were the cause of the order; may be absent
   - name: StoryAttributes
     fields:
       - type: String
         name: feedName
+        optional: true
         description: name of the feed
       - type: timestamp
         name: publishAt
+        optional: true
         description: story publication timestamp - the time the story must be published under in the feed
       - type: boolean
         name: pinned
+        optional: true
         description: >
           <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
       - type: boolean
         name: viewed
+        optional: true
         description: value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed)
       - type: boolean
         name: read
+        optional: true
         description: value of the <code>read</code> flag (<code>null</code>, if the flag is not changed)
       - type: boolean
         name: satisfied
+        optional: true
         description: value of the <code>satisfied</code> flag (<code>null</code>, if the flag is not changed)
   - name: StoryInfo
     fields:
@@ -6282,6 +6714,7 @@ structures:
         description: story publication timestamp - the time the story is published under in the feed
       - type: boolean
         name: pinned
+        optional: true
         description: >
           <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
@@ -6289,58 +6722,75 @@ structures:
         name: moment
       - type: boolean
         name: viewed
+        optional: true
         description: <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
       - type: boolean
         name: read
+        optional: true
         description: <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
       - type: boolean
         name: satisfied
+        optional: true
         description: >
           if the story is associated with a user action (for example, it contains a form that should be submitted), this
           flag is set to <code>true</code>, if the action is done already, and <code>false</code> otherwise
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String
         name: summaryNodeName
+        optional: true
         description: name of the node related to the summary of the story
       - type: String
         name: summaryFullName
+        optional: true
         description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
+        optional: true
         description: avatar of the summary of the story
       - type: String
         name: summary
+        optional: true
         description: >
           user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
       - struct: StorySummaryData
         name: summaryData
+        optional: true
         description: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
         name: trackingId
+        optional: true
         description: >
           ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
       - struct: PostingInfo
         name: posting
+        optional: true
         description: the posting this story is about (may be absent or contain only ID)
       - struct: CommentInfo
         name: comment
+        optional: true
         description: the comment this story is about (may be absent or contain only ID)
       - type: String
         name: remoteNodeName
+        optional: true
         description: name of the node this story is about (may be absent)
       - type: String
         name: remoteFullName
+        optional: true
         description: full name of the node this story is about (may be absent)
       - type: String
         name: remotePostingId
+        optional: true
         description: ID of the posting at remote node this story is about (may be absent)
       - type: String
         name: remoteCommentId
+        optional: true
         description: ID of the comment at remote node this story is about (may be absent)
       - type: String
         name: remoteMediaId
+        optional: true
         description: ID of the media at remote node this story is about (may be absent)
     operations:
       - name: edit
@@ -6353,53 +6803,69 @@ structures:
     fields:
       - struct: StorySummaryNode
         name: node
+        optional: true
         description: a node
       - struct: StorySummaryEntry
         name: posting
+        optional: true
         description: a posting
       - struct: StorySummaryEntry
         name: comment
+        optional: true
         description: a comment
       - struct: StorySummaryEntry
         array: true
         name: comments
+        optional: true
         description: list of comments
       - type: int
         name: totalComments
+        optional: true
         description: total number of comments
       - struct: StorySummaryEntry
         name: repliedTo
+        optional: true
         description: the comment replied to
       - struct: StorySummaryEntry
         name: parentPosting
+        optional: true
         description: the parent posting of the media
       - struct: StorySummaryReaction
         name: reaction
+        optional: true
         description: a reaction
       - struct: StorySummaryReaction
         array: true
         name: reactions
+        optional: true
         description: list of reactions
       - type: int
         name: totalReactions
+        optional: true
         description: total number of reactions
       - type: String
         name: feedName
+        optional: true
         description: name of a feed
       - enum: SubscriptionReason
         name: subscriptionReason
+        optional: true
         description: subscription reason
       - struct: StorySummaryFriendGroup
         name: friendGroup
+        optional: true
         description: a group of friends
       - struct: StorySummaryBlocked
         name: blocked
+        optional: true
         description: summary of blocking a user
       - struct: StorySummarySheriff
         name: sheriff
+        optional: true
         description: summary of an action of a sheriff
       - type: String
         name: description
+        optional: true
         description: additional descriptive text
   - name: StorySummaryBlocked
     fields:
@@ -6409,60 +6875,76 @@ structures:
         description: list of the operations blocked
       - type: int
         name: period
+        optional: true
         description: the period of blocking in seconds, may be absent
   - name: StorySummaryFriendGroup
     fields:
       - type: String
         name: id
+        optional: true
         description: ID of the group of friends
       - type: String
         name: title
+        optional: true
         description: title of the group of friends
   - name: StorySummaryEntry
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: entry owner's name
       - type: String
         name: ownerFullName
+        optional: true
         description: entry owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: entry owner's gender
       - type: String
         name: heading
+        optional: true
         description: entry heading
       - type: String[]
         name: sheriffs
+        optional: true
         description: list of sheriffs supervising the entry
       - struct: SheriffMark
         array: true
         name: sheriffMarks
+        optional: true
         description: list of sheriff marks on the entry
   - name: StorySummaryNode
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: node owner's name
       - type: String
         name: ownerFullName
+        optional: true
         description: node owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: node owner's gender
   - name: StorySummaryReaction
     fields:
       - type: String
         name: ownerName
+        optional: true
         description: reaction owner's name
       - type: String
         name: ownerFullName
+        optional: true
         description: reaction owner's full name
       - type: String
         name: ownerGender
+        optional: true
         description: reaction owner's gender
       - type: int
         name: emoji
+        optional: true
         description: reaction code
   - name: StorySummarySheriff
     fields:
@@ -6471,9 +6953,11 @@ structures:
         description: name of the sheriff
       - type: String
         name: orderId
+        optional: true
         description: ID of the sheriff's order
       - type: String
         name: complainId
+        optional: true
         description: ID of the complaint, if any
   - name: SubscriberDescription
     fields:
@@ -6482,15 +6966,19 @@ structures:
         description: subscription type
       - type: String
         name: feedName
+        optional: true
         description: feed name, if the subscription type requires one
       - type: String
         name: postingId
+        optional: true
         description: posting ID, if the subscription type requires one
       - type: timestamp
         name: lastUpdatedAt
-        description: timestamp of the latest known state of the object, may be absent
+        optional: true
+        description: timestamp of the latest known state of the object
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#SubscriberInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: subscriberDescription.type.blank
@@ -6517,28 +7005,34 @@ structures:
         description: subscription type
       - type: String
         name: feedName
+        optional: true
         description: feed name, if the subscription type requires one
       - type: String
         name: postingId
+        optional: true
         description: posting ID, if the subscription type requires one
       - type: String
         name: nodeName
         description: name of the subscribed node
       - struct: ContactInfo
         name: contact
+        optional: true
         description: information known about the subscribed node
       - type: timestamp
         name: createdAt
         description: subscription creation timestamp
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
       - type: String -> String
         name: ownerOperations
+        optional: true
         description: >
           list of the supported operations (see below) and the corresponding principals as defined by the subscriber
       - type: String -> String
         name: adminOperations
+        optional: true
         description: >
           list of the operations (see below) and the corresponding principals that are overridden by the node
           administrator
@@ -6553,10 +7047,12 @@ structures:
     fields:
       - type: String -> String
         name: operations
+        optional: true
         description: >
           list of the supported <a href="#SubscriberInfo-operations">operations</a> and the corresponding principals
       - type: String -> String
         name: adminOperations
+        optional: true
         description: >
           list of <a href="#SubscriberInfo-operations">the operations</a> and the corresponding principals that are
           overridden by the node administrator
@@ -6572,21 +7068,26 @@ structures:
         description: subscription type
       - type: String
         name: feedName
+        optional: true
         description: feed name on this node that receives notifications
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
       - type: String
         name: remoteFeedName
+        optional: true
         description: feed name on the remote node, if the subscription type requires one
       - type: String
         name: remotePostingId
+        optional: true
         description: posting ID on the remote node, if the subscription type requires one
       - enum: SubscriptionReason
         name: reason
+        optional: true
         description: subscription reason
       - type: String -> String
         name: operations
+        optional: true
         description: list of <a href="#SubscriptionInfo-operations">the operations</a> and the corresponding principals
     errors:
       - code: subscriptionDescription.type.blank
@@ -6617,14 +7118,17 @@ structures:
     fields:
       - enum: SubscriptionType
         name: type
+        optional: true
         description: subscription type
       - struct: RemoteFeed
         array: true
         name: feeds
+        optional: true
         description: list of feeds
       - struct: RemotePosting
         array: true
         name: postings
+        optional: true
         description: list of postings
   - name: SubscriptionInfo
     fields:
@@ -6636,18 +7140,22 @@ structures:
         description: subscription type
       - type: String
         name: feedName
+        optional: true
         description: feed name on this node that receives notifications
       - type: String
         name: remoteNodeName
         description: name of the node this node is subscribed to
       - struct: ContactInfo
         name: contact
+        optional: true
         description: information known about the remote node
       - type: String
         name: remoteFeedName
+        optional: true
         description: feed name on the remote node, if the subscription type requires one
       - type: String
         name: remotePostingId
+        optional: true
         description: posting ID on the remote node, if the subscription type requires one
       - type: timestamp
         name: createdAt
@@ -6657,6 +7165,7 @@ structures:
         description: subscription reason
       - type: String -> String
         name: operations
+        optional: true
         description: list of the supported operations (see below) and the corresponding principals
     operations:
       - name: view
@@ -6669,6 +7178,7 @@ structures:
     fields:
       - type: String -> String
         name: operations
+        optional: true
         description: >
           list of the supported <a href="#SubscriptionInfo-operations">operations</a> and the corresponding principals
     errors:
@@ -6682,6 +7192,7 @@ structures:
         name: password
       - type: int
         name: authCategory
+        optional: true
         description: >
           A bit mask describing which permissions should be granted to the token. If not set, all permissions of
           the administrator are granted. The bits have the following meaning:
@@ -6691,6 +7202,7 @@ structures:
           </ul>
       - type: String
         name: name
+        optional: true
         description: a user-readable name of the token, may be absent
     errors:
       - code: tokenAttributes.login.blank
@@ -6707,6 +7219,7 @@ structures:
         description: the token
       - type: String
         name: name
+        optional: true
         description: a user-readable name of the token, may be absent
       - type: String[]
         name: permissions
@@ -6718,34 +7231,42 @@ structures:
           </ul>
       - type: String
         name: pluginName
+        optional: true
         description: a plugin the token belongs to; if set, only this plugin may use the token
       - type: timestamp
         name: createdAt
         description: token creation timestamp
       - type: timestamp
         name: deadline
+        optional: true
         description: timestamp of the end of the token's life
       - type: timestamp
         name: lastUsedAt
+        optional: true
         description: timestamp of the last time the token was used
       - type: String
         name: lastUsedBrowser
+        optional: true
         description: name of the browser used by the latest user of the token
       - type: String
         name: lastUsedIp
+        optional: true
         description: IP address of the latest user of the token
   - name: TokenName
     fields:
       - type: String
         name: name
-        description: a user-readable name of the token, may be absent
+        optional: true
+        description: a user-readable name of the token
   - name: UpdateInfo
     fields:
       - type: boolean
         name: important
+        optional: true
         description: <code>true</code>, if the update is important, <code>false</code> (the default) otherwise
       - type: String
         name: description
+        optional: true
         description: description of the update
   - name: UserListInfo
     fields:
@@ -6804,20 +7325,26 @@ structures:
     fields:
       - type: String
         name: nodeName
+        optional: true
       - type: boolean
         name: nodeNameChanging
+        optional: true
         description: <code>true</code> if node name is about to be changed
       - type: String
         name: fullName
+        optional: true
         description: node owner's full name
       - type: String
         name: gender
+        optional: true
         description: node owners's gender
       - type: String
         name: title
+        optional: true
         description: node title
       - struct: AvatarImage
         name: avatar
+        optional: true
         description: node owners's avatar
 
 enums:
