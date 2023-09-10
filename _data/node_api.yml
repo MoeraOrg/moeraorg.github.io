@@ -3353,13 +3353,6 @@ structures:
       - type: timestamp
         name: createdAt
         description: cartes creation timestamp
-  - name: Choice
-    fields:
-      - type: String
-        name: value
-      - type: String
-        name: title
-        description: user-readable title for the value
   - name: ClientReactionInfo
     fields:
       - type: boolean
@@ -4732,16 +4725,10 @@ structures:
       - type: boolean
         name: subjectPresent
         description: <code>true</code> if new postings are recommended to have a subject, <code>false</code> otherwise
-      - struct: Choice
+      - enum: SourceFormat
         array: true
         name: sourceFormats
-        description: >
-          List of source text formats the node understands. The well-known values are:
-          <ul>
-            <li><code>plain-text</code> - plain text with newlines and paragraphs delimited by empty line;</li>
-            <li><code>html</code> - HTML-formatted text, the node may allow only limited set of tags;</li>
-            <li><code>markdown</code> - text in Markdown format.</li>
-          </ul>
+        description: list of source text formats the node understands
       - type: int
         name: mediaMaxSize
         description: maximal size of a media attachment in a post
