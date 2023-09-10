@@ -2491,8 +2491,9 @@ objects:
             description: comment is located under a different posting
   - name: Stories object
     description: >
-      All stories. Each story describes something happening in Moera, stories are building blocks for feeds. A story may
-      reference a posting, a remote object etc.
+      All stories. Each story describes something happening in Moera, stories are building blocks for feeds. All stories
+      have the same structure, but the meaning of fields depends on the story type. A story may reference a posting,
+      a remote object, etc. Some feeds may not allow some types of stories.
     requests:
       - url: /stories/{id}
         type: GET
@@ -3069,11 +3070,9 @@ structures:
         description: reason of blocking
   - name: BlockedInstantAttributes
     fields:
-      - type: String
+      - enum: StoryType
         name: storyType
-        description: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
+        description: type of the story
       - type: String
         name: entryId
         optional: true
@@ -3101,11 +3100,9 @@ structures:
         description: story type is not set
   - name: BlockedInstantFilter
     fields:
-      - type: String
+      - enum: StoryType
         name: storyType
-        description: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
+        description: type of the story
       - type: String
         name: entryId
         optional: true
@@ -3126,11 +3123,9 @@ structures:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: StoryType
         name: storyType
-        description: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
+        description: type of the story
       - type: String
         name: entryId
         optional: true
@@ -3160,11 +3155,9 @@ structures:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: StoryType
         name: storyType
-        description: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
+        description: type of the story
       - type: String
         name: remoteOwnerName
         optional: true
@@ -6701,11 +6694,9 @@ structures:
       - type: String
         name: feedName
         description: name of the feed
-      - type: String
+      - enum: StoryType
         name: storyType
-        description: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
+        description: type of the story
       - type: timestamp
         name: createdAt
         description: story creation timestamp - the real time when the story was created
@@ -7446,6 +7437,86 @@ enums:
         description: violation of someone's privacy
       - name: other
         description: any other reason
+  - name: StoryType
+    values:
+      - name: asked-to-friend
+        description: a remote node asked to add it to friends
+      - name: asked-to-subscribe
+        description: a remote node asked to subscribe to it
+      - name: blocked-user
+        description: a remote node has blocked the user globally
+      - name: blocked-user-in-posting
+        description: a remote node has blocked the user in a posting
+      - name: comment-added
+        description: a comment was added under the user's posting
+      - name: comment-media-reaction-added-negative
+        description: a positive reaction was added to a media attached to a comment
+      - name: comment-media-reaction-added-positive
+        description: a positive reaction was added to a media attached to a comment
+      - name: comment-media-reaction-failed
+        description: a failed attempt to add a reaction to a media attached to a comment
+      - name: comment-post-task-failed
+        description: a failed attempt to post a comment
+      - name: comment-reaction-added-negative
+        description: a negative reaction was added to the user's comment
+      - name: comment-reaction-added-positive
+        description: a positive reaction was added to the user's comment
+      - name: comment-reaction-task-failed
+        description: a failed attempt to post a reaction to a comment
+      - name: comment-update-task-failed
+        description: a failed attempt to update a comment
+      - name: friend-added
+        description: a remote node has added the user to friends
+      - name: friend-deleted
+        description: a remote node has removed the user from friends
+      - name: friend-group-deleted
+        description: a remote group of friends, the user was a member of, has been deleted
+      - name: mention-comment
+        description: the user was mentioned in a comment
+      - name: mention-posting
+        description: the user was mentioned in a posting on another node
+      - name: posting-added
+        description: a posting was added; **stories of this type are used for feeds containing postings**
+      - name: posting-media-reaction-added-negative
+        description: a negative reaction was added to a media attached to a posting
+      - name: posting-media-reaction-added-positive
+        description: a positive reaction was added to a media attached to a posting
+      - name: posting-media-reaction-failed
+        description: a failed attempt to add a reaction to a media attached to a posting
+      - name: posting-post-task-failed
+        description: a failed attempt to create a posting
+      - name: posting-reaction-task-failed
+        description: a failed attempt to post a reaction to a posting
+      - name: posting-subscribe-task-failed
+        description: a failed attempt to subscribe to a posting
+      - name: posting-update-task-failed
+        description: a failed attempt to update a posting
+      - name: posting-updated
+        description: a posting was updated
+      - name: reaction-added-negative
+        description: a negative reaction was added to the user's posting
+      - name: reaction-added-positive
+        description: a positive reaction was added to the user's posting
+      - name: remote-comment-added
+        description: a comment was added under a posting the user is subscribed to
+      - name: reply-comment
+        description: a reply was added to the user's comment
+      - name: sheriff-complain-added
+        description: a new complaint was received
+      - name: sheriff-complain-decided
+        description: a decision was made on the user's complaint
+      - name: sheriff-marked
+        description: user's entry was marked by a sheriff
+      - name: sheriff-unmarked
+        description: user's entry was unmarked by a sheriff
+      - name: subscriber-added
+        description: another node subscribed to user's feed
+      - name: subscriber-deleted
+        description: another node unsubscribed from user's feed
+      - name: unblocked-user
+        description: a remote node has unblocked the user globally
+      - name: unblocked-user-in-posting
+        description: a remote node has unblocked the user in a posting
   - name: SubscriptionReason
     values:
       - name: user

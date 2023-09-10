@@ -709,11 +709,9 @@ notifications:
       - type: String
         name: feedName
         comment: name of the feed on the sending node
-      - type: String
+      - enum: StoryType
         name: storyType
-        comment: >
-          type of the story (see <a href="stories.html">Stories</a> page for description of various story types and
-          their meaning)
+        comment: type of the story
       - type: String
         name: postingId
         comment: ID of the posting on the sending node, if the story is related to a posting
