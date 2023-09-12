@@ -184,9 +184,6 @@ body_class: body-pink
                                 {{ req.out.struct }}{% if req.out.array == true %}[]{% endif %}
                             </a>
                         </code>
-                        {% if req.out.struct == 'Body' %}
-                            (as String)
-                        {% endif %}
                     {% endif %}
                     {% if req.out.description %}
                         - {{ req.out.description }}
@@ -247,7 +244,12 @@ body_class: body-pink
                         <code>String{% if field.array == true %}[]{% endif %}</code>
                     {% endif %}
                     {% if field.struct %}
-                        <code><a href="#{{ field.struct }}">{{ field.struct }}{% if field.array == true %}[]{% endif %}</a></code>
+                        <code>
+                            <a href="#{{ field.struct }}">{{ field.struct }}{% if field.array == true %}[]{% endif %}</a>
+                        </code>
+                        {% if req.out.struct == 'Body' %}
+                            (as String)
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td><code>{{ field.name }}</code></td>
