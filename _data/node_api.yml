@@ -2948,7 +2948,7 @@ structures:
       - type: String
         name: shape
         description: shape of the avatar
-      - type: bool
+      - type: boolean
         name: optional
         optional: true
         description: >
@@ -3407,11 +3407,11 @@ structures:
       - type: int
         name: totalRevisions
         description: total number of revisions the comment has
-      - type: String
+      - struct: Body
         name: bodyPreview
         optional: true
         description: preview of the comment's body, a string representation of a JSON structure
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: >
@@ -3425,7 +3425,7 @@ structures:
         description: >
           format of the source text of the comment, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         description: body of the comment, a string representation of a JSON structure
       - enum: BodyFormat
@@ -3524,7 +3524,7 @@ structures:
         description: reactions summary of the comment
   - name: CommentMassAttributes
     fields:
-      - type: CommentOperations
+      - struct: CommentOperations
         name: seniorOperations
         optional: true
         description: >
@@ -3539,7 +3539,7 @@ structures:
       - type: String
         name: postingRevisionId
         description: ID of the posting revision that was actual at the moment of creation of this comment revision
-      - type: String
+      - struct: Body
         name: bodyPreview
         optional: true
         description: preview of the revision's body, a string representation of a JSON structure
@@ -3552,7 +3552,7 @@ structures:
         description: >
           format of the source text of the revision, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         description: body of the revision, a string representation of a JSON structure
       - enum: BodyFormat
@@ -3625,7 +3625,7 @@ structures:
         name: ownerAvatar
         optional: true
         description: avatar of the comment's owner
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: the source text of the comment, a string representation of a JSON structure
@@ -3691,11 +3691,11 @@ structures:
         name: ownerAvatar
         optional: true
         description: avatar of the comment's owner
-      - type: String
+      - struct: Body
         name: bodyPreview
         optional: true
         description: preview of the comment's body, a string representation of a JSON structure
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: the source text of the comment, a string representation of a JSON structure
@@ -3705,7 +3705,7 @@ structures:
         description: >
           format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         optional: true
         description: body of the comment, a string representation of a JSON structure
@@ -3981,7 +3981,7 @@ structures:
         name: acceptedReactions
         optional: true
         description: types of reactions that the posting accepts
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: the source text of the draft, a string representation of a JSON structure
@@ -3991,7 +3991,7 @@ structures:
         description: >
           format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         description: body of the draft, a string representation of a JSON structure
       - enum: BodyFormat
@@ -4056,7 +4056,7 @@ structures:
         name: acceptedReactions
         optional: true
         description: types of reactions that the posting accepts
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: the source text of the draft, a string representation of a JSON structure
@@ -4791,11 +4791,11 @@ structures:
         name: ownerAvatar
         optional: true
         description: avatar of the posting's owner
-      - type: String
+      - struct: Body
         name: bodyPreview
         optional: true
         description: preview of the posting's body, a string representation of a JSON structure
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: >
@@ -4809,7 +4809,7 @@ structures:
         description: >
           format of the source text of the posting, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         description: body of the posting, a string representation of a JSON structure
       - enum: BodyFormat
@@ -4960,7 +4960,7 @@ structures:
         name: receiverId
         optional: true
         description: ID of the original revision (for cached copies of remote postings only)
-      - type: String
+      - struct: Body
         name: bodyPreview
         optional: true
         description: preview of the revisions's body, a string representation of a JSON structure
@@ -4973,7 +4973,7 @@ structures:
         description: >
           format of the source text of the revision, the list of available formats is returned in
           <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         description: body of the revision, a string representation of a JSON structure
       - enum: BodyFormat
@@ -5058,7 +5058,7 @@ structures:
         name: ownerAvatar
         optional: true
         description: avatar of the posting's owner
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: the source text of the posting, a string representation of a JSON structure
@@ -5103,11 +5103,11 @@ structures:
         name: ownerAvatar
         optional: true
         description: avatar of the posting's owner
-      - type: String
+      - struct: Body
         name: bodyPreview
         optional: true
         description: preview of the posting's body, a string representation of a JSON structure
-      - type: String
+      - struct: Body
         name: bodySrc
         optional: true
         description: the source text of the posting, a string representation of a JSON structure
@@ -5117,7 +5117,7 @@ structures:
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
           returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
-      - type: String
+      - struct: Body
         name: body
         optional: true
         description: body of the posting, a string representation of a JSON structure
@@ -7342,7 +7342,7 @@ enums:
         description: feed status was updated
   - name: SettingType
     values:
-      - name: bool
+      - name: boolean
         description: boolean, may have value <code>true</code> or <code>false</code>
       - name: int
         description: integer

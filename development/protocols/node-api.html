@@ -184,6 +184,9 @@ body_class: body-pink
                                 {{ req.out.struct }}{% if req.out.array == true %}[]{% endif %}
                             </a>
                         </code>
+                        {% if req.out.struct == 'Body' %}
+                            (as String)
+                        {% endif %}
                     {% endif %}
                     {% if req.out.description %}
                         - {{ req.out.description }}
