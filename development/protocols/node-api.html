@@ -247,7 +247,7 @@ body_class: body-pink
                         <code>
                             <a href="#{{ field.struct }}">{{ field.struct }}{% if field.array == true %}[]{% endif %}</a>
                         </code>
-                        {% if req.out.struct == 'Body' %}
+                        {% if field.struct == 'Body' %}
                             (as String)
                         {% endif %}
                     {% endif %}
