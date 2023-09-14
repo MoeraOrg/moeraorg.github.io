@@ -3025,11 +3025,11 @@ structures:
         name: blockedOperations
         optional: true
         description: operations that are blocked
-      - struct: RemotePosting
+      - struct: RemotePostingOrNode
         array: true
         name: postings
         optional: true
-        description: the postings, where the node is blocked
+        description: the postings or whole nodes, where the node is blocked
       - type: boolean
         name: strict
         optional: true
@@ -3345,6 +3345,7 @@ structures:
     fields:
       - type: String
         name: cartesIp
+        optional: true
         description: the client IP address the cartes are bound to
       - struct: CarteInfo
         array: true
@@ -3973,7 +3974,7 @@ structures:
         name: ownerFullName
         optional: true
         description: full name of the posting's/comment's owner
-      - struct: AvatarDescription
+      - struct: AvatarImage
         name: ownerAvatar
         optional: true
         description: avatar of the posting's/comment's owner
@@ -4738,6 +4739,9 @@ structures:
       - type: int
         name: imageRecommendedPixels
         description: maximal resolution of a compressed image in a post (in pixels)
+      - type: String[]
+        name: imageFormats
+        description: list of image formats (in MIME type form) the node understands
   - name: PostingInfo
     fields:
       - type: String
@@ -5237,18 +5241,21 @@ structures:
           <a href="virtual-pages.html">virtual page</a>
       - type: String
         name: mimeType
-        description: MIME-type of the media
+        description: MIME type of the media
       - type: int
         name: width
         optional: true
+        js-default: "0"
         description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
         optional: true
+        js-default: "0"
         description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: orientation
         optional: true
+        js-default: "1"
         description: >
           media orientation, the value should be interpreted like
           <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
@@ -5384,14 +5391,17 @@ structures:
       - type: int
         name: width
         optional: true
+        js-default: "0"
         description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
         optional: true
+        js-default: "0"
         description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: orientation
         optional: true
+        js-default: "1"
         description: >
           media orientation, the value should be interpreted like
           <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
@@ -5600,6 +5610,8 @@ structures:
       - type: float
         name: share
         optional: true
+        min: 0
+        max: 1
         description: >
           share the reactions with the given code stand from the total number of reactions (may be absent, if
           <code>total</code> is present)
@@ -5616,10 +5628,14 @@ structures:
       - struct: ReactionTotalInfo
         array: true
         name: positive
+        optional: true
+        js-default: "[]"
         description: summary of positive reactions
       - struct: ReactionTotalInfo
         array: true
         name: negative
+        optional: true
+        js-default: "[]"
         description: summary of negative reactions
   - name: ReactionOverride
     fields:
@@ -5652,6 +5668,8 @@ structures:
         name: name
       - type: String[]
         name: mnemonic
+        min-items: 24
+        max-items: 24
         description: human-friendly mnemonic of the updating key
       - type: String
         name: secret
@@ -5697,6 +5715,15 @@ structures:
         description: name of the node
       - type: String
         name: postingId
+        description: ID of the posting on the node
+  - name: RemotePostingOrNode
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node
+      - type: String
+        name: postingId
+        optional: true
         description: ID of the posting on the node
   - name: RemotePostingVerificationInfo
     fields:
@@ -5786,6 +5813,8 @@ structures:
         description: error code
       - type: String
         name: message
+        optional: true
+        js-default: '""'
         description: human-readable error message
   - name: SheriffMark
     fields:
@@ -5944,7 +5973,7 @@ structures:
         name: remoteNodeName
         description: name of the node the complaints are related to
       - type: String
-        name: remoteFullName
+        name: remoteNodeFullName
         optional: true
         description: full name of the node the complaints are related to
       - type: String
@@ -6484,11 +6513,19 @@ structures:
       - struct: PostingInfo
         name: posting
         optional: true
-        description: the posting this story is about (may contain only an ID)
+        description: the posting this story is about
+      - type: String
+        name: postingId
+        optional: true
+        description: ID of the posting this story is about, used if the whole posting is not returned
       - struct: CommentInfo
         name: comment
         optional: true
-        description: the comment this story is about (may contain only an ID)
+        description: the comment this story is about
+      - type: String
+        name: commentId
+        optional: true
+        description: ID of the comment this story is about, used if the whole posting is not returned
       - type: String
         name: remoteNodeName
         optional: true
@@ -6916,6 +6953,8 @@ structures:
         description: a user-readable name of the token
       - type: String[]
         name: permissions
+        optional: true
+        js-default: '[]'
         description: >
           The list of permissions granted to the token. The values are: 
           <ul>
@@ -7180,9 +7219,6 @@ operations:
       - name: viewNegativeReactionTotals
         default: public
         description: view the number of the posting's negative reactions
-      - name: viewReactionTotals
-        default: public
-        description: view the number of the posting's reactions
       - name: viewReactionRatios
         default: public
         description: view the relative number of different types of the posting's reactions
@@ -7342,7 +7378,7 @@ enums:
         description: feed status was updated
   - name: SettingType
     values:
-      - name: boolean
+      - name: bool
         description: boolean, may have value <code>true</code> or <code>false</code>
       - name: int
         description: integer
