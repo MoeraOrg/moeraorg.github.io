@@ -154,7 +154,7 @@ body_class: body-pink
                         {% if param.flags %}
                             Comma-separated list of additional blocks of information that are needed. The values are:
                             <ul>
-                                {% for flag in req.flags %}
+                                {% for flag in param.flags %}
                                     <li><code>{{ flag.name }}</code> - {{ flag.description }}
                                 {% endfor %}
                             </ul>
