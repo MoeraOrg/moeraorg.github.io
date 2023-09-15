@@ -258,6 +258,7 @@ objects:
     requests:
       - url: /cartes
         type: GET
+        function: getCartes
         params:
           - type: int
             name: limit
@@ -702,8 +703,10 @@ objects:
         description: Check whether the credentials are initialized already.
       - url: /credentials
         type: POST
+        function: createCredentials
         in:
           struct: Credentials
+          name: credentials
         out:
           struct: Result
         description: >
@@ -715,8 +718,10 @@ objects:
             description: credentials are already created
       - url: /credentials
         type: PUT
+        function: updateCredentials
         in:
           struct: CredentialsChange
+          name: credentials
         out:
           struct: Result
         description: >
@@ -738,6 +743,7 @@ objects:
         description: Delete credentials.
       - url: /credentials/reset
         type: POST
+        function: resetCredentials
         out:
           struct: EmailHint
         description: >
@@ -823,6 +829,7 @@ objects:
         description: Get the list of registered domains.
       - url: /domains/{name}
         type: GET
+        function: getDomain
         params:
           - type: String
             name: name
@@ -838,8 +845,10 @@ objects:
             description: there is no domain with the given hostname
       - url: /domains
         type: POST
+        function: createDomain
         in:
           struct: DomainAttributes
+          name: domain
         out:
           struct: DomainInfo
         auth: root admin or none
@@ -891,6 +900,7 @@ objects:
             description: cannot delete the default domain
       - url: /domains/available
         type: GET
+        function: getDomainAvailable
         params:
           - type: String
             name: nodeName
@@ -999,6 +1009,7 @@ objects:
     requests:
       - url: /features
         type: GET
+        function: getFeatures
         out:
           struct: Features
         auth: optional
@@ -1024,6 +1035,7 @@ objects:
         description: Get general information about all feeds accessible by client.
       - url: /feeds/{feedName}
         type: GET
+        function: getFeedGeneral
         params:
           - type: String
             name: feedName
@@ -1037,6 +1049,7 @@ objects:
             description: there is no accessible feed with this name
       - url: /feeds/{feedName}/status
         type: GET
+        function: getFeedStatus
         params:
           - type: String
             name: feedName
@@ -1050,12 +1063,14 @@ objects:
             description: there is no accessible feed with this name
       - url: /feeds/{feedName}/status
         type: PUT
+        function: updateFeedStatus
         params:
           - type: String
             name: feedName
             description: name of the feed
         in:
           struct: FeedStatusChange
+          name: change
         out:
           struct: FeedStatus
         auth: admin
@@ -1065,6 +1080,7 @@ objects:
             description: there is no accessible feed with this name
       - url: /feeds/{feedName}/stories
         type: GET
+        function: getFeedSlice
         params:
           - type: String
             name: feedName
@@ -1103,6 +1119,7 @@ objects:
     requests:
       - url: /people/friends/groups
         type: GET
+        function: getFriendGroups
         out:
           struct: FriendGroupInfo
           array: true
@@ -1110,6 +1127,7 @@ objects:
         description: Get the list of all groups of friends that exist on the node.
       - url: /people/friends/groups/{id}
         type: GET
+        function: getFriendGroup
         params:
           - type: String
             name: id
@@ -1123,20 +1141,24 @@ objects:
             description: the group of friends is not found
       - url: /people/friends/groups
         type: POST
+        function: createFriendGroup
         in:
           struct: FriendGroupDescription
+          name: friendGroup
         out:
           struct: FriendGroupInfo
         auth: admin
         description: Create a group of friends.
       - url: /people/friends/groups/{id}
         type: PUT
+        function: updateFriendGroup
         params:
           - type: String
             name: id
             description: ID of the group of friends
         in:
           struct: FriendGroupDescription
+          name: friendGroup
         out:
           struct: FriendGroupInfo
         auth: admin
@@ -1146,6 +1168,7 @@ objects:
             description: the group of friends is not found
       - url: /people/friends/groups/{id}
         type: DELETE
+        function: deleteFriendGroup
         params:
           - type: String
             name: id
@@ -1164,6 +1187,7 @@ objects:
     requests:
       - url: /people/friends
         type: GET
+        function: getFriends
         params:
           - type: String
             name: groupId
@@ -1179,6 +1203,7 @@ objects:
             description: the group of friends is not found
       - url: /people/friends/{name}
         type: GET
+        function: getFriend
         params:
           - type: String
             name: name
@@ -1189,9 +1214,11 @@ objects:
         description: Get the friendship information for the node given.
       - url: /people/friends
         type: PUT
+        function: updateFriends
         in:
           struct: FriendDescription
           array: true
+          name: friends
         out:
           struct: FriendInfo
           array: true
@@ -1207,6 +1234,7 @@ objects:
     requests:
       - url: /people/friend-ofs
         type: GET
+        function: getFriendOfs
         out:
           struct: FriendOfInfo
           array: true
@@ -1214,6 +1242,7 @@ objects:
         description: Get the list of all nodes that added this node to their friends.
       - url: /people/friend-ofs/{name}
         type: GET
+        function: getFriendOf
         params:
           - type: String
             name: name
@@ -1354,6 +1383,7 @@ objects:
     requests:
       - url: /node-name
         type: GET
+        function: getNodeName
         out:
           struct: NodeNameInfo
         description: >
@@ -1361,8 +1391,10 @@ objects:
           the node name.
       - url: /node-name
         type: POST
+        function: createNodeName
         in:
           struct: NameToRegister
+          name: nameToRegister
         out:
           struct: RegisteredNameSecret
         auth: admin
@@ -1376,8 +1408,10 @@ objects:
             description: another operation with the node name is pending currently
       - url: /node-name
         type: PUT
+        function: updateNodeName
         in:
           struct: RegisteredNameSecret
+          name: secret
         out:
           struct: Result
         auth: admin
@@ -1426,6 +1460,7 @@ objects:
     requests:
       - url: /people
         type: GET
+        function: getPeopleGeneral
         out:
           struct: PeopleGeneralInfo
         auth: optional
@@ -1881,23 +1916,25 @@ objects:
     requests:
       - url: /profile
         type: GET
+        function: getProfile
         params:
           - type: String
             name: include
             optional: true
-            description: >
-              Comma-separated list of additional blocks of information that are needed. The values are:
-              <ul>
-                <li><code>source</code> - source text of the bio.
-              </ul>
+            description:
+            flags:
+              - name: source
+                description: source text of the bio
         out:
           struct: ProfileInfo
         auth: optional
         description: Get the profile.
       - url: /profile
         type: PUT
+        function: updateProfile
         in:
           struct: ProfileAttributes
+          name: profile
         out:
           struct: ProfileInfo
         auth: admin
@@ -2293,9 +2330,11 @@ objects:
     requests:
       - url: /settings
         type: PUT
+        function: updateSettings
         in:
           struct: SettingInfo
           array: true
+          name: settings
         out:
           struct: Result
         auth: admin or root admin
@@ -2319,6 +2358,7 @@ objects:
             description: unknown setting
       - url: /settings/client
         type: GET
+        function: getClientSettings
         params:
           - type: String
             name: prefix
@@ -2333,6 +2373,7 @@ objects:
         description: Get all client settings, sorted by name.
       - url: /settings/node
         type: GET
+        function: getNodeSettings
         params:
           - type: String
             name: prefix
@@ -2346,6 +2387,7 @@ objects:
           Get all node settings, sorted by name. If a setting has not changed its value from the default, it is omitted.
       - url: /settings/node/metadata
         type: GET
+        function: getNodeSettingsMetadata
         params:
           - type: String
             name: prefix
@@ -2497,6 +2539,7 @@ objects:
     requests:
       - url: /stories/{id}
         type: GET
+        function: getStory
         params:
           - type: String
             name: id
@@ -2510,12 +2553,14 @@ objects:
             description: there is no story with the given ID
       - url: /stories/{id}
         type: PUT
+        function: updateStory
         params:
           - type: String
             name: id
             description: ID of the story
         in:
           struct: StoryAttributes
+          name: story
         out:
           struct: StoryInfo
         auth: admin
@@ -2530,6 +2575,7 @@ objects:
     requests:
       - url: /people/subscribers
         type: GET
+        function: getSubscribers
         params:
           - type: String
             name: nodeName
@@ -2562,6 +2608,7 @@ objects:
         description: Subscribe to a particular group of notifications.
       - url: /people/subscribers/{id}
         type: GET
+        function: getSubscriber
         params:
           - type: String
             name: id
@@ -2575,12 +2622,14 @@ objects:
             description: there is no subscriber with the given ID
       - url: /people/subscribers/{id}
         type: PUT
+        function: updateSubscriber
         params:
           - type: String
             name: id
             description: ID of the subscriber
         in:
           struct: SubscriberOverride
+          name: subscriber
         out:
           struct: SubscriberInfo
         auth: required
@@ -2608,6 +2657,7 @@ objects:
     requests:
       - url: /people/subscriptions
         type: GET
+        function: getSubscriptions
         params:
           - type: String
             name: nodeName
@@ -2624,8 +2674,10 @@ objects:
         description: Get the list of all subscriptions, optionally filtered by some criteria.
       - url: /people/subscriptions
         type: POST
+        function: createSubscription
         in:
           struct: SubscriptionDescription
+          name: subscription
         out:
           struct: SubscriptionInfo
         auth: admin
@@ -2635,12 +2687,14 @@ objects:
             description: an identical subscription already exists
       - url: /people/subscriptions/{id}
         type: PUT
+        function: updateSubscription
         params:
           - type: String
             name: id
             description: ID of the subscription
         in:
           struct: SubscriptionOverride
+          name: subscription
         out:
           struct: SubscriptionInfo
         auth: required
@@ -2651,6 +2705,7 @@ objects:
             description: there is no subscription with the given ID
       - url: /people/subscriptions/{id}
         type: DELETE
+        function: deleteSubscription
         params:
           - type: String
             name: id
@@ -2664,8 +2719,10 @@ objects:
             description: there is no subscription with the given parameters.
       - url: /people/subscriptions/search
         type: GET
+        function: searchSubscriptions
         in:
           struct: SubscriptionFilter
+          name: filter
         out:
           struct: SubscriptionInfo
           array: true
@@ -2680,6 +2737,7 @@ objects:
     requests:
       - url: /tokens
         type: GET
+        function: getTokens
         out:
           struct: TokenInfo
           array: true
@@ -2687,8 +2745,10 @@ objects:
         description: Get the list of all existing tokens.
       - url: /tokens
         type: POST
+        function: createToken
         in:
           struct: TokenAttributes
+          name: token
         out:
           struct: TokenInfo
         description: Sign in and create a token.
@@ -2709,18 +2769,21 @@ objects:
         description: Get information about the token.
       - url: /tokens/{id}
         type: PUT
+        function: updateToken
         params:
           - type: String
             name: id
             description: ID of the token
         in:
           struct: TokenName
+          name: token
         out:
           struct: TokenInfo
         auth: admin
         description: Update the name of the token.
       - url: /tokens/{id}
         type: DELETE
+        function: deleteToken
         params:
           - type: String
             name: id
@@ -2824,6 +2887,7 @@ objects:
     requests:
       - url: /whoami
         type: GET
+        function: whoAmI
         out:
           struct: WhoAmI
         description: Get brief information about the node.
