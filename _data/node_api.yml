@@ -339,11 +339,10 @@ objects:
           - type: String
             name: include
             optional: true
-            description: >
-              Comma-separated list of additional blocks of information that are needed. The values are:
-              <ul>
-                <li><code>source</code> - source text of the comment.
-              </ul>
+            description:
+            flags:
+              - name: source
+                description: source text of the comment
         out:
           struct: CommentInfo
         auth: optional
@@ -1643,11 +1642,10 @@ objects:
           - type: String
             name: include
             optional: true
-            description: >
-              Comma-separated list of additional blocks of information that are needed. The values are:
-              <ul>
-                <li><code>source</code> - source text of the posting.
-              </ul>
+            description:
+            flags:
+              - name: source
+                description: source text of the posting
         out:
           struct: PostingInfo
         auth: optional
