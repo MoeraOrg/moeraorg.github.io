@@ -4,8 +4,10 @@ objects:
     requests:
       - url: /activity/reactions/search
         type: GET
+        function: searchActivityReactions
         in:
           struct: ActivityReactionFilter
+          name: filter
         out:
           struct: ActivityReactionInfo
           array: true
@@ -16,6 +18,7 @@ objects:
     requests:
       - url: /async-operations/remote-posting-verification/{id}
         type: GET
+        function: getRemotePostingVerificationStatus
         params:
           - type: String
             name: id
@@ -29,6 +32,7 @@ objects:
             description: async operation with the given ID is not found
       - url: /async-operations/remote-reaction-verification/{id}
         type: GET
+        function: getRemoteReactionVerificationStatus
         params:
           - type: String
             name: id
@@ -51,14 +55,17 @@ objects:
     requests:
       - url: /avatars
         type: GET
+        function: getAvatars
         out:
           struct: AvatarInfo
           array: true
         description: Get the list of avatars in the ascending order of their ordinals.
       - url: /avatars
         type: POST
+        function: createAvatar
         in:
           struct: AvatarAttributes
+          name: avatar
         out:
           struct: AvatarInfo
         auth: admin
@@ -73,6 +80,7 @@ objects:
             description: the type of the source media file is not supported for avatars
       - url: /avatars/{id}
         type: GET
+        function: getAvatar
         params:
           - type: String
             name: id
@@ -85,6 +93,7 @@ objects:
             description: avatar is not found
       - url: /avatars/{id}
         type: DELETE
+        function: deleteAvatar
         params:
           - type: String
             name: id
@@ -98,8 +107,10 @@ objects:
             description: avatar is not found
       - url: /avatars/reorder
         type: POST
+        function: reorderAvatars
         in:
           struct: AvatarsOrdered
+          name: order
         out:
           struct: AvatarOrdinal
           array: true
@@ -115,8 +126,10 @@ objects:
     requests:
       - url: /blocked-instants
         type: POST
+        function: blockInstant
         in:
           struct: BlockedInstantAttributes
+          name: instant
         out:
           struct: BlockedInstantInfo
         auth: admin
@@ -128,6 +141,7 @@ objects:
             description: entry is not found
       - url: /blocked-instants/{id}
         type: GET
+        function: getBlockedInstant
         params:
           - type: String
             name: id
@@ -141,6 +155,7 @@ objects:
             description: blocked instant is not found
       - url: /blocked-instants/{id}
         type: DELETE
+        function: unblockInstant
         params:
           - type: String
             name: id
@@ -154,8 +169,10 @@ objects:
             description: blocked instant is not found
       - url: /blocked-instants/search
         type: POST
+        function: searchBlockedInstants
         in:
           struct: BlockedInstantFilter
+          name: filter
         out:
           struct: BlockedInstantInfo
           array: true
@@ -169,8 +186,10 @@ objects:
     requests:
       - url: /people/blocked-users
         type: POST
+        function: blockUser
         in:
           struct: BlockedUserAttributes
+          name: user
         out:
           struct: BlockedUserInfo
         auth: admin
@@ -182,6 +201,7 @@ objects:
             description: entry is not found
       - url: /people/blocked-users/{id}
         type: GET
+        function: getBlockedUser
         params:
           - type: String
             name: id
@@ -195,6 +215,7 @@ objects:
             description: blocked user is not found
       - url: /people/blocked-users/{id}
         type: DELETE
+        function: unblockUser
         params:
           - type: String
             name: id
@@ -208,8 +229,10 @@ objects:
             description: blocked user is not found
       - url: /people/blocked-users/search
         type: POST
+        function: searchBlockedUsers
         in:
           struct: BlockedUserFilter
+          name: filter
         out:
           struct: BlockedUserInfo
           array: true
@@ -217,9 +240,9 @@ objects:
         description: Search blocked users by the given criteria.
       - url: /people/blocked-users/checksums
         type: GET
+        function: getBlockedUsersChecksums
         out:
           struct: BlockedUsersChecksums
-          array: true
         auth: admin
         description: >
           Get checksums of the information about the blocked users. This request may be used to quickly detect the
@@ -231,6 +254,7 @@ objects:
     requests:
       - url: /people/blocked-by-users/{id}
         type: GET
+        function: getBlockedByUser
         params:
           - type: String
             name: id
@@ -244,8 +268,10 @@ objects:
             description: blocked-by user is not found
       - url: /people/blocked-by-users/search
         type: POST
+        function: searchBlockedByUsers
         in:
           struct: BlockedByUserFilter
+          name: filter
         out:
           struct: BlockedByUserInfo
           array: true
@@ -276,6 +302,7 @@ objects:
     requests:
       - url: /postings/{postingId}/comments
         type: GET
+        function: getCommentsSlice
         params:
           - type: String
             name: postingId
@@ -309,12 +336,14 @@ objects:
             description: <code>limit</code> parameter has an invalid value
       - url: /postings/{postingId}/comments
         type: POST
+        function: createComment
         params:
           - type: String
             name: postingId
             description: ID of the posting
         in:
           struct: CommentText
+          name: comment
         out:
           struct: CommentCreated
         auth: required or signature
@@ -329,6 +358,7 @@ objects:
             description: the posting is not signed, so it is impossible to add comments to it
       - url: /postings/{postingId}/comments/{commentId}
         type: GET
+        function: getComment
         params:
           - type: String
             name: postingId
@@ -356,12 +386,14 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments
         type: PUT
+        function: updateAllComments
         params:
           - type: String
             name: postingId
             description: ID of the posting
         in:
           struct: CommentMassAttributes
+          name: attributes
         out:
           struct: Result
         auth: optional
@@ -372,6 +404,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{postingId}/comments/{commentId}
         type: PUT
+        function: updateComment
         params:
           - type: String
             name: postingId
@@ -381,6 +414,7 @@ objects:
             description: ID of the comment
         in:
           struct: CommentText
+          name: comment
         out:
           struct: CommentInfo
         auth: required or signature
@@ -396,6 +430,7 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}
         type: DELETE
+        function: deleteComment
         params:
           - type: String
             name: postingId
@@ -418,6 +453,7 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}/attached
         type: GET
+        function: getPostingsAttachedToComment
         params:
           - type: String
             name: postingId
@@ -442,6 +478,7 @@ objects:
     requests:
       - url: /postings/{postingId}/comments/{commentId}/revisions
         type: GET
+        function: getCommentRevisions
         params:
           - type: String
             name: postingId
@@ -461,6 +498,7 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}/revisions/{id}
         type: GET
+        function: getCommentRevision
         params:
           - type: String
             name: postingId
@@ -487,6 +525,7 @@ objects:
     requests:
       - url: /postings/{postingId}/comments/{commentId}/reactions
         type: POST
+        function: createCommentReaction
         params:
           - type: String
             name: postingId
@@ -496,6 +535,7 @@ objects:
             description: ID of the comment
         in:
           struct: ReactionDescription
+          name: reaction
         out:
           struct: ReactionCreated
         auth: required or signature
@@ -515,6 +555,7 @@ objects:
             description: the reaction is not acceptable
       - url: /postings/{postingId}/comments/{commentId}/reactions/{ownerName}
         type: PUT
+        function: updateCommentReaction
         params:
           - type: String
             name: postingId
@@ -527,6 +568,7 @@ objects:
             description: reaction owner node name
         in:
           struct: ReactionOverride
+          name: reaction
         out:
           struct: ReactionInfo
         auth: optional
@@ -541,6 +583,7 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}/reactions
         type: GET
+        function: getCommentReactionsSlice
         params:
           - type: String
             name: postingId
@@ -581,6 +624,7 @@ objects:
             description: <code>limit</code> parameter has an invalid value
       - url: /postings/{postingId}/comments/{commentId}/reactions/{ownerName}
         type: GET
+        function: getCommentReaction
         params:
           - type: String
             name: postingId
@@ -604,6 +648,7 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}/reactions
         type: DELETE
+        function: deleteAllCommentReactions
         params:
           - type: String
             name: postingId
@@ -622,6 +667,7 @@ objects:
             description: the comment is not related to the given posting
       - url: /postings/{postingId}/comments/{commentId}/reactions/{ownerName}
         type: DELETE
+        function: deleteCommentReaction
         params:
           - type: String
             name: postingId
@@ -646,6 +692,7 @@ objects:
     requests:
       - url: /postings/{postingId}/comments/{commentId}/reaction-totals
         type: GET
+        function: getCommentReactionTotals
         params:
           - type: String
             name: postingId
@@ -667,6 +714,7 @@ objects:
     requests:
       - url: /people/contacts
         type: GET
+        function: getContacts
         params:
           - type: String
             name: query
@@ -697,6 +745,7 @@ objects:
     requests:
       - url: /credentials
         type: GET
+        function: checkCredentials
         out:
           struct: CredentialsCreated
         description: Check whether the credentials are initialized already.
@@ -736,6 +785,7 @@ objects:
             description: credentials reset token is expired
       - url: /credentials
         type: DELETE
+        function: deleteCredentials
         out:
           struct: Result
         auth: root admin
@@ -758,6 +808,7 @@ objects:
     requests:
       - url: /deleted-postings
         type: GET
+        function: getDeletedPostings
         params:
           - type: int
             name: page
@@ -781,6 +832,7 @@ objects:
             description: <code>limit</code> parameter has an invalid value
       - url: /deleted-postings/{id}
         type: GET
+        function: getDeletedPosting
         params:
           - type: String
             name: id
@@ -794,6 +846,7 @@ objects:
             description: there is no deleted posting with the given ID
       - url: /deleted-postings/{id}/restore
         type: POST
+        function: restoreDeletedPosting
         params:
           - type: String
             name: id
@@ -808,9 +861,71 @@ objects:
             description: there is no posting with the given ID
   - name: Deleted Posting Revisions object
     description: >
-      All revisions of the deleted posting. This object supports the same requests as
-      <a href="#Posting%20Revisions%20object">Posting Revisions object</a>, but uses <code>/deleted-postings</code>
-      prefix instead of <code>/postings</code>.
+      All revisions of the deleted posting.
+    requests:
+      - url: /deleted-postings/{postingId}/revisions
+        type: GET
+        function: getDeletePostingRevisions
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of revisions returned
+        out:
+          struct: PostingRevisionInfo
+          array: true
+        auth: optional
+        description: >
+          Get all revisions of the deleted posting, but not more than <code>limit</code>. The node may decide to return
+          less revisions than the given <code>limit</code>.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+      - url: /deleted-postings/{postingId}/revisions/{id}
+        type: GET
+        function: getDeletedPostingRevision
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: id
+            description: ID of the revision
+        out:
+          struct: PostingRevisionInfo
+        auth: optional
+        description: Get an individual revision of the deleted posting.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: posting-revision.not-found
+            description: there is no revision with the given ID
+      - url: /postings/{postingId}/revisions/{id}/restore
+        type: POST
+        function: restoreDeletedPostingRevision
+        params:
+          - type: String
+            name: postingId
+            description: ID of the posting
+          - type: String
+            name: id
+            description: ID of the revision
+        out:
+          struct: PostingRevisionInfo
+        auth: admin
+        description: >
+          Restore a posting at a particular revision. A new revision is created with the same content as in the given
+          revision.
+        errors:
+          - code: posting.not-found
+            description: there is no posting with the given ID
+          - code: posting-revision.not-found
+            description: there is no revision with the given ID
+          - code: posting-revision.already-current
+            description: the given revision is already the current one
   - name: Domains object
     description: >
       One instance of Moera node software can serve several virtual nodes. These virtual nodes are called <i>domains</i>
@@ -821,6 +936,7 @@ objects:
     requests:
       - url: /domains
         type: GET
+        function: getDomains
         out:
           struct: DomainInfo
           array: true
@@ -861,12 +977,14 @@ objects:
             description: a domain with the given node ID already exists
       - url: /domains/{name}
         type: PUT
+        function: updateDomain
         params:
           - type: String
             name: name
             description: domain's hostname
         in:
           struct: DomainAttributes
+          name: domain
         out:
           struct: DomainInfo
         auth: root admin
@@ -882,6 +1000,7 @@ objects:
             description: cannot change the name of the default domain
       - url: /domains/{name}
         type: DELETE
+        function: deleteDomain
         params:
           - type: String
             name: name
@@ -899,7 +1018,7 @@ objects:
             description: cannot delete the default domain
       - url: /domains/available
         type: GET
-        function: getDomainAvailable
+        function: isDomainAvailable
         params:
           - type: String
             name: nodeName
@@ -917,6 +1036,7 @@ objects:
     requests:
       - url: /drafts
         type: GET
+        function: getDrafts
         params:
           - enum: DraftType
             name: draftType
@@ -954,14 +1074,17 @@ objects:
             description: <code>limit</code> parameter has an invalid value
       - url: /drafts
         type: POST
+        function: createDraft
         in:
           struct: DraftText
+          name: draft
         out:
           struct: DraftInfo
         auth: admin
         description: Create a new draft from the text given.
       - url: /drafts/{id}
         type: GET
+        function: getDraft
         params:
           - type: String
             name: id
@@ -975,12 +1098,14 @@ objects:
             description: there is no draft with the given ID
       - url: /drafts/{id}
         type: PUT
+        function: updateDraft
         params:
           - type: String
             name: id
             description: ID of the draft
         in:
           struct: DraftText
+          name: draft
         out:
           struct: DraftInfo
         auth: admin
@@ -990,6 +1115,7 @@ objects:
             description: there is no draft with the given ID
       - url: /draft/{id}
         type: DELETE
+        function: deleteDraft
         params:
           - type: String
             name: id
@@ -1027,6 +1153,7 @@ objects:
     requests:
       - url: /feeds
         type: GET
+        function: getFeeds
         out:
           struct: FeedInfo
           array: true
@@ -1259,6 +1386,9 @@ objects:
     requests:
       - url: /media/private
         type: POST
+        function: uploadPrivateMedia
+        in:
+          type: blob
         out:
           struct: PrivateMediaFileInfo
         auth: required
@@ -1273,6 +1403,7 @@ objects:
             description: media file cannot be stored
       - url: /media/private/{id}/data
         type: GET
+        function: getPrivateMedia
         params:
           - type: String
             name: id
@@ -1288,6 +1419,8 @@ objects:
             optional: true
             description: >
               if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
+        out:
+          type: blob
         auth: optional
         description: >
           Get media file content (returned in the response body).
@@ -1296,6 +1429,7 @@ objects:
             description: media file is not found
       - url: /media/private/{id}/info
         type: GET
+        function: getPrivateMediaInfo
         params:
           - type: String
             name: id
@@ -1310,6 +1444,7 @@ objects:
             description: media file is not found
       - url: /media/private/{id}/parent
         type: GET
+        function: getPrivateMediaParentEntry
         params:
           - type: String
             name: id
@@ -1326,6 +1461,9 @@ objects:
     requests:
       - url: /media/public
         type: POST
+        function: uploadPublicMedia
+        in:
+          type: blob
         out:
           struct: PublicMediaFileInfo
         auth: required
@@ -1340,6 +1478,7 @@ objects:
             description: media file cannot be stored
       - url: /media/public/{id}/data
         type: GET
+        function: getPublicMedia
         params:
           - type: String
             name: id
@@ -1355,6 +1494,8 @@ objects:
             optional: true
             description: >
               if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
+        out:
+          type: blob
         description: >
           Get media file content (returned in the response body).
         errors:
@@ -1362,6 +1503,7 @@ objects:
             description: media file is not found
       - url: /media/public/{id}/info
         type: GET
+        function: getPublicMediaInfo
         params:
           - type: String
             name: id
@@ -1431,6 +1573,7 @@ objects:
               (<a href="/development/protocols/naming-api.html#error-codes">see the list</a>)
       - url: /node-name
         type: DELETE
+        function: deleteNodeName
         out:
           struct: Result
         auth: admin
@@ -1445,8 +1588,10 @@ objects:
     requests:
       - url: /notifications
         type: POST
+        function: sendNotification
         in:
           struct: NotificationPacket
+          name: packet
         out:
           struct: Result
         auth: signature
@@ -1473,8 +1618,10 @@ objects:
     requests:
       - url: /plugins
         type: POST
+        function: registerPlugin
         in:
           struct: PluginDescription
+          name: plugin
         out:
           struct: PluginInfo
         auth: root admin or admin
@@ -1486,6 +1633,7 @@ objects:
             description: plugin with this name is already registered
       - url: /plugins
         type: GET
+        function: getPlugins
         out:
           struct: PluginInfo
           array: true
@@ -1493,6 +1641,7 @@ objects:
         description: Get information about all plugins registered for the node and server.
       - url: /plugins/{pluginName}
         type: GET
+        function: getPlugin
         params:
           - type: String
             name: pluginName
@@ -1586,6 +1735,7 @@ objects:
             description: unknown plugin
       - url: /plugins/{pluginName}
         type: DELETE
+        function: unregisterPlugin
         params:
           - type: String
             name: pluginName
@@ -1604,8 +1754,10 @@ objects:
     requests:
       - url: /postings
         type: POST
+        function: createPosting
         in:
           struct: PostingText
+          name: posting
         out:
           struct: PostingInfo
         auth: required or signature
@@ -1616,12 +1768,14 @@ objects:
           authenticated as admin, the posting is signed by the node.
       - url: /postings/{id}
         type: PUT
+        function: updatePosting
         params:
           - type: String
             name: id
             description: ID of the posting
         in:
           struct: PostingText
+          name: posting
         out:
           struct: PostingInfo
         auth: required or signature
@@ -1635,6 +1789,7 @@ objects:
             description: updating a non-original posting is not allowed
       - url: /postings/{id}
         type: GET
+        function: getPosting
         params:
           - type: String
             name: id
@@ -1655,6 +1810,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{id}
         type: DELETE
+        function: deletePosting
         params:
           - type: String
             name: id
@@ -1670,6 +1826,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{id}/attached
         type: GET
+        function: getPostingsAttachedToPosting
         params:
           - type: String
             name: id
@@ -1687,6 +1844,7 @@ objects:
     requests:
       - url: /postings/{postingId}/revisions
         type: GET
+        function: getPostingRevisions
         params:
           - type: String
             name: postingId
@@ -1707,6 +1865,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{postingId}/revisions/{id}
         type: GET
+        function: getPostingRevision
         params:
           - type: String
             name: postingId
@@ -1725,6 +1884,7 @@ objects:
             description: there is no revision with the given ID
       - url: /postings/{postingId}/revisions/{id}/restore
         type: POST
+        function: restorePostingRevision
         params:
           - type: String
             name: postingId
@@ -1749,12 +1909,14 @@ objects:
     requests:
       - url: /postings/{postingId}/reactions
         type: POST
+        function: createPostingReaction
         params:
           - type: String
             name: postingId
             description: ID of the posting
         in:
           struct: ReactionDescription
+          name: reaction
         out:
           struct: ReactionCreated
         auth: required or signature
@@ -1772,6 +1934,7 @@ objects:
             description: the reaction is not acceptable
       - url: /postings/{postingId}/reactions
         type: GET
+        function: getPostingReactionsSlice
         params:
           - type: String
             name: postingId
@@ -1807,6 +1970,7 @@ objects:
             description: <code>limit</code> parameter has an invalid value
       - url: /postings/{postingId}/reactions/{ownerName}
         type: PUT
+        function: updatePostingReaction
         params:
           - type: String
             name: postingId
@@ -1816,6 +1980,7 @@ objects:
             description: reaction owner node name
         in:
           struct: ReactionOverride
+          name: reaction
         out:
           struct: ReactionInfo
         auth: optional
@@ -1826,6 +1991,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{postingId}/reactions/{ownerName}
         type: GET
+        function: getPostingReaction
         params:
           - type: String
             name: postingId
@@ -1844,6 +2010,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{postingId}/reactions
         type: DELETE
+        function: deleteAllPostingReactions
         params:
           - type: String
             name: postingId
@@ -1857,6 +2024,7 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/{postingId}/reactions/{ownerName}
         type: DELETE
+        function: deletePostingReaction
         params:
           - type: String
             name: postingId
@@ -1873,8 +2041,10 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/reactions/search
         type: POST
+        function: searchPostingReactions
         in:
           struct: ReactionsFilter
+          name: filter
         out:
           struct: ReactionInfo
           array: true
@@ -1887,6 +2057,7 @@ objects:
     requests:
       - url: /postings/{postingId}/reaction-totals
         type: GET
+        function: getPostingReactionTotals
         params:
           - type: String
             name: postingId
@@ -1900,8 +2071,10 @@ objects:
             description: there is no posting with the given ID
       - url: /postings/reaction-totals/search
         type: POST
+        function: searchPostingReactionTotals
         in:
           struct: ReactionTotalsFilter
+          name: filter
         out:
           struct: ReactionTotalsInfo
           array: true
@@ -1942,9 +2115,12 @@ objects:
     requests:
       - url: /proxy/media
         type: GET
+        function: proxyMedia
         params:
           - type: String
             name: url
+        out:
+          type: blob
         auth: admin
         description: Open the URL passed in the parameters and pass to the client the media file returned by the server.
         errors:
@@ -1960,6 +2136,7 @@ objects:
             description: the URL is not valid
       - url: /proxy/link-preview
         type: GET
+        function: proxyLinkPreview
         params:
           - type: String
             name: url
@@ -2030,12 +2207,14 @@ objects:
     requests:
       - url: /nodes/{nodeName}/ask
         type: POST
+        function: askRemoteNode
         params:
           - type: String
             name: nodeName
             description: name of the remote node
         in:
           struct: AskDescription
+          name: details
         out:
           struct: Result
         auth: admin
@@ -2045,6 +2224,7 @@ objects:
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/comments
         type: POST
+        function: createRemoteComment
         params:
           - type: String
             name: nodeName
@@ -2054,12 +2234,14 @@ objects:
             description: ID of the posting on the remote node
         in:
           struct: CommentSourceText
+          name: comment
         out:
           struct: Result
         auth: admin
         description: Add a comment to the posting on the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}
         type: PUT
+        function: updateRemoteComment
         params:
           - type: String
             name: nodeName
@@ -2072,12 +2254,14 @@ objects:
             description: ID of the comment on the remote node
         in:
           struct: CommentSourceText
+          name: comment
         out:
           struct: Result
         auth: admin
         description: Update a comment to the posting on the remote node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}
         type: DELETE
+        function: deleteRemoteComment
         params:
           - type: String
             name: nodeName
@@ -2094,6 +2278,7 @@ objects:
         description: Delete a comment from the registry of all comments at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/verify
         type: POST
+        function: verifyRemoteComment
         params:
           - type: String
             name: nodeName
@@ -2113,6 +2298,7 @@ objects:
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions
         type: POST
+        function: createRemoteCommentReaction
         params:
           - type: String
             name: nodeName
@@ -2125,12 +2311,14 @@ objects:
             description: ID of the comment on the remote node
         in:
           struct: ReactionAttributes
+          name: reaction
         out:
           struct: Result
         auth: admin
         description: Add a reaction to the comment on the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions
         type: DELETE
+        function: deleteRemoteCommentReaction
         params:
           - type: String
             name: nodeName
@@ -2147,6 +2335,7 @@ objects:
         description: Delete a reaction from the registry of all reactions at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions/{ownerName}/verify
         type: POST
+        function: verifyRemoteCommentReaction
         params:
           - type: String
             name: nodeName
@@ -2169,18 +2358,21 @@ objects:
     requests:
       - url: /nodes/{nodeName}/postings
         type: POST
+        function: createRemotePosting
         params:
           - type: String
             name: nodeName
             description: name of the remote node
         in:
           struct: PostingSourceText
+          name: posting
         out:
           struct: Result
         auth: admin
         description: Add a posting to the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}
         type: PUT
+        function: updateRemotePosting
         params:
           - type: String
             name: nodeName
@@ -2190,12 +2382,14 @@ objects:
             description: ID of the posting on the remote node
         in:
           struct: PostingSourceText
+          name: posting
         out:
           struct: Result
         auth: admin
         description: Update a posting on the remote node.
       - url: /nodes/{nodeName}/postings/{postingId}
         type: DELETE
+        function: deleteRemotePosting
         params:
           - type: String
             name: nodeName
@@ -2209,6 +2403,7 @@ objects:
         description: Delete a posting from the registry of all remote postings at the local node.
       - url: /nodes/{nodeName}/postings/{id}/verify
         type: POST
+        function: verifyRemotePosting
         params:
           - type: String
             name: nodeName
@@ -2222,6 +2417,7 @@ objects:
         description: Verify the signature of the given posting.
       - url: /nodes/{nodeName}/postings/{id}/revisions/{revisionId}/verify
         type: POST
+        function: verifyRemotePostingRevision
         params:
           - type: String
             name: nodeName
@@ -2241,6 +2437,7 @@ objects:
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/reactions
         type: POST
+        function: createRemotePostingReaction
         params:
           - type: String
             name: nodeName
@@ -2250,12 +2447,14 @@ objects:
             description: ID of the posting on the remote node
         in:
           struct: ReactionAttributes
+          name: reaction
         out:
           struct: Result
         auth: admin
         description: Add a reaction to the posting on the remote node and register it in the registry at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/reactions
         type: DELETE
+        function: deleteRemotePostingReaction
         params:
           - type: String
             name: nodeName
@@ -2269,6 +2468,7 @@ objects:
         description: Delete a reaction from the registry of all reactions at the local node.
       - url: /nodes/{nodeName}/postings/{postingId}/reactions/{ownerName}/verify
         type: POST
+        function: verifyRemotePostingReaction
         params:
           - type: String
             name: nodeName
@@ -2290,18 +2490,21 @@ objects:
     requests:
       - url: /nodes/{nodeName}/sheriff/orders
         type: POST
+        function: createRemoteSheriffOrder
         params:
           - type: String
             name: nodeName
             description: name of the remote node
         in:
           struct: SheriffOrderAttributes
+          name: sheriffOrder
         out:
           struct: Result
         auth: admin
         description: Sign and send the order to the remote node and store it in the registry at the local node.
       - url: /nodes/{nodeName}/sheriff/orders/{id}
         type: GET
+        function: getRemoteSheriffOrder
         params:
           - type: String
             name: nodeName
@@ -2398,9 +2601,11 @@ objects:
         description: Get all node settings metadata, sorted by name.
       - url: /settings/node/metadata
         type: PUT
+        function: updateNodeSettingsMetadata
         in:
           struct: SettingMetaAttributes
           array: true
+          name: metadata
         out:
           struct: Result
         auth: root admin
@@ -2425,6 +2630,7 @@ objects:
     requests:
       - url: /sheriff/complains/groups
         type: GET
+        function: getSheriffComplaintGroupsSlice
         params:
           - type: int
             name: before
@@ -2454,6 +2660,7 @@ objects:
             description: before and after parameters are mutually exclusive
       - url: /sheriff/complains/groups/{id}
         type: GET
+        function: getSheriffComplaintGroup
         params:
           - type: String
             name: id
@@ -2466,6 +2673,7 @@ objects:
             name: the group of complaints is not found
       - url: /sheriff/complains/groups/{id}/complains
         type: GET
+        function: getSheriffComplaintsByGroup
         params:
           - type: String
             name: id
@@ -2479,12 +2687,14 @@ objects:
             name: the group of complaints is not found
       - url: /sheriff/complains/groups/{id}
         type: PUT
+        function: updateSheriffComplaintGroup
         params:
           - type: String
             name: id
             description: ID of the group of complaints
         in:
           struct: SheriffComplainDecisionText
+          name: decision
         out:
           struct: SheriffComplainGroupInfo
         auth: admin
@@ -2499,8 +2709,10 @@ objects:
     requests:
       - url: /sheriff/complains
         type: POST
+        function: createSheriffComplaint
         in:
           struct: SheriffComplainText
+          name: complaint
         out:
           struct: SheriffComplainInfo
         auth: required
@@ -2512,8 +2724,10 @@ objects:
     requests:
       - url: /sheriff/orders
         type: POST
+        function: createSheriffOrder
         in:
           struct: SheriffOrderDetails
+          name: sheriffOrder
         out:
           struct: Result
         auth: signature
@@ -2598,8 +2812,10 @@ objects:
         description: Get the list of all subscribers, optionally filtered by some criteria.
       - url: /people/subscribers
         type: POST
+        function: createSubscriber
         in:
           struct: SubscriberDescription
+          name: subscriber
         out:
           struct: SubscriberInfo
         auth: required
@@ -2638,6 +2854,7 @@ objects:
             description: there is no subscriber with the given ID
       - url: /people/subscribers/{id}
         type: DELETE
+        function: deleteSubscriber
         params:
           - type: String
             name: id
@@ -2757,6 +2974,7 @@ objects:
             description: login or password is incorrect
       - url: /tokens/{id}
         type: GET
+        function: getTokenInfo
         params:
           - type: String
             name: id
@@ -2799,6 +3017,7 @@ objects:
     requests:
       - url: /user-lists/{name}
         type: GET
+        function: getUserListGeneral
         params:
           - type: String
             name: name
@@ -2808,6 +3027,7 @@ objects:
         description: Get the general information about the user list given.
       - url: /user-lists/{name}/items
         type: GET
+        function: getUserListSlice
         params:
           - type: String
             name: name
@@ -2836,6 +3056,7 @@ objects:
             description: before and after parameters are mutually exclusive
       - url: /user-lists/{name}/items/{nodeName}
         type: GET
+        function: getUserListItem
         params:
           - type: String
             name: name
@@ -2851,12 +3072,14 @@ objects:
             description: user list item is not found
       - url: /user-lists/{name}/items
         type: POST
+        function: createUserListItem
         params:
           - type: String
             name: name
             description: the name of the list
         in:
           struct: UserListItemAttributes
+          name: item
         out:
           struct: UserListItemInfo
         auth: admin
@@ -2866,6 +3089,7 @@ objects:
             description: node is in the user list already
       - url: /user-lists/{name}/items/{nodeName}
         type: DELETE
+        function: deleteUserListItem
         params:
           - type: String
             name: name
