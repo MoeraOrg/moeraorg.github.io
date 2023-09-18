@@ -308,13 +308,13 @@ objects:
             name: postingId
             description: ID of the posting
           - type: int
-            name: before
-            optional: true
-            description: filter comments posted at or before this moment
-          - type: int
             name: after
             optional: true
             description: filter comments posted strongly after this moment
+          - type: int
+            name: before
+            optional: true
+            description: filter comments posted at or before this moment
           - type: int
             name: limit
             optional: true
@@ -1212,13 +1212,13 @@ objects:
             name: feedName
             description: name of the feed
           - type: int
-            name: before
-            optional: true
-            description: filter stories posted at or before this moment
-          - type: int
             name: after
             optional: true
             description: filter stories posted strongly after this moment
+          - type: int
+            name: before
+            optional: true
+            description: filter stories posted at or before this moment
           - type: int
             name: limit
             optional: true
@@ -2633,13 +2633,13 @@ objects:
         function: getSheriffComplaintGroupsSlice
         params:
           - type: int
-            name: before
-            optional: true
-            description: filter groups created at or before this moment
-          - type: int
             name: after
             optional: true
             description: filter groups created strongly after this moment
+          - type: int
+            name: before
+            optional: true
+            description: filter groups created at or before this moment
           - type: int
             name: limit
             optional: true
@@ -3033,13 +3033,13 @@ objects:
             name: name
             description: the name of the list
           - type: int
-            name: before
-            optional: true
-            description: filter items created at or before this moment
-          - type: int
             name: after
             optional: true
             description: filter items created strongly after this moment
+          - type: int
+            name: before
+            optional: true
+            description: filter items created at or before this moment
           - type: int
             name: limit
             optional: true
@@ -5954,11 +5954,13 @@ structures:
         name: name
       - type: String[]
         name: mnemonic
+        optional: true
         min-items: 24
         max-items: 24
         description: human-friendly mnemonic of the updating key
       - type: String
         name: secret
+        optional: true
         description: base64-encoded secret of the updating key
   - name: RemoteFeed
     fields:
