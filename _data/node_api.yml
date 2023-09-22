@@ -1527,6 +1527,7 @@ objects:
         function: getNodeName
         out:
           struct: NodeNameInfo
+        auth: admin or none
         description: >
           Get the name of the node. Admin user receives also the current status of the latest operation with
           the node name.
@@ -2109,7 +2110,9 @@ objects:
         out:
           struct: ProfileInfo
         auth: admin
-        description: Update the profile.
+        description: >
+          Update the profile. Fields that are not set in the request body are left intact. Fields that are set to
+          an empty value are reset to their defaults.
   - name: Proxy object
     description: Proxy, that may be used by web clients to workaround CORS restrictions of browsers
     requests:
