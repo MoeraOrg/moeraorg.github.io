@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Notifications
-body_class: body-green
 next: newsfeed
+next_title: Newsfeed
 ---
 
 # Notifications

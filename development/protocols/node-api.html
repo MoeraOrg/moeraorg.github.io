@@ -3,13 +3,12 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Node API
-body_class: body-pink
 ---
 
 <h1>Node API</h1>
 <p>
     Moera Node API is a JSON-based REST API. See <a href="/overview/node.html">introduction</a> to Node REST API in
-    the Overview section.
+    the Architecture Overview section.
 </p>
 
 <h2>Table of Contents</h2>
@@ -27,7 +26,7 @@ body_class: body-pink
 
 <h2 id="general">General Information</h2>
 <p>
-    <i>Timestamp</i> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
+    <code>timestamp</code> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
 </p>
 <p>
     If an error occurs when processing a API request, <code><a href="#Result">Result</a></code> structure is returned
@@ -62,13 +61,13 @@ body_class: body-pink
             If the provided <a href="authentication.html#carte">carte</a> is incorrect, one of the following error codes
             is returned:
             <ul>
-                <li><code>carte.client-address-unknown</code> - cannot determine client IP address;</li>
-                <li><code>carte.unknown-fingerprint</code> - unknown fingerprint version encoded in the carte;</li>
-                <li><code>carte.invalid</code> - the carte format is invalid;</li>
-                <li><code>carte.not-begun</code> - the timespan of the carte has not begun yet;</li>
-                <li><code>carte.expired</code> - the carte is expired;</li>
-                <li><code>carte.unknown-signing-key</code> - cannot find public key for carte owner;</li>
-                <li><code>carte.invalid-signature</code> - carte signature is invalid.</li>
+                <li><code>carte.client-address-unknown</code> &ndash; cannot determine client IP address;</li>
+                <li><code>carte.unknown-fingerprint</code> &ndash; unknown fingerprint version encoded in the carte;</li>
+                <li><code>carte.invalid</code> &ndash; the carte format is invalid;</li>
+                <li><code>carte.not-begun</code> &ndash; the timespan of the carte has not begun yet;</li>
+                <li><code>carte.expired</code> &ndash; the carte is expired;</li>
+                <li><code>carte.unknown-signing-key</code> &ndash; cannot find public key for the carte owner;</li>
+                <li><code>carte.invalid-signature</code> &ndash; carte signature is invalid.</li>
             </ul>
         </li>
         <li>
@@ -103,22 +102,22 @@ body_class: body-pink
     of the following:
     <ul>
         <li>
-            <i>none</i> or not present - authentication is not needed, it does not affect the request;
+            <i>none</i> or not present &ndash; authentication is not needed, it does not affect the request;
         </li>
         <li>
-            <i>optional</i> - authentication is not mandatory, but it does affect the request;
+            <i>optional</i> &ndash; authentication is not mandatory, but it does affect the request;
         </li>
         <li>
-            <i>required</i> - authentication is required to perform the request;
+            <i>required</i> &ndash; authentication is required to perform the request;
         </li>
         <li>
-            <i>signature</i> - signature should be included in the request body;
+            <i>signature</i> &ndash; signature should be included in the request body;
         </li>
         <li>
-            <i>root admin</i> - the client should authenticate as server administrator to perform the request;
+            <i>root admin</i> &ndash; the client should authenticate as server administrator to perform the request;
         </li>
         <li>
-            <i>admin</i> - the client should authenticate as node administrator to perform the request.
+            <i>admin</i> &ndash; the client should authenticate as node administrator to perform the request.
         </li>
     </ul>
 </p>
@@ -131,21 +130,19 @@ body_class: body-pink
     <h2 id="{{ object.name }}">{{ object.name }}</h2>
     <p>{{ object.description }}</p>
     {% for req in object.requests %}
-        <h4 class="identifier">{{ req.type }} {{ req.url }}</h4>
+        <h4 class="identifier {{ req.type | downcase }}">{{ req.url }}</h4>
         <p>{{ req.description }}</p>
         <dl>
             {% if req.params %}
                 <dt>Parameters:</dt>
                 {% for param in req.params %}
                     <dd>
-                        <code>
-                            {% if param.enum %}String{% else %}{{ param.type }}{% endif %}
-                            {{ param.name }}
-                        </code>
+                        <code>{% if param.enum %}String{% else %}{{ param.type }}{% endif %}</code>
+                        <code>{{ param.name }}</code>
                         {% if param.description %}
-                            - {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
                         {% else %}
-                            {% if param.optional == true %}- <i>(optional)</i>{% endif %}
+                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
                         {% endif %}
                         {% if param.enum %}
                             (see <code><a href="#{{ param.enum }}">{{ param.enum }}</a></code> for the list of
@@ -156,7 +153,7 @@ body_class: body-pink
                             The values are:
                             <ul>
                                 {% for flag in param.flags %}
-                                    <li><code>{{ flag.name }}</code> - {{ flag.description }}
+                                    <li><code>{{ flag.name }}</code> &ndash; {{ flag.description }}
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -177,7 +174,7 @@ body_class: body-pink
                         </code>
                     {% endif %}
                     {% if req.in.description %}
-                        - {{ req.in.description }}
+                        &ndash; {{ req.in.description }}
                     {% endif %}
                 </dd>
             {% endif %}
@@ -195,11 +192,11 @@ body_class: body-pink
                         </code>
                     {% endif %}
                     {% if req.out.description %}
-                        - {{ req.out.description }}
+                        &ndash; {{ req.out.description }}
                     {% endif %}
                 </dd>
             {% endif %}
-            <dt>Authentication (<a href="#auth">read more</a>):</dt>
+            <dt>Authentication: <span class="read-more"><a href="#auth">read more</a></span></dt>
             {% if req.auth %}
                 <dd>{{ req.auth }}</dd>
             {% else %}
@@ -208,20 +205,20 @@ body_class: body-pink
             {% if req.errors %}
                 <dt>Errors:</dt>
                 <dd>
-                    <table class="table table-bordered">
+                    <table class="table">
                         <thead>
-                        <tr>
-                            <th class="col-4">Code</th>
-                            <th class="col-8">Description</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for error in req.errors %}
                             <tr>
-                                <td><code>{{ error.code }}</code></td>
-                                <td>{{ error.description }}</td>
+                                <th class="col-4">Code</th>
+                                <th class="col-8">Description</th>
                             </tr>
-                        {% endfor %}
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for error in req.errors %}
+                                <tr>
+                                    <td><code>{{ error.code }}</code></td>
+                                    <td>{{ error.description }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </dd>
@@ -233,8 +230,8 @@ body_class: body-pink
 <br/><br/>
 <h2 id="Structures">Structures</h2>
 {% for struct in site.data.node_api.structures %}
-    <h4 id="{{ struct.name }}" class="identifier">{{ struct.name }}</h4>
-    <table class="table table-bordered">
+    <h4 id="{{ struct.name }}" class="identifier struct">{{ struct.name }}</h4>
+    <table class="table">
         <thead>
             <tr>
                 <th class="col-2">Type</th>
@@ -242,7 +239,7 @@ body_class: body-pink
                 <th class="col-7">Description</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for field in struct.fields %}
             <tr>
                 <td>
@@ -253,9 +250,9 @@ body_class: body-pink
                         <code>String{% if field.array == true %}[]{% endif %}</code>
                     {% endif %}
                     {% if field.struct %}
-                        <code>
-                            <a href="#{{ field.struct }}">{{ field.struct }}{% if field.array == true %}[]{% endif %}</a>
-                        </code>
+                        <code><a href="#{{ field.struct }}">{{
+                            field.struct }}{% if field.array == true %}[]{% endif
+                        %}</a></code>
                         {% if field.struct == 'Body' %}
                             (as String)
                         {% endif %}
@@ -276,14 +273,14 @@ body_class: body-pink
     </table>
     {% if struct.errors %}
         <b>Validation errors:</b>
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th class="col-4">Code</th>
                     <th class="col-8">Description</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 {% for error in struct.errors %}
                     <tr>
                         <td><code>{{ error.code }}</code></td>
@@ -300,8 +297,8 @@ body_class: body-pink
 <h2 id="Operations">Operations</h2>
 <p><a href="access-controls.html">Read more about operations</a></p>
 {% for struct in site.data.node_api.operations %}
-    <h4 id="{{ struct.name }}" class="identifier">{{ struct.name }}</h4>
-    <table class="table table-bordered">
+    <h4 id="{{ struct.name }}" class="identifier struct">{{ struct.name }}</h4>
+    <table class="table">
         <thead>
             <tr>
                 <th class="col-4">Name</th>
@@ -309,7 +306,7 @@ body_class: body-pink
                 <th class="col-6">Description</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for op in struct.fields %}
                 <tr>
                     <td><code>{{ op.name }}</code></td>
@@ -324,15 +321,15 @@ body_class: body-pink
 <br/><br/>
 <h2 id="Enums">Enums</h2>
 {% for enum in site.data.node_api.enums %}
-    <h4 id="{{ enum.name }}" class="identifier">{{ enum.name }}</h4>
-    <table class="table table-bordered">
+    <h4 id="{{ enum.name }}" class="identifier enum">{{ enum.name }}</h4>
+    <table class="table">
         <thead>
             <tr>
                 <th class="col-4">Value</th>
                 <th class="col-8">Description</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for value in enum.values %}
                 <tr>
                     <td><code>{{ value.name }}</code></td>
@@ -345,14 +342,14 @@ body_class: body-pink
 
 <br/><br/>
 <h2 id="http-status-codes">HTTP status codes</h2>
-<table class="table table-bordered">
+<table class="table">
     <thead>
         <tr>
             <th class="col-2">Code</th>
             <th class="col-10">Description</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
         {% for code in site.data.node_api.http-codes %}
             <tr>
                 <td><code>{{ code.code }}</code></td>

@@ -3,13 +3,12 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Notifications
-body_class: body-pink
 ---
 
 <h1>Notifications</h1>
 <p>
     Nodes can receive notifications about certain events from naming servers and other nodes. Notifications are sent
-    through REST API of the receiving node. See Overview for the
+     through the REST API of the receiving node. See Architecture Overview for the
     <a href="/overview/notifications.html">detailed description</a> of notifications, their purpose and sending
     mechanism.
 </p>
@@ -21,10 +20,10 @@ body_class: body-pink
     depends on the type. See the description below.
 </p>
 {% for notification in site.data.notifications.notifications %}
-    <h4 class="identifier">{{ notification.type }}</h4>
+    <h4 id="{{ notification.type }}" class="identifier notification">{{ notification.type }}</h4>
     <p>{{ notification.description }}</p>
     {% if notification.fields %}
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th class="col-3">Type</th>
@@ -32,7 +31,7 @@ body_class: body-pink
                     <th class="col-6">Comment</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 {% for field in notification.fields %}
                     <tr>
                         <td>

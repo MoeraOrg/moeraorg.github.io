@@ -1,7 +1,6 @@
 ---
 layout: development
 title: Development Environment
-body_class: body-pink
 ---
 
 # Development Environment

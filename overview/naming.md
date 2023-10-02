@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Naming
-body_class: body-green
 next: cheaper-names
+next_title: Cheaper Names
 ---
 
 # Naming

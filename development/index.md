@@ -1,18 +1,17 @@
 ---
 layout: development
-title: About
-body_class: body-pink
+title: About The Guide
 ---
 
 # About The Guide
 
 This Guide describes protocols and APIs used in Moera and internal
 details of implementation of the Moera components. It may be used as
-reference.
+a reference.
  
-Before reading this Guide it is recommended to learn about Moera in
-general, its principles and planned features in [Overview][1] section.
-It is organized as introductory tutorial.
+Before reading this Guide, it is recommended to learn about Moera in
+general, its principles and planned features in [Architecture Overview][1] section.
+It is organized as an introductory tutorial.
 
 **If you want to help with development, you are welcome!** There is a
 lot of work for programmers, cryptographers, UX designers, documentation
@@ -22,8 +21,7 @@ The development is taking place in [public repositories on GitHub][2]
 under MoeraOrg organization. Feel free to fork them, use issue trackers
 and send pull requests.
 
-If you have a question or just want to talk, join our [community on
-Gitter][3], or send me e-mail to 
+If you have a question or just want to talk, send me e-mail to 
 [balu@moera.org](mailto:balu@moera.org).
 
 I share my thoughts about Moera and the latest Moera news in [Telegram

@@ -1,7 +1,6 @@
 ---
 layout: development
 title: Protocols
-body_class: body-pink
 ---
 
 # Protocols

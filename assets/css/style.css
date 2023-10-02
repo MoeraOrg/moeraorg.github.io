@@ -1,0 +1,356 @@
+:root {
+    --overview-color: #75c181;
+    --development-color: #ea5395;
+    --license-color: #f88c30;
+}
+
+BODY {
+    padding-bottom: 2rem;
+}
+
+.overview-page {
+    --page-color: var(--overview-color);
+}
+
+.development-page {
+    --page-color: var(--development-color);
+}
+
+.license-page {
+    --page-color: var(--license-color);
+}
+
+HEADER {
+    background-color: var(--bs-gray-700);
+    border-top: 5pt solid var(--page-color);
+    padding-top: 1rem;
+    padding-bottom: .75rem;
+}
+
+@media (max-width: 767px) {
+    HEADER {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    HEADER {
+        margin-bottom: 4rem;
+    }
+}
+
+HEADER .branding {
+    margin-bottom: .5em;
+}
+
+HEADER .branding A {
+    text-decoration: none;
+}
+
+HEADER .branding .logo-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: .1rem;
+    color: var(--page-color);
+}
+
+.breadcrumb {
+    font-size: .9rem;
+}
+
+.breadcrumb-item {
+    color: rgba(255, 255, 255, .5);
+}
+
+.breadcrumb-item A {
+    color: rgba(255, 255, 255, .5);
+    text-decoration: none;
+}
+
+.breadcrumb-item A:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: rgba(255, 255, 255, .5);
+}
+
+.breadcrumb-item + .breadcrumb-item:before {
+    color: rgba(255, 255, 255, .5);
+}
+
+.navbar-toggler {
+    color: var(--page-color);
+    position: relative;
+    top: -.5em;
+}
+
+.sidebar A {
+    display: block;
+    text-decoration: none;
+    margin-left: .25em;
+    margin-bottom: .5em;
+    color: var(--bs-gray-600);
+}
+
+.sidebar A.active {
+    color: var(--page-color);
+}
+
+.sidebar-title {
+    color: var(--page-color);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.sidebar-sub {
+    margin-left: 1rem;
+    font-size: 90%;
+}
+
+H1 {
+    border-bottom: solid 1px var(--bs-gray-400);
+    padding-bottom: .25em;
+    margin-bottom: .75em;
+}
+
+.not-implemented {
+    color: var(--bs-gray-600);
+    font-size: .875em;
+    border-top: solid 1px var(--bs-gray-400);
+    padding: .5em;
+    margin-top: 2em;
+    width: fit-content;
+}
+
+:not(PRE, FIGURE) > CODE {
+    padding: .2em .15em;
+    font-weight: 400;
+    color: var(--bs-gray-700);
+    background-color: var(--bs-gray-100);
+    border: 1px solid var(--bs-gray-200);
+    border-radius: 4px;
+    line-height: 1.4;
+}
+
+CODE > A {
+    text-decoration: none;
+}
+
+CODE > A:hover {
+    text-decoration: underline;
+}
+
+PRE {
+    background-color: var(--bs-gray-100);
+    padding: .5em .75em;
+    border-radius: .25em;
+}
+
+H4.identifier {
+    font-family: var(--bs-font-monospace);
+    margin-top: 2rem;
+    margin-left: 5rem;
+    text-indent: -5rem;
+}
+
+H2 + H4.identifier {
+    margin-top: 0;
+}
+
+H4.identifier::before {
+    margin-right: .75rem;
+    color: white;
+    font-size: .875rem;
+    font-weight: bolder;
+    padding: .4em .5em .25em .5em;
+    border-radius: .75em;
+    position: relative;
+    top: -.2em;
+}
+
+H4.call::before {
+    content: 'CALL';
+    background-color: var(--bs-purple);
+}
+
+H4.get::before {
+    content: 'GET';
+    background-color: var(--bs-blue);
+}
+
+H4.post::before {
+    content: 'POST';
+    background-color: var(--bs-blue);
+}
+
+H4.put::before {
+    content: 'PUT';
+    background-color: var(--bs-blue);
+}
+
+H4.delete::before {
+    content: 'DELETE';
+    background-color: var(--bs-blue);
+}
+
+H4.struct::before {
+    content: 'STRUCT';
+    background-color: var(--bs-orange);
+}
+
+H4.enum::before {
+    content: 'ENUM';
+    background-color: var(--bs-green);
+}
+
+H4.event::before {
+    content: 'EVENT';
+    background-color: var(--bs-yellow);
+}
+
+H4.notification::before {
+    content: 'NOTIF';
+    background-color: var(--bs-red);
+}
+
+BLOCKQUOTE {
+    border-left: solid .3rem var(--bs-gray-300);
+    padding-left: 1rem;
+}
+
+DD {
+    margin-left: 2rem;
+}
+
+.read-more {
+    font-weight: normal;
+    font-size: 90%;
+    margin-inline-start: .5em;
+}
+
+A.github-link {
+    text-decoration: none;
+    color: black;
+    margin-inline-end: 2rem;
+    padding-bottom: .25em;
+}
+
+A:hover.github-link {
+    text-decoration: underline;
+}
+
+.bsd {
+    font-family: 'Suez One', serif;
+    font-size: 1.3rem;
+    margin-inline-end: .5rem;
+}
+
+.welcome {
+    background-image: url("../images/messages.jpg");
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.welcome .tagline {
+    color: ivory;
+    font: bold 3rem 'Young Serif', serif;
+    text-shadow: 1px 1px 5px black;
+}
+
+@media (max-width: 767px) {
+    .welcome .tagline {
+        font-size: 1.5rem;
+        line-height: 1.2;
+    }
+}
+
+.google-play {
+    position: relative;
+    top: .5rem;
+}
+
+.google-play IMG {
+    display: inline-block;
+    height: 4.5rem;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 767px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    --card-color: var(--bs-gray-600);
+    min-width: calc(min(400px, 95vw));
+    display: grid;
+    padding: .5rem;
+    grid-template-columns: 2rem auto;
+    grid-template-rows: auto auto;
+    border-radius: .25rem;
+    border-width: 1px 1px 1px .35rem;
+    border-style: solid;
+    border-left-color: var(--card-color);
+    border-right-color: var(--bs-gray-200);
+    border-top-color: var(--bs-gray-200);
+    border-bottom-color: var(--bs-gray-200);
+    text-decoration: unset;
+}
+
+.card .icon {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    padding: .15rem .25rem;
+    color: var(--card-color);
+}
+
+.card .title {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    font-size: larger;
+    font-weight: bold;
+    color: var(--card-color);
+}
+
+.card .description {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    padding: .25rem 0;
+}
+
+.card.overview {
+    --card-color: var(--overview-color);
+}
+
+.card.development {
+    --card-color: var(--development-color);
+}
+
+.card.license {
+    --card-color: var(--license-color);
+}
+
+.cards-center {
+    margin-top: .75rem;
+}
+
+.cards-center .card {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50%;
+}
+
+@media (max-width: 767px) {
+    .cards-center .card {
+        max-width: unset;
+    }
+}

@@ -3,7 +3,6 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Fingerprint
-body_class: body-pink
 ---
 
 # Fingerprint

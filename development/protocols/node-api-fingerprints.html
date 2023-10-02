@@ -3,22 +3,20 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Node API Fingerprints
-body_class: body-pink
 ---
 
 <h1>Node API Fingerprints</h1>
 <p>
     <a href="/development/protocols/fingerprint.html">Fingerprints</a> of Node API objects always start with a string
     designating the type of the object. <i>Version</i> of a fingerprint defines a concrete revision of the fingerprint
-    structure, if it was changed in backward-incompatible way. The fingerprint version (also known as
+    structure if it was changed in backward-incompatible way. The fingerprint version (also known as
     "signature version") must be returned from Node API call together with the signature.
 </p>
 {% for object in site.data.node_api_fingerprints.objects %}
     <a name="{{ object.name }}"></a>
     {% for ver in object.versions %}
-        <a name="{{ object.name }}_{{ ver.version }}"></a>
-        <h2>{{ object.name }}, version {{ ver.version }}</h2>
-        <table class="table table-bordered">
+        <h2 id="{{ object.name }}_{{ ver.version }}" class="mt-5">{{ object.name }}, version {{ ver.version }}</h2>
+        <table class="table">
             <thead>
                 <tr>
                     <th class="col-3">Type</th>
@@ -26,7 +24,7 @@ body_class: body-pink
                     <th class="col-6">Comment</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 {% for field in ver.fingerprint %}
                     <tr>
                         <td>
@@ -35,10 +33,10 @@ body_class: body-pink
                             {% endif %}
                             {% if field.digest %}
                                 {% if field.array %}
-                                    array of hashes of <a href="#{{ field.digest }}"><code>{{ field.digest }}</code></a>
+                                    array of hashes of <a href="#{{ field.digest }}">{{ field.digest }}</a>
                                     fingerprint
                                 {% else %}
-                                    hash of <a href="#{{ field.digest }}"><code>{{ field.digest }}</code></a>
+                                    hash of <a href="#{{ field.digest }}">{{ field.digest }}</a>
                                     fingerprint
                                 {% endif %}
                             {% endif %}

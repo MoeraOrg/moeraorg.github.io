@@ -1517,7 +1517,7 @@ objects:
             description: media file is not found
   - name: Node Name object
     description: >
-      The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Overview section.
+      The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Architecture Overview section.
       Operations with the node name are performed asynchronously - need to poll the node periodically to get
       the current status of the operation. Only one operation with the node name may be performed by the node at
       any moment.
@@ -1700,7 +1700,7 @@ objects:
           Each SSE event has ID that is equal to the moment of the event, and content that is a serialized JSON object
           with the following fields:
           <br><br>
-          <table class="table table-bordered">
+          <table class="table">
             <thead>
               <tr>
                 <th class="col-3">Type</th>
@@ -1708,7 +1708,7 @@ objects:
                 <th class="col-6">Comment</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
               <tr>
                 <td><code>String</code></td>
                 <td><code>type</code></td>
@@ -2629,7 +2629,7 @@ objects:
   - name: Sheriff Complaint Groups object
     description: >
       Similar complaints sent to the sheriff are grouped together and the sheriff makes decisions on a group as whole.
-      <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Overview section.
+      <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Architecture Overview section.
     requests:
       - url: /sheriff/complains/groups
         type: GET
@@ -2708,7 +2708,7 @@ objects:
   - name: Sheriff Complaints object
     description: >
       Complaints are sent to the sheriff via sheriff's node. <a href="/overview/supervision.html">Read more</a> about
-      sheriff supervision in the Overview section.
+      sheriff supervision in the Architecture Overview section.
     requests:
       - url: /sheriff/complains
         type: POST
@@ -2723,7 +2723,7 @@ objects:
   - name: Sheriff Orders object
     description: >
       Orders sent by a sheriff to the node. The node must obey the orders if it accepted supervision by the sheriff.
-      <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Overview section.
+      <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Architecture Overview section.
     requests:
       - url: /sheriff/orders
         type: POST

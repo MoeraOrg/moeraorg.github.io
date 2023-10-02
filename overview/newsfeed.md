@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Newsfeed
-body_class: body-green
 next: browser-extension
+next_title: Browser Extension
 ---
 
 # Newsfeed

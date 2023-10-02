@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% if page.subtitle %}
-        <title>{{ site.title | prepend: " - " | prepend: page.title | prepend: " - " | prepend: page.subtitle }}</title>
-    {% elsif page.title %}
-        <title>{{ site.title | prepend: " - " | prepend: page.title }}</title>
-    {% else %}
-        <title>{{ site.title }}</title>
-    {% endif %}
-    {% include preamble.html %}
-</head>
+    <head>
+        {% if page.subtitle %}
+            <title>
+                {{ site.title | prepend: " - " | prepend: page.title | prepend: " - " | prepend: page.subtitle }}
+            </title>
+        {% elsif page.title %}
+            <title>{{ site.title | prepend: " - " | prepend: page.title }}</title>
+        {% else %}
+            <title>{{ site.title }}</title>
+        {% endif %}
+        {% include preamble.html %}
+    </head>
 
-<body class="{{ page.body_class }}">
-    <div class="page-wrapper">
-        
+    <body class="{{ page.layout }}-page">
         {{ content }}
-        
-    </div><!--//page-wrapper-->
-    
-    {% include footer.html %}
-     
-</body>
-</html> 
 
+        {% include footer.html %}
+    </body>
+</html> 

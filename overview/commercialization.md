@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Commercialization
-body_class: body-green
 next: difference
+next_title: What's a difference?
 ---
 
 # Commercialization

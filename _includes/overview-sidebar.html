@@ -1,14 +1,7 @@
-<div class="doc-sidebar navbar navbar-expand-lg col-md-3 col-12 order-0 d-flex">
-    <div id="doc-nav" class="doc-nav">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#doc-menu">
-            <span class="navbar-toggler-icon fas fa-bars"></span>
-        </button>
-        <nav id="doc-menu" class="doc-menu navbar-nav collapse navbar-collapse flex-column sticky-lg">
-            <div class="doc-sidebar-title">Overview</div>
-            {% for link in site.data.overview_nav %}
-                {% capture file_name %}{{ link.name }}.md{% endcapture %}
-                <a class="nav-link {% if page.name == file_name %}active{% endif %}" href="{{ link.name }}.html">{{ link.title }}</a>
-            {% endfor %}
-        </nav><!--//doc-menu-->
-    </div>
+<div class="sidebar">
+    <div class="sidebar-title">Architecture Overview</div>
+    {% for link in site.data.overview_nav %}
+        {% capture file_name %}{{ link.name }}.md{% endcapture %}
+        <a class="{% if page.name == file_name %}active{% endif %}" href="{{ link.name }}.html">{{ link.title }}</a>
+    {% endfor %}
 </div>

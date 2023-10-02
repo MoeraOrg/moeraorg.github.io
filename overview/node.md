@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Node
-body_class: body-green
 next: authentication
+next_title: Authentication
 ---
 
 # Node

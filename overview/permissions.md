@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Permissions
-body_class: body-green
 next: supervision
+next_title: Supervision
 ---
 
 # Permissions

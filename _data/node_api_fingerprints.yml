@@ -5,7 +5,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: ATTACHMENT
+            comment: <code>ATTACHMENT</code>
           - type: byte[]
             field: digest
             comment: cryptographic hash of the attachment as a file
@@ -15,7 +15,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: CARTE
+            comment: <code>CARTE</code>
           - type: String
             field: ownerName
           - type: InetAddress
@@ -46,7 +46,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: CARTE
+            comment: <code>CARTE</code>
           - type: String
             field: ownerName
           - type: InetAddress
@@ -70,7 +70,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: COMMENT
+            comment: <code>COMMENT</code>
           - type: String
             field: ownerName
           - digest: Posting
@@ -101,7 +101,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: NOTIFICATION_PACKET
+            comment: <code>NOTIFICATION_PACKET</code>
           - type: String
             field: id
           - type: String
@@ -118,7 +118,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: NOTIFICATION_PACKET
+            comment: <code>NOTIFICATION_PACKET</code>
           - type: String
             field: id
           - type: String
@@ -135,7 +135,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: POSTING
+            comment: <code>POSTING</code>
           - type: String
             field: receiverName
           - type: String
@@ -163,7 +163,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: POSTING
+            comment: <code>POSTING</code>
           - type: String
             field: receiverName
           - type: String
@@ -192,13 +192,13 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: REACTION
+            comment: <code>REACTION</code>
           - type: String
             field: ownerName
           - type: byte[]
             field: entryFingerprint
             comment: >
-              hash of <a href="#Posting"><code>Posting</code></a> or <a href="#Comment"><code>Comment</code></a>
+              hash of <a href="#Posting">Posting</a> or <a href="#Comment">Comment</a>
               fingerprint
           - type: boolean
             field: negative
@@ -210,7 +210,7 @@ objects:
         fingerprint:
           - type: String
             field: objectType
-            comment: SHERIFF_ORDER
+            comment: <code>SHERIFF_ORDER</code>
           - type: String
             field: sheriffName
           - type: String
@@ -220,7 +220,7 @@ objects:
           - type: byte[]
             field: entryFingerprint
             comment: >
-              hash of <a href="#Posting"><code>Posting</code></a> or <a href="#Comment"><code>Comment</code></a>
+              hash of <a href="#Posting">Posting</a> or <a href="#Comment">Comment</a>
               fingerprint
           - type: String
             field: category

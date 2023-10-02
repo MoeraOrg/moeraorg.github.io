@@ -1,8 +1,8 @@
 calls:
   - name: put
     description: >
-      Register or update the name. See Overview for the <a href="/overview/naming.html">detailed description</a> of
-      the algorithm.
+      Register or update the name. See Architecture Overview for the
+      <a href="/overview/naming.html">detailed description</a> of the algorithm.
     params:
       - type: String
         name: name
@@ -42,13 +42,13 @@ calls:
       type: UUID
       description: identifier of the operation that was created
     fingerprint:
-      - type: string
+      - type: String
         value: <code>name</code>
       - type: int
         value: <code>generation</code>
       - type: byte[]
         value: <code>updatingKey</code>, if not <code>null</code>, or the current key otherwise
-      - type: string
+      - type: String
         value: <code>nodeUri</code>, if not <code>null</code>, or the current URI otherwise
       - type: byte[]
         value: <code>signingKey</code>, if not <code>null</code>, or the current key otherwise
@@ -101,7 +101,7 @@ calls:
       - type: int
         name: generation
     returns:
-      struct: boolean
+      type: boolean
       description: <code>true</code>, if the name is free, <code>false</code> otherwise
 
   - name: getSimilar

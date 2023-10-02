@@ -1,7 +1,66 @@
 ---
 layout: page
-body_class: landing-page
 ---
 
-{% include landing-header.html %}
-{% include landing-content.html %}
+<div class="text-end">
+    <a class="github-link" href="https://github.com/MoeraOrg">
+        <i class="fa-brands fa-github"></i> GitHub</a>
+    <span class="bsd">בס"ד</span>
+</div>
+
+<div class="welcome">
+    <div class="container">
+        <img src="assets/images/logo-welcome.png" srcset="assets/images/logo-welcome.png 361w"
+             sizes="(max-width: 600px) 180px, 361px">
+        <div class="tagline">
+            {{ site.tagline }}
+        </div>
+        <a class="btn btn-success btn-lg mt-3" href="https://web.moera.org">Get Started</a>
+        <a class="google-play"
+           href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
+            <img alt="Get it on Google Play"
+                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+        </a>
+    </div>
+</div>
+
+<div class="cards container">
+    <a class="card overview" href="/overview/index.html">
+        <div class="icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <div class="title">Architecture Overview</div>
+        <div class="description">How it works? Why?</div>
+    </a>
+    <a class="card development" href="/development/index.html">
+        <div class="icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+        <div class="title">Developer's Guide</div>
+        <div class="description">Protocols, libraries and contribution</div>
+    </a>
+    <a class="card license" href="/license/index.html">
+        <div class="icon"><i class="fa-solid fa-gift"></i></div>
+        <div class="title">License</div>
+        <div class="description">Everything is Open Source</div>
+    </a>
+</div>
+
+<div class="cards-center container">
+    <div class="card">
+        <div class="icon"><i class="fa-solid fa-link"></i></div>
+        <div class="title">Follow the development</div>
+        <div class="description">
+            <ul>
+                <li>
+                    <a href="https://github.com/MoeraOrg">GitHub</a>
+                </li>
+                <li>
+                    <a href="https://blog.moera.org">News</a> on Moera
+                </li>
+                <li>
+                    <a href="https://t.me/moeranews">News channel</a> on Telegram
+                </li>
+                <li>
+                    <a href="https://t.me/moeradevelopment">Developers' group</a> on Telegram
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

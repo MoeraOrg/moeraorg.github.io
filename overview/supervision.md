@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Supervision
-body_class: body-green
 next: other
+next_title: Other Features
 ---
 
 # Supervision

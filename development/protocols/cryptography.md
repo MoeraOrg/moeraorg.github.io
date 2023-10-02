@@ -3,7 +3,6 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Cryptography
-body_class: body-pink
 ---
 
 # Cryptography

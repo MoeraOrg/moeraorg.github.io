@@ -3,7 +3,6 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Access Controls
-body_class: body-pink
 ---
 
 # Access Controls
@@ -68,12 +67,12 @@ hierarchy.
 The rightmost column in the table is the principal. Other columns correspond to
 the owner of the object and owners of higher-level objects in the hierarchy.
 
-`+` - the access is allowed\
-`-` - the access is not allowed 
+`+` — the access is allowed\
+`-` — the access is not allowed 
 
 #### Level 1
 
-<table class="table table-bordered">
+<table class="table">
   <thead>
     <tr>
       <th>node owner</th>
@@ -81,7 +80,7 @@ the owner of the object and owners of higher-level objects in the hierarchy.
       <th>&nbsp;</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-group-divider">
     <tr>
       <td>+</td>
       <td>+</td>
@@ -127,7 +126,7 @@ the owner of the object and owners of higher-level objects in the hierarchy.
 
 #### Level 2
 
-<table class="table table-bordered">
+<table class="table">
   <thead>
     <tr>
       <th>node owner</th>
@@ -136,7 +135,7 @@ the owner of the object and owners of higher-level objects in the hierarchy.
       <th>&nbsp;</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-group-divider">
     <tr>
       <td>+</td>
       <td>+</td>
@@ -190,7 +189,7 @@ the owner of the object and owners of higher-level objects in the hierarchy.
 
 #### Level 3
 
-<table class="table table-bordered">
+<table class="table">
   <thead>
     <tr>
       <th>node owner</th>
@@ -200,7 +199,7 @@ the owner of the object and owners of higher-level objects in the hierarchy.
       <th>&nbsp;</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-group-divider">
     <tr>
       <td>+</td>
       <td>+</td>

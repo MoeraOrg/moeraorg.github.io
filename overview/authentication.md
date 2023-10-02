@@ -1,21 +1,21 @@
 ---
 layout: overview
 title: Authentication
-body_class: body-green
 next: naming
+next_title: Naming
 ---
 
 # Authentication
 
 To add, edit or remove publications on your own node (we will call it *home node*
 by analogy with homepage), you need to authenticate with any mechanism of your
-choice - login and password is the simplest one.
+choice — login and password is the simplest one.
 
 But for other nodes, such a simple mechanism does not fit. You cannot sign up and
 enter your credentials on every node in the Internet. To confirm our identity when
 accessing other nodes, we will use digital signatures.
 
-Every user must generate for himself a *signing key* - a secret
+Every user must generate for himself a *signing key* — a secret
 cryptographic key to sign all his messages and requests. The corresponding public
 key must be stored in a public database accessible to any Moera node or client,
 so they will be able to verify the signature.

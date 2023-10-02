@@ -1,17 +1,17 @@
 ---
 layout: license
 title: License
-body_class: body-orange
 ---
 
-# Protocols & APIs
+# License
+## Protocols & APIs
 
 All Moera protocols and APIs are open and free to use and implement by
 any software. If you extend these protocols and APIs, we would
 appreciate if you publish the specifications of the extensions in order
 to encourage interoperability with other software.
 
-# Software
+## Core Software
 
 Moera
 [Commons](https://github.com/MoeraOrg/moera-commons),
@@ -21,9 +21,9 @@ Moera
 [Browser Extension](https://github.com/MoeraOrg/moera-browser-extensions)
 are distributed under the terms of
 [GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
-or later.
+or later:
 
-> Copyright (C) 2018-2019 Shmuel Leib Melamud
+> Copyright (C) 2018-2023 Shmuel Leib Melamud
 >
 > This program is free software: you can redistribute it and/or modify
 > it under the terms of the GNU General Public License as published by
@@ -39,7 +39,26 @@ or later.
 > along with this program. If not, see
 > [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
 
-# Third-party Software
+## Tools & Libraries
+
+Moera tools and libraries are distributed under the terms of
+[Apache License version 2.0](http://www.apache.org/licenses/LICENSE-2.0):
+
+> Copyright (C) 2018-2023 Shmuel Leib Melamud
+>
+> Licensed under the Apache License, Version 2.0 (the "License");
+> you may not use this file except in compliance with the License.
+> You may obtain a copy of the License at
+>
+> [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+>
+> Unless required by applicable law or agreed to in writing, software
+> distributed under the License is distributed on an "AS IS" BASIS,
+> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+> See the License for the specific language governing permissions and
+> limitations under the License.
+
+## Third-party Software
 
 Moera software makes use of many open source libraries and frameworks.
 These libraries and frameworks are distributed in accordance with their

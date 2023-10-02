@@ -3,7 +3,6 @@ layout: development
 title: Protocols
 up: protocols
 subtitle: Naming API
-body_class: body-pink
 ---
 
 <h1>Naming API</h1>
@@ -11,12 +10,13 @@ body_class: body-pink
     Moera Naming API is based on JSON-RPC protocol.
 </p>
 <p>
-    <i>Timestamp</i> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
+    <code>timestamp</code> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
 </p>
 <h2>Calls</h2>
 {% for call in site.data.naming_api.calls %}
-    <a name="{{ call.name }}"></a>
-    <h4 class="identifier">{{ call.name }}</h4>
+    <h4 id="{{ call.name }}" class="identifier call">{{
+        call.name }}({% for param in call.params %}{{ param.name }}{% unless forloop.last %}, {% endunless %}{% endfor %})
+    </h4>
     <p>{{ call.description }}</p>
     <dl>
         {% if call.params %}
@@ -25,7 +25,7 @@ body_class: body-pink
                 <dd>
                     <code>{{ param.type }} {{ param.name }}</code>
                     {% if param.description %}
-                        - {{ param.description }}
+                        &ndash; {{ param.description }}
                     {% endif %}
                 </dd>
             {% endfor %}
@@ -37,28 +37,26 @@ body_class: body-pink
                     <code>{{ call.returns.type }}</code>
                 {% endif %}
                 {% if call.returns.struct %}
-                    <code>
-                        <a href="#{{ call.returns.struct }}">
-                            {{ call.returns.struct }}{% if call.returns.array == true %}[]{% endif %}
-                        </a>
-                    </code>
+                    <code><a href="#{{ call.returns.struct }}">
+                        {{ call.returns.struct }}{% if call.returns.array == true %}[]{% endif
+                    %}</a></code>
                 {% endif %}
                 {% if call.returns.description %}
-                - {{ call.returns.description }}
+                    &ndash; {{ call.returns.description }}
                 {% endif %}
             </dd>
         {% endif %}
         {% if call.fingerprint %}
-            <dt>Fingerprint (<a href="/development/protocols/fingerprint.html">read more</a>):</dt>
+        <dt>Fingerprint: <span class="read-more"><a href="/development/protocols/fingerprint.html">read more</a></span></dt>
             <dd>
-                <table class="table table-bordered">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Type</th>
                             <th>Value</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table-group-divider">
                         {% for field in call.fingerprint %}
                             <tr>
                                 <td><code>{{ field.type }}</code></td>
@@ -75,9 +73,8 @@ body_class: body-pink
 <br/><br/>
 <h2>Structures</h2>
 {% for struct in site.data.naming_api.structures %}
-    <a name="{{ struct.name }}"></a>
-    <h4 class="identifier">{{ struct.name }}</h4>
-    <table class="table table-bordered">
+    <h4 id="{{ struct.name }}" class="identifier struct">{{ struct.name }}</h4>
+    <table class="table">
         <thead>
             <tr>
                 <th>Type</th>
@@ -85,23 +82,23 @@ body_class: body-pink
                 <th>Description</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for field in struct.fields %}
-            <tr>
-                <td>
-                    {% if field.type %}
-                        <code>{{ field.type }}</code>
-                    {% endif %}
-                    {% if field.struct %}
-                        <code><a href="#{{ field.struct }}">{{ field.struct }}</a></code>
-                    {% endif %}
-                    {% if field.enum %}
-                        <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code>
-                    {% endif %}
-                </td>
-                <td><code>{{ field.name }}</code></td>
-                <td>{{ field.description }}</td>
-            </tr>
+                <tr>
+                    <td>
+                        {% if field.type %}
+                            <code>{{ field.type }}</code>
+                        {% endif %}
+                        {% if field.struct %}
+                            <code><a href="#{{ field.struct }}">{{ field.struct }}</a></code>
+                        {% endif %}
+                        {% if field.enum %}
+                            <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code>
+                        {% endif %}
+                    </td>
+                    <td><code>{{ field.name }}</code></td>
+                    <td>{{ field.description }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -110,17 +107,16 @@ body_class: body-pink
 <br/><br/>
 <h2>Enums</h2>
 {% for enum in site.data.naming_api.enums %}
-    <a name="{{ enum.name }}"></a>
-    <h4 class="identifier">{{ enum.name }}</h4>
+    <h4 id="{{ enum.name }}" class="identifier enum">{{ enum.name }}</h4>
     <p>{{ enum.description }}</p>
-    <table class="table table-bordered">
+    <table class="table">
         <thead>
             <tr>
                 <th>Value</th>
                 <th>Description</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for value in enum.values %}
                 <tr>
                     <td><code>{{ value.name }}</code></td>
@@ -132,9 +128,8 @@ body_class: body-pink
 {% endfor %}
 
 <br/><br/>
-<a name="error-codes"></a>
-<h2>Error codes</h2>
-<table class="table table-bordered">
+<h2 id="error-codes">Error codes</h2>
+<table class="table">
     <thead>
         <tr>
             <th>Code</th>
@@ -142,7 +137,7 @@ body_class: body-pink
             <th>Description</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
         {% for error in site.data.naming_api.errors %}
             <tr>
                 <td><code>{{ error.code }}</code></td>

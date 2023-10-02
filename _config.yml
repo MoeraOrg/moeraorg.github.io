@@ -1,10 +1,2 @@
-sass:
-  sass_dir: _sass
-
 title: Moera
 tagline: The Best Decentralized Social Network
-github_username: MoeraOrg
-tryit_link: https://web.moera.org
-card_overview_link: /overview/index.html
-card_development_link: /development/index.html
-card_license_link: /license/index.html

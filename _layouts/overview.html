@@ -2,29 +2,46 @@
 layout: page
 ---
 
-{% include overview-header.html %}
-
-<div class="doc-wrapper">
+<header>
     <div class="container">
-        <div class="doc-body row">
-            <div class="doc-content col-md-9 col-12 order-1">
-                <div class="content-inner">
-                    <small>
-                        <sup>*</sup> These pages describe the planned functionality. The current implementation may lack
-                        a part of it.
-                    </small>
+        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+            <span class="navbar-toggler-icon fas fa-bars"></span>
+        </button>
+        <div class="branding">
+            <a href="/index.html"><img src="/assets/images/logo-g-40.png" width="74" height="41" alt="Logo"></a>
+            <span class="logo-text d-block d-md-inline ms-md-3">Decentralized Social Network</span>
+        </div>
+        {% include overview-header.html %}
+    </div>
+</header>
 
-                    {{ content }}
+<div class="container">
+    <div class="row">
+        <div class="offcanvas-md offcanvas-start col-md-3 col-12" id="sidebar">
+            <div class="offcanvas-header">
+                <div class="offcanvas-title"></div>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar"
+                        aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                {% include overview-sidebar.html %}
+            </div>
+        </div>
+        <div class="col-md-9 col-12">
+            {{ content }}
 
-                    {% if page.next %}
-                    <div class="text-center">
-                        <a class="btn btn-primary" href="/overview/{{ page.next }}.html">Next &rarr;</a>
-                    </div>
-                    {% endif %}
-                </div><!--//content-inner-->
-            </div><!--//doc-content-->
+            {% if page.next %}
+                <div class="text-center">
+                    <a class="btn btn-outline-primary" href="/overview/{{ page.next }}.html">
+                        Next:&nbsp;&nbsp;&nbsp;{{ page.next_title }}&nbsp;&nbsp;&rarr;
+                    </a>
+                </div>
+            {% endif %}
 
-            {% include overview-sidebar.html %}
-        </div><!--//doc-body-->
-    </div><!--//container-->
-</div><!--//doc-wrapper-->
+            <div class="not-implemented">
+                <sup>*</sup> These pages describe the planned functionality. The current implementation may lack
+                a part of it.
+            </div>
+        </div>
+    </div>
+</div>

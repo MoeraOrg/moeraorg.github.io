@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Browser Extension
-body_class: body-green
 next: permissions
+next_title: Permissions
 ---
 
 # Browser Extension
@@ -22,7 +22,7 @@ achieve this goal.
    may also contain the list of supported API capabilities and the
    location of the API endpoint.)
 2. The browser extension detects the `X-Moera` header and redirects the browser
-   to a special *Moera web client* - the one-page web application.
+   to a special *Moera web client* — the one-page web application.
    The original URL is passed to the web client.
 3. The user uses the web client to surf through the content of this
    node. The web client interacts with the node via REST API.
@@ -54,7 +54,7 @@ a different web client. So you should use a 'Copy link' or 'Share' button in
 the web client to get a correct URL.
 
 And there is one more detail. The URLs constructed by Moera web client are
-*virtual* - there is no such page on the site exists.
+*virtual* — there is no such page on the site exists.
 
 Virtual pages have special prefix (for example, `/moera/`) that
 distinguishes them from all *real* pages on the site. There are two main
@@ -67,7 +67,7 @@ reasons why we use the virtual pages in the Moera web client:
 * As we said before, Moera REST API may be implemented by any site and
   sites may have different structures. For example, on one site the
   "Contacts" page may have location `/contact-us.html` and on another
-  site - `/info/contacts.php`, but both correspond to the same Moera
+  site — `/info/contacts.php`, but both correspond to the same Moera
   virtual page `/moera/profile`. All virtual pages have standard names,
   this simplifies interactions between a client and node. For example, if
   user `arthur` is mentioned in a comment somewhere, and we know that

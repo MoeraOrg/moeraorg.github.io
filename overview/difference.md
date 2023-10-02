@@ -1,11 +1,11 @@
 ---
 layout: overview
-title: What's a difference?
-body_class: body-green
+title: What's A Difference?
 next: moera
+next_title: Why Is It Called Moera?
 ---
 
-# What's a difference?
+# What's A Difference?
 
 The question asked very often: What's a difference between Moera and other
 decentralized social networks that already exist? Why was it needed to create

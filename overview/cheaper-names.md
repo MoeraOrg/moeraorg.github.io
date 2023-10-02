@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Cheaper Names
-body_class: body-green
 next: notifications
+next_title: Notifications
 ---
 
 # Cheaper Names
