@@ -1,0 +1,8 @@
+- name: index
+  title: About The Guide
+
+- name: install
+  title: Installation
+
+- name: create-db
+  title: Creating a PostgreSQL Database

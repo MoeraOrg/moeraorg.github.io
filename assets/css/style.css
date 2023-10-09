@@ -1,7 +1,8 @@
 :root {
-    --overview-color: #75c181;
-    --development-color: #ea5395;
-    --license-color: #f88c30;
+    --overview-color: #75b798;
+    --administration-color: #6ea8fe;
+    --development-color: #e685b5;
+    --license-color: #feb272;
 }
 
 BODY {
@@ -10,6 +11,10 @@ BODY {
 
 .overview-page {
     --page-color: var(--overview-color);
+}
+
+.administration-page {
+    --page-color: var(--administration-color);
 }
 
 .development-page {
@@ -333,6 +338,10 @@ A:hover.card {
 
 .card.overview {
     --card-color: var(--overview-color);
+}
+
+.card.administration {
+    --card-color: var(--administration-color);
 }
 
 .card.development {

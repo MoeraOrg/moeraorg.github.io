@@ -4,13 +4,6 @@
 - name: setup/index
   title: Development Environment
 
-- type: sub
-
-- name: setup/create-db
-  title: Creating PostgreSQL Database
-
-- type: end
-
 - name: protocols/index
   title: Protocols
 
