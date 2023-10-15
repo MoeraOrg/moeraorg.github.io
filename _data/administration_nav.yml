@@ -1,8 +1,18 @@
 - name: index
   title: About The Guide
 
-- name: install
+- name: installation/index
   title: Installation
 
-- name: create-db
+- type: sub
+
+- name: installation/create-db
   title: Creating a PostgreSQL Database
+
+- name: installation/config
+  title: Configuration File
+
+- name: installation/running
+  title: Running
+
+- type: end

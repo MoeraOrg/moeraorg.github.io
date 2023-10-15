@@ -1,6 +1,8 @@
 ---
 layout: administration
-title: Creating a PostgreSQL Database
+title: Installation
+up: installation
+subtitle: Creating a PostgreSQL Database
 ---
 
 # Creating a PostgreSQL Database
@@ -64,3 +66,7 @@ application:
     ```
     $ sudo systemctl restart postgresql
     ```
+
+There is no need to create any tables in the database. `moera-node` creates them
+automatically on the first start and upgrades the structure when a new version is
+run.

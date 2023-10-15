@@ -1,16 +1,11 @@
 ---
 layout: administration
 title: Installation
+up: installation
+subtitle: Running
 ---
 
-# Installation
-
-The simplest way to install the Moera server software (`moera-node`) is to download
-a prebuilt WAR file [from the GitHub repository][1] and place it in a directory on
-your server.
-
-After that, create a [PostgreSQL database][2] and a [configuration file][3]. These
-steps are explained on separate pages.
+# Running
 
 The WAR file is self-executable, so you do not need to install Tomcat or a similar
 Java servlet server to run it. Just give the file executable permissions:
@@ -87,6 +82,3 @@ And then start the daemon:
 ```bash
 # systemctl start moera-node
 ```
-
-[1]: https://github.com/MoeraOrg/moera-node/releases
-[2]: /administration/create-db.html
