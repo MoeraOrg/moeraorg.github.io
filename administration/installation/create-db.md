@@ -2,13 +2,12 @@
 layout: administration
 title: Installation
 up: installation
-subtitle: Creating a PostgreSQL Database
+subtitle: PostgreSQL Database
 ---
 
-# Creating a PostgreSQL Database
+# PostgreSQL Database
 
-How to create a database in PostgreSQL and make it accessible for an
-application:
+To create a database in PostgreSQL and make it accessible:
 
 1. Install PostgreSQL server and client. In all major Linux
    distributions you can install them from the main package repository

@@ -14,9 +14,15 @@ The simplest way to install the Moera server software (`moera-node`) is as follo
 4. Create a [PostgreSQL database][2].
 5. Create a [configuration file][3].
 6. [Run][4] the server.
+7. Configure [NGINX as a reverse proxy][5].
+8. _(optional)_ Configure a [watchdog][6].
+9. _(optional)_ Configure [logrotate][7].
 
 
 [1]: https://github.com/MoeraOrg/moera-node/releases
 [2]: /administration/installation/create-db.html
 [3]: /administration/installation/config.html
 [4]: /administration/installation/running.html
+[5]: /administration/installation/nginx.html
+[6]: /administration/installation/watchdog.html
+[7]: /administration/installation/logrotate.html

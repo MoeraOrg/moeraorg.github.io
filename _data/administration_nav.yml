@@ -7,12 +7,21 @@
 - type: sub
 
 - name: installation/create-db
-  title: Creating a PostgreSQL Database
+  title: PostgreSQL Database
 
 - name: installation/config
   title: Configuration File
 
 - name: installation/running
   title: Running
+
+- name: installation/nginx
+  title: NGINX
+
+- name: installation/watchdog
+  title: Watchdog
+
+- name: installation/logrotate
+  title: Logrotate
 
 - type: end
