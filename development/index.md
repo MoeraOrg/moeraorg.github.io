@@ -24,10 +24,12 @@ and send pull requests.
 If you have a question or just want to talk, send me e-mail to 
 [balu@moera.org](mailto:balu@moera.org).
 
-I share my thoughts about Moera and the latest Moera news in [Telegram
-channel][4].
+I share my thoughts about Moera and the latest Moera news in [Moera blog][4] and
+[Telegram channel][3]. We discuss various development topics in the
+[Developers' group][5] on Telegram.
 
 [1]: /overview/index.html
 [2]: https://github.com/MoeraOrg/
-[3]: https://gitter.im/moera-dev/community
-[4]: https://t.me/moeranews
+[3]: https://t.me/moeranews
+[4]: https://blog.moera.org/
+[5]: https://t.me/moeradevelopment

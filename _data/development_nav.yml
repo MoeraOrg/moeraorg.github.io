@@ -1,49 +1,56 @@
 - name: index
   title: About The Guide
 
-- name: protocols/index
-  title: Protocols
+- name: cryptography/index
+  title: Cryptography
 
 - type: sub
 
-- name: protocols/cryptography
-  title: Cryptography
+- name: cryptography/algorithms
+  title: Algorithms
 
-- name: protocols/fingerprint
+- name: cryptography/fingerprint
   title: Fingerprint
 
-- name: protocols/node-name
-  title: Node Name
+- type: end
 
-- name: protocols/authentication
-  title: Authentication
-
-- name: protocols/access-controls
-  title: Access Controls
-
-- name: protocols/moment
-  title: Moment
-
-- name: protocols/naming-api
+- name: naming-api
   title: Naming API
 
-- name: protocols/node-api
+- name: node-api/index
   title: Node API
 
-- name: protocols/node-api-fingerprints
-  title: Node API Fingerprints
+- type: sub
 
-- name: protocols/events
+- name: node-api/requests
+  title: Requests
+
+- name: node-api/events
   title: Events
 
-- name: protocols/notifications
+- name: node-api/notifications
   title: Notifications
 
-- name: protocols/virtual-pages
+- name: node-api/virtual-pages
   title: Virtual Pages
 
-- name: protocols/headers
+- name: node-api/headers
   title: Headers
+
+- name: node-api/node-name
+  title: Node Name
+
+- name: node-api/moment
+  title: Moment
+
+- name: node-api/authentication
+  title: Authentication
+
+- name: node-api/access-controls
+  title: Access Controls
+
+- name: node-api/fingerprints
+  title: Fingerprints
 
 - type: end
 

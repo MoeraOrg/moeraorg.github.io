@@ -1,133 +1,31 @@
 ---
 layout: development
-title: Protocols
-up: protocols
-subtitle: Node API
+title: Node API
+up: node-api
+subtitle: Requests
+container_class: container-requests
 ---
 
-<h1>Node API</h1>
-<p>
-    Moera Node API is a JSON-based REST API. See <a href="/overview/node.html">introduction</a> to Node REST API in
-    the Architecture Overview section.
-</p>
+<h1>Requests</h1>
 
-<h2>Table of Contents</h2>
-<ol>
-    <li><a href="#general"><b>General Information</b></a></li>
-    {% for object in site.data.node_api.objects %}
-    <li><a href="#{{ object.name }}">{{ object.name }}</a></li>
-    {% endfor %}
-    <li><a href="#Structures"><b>Structures</b></a></li>
-    <li><a href="#Operations"><b>Operations</b></a></li>
-    <li><a href="#Enums"><b>Enums</b></a></li>
-    <li><a href="#http-status-codes"><b>HTTP status codes</b></a></li>
-</ol>
+<div id="toc" class="toc">
+    <h2>Table of Contents</h2>
+    <ol class="objects">
+        {% for object in site.data.node_api.objects %}
+            <li><a href="#{{ object.name | replace: ' ', '%20'}}%20object">{{ object.name }}</a></li>
+        {% endfor %}
+    </ol>
+    <ol>
+        <li><a href="#Structures"><b>Structures</b></a></li>
+        <li><a href="#Operations"><b>Operations</b></a></li>
+        <li><a href="#Enums"><b>Enums</b></a></li>
+        <li><a href="#http-status-codes"><b>HTTP status codes</b></a></li>
+    </ol>
+</div>
 
-
-<h2 id="general">General Information</h2>
-<p>
-    <code>timestamp</code> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
-</p>
-<p>
-    If an error occurs when processing a API request, <code><a href="#Result">Result</a></code> structure is returned
-    instead of the regular response. The structure contains the error code and message, and also
-    the <a href="#http-status-codes">HTTP status code</a> is set accordingly. All error codes are case-insensitive.
-</p>
-<p>
-    An error may occur on different stages of request processing.
-    <ul>
-        <li>If the request URL is unknown, <code>not-found</code> error is returned.</li>
-        <li>If the request Content-Type is unknown, <code>invalid-content-type</code> error is returned.</li>
-        <li>If incorrect JSON is provided, <code>invalid-syntax</code> error is returned.</li>
-        <li>
-            If the request is correct, but the operation is not supported by the node, <code>not-supported</code> error
-            is returned.
-        </li>
-        <li>
-            If value of one of the arguments does not correspond its type, <code>invalid-argument-value</code> error is
-            returned.
-        </li>
-        <li>
-            If authentication is required, but not provided, <code>authentication.required</code> error is returned.
-        </li>
-        <li>
-            If an invalid authentication token or root secret is provided, <code>authentication.invalid</code> error is
-            returned.
-        </li>
-        <li>
-            If the provided signature is incorrect, <code>authentication.incorrect-signature</code> error is returned.
-        </li>
-        <li>
-            If the provided <a href="authentication.html#carte">carte</a> is incorrect, one of the following error codes
-            is returned:
-            <ul>
-                <li><code>carte.client-address-unknown</code> &ndash; cannot determine client IP address;</li>
-                <li><code>carte.unknown-fingerprint</code> &ndash; unknown fingerprint version encoded in the carte;</li>
-                <li><code>carte.invalid</code> &ndash; the carte format is invalid;</li>
-                <li><code>carte.not-begun</code> &ndash; the timespan of the carte has not begun yet;</li>
-                <li><code>carte.expired</code> &ndash; the carte is expired;</li>
-                <li><code>carte.unknown-signing-key</code> &ndash; cannot find public key for the carte owner;</li>
-                <li><code>carte.invalid-signature</code> &ndash; carte signature is invalid.</li>
-            </ul>
-        </li>
-        <li>
-            If the node is blocked from performing the operation, <code>authentication.blocked</code> error is returned.
-        </li>
-        <li>
-            If the request needs a node name, but it is not defined, <code>node-name-not-set</code> error is returned.
-        </li>
-        <li>
-            If the request needs a signing key, but it is not defined, <code>signing-key-not-set</code> error is
-            returned.
-        </li>
-        <li>
-            If request body does not pass validation, a validation error is returned. Look into the chapter on
-            the particular structure for the list of validation errors that correspond to the structure.
-        </li>
-        <li>
-            If an error occurs while executing the operation, one of the errors listed in the corresponding operation's
-            chapter is returned.
-        </li>
-        <li>
-            If a configuration error or a software bug occurs, <code>server.misconfiguration</code> error is returned.
-        </li>
-        <li>
-            If request processing involves a naming server, but it is not available, <code>naming.not-available</code>
-            error is returned.
-        </li>
-    </ul>
-</p>
-<p id="auth">
-    <a href="authentication.html">Authentication</a> requirements, if specified in the request description, may be one
-    of the following:
-    <ul>
-        <li>
-            <i>none</i> or not present &ndash; authentication is not needed, it does not affect the request;
-        </li>
-        <li>
-            <i>optional</i> &ndash; authentication is not mandatory, but it does affect the request;
-        </li>
-        <li>
-            <i>required</i> &ndash; authentication is required to perform the request;
-        </li>
-        <li>
-            <i>signature</i> &ndash; signature should be included in the request body;
-        </li>
-        <li>
-            <i>root admin</i> &ndash; the client should authenticate as server administrator to perform the request;
-        </li>
-        <li>
-            <i>admin</i> &ndash; the client should authenticate as node administrator to perform the request.
-        </li>
-    </ul>
-</p>
-<p>
-    <code>cid</code> parameter may be passed with any request. See
-    <a href="/development/protocols/events.html">Events</a> page for the description of its purpose.
-</p>
-
+<div>
 {% for object in site.data.node_api.objects %}
-    <h2 id="{{ object.name }}">{{ object.name }}</h2>
+    <h2 id="{{ object.name }} object">{{ object.name }}</h2>
     <p>{{ object.description }}</p>
     {% for req in object.requests %}
         <h4 class="identifier {{ req.type | downcase }}">{{ req.url }}</h4>
@@ -196,7 +94,9 @@ subtitle: Node API
                     {% endif %}
                 </dd>
             {% endif %}
-            <dt>Authentication: <span class="read-more"><a href="#auth">read more</a></span></dt>
+            <dt>Authentication:
+                <span class="read-more"><a href="index.html#authentication-requirements">read more</a></span>
+            </dt>
             {% if req.auth %}
                 <dd>{{ req.auth }}</dd>
             {% else %}
@@ -358,3 +258,4 @@ subtitle: Node API
         {% endfor %}
     </tbody>
 </table>
+</div>

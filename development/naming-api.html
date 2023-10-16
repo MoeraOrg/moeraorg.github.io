@@ -1,13 +1,12 @@
 ---
 layout: development
-title: Protocols
-up: protocols
-subtitle: Naming API
+title: Naming API
 ---
 
 <h1>Naming API</h1>
 <p>
-    Moera Naming API is based on JSON-RPC protocol.
+    Moera Naming API is based on JSON-RPC protocol. Until the API is stabilized, it may be changed in various ways and
+    backward compatibility is not guaranteed.
 </p>
 <p>
     <code>timestamp</code> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
@@ -47,7 +46,7 @@ subtitle: Naming API
             </dd>
         {% endif %}
         {% if call.fingerprint %}
-        <dt>Fingerprint: <span class="read-more"><a href="/development/protocols/fingerprint.html">read more</a></span></dt>
+        <dt>Fingerprint: <span class="read-more"><a href="/development/cryptography/fingerprint.html">read more</a></span></dt>
             <dd>
                 <table class="table">
                     <thead>

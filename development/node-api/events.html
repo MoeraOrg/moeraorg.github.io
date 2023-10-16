@@ -1,7 +1,7 @@
 ---
 layout: development
-title: Protocols
-up: protocols
+title: Node API
+up: node-api
 subtitle: Events
 ---
 
@@ -23,7 +23,7 @@ subtitle: Events
         <li><code>accept-version:</code> &ndash; as per STOMP specification;</li>
         <li>
             <code>host:</code> &ndash; is required to differentiate between
-            <a href="node-api.html#Domains%20object">virtual domains</a> at the same server;
+            <a href="requests.html#Domains%20object">virtual domains</a> at the same server;
         </li>
         <li><code>token:</code> &ndash; <a href="authentication.html#tokens">authentication token</a>, if available</li>
         <li><code>heart-beat:</code> &ndash; recommended, as per STOMP specification.</li>
@@ -126,7 +126,7 @@ subtitle: Events
                             {% endif %}
                             {% if field.struct %}
                                 <code>
-                                    <a href="node-api.html#{{ field.struct }}">
+                                    <a href="requests.html#{{ field.struct }}">
                                         {{ field.struct }}{% if field.array == true %}[]{% endif %}
                                     </a>
                                 </code>
@@ -136,7 +136,7 @@ subtitle: Events
                         <td>
                             {{ field.comment }}
                             {% if field.enum %}
-                                (see <code><a href="node-api.html#{{ field.enum }}">{{ field.enum }}</a></code> for
+                                (see <code><a href="requests.html#{{ field.enum }}">{{ field.enum }}</a></code> for
                                 the list of possible values)
                             {% endif %}
                         </td>

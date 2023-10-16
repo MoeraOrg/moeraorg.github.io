@@ -1,5 +1,5 @@
 objects:
-  - name: Activity Reactions object
+  - name: Activity Reactions
     description: Local registry of all activity in the form of reactions performed by the node.
     requests:
       - url: /activity/reactions/search
@@ -13,7 +13,7 @@ objects:
           array: true
         auth: admin
         description: Get the list of all reactions performed by the node, filtered by some criteria.
-  - name: Asyncronous Operations object
+  - name: Asyncronous Operations
     description: Asyncronous operations pending or just finished on the node.
     requests:
       - url: /async-operations/remote-posting-verification/{id}
@@ -46,7 +46,7 @@ objects:
         errors:
           - code: async-operation.not-found
             description: async operation with the given ID is not found
-  - name: Avatars object
+  - name: Avatars
     description: >
       Avatars of the node's owner. The list of avatars is ordered using ordinals that every avatar has.
       <br><br>
@@ -121,7 +121,7 @@ objects:
         errors:
           - code: avatar.not-found
             description: avatar is not found
-  - name: Blocked Instants object
+  - name: Blocked Instants
     description: It is possible to block creation of some types of stories in the instants feed.
     requests:
       - url: /blocked-instants
@@ -178,7 +178,7 @@ objects:
           array: true
         auth: admin
         description: Search blocked instants by the given criteria.
-  - name: Blocked Users object
+  - name: Blocked Users
     description: >
       It is possible to block particular nodes from performing some operations on this node, even if they are otherwise
       permitted to do so. It is also possible to mark some nodes to be invisible (in discussions, for example), the
@@ -247,7 +247,7 @@ objects:
         description: >
           Get checksums of the information about the blocked users. This request may be used to quickly detect the
           changes in the blocked users list to update the cache on the client side.
-  - name: Blocked-by Users object
+  - name: Blocked-by Users
     description: >
       The node receives notifications from nodes that blocked it. This information is stored on the node and can be
       requested.
@@ -277,7 +277,7 @@ objects:
           array: true
         auth: optional
         description: Search nodes, that blocked this node, by the given criteria.
-  - name: Cartes object
+  - name: Cartes
     description: >
       <a href="authentication.html#carte">Cartes</a> - cryptographic tokens used to authenticate on any node besides
       the home node.
@@ -297,7 +297,7 @@ objects:
           Get a set of cartes that correspond to successive periods of time. Two sequences of cartes are returned: one
           with all permissions and another with `view-media` permission only. The node may decide to return less cartes
           than the given <code>limit</code>.
-  - name: Comments object
+  - name: Comments
     description: Comments to a posting.
     requests:
       - url: /postings/{postingId}/comments
@@ -473,7 +473,7 @@ objects:
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
-  - name: Comment Revisions object
+  - name: Comment Revisions
     description: All revisions of the comment.
     requests:
       - url: /postings/{postingId}/comments/{commentId}/revisions
@@ -520,7 +520,7 @@ objects:
             description: the comment is not related to the given posting
           - code: comment-revision.not-found
             description: there is no revision with the given ID
-  - name: Comment Reactions object
+  - name: Comment Reactions
     description: Reactions ("Likes") - simple textless answers to a comment.
     requests:
       - url: /postings/{postingId}/comments/{commentId}/reactions
@@ -687,7 +687,7 @@ objects:
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
-  - name: Comment Reaction Totals object
+  - name: Comment Reaction Totals
     description: Summary of reactions to a comment.
     requests:
       - url: /postings/{postingId}/comments/{commentId}/reaction-totals
@@ -709,7 +709,7 @@ objects:
             description: there is no comment with the given ID
           - code: comment.wrong-posting
             description: the comment is not related to the given posting
-  - name: Contacts object
+  - name: Contacts
     description: Information about all nodes having a relationship with the node.
     requests:
       - url: /people/contacts
@@ -740,7 +740,7 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
-  - name: Credentials object
+  - name: Credentials
     description: Credentials used to authenticate the administrator of the node.
     requests:
       - url: /credentials
@@ -802,7 +802,7 @@ objects:
         errors:
           - code: credentials.email-not-set
             description: E-mail address is not set for the node
-  - name: Deleted Postings object
+  - name: Deleted Postings
     description: >
       All deleted postings, that are not purged from the database yet.
     requests:
@@ -859,7 +859,7 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
-  - name: Deleted Posting Revisions object
+  - name: Deleted Posting Revisions
     description: >
       All revisions of the deleted posting.
     requests:
@@ -926,7 +926,7 @@ objects:
             description: there is no revision with the given ID
           - code: posting-revision.already-current
             description: the given revision is already the current one
-  - name: Domains object
+  - name: Domains
     description: >
       One instance of Moera node software can serve several virtual nodes. These virtual nodes are called <i>domains</i>
       and distinguished by the hostname passed in the HTTP request. Each virtual node has <i>node ID</i>, it is used in
@@ -1029,7 +1029,7 @@ objects:
           Get an available domain name that is recommended for the given node name. The domain name is usually chosen to
           be close to the node name in English transcription. If domain registration for this server is not public, this
           request is not accessible.
-  - name: Drafts object
+  - name: Drafts
     description: >
       All drafts. This is an universal interface for managing all types for drafts to all types of entries. Drafts of
       entries located on remote nodes are all stored on the home node.
@@ -1128,7 +1128,7 @@ objects:
         errors:
           - code: draft.not-found
             description: there is no draft with the given ID
-  - name: Features object
+  - name: Features
     description: >
       Information about features supported by the node.
     requests:
@@ -1139,10 +1139,10 @@ objects:
           struct: Features
         auth: optional
         description: Get information about features supported by the node.
-  - name: Feeds object
+  - name: Feeds
     description: >
-      Feed is a set of stories collected for some purpose. The stories are sorted by
-      <a href="/development/protocols/moment.html">moment</a>, descending.
+      Feed is a set of stories collected for some purpose. The stories are sorted by <a href="moment.html">moment</a>,
+      descending.
       </p><p>
       These are the standard feeds that have special meaning:
       <ul>
@@ -1238,7 +1238,7 @@ objects:
             description: <code>before</code> and <code>after</code> parameters are not allowed together
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
-  - name: Friend Groups object
+  - name: Friend Groups
     description: >
       A friend may be member of one or more groups of friends. Each group as an ID and title. The group with a title
       <code>t:friends</code> is a standard group "Friends" that is created automatically for every node.
@@ -1306,7 +1306,7 @@ objects:
         errors:
           - code: friend-group.not-found
             description: the group of friends is not found
-  - name: Friends object
+  - name: Friends
     description: >
       Friends are nodes that may have special permissions on this node. It is possible to write "friends only" posts or
       to enable commenting to friends or to a group of friends only etc.
@@ -1353,7 +1353,7 @@ objects:
           Update the friendship status of the nodes passed in the input. If some of the nodes passed in the input is not
           a member of some of the groups of friends listed for it, the node is added to them. If it is a member of some
           of the groups of friends that are not listed for it, the node is removed from them.
-  - name: Friend-ofs object
+  - name: Friend-ofs
     description: >
       The node receives notifications from nodes that added it to their friends. This information is stored on the node
       and can be requested.
@@ -1377,7 +1377,7 @@ objects:
           struct: FriendOfInfo
         auth: optional
         description: Get the information for the node given, whether it has added this node to its friends.
-  - name: Media object (private)
+  - name: Media (private)
     description: >
       Media files that are bound to a particular uploader and may be inaccessible to other clients. Private media files
       cannot be retrieved by their hash, only by their ID. The ID is unique to the client that uploaded the file and
@@ -1455,7 +1455,7 @@ objects:
         auth: optional
         description: >
           Get the list of all postings and comments the media file is attached to.
-  - name: Media object (public)
+  - name: Media (public)
     description: >
       Media files that should be accessible to any client. ID of a public media file is SHA-1 hash of its content.
     requests:
@@ -1515,7 +1515,7 @@ objects:
         errors:
           - code: media.not-found
             description: media file is not found
-  - name: Node Name object
+  - name: Node Name
     description: >
       The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Architecture Overview section.
       Operations with the node name are performed asynchronously - need to poll the node periodically to get
@@ -1571,7 +1571,7 @@ objects:
           - code: node-name.<naming server error>
             description: >
               various errors returned by naming server
-              (<a href="/development/protocols/naming-api.html#error-codes">see the list</a>)
+              (<a href="/development/naming-api.html#error-codes">see the list</a>)
       - url: /node-name
         type: DELETE
         function: deleteNodeName
@@ -1584,7 +1584,7 @@ objects:
         errors:
           - code: naming.operation-pending
             description: another operation with the node name is pending currently
-  - name: Notifications object
+  - name: Notifications
     description: Receiver of notifications from other nodes.
     requests:
       - url: /notifications
@@ -1600,7 +1600,7 @@ objects:
           Accept a notification packet from other node. Notification packets older than 10 minutes are ignored.
           The sending node should update the packet timestamp and the signature and send the packet again.
           This mechanism prevents attackers from recording and resending old signed packets.
-  - name: People object
+  - name: People
     description: Information related to other nodes.
     requests:
       - url: /people
@@ -1610,7 +1610,7 @@ objects:
           struct: PeopleGeneralInfo
         auth: optional
         description: Get general information about other nodes.
-  - name: Plugins object
+  - name: Plugins
     description: >
       Plugins are web applications that integrate closely with the node or with the server as whole. Authenticating as
       root admin or node admin, they may perform operations, receive internal events, extend node API with new requests
@@ -1748,7 +1748,7 @@ objects:
         errors:
           - code: plugin.unknown
             description: unknown plugin
-  - name: Postings object
+  - name: Postings
     description: >
       All postings. Each posting may contain one or more revisions, a new revision is created every time the posting is
       updated. The latest revision is the current one, the previous ones are marked as deleted.
@@ -1840,7 +1840,7 @@ objects:
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
-  - name: Posting Revisions object
+  - name: Posting Revisions
     description: All revisions of the posting.
     requests:
       - url: /postings/{postingId}/revisions
@@ -1905,7 +1905,7 @@ objects:
             description: there is no revision with the given ID
           - code: posting-revision.already-current
             description: the given revision is already the current one
-  - name: Posting Reactions object
+  - name: Posting Reactions
     description: Reactions ("Likes") - simple textless answers to a posting.
     requests:
       - url: /postings/{postingId}/reactions
@@ -2053,7 +2053,7 @@ objects:
         description: >
           Search reactions by criteria provided. Both reaction owner and at least one posting ID should be provided to
           search, otherwise an empty list is returned.
-  - name: Posting Reaction Totals object
+  - name: Posting Reaction Totals
     description: Summary of reactions to a posting.
     requests:
       - url: /postings/{postingId}/reaction-totals
@@ -2083,7 +2083,7 @@ objects:
         description: >
           Search summaries of reactions by criteria provided. At least one posting ID should be provided to search,
           otherwise an empty list is returned.
-  - name: Profile object
+  - name: Profile
     description: The profile - the detailed information about the node's owner, node's purpose etc.
     requests:
       - url: /profile
@@ -2113,7 +2113,7 @@ objects:
         description: >
           Update the profile. Fields that are not set in the request body are left intact. Fields that are set to
           an empty value are reset to their defaults.
-  - name: Proxy object
+  - name: Proxy
     description: Proxy, that may be used by web clients to workaround CORS restrictions of browsers
     requests:
       - url: /proxy/media
@@ -2152,7 +2152,7 @@ objects:
         errors:
           - code: proxy.resource-not-found
             description: resource is not found
-  - name: Push Notifications object
+  - name: Push Notifications
     description: >
       SSE channels for delivering push notifications from the home node. When a client opens an SSE connection for
       the first time, an individual push notifications channel for this client is created (every client must generate
@@ -2179,7 +2179,7 @@ objects:
         description: >
           Open the push notifications channel for the connected client or create a new one, if it does not exist. This
           request returns a live SSE stream, where <i>events</i> are notifications in a form of JSON-encoded
-          <a href="#PushContent"><code>PushContent</code></a> structures and <i>event IDs</i> are the moments, when
+          <code><a href="#PushContent">PushContent</a></code> structures and <i>event IDs</i> are the moments, when
           these notifications were generated. When the channel is opened, the node discards all notifications up to
           <code>after</code> (if provided) and delivers the rest of notifications till the current moment. After that,
           the notifications are delivered in real time until the channel is closed. If a client with the same
@@ -2204,7 +2204,7 @@ objects:
         errors:
           - code: push.not-found
             description: push client is not found
-  - name: Remote Ask object
+  - name: Remote Ask
     description: >
       The node may send requests to other nodes asking to subscribe to it, to add it to friends etc.
     requests:
@@ -2222,7 +2222,7 @@ objects:
           struct: Result
         auth: admin
         description: Send a request to the remote node.
-  - name: Remote Comments object
+  - name: Remote Comments
     description: Comments to postings located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/comments
@@ -2296,7 +2296,7 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the given comment to the posting on the remote node.
-  - name: Remote Comment Reactions object
+  - name: Remote Comment Reactions
     description: Reactions to comments located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/comments/{commentId}/reactions
@@ -2356,7 +2356,7 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the reaction of the given owner to the comment on the remote node.
-  - name: Remote Postings object
+  - name: Remote Postings
     description: Postings located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings
@@ -2435,7 +2435,7 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the given revision of a posting.
-  - name: Remote Posting Reactions object
+  - name: Remote Posting Reactions
     description: Reactions to postings located on other nodes.
     requests:
       - url: /nodes/{nodeName}/postings/{postingId}/reactions
@@ -2486,7 +2486,7 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the reaction of the given owner to the posting on the remote node.
-  - name: Remote Sheriff Orders object
+  - name: Remote Sheriff Orders
     description: >
       Sheriff API to send orders to remote nodes. Add orders are stored on the sheriff's node and may be requested by
       anybody.
@@ -2523,7 +2523,7 @@ objects:
             description: sheriff's order is not found
           - code: sheriff-order.wrong-node
             description: the sheriff's order is related to a different node
-  - name: Settings object
+  - name: Settings
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
       accepted that are known by the node, and their values are validated before saving. The node settings metadata can
@@ -2626,7 +2626,7 @@ objects:
             description: unknown setting
           - code: setting.plugin
             description: plugin setting metadata cannot be modified
-  - name: Sheriff Complaint Groups object
+  - name: Sheriff Complaint Groups
     description: >
       Similar complaints sent to the sheriff are grouped together and the sheriff makes decisions on a group as whole.
       <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Architecture Overview section.
@@ -2705,7 +2705,7 @@ objects:
         errors:
           - code: sheriff-complain-group.not-found
             name: the group of complaints is not found
-  - name: Sheriff Complaints object
+  - name: Sheriff Complaints
     description: >
       Complaints are sent to the sheriff via sheriff's node. <a href="/overview/supervision.html">Read more</a> about
       sheriff supervision in the Architecture Overview section.
@@ -2720,7 +2720,7 @@ objects:
           struct: SheriffComplainInfo
         auth: required
         description: Send a complaint to the sheriff.
-  - name: Sheriff Orders object
+  - name: Sheriff Orders
     description: >
       Orders sent by a sheriff to the node. The node must obey the orders if it accepted supervision by the sheriff.
       <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Architecture Overview section.
@@ -2746,7 +2746,7 @@ objects:
             description: comment is not found
           - code: comment.wrong-posting
             description: comment is located under a different posting
-  - name: Stories object
+  - name: Stories
     description: >
       All stories. Each story describes something happening in Moera, stories are building blocks for feeds. All stories
       have the same structure, but the meaning of fields depends on the story type. A story may reference a posting,
@@ -2784,7 +2784,7 @@ objects:
         errors:
           - code: story.not-found
             description: there is no story with the given ID
-  - name: Subscribers object
+  - name: Subscribers
     description: >
       All nodes that have subscribed to notifications from this node.
     requests:
@@ -2869,7 +2869,7 @@ objects:
         errors:
           - code: subscriber.not-found
             description: there is no subscriber with the given ID
-  - name: Subscriptions object
+  - name: Subscriptions
     description: >
       All nodes that send notifications to this node.
     requests:
@@ -2949,7 +2949,7 @@ objects:
         errors:
           - code: subscription.filter.incomplete
             description: the filter should contain at least one feed or posting
-  - name: Tokens object
+  - name: Tokens
     description: >
       The authentication token. <a href="authentication.html">Read more</a> about token-based authentication.
     requests:
@@ -3011,7 +3011,7 @@ objects:
           struct: Result
         auth: admin
         description: Delete the token.
-  - name: User Lists object
+  - name: User Lists
     description: >
       Any node may keep lists of users, and all other nodes can read these lists, search in them and subscribe to them
       to receive notifications about changes. The lists may be used, for example, to fight spam or to create
@@ -3107,7 +3107,7 @@ objects:
         errors:
           - code: user-list-item.not-found
             description: user list item is not found
-  - name: Who Am I object
+  - name: Who Am I
     description: Brief information about the node.
     requests:
       - url: /whoami
@@ -3497,7 +3497,7 @@ structures:
         optional: true
         description: >
           format of the source text of the reason of blocking, the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
     errors:
       - code: blockedUserAttributes.blockedOperation.blank
         description: blocked operation is not set
@@ -3586,7 +3586,7 @@ structures:
         optional: true
         description: >
           format of the source text of the reason of blocking, the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - type: String
         name: reason
         optional: true
@@ -3714,7 +3714,7 @@ structures:
         optional: true
         description: >
           format of the source text of the comment, the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         description: body of the comment, a string representation of a JSON structure
@@ -3757,13 +3757,13 @@ structures:
       - type: byte[]
         name: digest
         description: >
-          cryptographic digest of the comment (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          cryptographic digest of the comment (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
       - type: byte[]
         name: signature
         optional: true
         description: >
-          the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          the comment's owner signature (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -3841,7 +3841,7 @@ structures:
         optional: true
         description: >
           format of the source text of the revision, the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         description: body of the revision, a string representation of a JSON structure
@@ -3868,13 +3868,13 @@ structures:
       - type: byte[]
         name: digest
         description: >
-          cryptographic digest of the revision (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          cryptographic digest of the revision (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
       - type: byte[]
         name: signature
         optional: true
         description: >
-          the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          the comment's owner signature (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -3924,7 +3924,7 @@ structures:
         optional: true
         description: >
           format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: MediaWithDigest
         array: true
         name: media
@@ -3994,7 +3994,7 @@ structures:
         optional: true
         description: >
           format of the source text of the comment, <code>plain-text</code> by default; the list of available formats is
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         optional: true
@@ -4023,7 +4023,7 @@ structures:
         name: signature
         optional: true
         description: >
-          the comment's owner signature (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          the comment's owner signature (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -4071,7 +4071,7 @@ structures:
       - code: commentText.media.not-compressed
         description: >
           media attachment is not compressed as the node requires, the parameters of the desired compression are
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - code: commentText.createdAt.blank
         description: body creation timestamp is not set
       - code: commentText.createdAt.out-of-range
@@ -4280,7 +4280,7 @@ structures:
         optional: true
         description: >
           format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         description: body of the draft, a string representation of a JSON structure
@@ -4355,7 +4355,7 @@ structures:
         optional: true
         description: >
           format of the source text of the draft, <code>plain-text</code> by default; the list of available formats is
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: RemoteMedia
         array: true
         name: media
@@ -4827,7 +4827,7 @@ structures:
         name: signature
         description: >
           the notification packet sender signature (use
-          <a href="node-api-fingerprints.html#NotificationPacket"><code>NotificationPacket</code></a> fingerprint)
+          <code><a href="fingerprints.html#NotificationPacket">NotificationPacket</a></code> fingerprint)
       - type: int
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
@@ -5101,7 +5101,7 @@ structures:
         optional: true
         description: >
           format of the source text of the posting, the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         description: body of the posting, a string representation of a JSON structure
@@ -5160,13 +5160,13 @@ structures:
       - type: byte[]
         name: digest
         description: >
-          cryptographic digest of the posting (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          cryptographic digest of the posting (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
       - type: byte[]
         name: signature
         optional: true
         description: >
-          the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          the posting's owner signature (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -5265,7 +5265,7 @@ structures:
         optional: true
         description: >
           format of the source text of the revision, the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         description: body of the revision, a string representation of a JSON structure
@@ -5303,13 +5303,13 @@ structures:
       - type: byte[]
         name: digest
         description: >
-          cryptographic digest of the revision (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          cryptographic digest of the revision (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
       - type: byte[]
         name: signature
         optional: true
         description: >
-          the revision's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          the revision's owner signature (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -5360,7 +5360,7 @@ structures:
         optional: true
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: MediaWithDigest
         array: true
         name: media
@@ -5409,7 +5409,7 @@ structures:
         optional: true
         description: >
           format of the source text of the posting, <code>plain-text</code> by default; the list of available formats is
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - struct: Body
         name: body
         optional: true
@@ -5443,7 +5443,7 @@ structures:
         name: signature
         optional: true
         description: >
-          the posting's owner signature (use <a href="node-api-fingerprints.html#Posting"><code>Posting</code></a>
+          the posting's owner signature (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -5492,7 +5492,7 @@ structures:
       - code: postingText.media.not-compressed
         description: >
           media attachment is not compressed as the node requires, the parameters of the desired compression are
-          returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - code: postingText.createdAt.blank
         description: body creation timestamp is not set
       - code: postingText.createdAt.out-of-range
@@ -5592,7 +5592,7 @@ structures:
         optional: true
         description: >
           format of the source text of node owner's bio, <code>markdown</code> by default; the list of available formats
-          is returned in <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          is returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - type: String
         name: avatarId
         optional: true
@@ -5649,7 +5649,7 @@ structures:
         description: >
           format of the source text of node owner's bio, <code>markdown</code> by default, may be absent if not
           requested; the list of available formats is returned in
-          <a href="#PostingFeatures"><code>PostingFeatures</code></a>
+          <code><a href="#PostingFeatures">PostingFeatures</a></code>
       - type: String
         name: bioHtml
         optional: true
@@ -5764,7 +5764,7 @@ structures:
         name: signature
         optional: true
         description: >
-          the reaction owner signature (use <a href="node-api-fingerprints.html#Reaction"><code>Reaction</code></a>
+          the reaction owner signature (use <code><a href="fingerprints.html#Reaction">Reaction</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -5846,7 +5846,7 @@ structures:
         name: signature
         optional: true
         description: >
-          the reaction owner signature (use <a href="node-api-fingerprints.html#Reaction"><code>Reaction</code></a>
+          the reaction owner signature (use <code><a href="fingerprints.html#Reaction">Reaction</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -6095,7 +6095,7 @@ structures:
       - type: byte[]
         name: digest
         description: >
-          cryptographic digest of the comment (use <a href="node-api-fingerprints.html#Comment"><code>Comment</code></a>
+          cryptographic digest of the comment (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
   - name: Result
     fields:
@@ -6589,7 +6589,7 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the sheriff's signature (use <a href="node-api-fingerprints.html#SheriffOrder"><code>SheriffOrder</code></a>
+          the sheriff's signature (use <code><a href="fingerprints.html#SheriffOrder">SheriffOrder</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -6700,7 +6700,7 @@ structures:
       - type: byte[]
         name: signature
         description: >
-          the sheriff's signature (use <a href="node-api-fingerprints.html#SheriffOrder"><code>SheriffOrder</code></a>
+          the sheriff's signature (use <code><a href="fingerprints.html#SheriffOrder">SheriffOrder</a></code>
           fingerprint)
       - type: int
         name: signatureVersion
@@ -7604,7 +7604,7 @@ enums:
   - name: BodyFormat
     values:
       - name: message
-        description: <a href="#Body"><code>Body</code></a> structure
+        description: <code><a href="#Body">Body</a></code> structure
       - name: application
         description: an application-specific structure
   - name: DraftType

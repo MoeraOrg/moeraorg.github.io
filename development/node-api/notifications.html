@@ -1,7 +1,7 @@
 ---
 layout: development
-title: Protocols
-up: protocols
+title: Node API
+up: node-api
 subtitle: Notifications
 ---
 
@@ -14,7 +14,7 @@ subtitle: Notifications
 </p>
 <h2>Notification packet</h2>
 <p>
-    Notifications are sent in packets. The packet structure is <a href="node-api.html#NotificationPacket">described</a>
+    Notifications are sent in packets. The packet structure is <a href="requests.html#NotificationPacket">described</a>
     in Node API documentation. Each packet contains the <code>type</code> field, containing the type of the notification
     and <code>notification</code> field, containing the notification details in JSON form. The notification structure
     depends on the type. See the description below.
@@ -43,7 +43,7 @@ subtitle: Notifications
                             {% endif %}
                             {% if field.struct %}
                                 <code>
-                                    <a href="node-api.html#{{ field.struct }}">
+                                    <a href="requests.html#{{ field.struct }}">
                                         {{ field.struct }}{% if field.array == true %}[]{% endif %}
                                     </a>
                                 </code>
@@ -53,7 +53,7 @@ subtitle: Notifications
                         <td>
                             {{ field.comment }}
                             {% if field.enum %}
-                                (see <code><a href="node-api.html#{{ field.enum }}">{{ field.enum }}</a></code> for
+                                (see <code><a href="requests.html#{{ field.enum }}">{{ field.enum }}</a></code> for
                                 the list of possible values)
                             {% endif %}
                         </td>
