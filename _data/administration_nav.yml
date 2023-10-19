@@ -25,3 +25,19 @@
   title: Logrotate
 
 - type: end
+
+- name: tools/index
+  title: Tools
+
+- type: sub
+
+- name: tools/moname
+  title: moname
+
+- name: tools/moctl
+  title: moctl
+
+- name: tools/config
+  title: Configuration File
+
+- type: end

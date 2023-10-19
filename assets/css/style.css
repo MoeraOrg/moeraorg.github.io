@@ -154,6 +154,14 @@ PRE {
     border-radius: .25em;
 }
 
+DT {
+    margin-bottom: .5em;
+}
+
+DT > CODE {
+    font-weight: 700;
+}
+
 H4.identifier {
     font-family: var(--bs-font-monospace);
     margin-top: 2rem;
@@ -284,6 +292,26 @@ DD {
     .toc A.active {
         border-left: .25rem solid  var(--bs-blue-700);
     }
+}
+
+.israel-support {
+    font-weight: 700;
+    color: var(--bs-blue-700);
+    margin-inline-start: .5rem;
+    margin-inline-end: 4rem;
+    position: relative;
+    top: -.1em;
+}
+
+@media (max-width: 767px) {
+    .israel-support {
+        margin-inline-end: 1.5rem;
+    }
+}
+
+.israel-support IMG {
+    position: relative;
+    top: -.1em;
 }
 
 A.github-link {

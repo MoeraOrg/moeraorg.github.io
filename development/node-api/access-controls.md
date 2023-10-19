@@ -18,8 +18,7 @@ the corresponding API calls. To save traffic, only operations that have
 non-default values are returned. To update the operations, use the same API calls
 that create or update the object.
 
-Read also [the overview of the permission architecture](/overview/permissions.html)
-in Moera.
+Read also [the overview of the permission architecture][1] in Moera.
 
 ## Hierarchy of Objects
 
@@ -294,4 +293,6 @@ Allows the operation to any client, including unauthenticated.
 `unset`
 
 This is a special value used in overrides. It means that the higher-level object
-does not override the permission, so the object's own permission takes effect. 
+does not override the permission, so the object's own permission takes effect.
+
+[1]: /overview/permissions.html
