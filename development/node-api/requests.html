@@ -32,8 +32,24 @@ container_class: container-requests
         <p>{{ req.description }}</p>
         <dl>
             {% if req.params %}
-                <dt>Parameters:</dt>
+                <dt>Path parameters:</dt>
                 {% for param in req.params %}
+                    <dd>
+                        <code>{% if param.enum %}String{% else %}{{ param.type }}{% endif %}</code>
+                        <code>{{ param.name }}</code>
+                        {% if param.description %}
+                            &ndash; {{ param.description }}
+                        {% endif %}
+                        {% if param.enum %}
+                            (see <code><a href="#{{ param.enum }}">{{ param.enum }}</a></code> for the list of
+                            possible values)
+                        {% endif %}
+                    </dd>
+                {% endfor %}
+            {% endif %}
+            {% if req.query %}
+                <dt>Query parameters:</dt>
+                {% for param in req.query %}
                     <dd>
                         <code>{% if param.enum %}String{% else %}{{ param.type }}{% endif %}</code>
                         <code>{{ param.name }}</code>

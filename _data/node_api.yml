@@ -285,7 +285,7 @@ objects:
       - url: /cartes
         type: GET
         function: getCartes
-        params:
+        query:
           - type: int
             name: limit
             optional: true
@@ -307,6 +307,7 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting
+        query:
           - type: int
             name: after
             optional: true
@@ -366,6 +367,7 @@ objects:
           - type: String
             name: commentId
             description: ID of the comment
+        query:
           - type: String
             name: include
             optional: true
@@ -591,6 +593,7 @@ objects:
           - type: String
             name: commentId
             description: ID of the comment
+        query:
           - type: boolean
             name: negative
             optional: true
@@ -715,7 +718,7 @@ objects:
       - url: /people/contacts
         type: GET
         function: getContacts
-        params:
+        query:
           - type: String
             name: query
             optional: true
@@ -809,7 +812,7 @@ objects:
       - url: /deleted-postings
         type: GET
         function: getDeletedPostings
-        params:
+        query:
           - type: int
             name: page
             optional: true
@@ -870,6 +873,7 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting
+        query:
           - type: int
             name: limit
             optional: true
@@ -1019,7 +1023,7 @@ objects:
       - url: /domains/available
         type: GET
         function: isDomainAvailable
-        params:
+        query:
           - type: String
             name: nodeName
             description: node name
@@ -1037,7 +1041,7 @@ objects:
       - url: /drafts
         type: GET
         function: getDrafts
-        params:
+        query:
           - enum: DraftType
             name: draftType
             description: type of the drafts
@@ -1211,6 +1215,7 @@ objects:
           - type: String
             name: feedName
             description: name of the feed
+        query:
           - type: int
             name: after
             optional: true
@@ -1314,7 +1319,7 @@ objects:
       - url: /people/friends
         type: GET
         function: getFriends
-        params:
+        query:
           - type: String
             name: groupId
             optional: true
@@ -1408,6 +1413,7 @@ objects:
           - type: String
             name: id
             description: media file ID
+        query:
           - type: int
             name: width
             optional: true
@@ -1483,6 +1489,7 @@ objects:
           - type: String
             name: id
             description: media file ID
+        query:
           - type: int
             name: width
             optional: true
@@ -1678,6 +1685,7 @@ objects:
           - type: String
             name: pluginName
             description: name of the plugin
+        query:
           - type: int
             name: after
             optional: true
@@ -1795,6 +1803,7 @@ objects:
           - type: String
             name: id
             description: ID of the posting
+        query:
           - type: String
             name: include
             optional: true
@@ -1850,6 +1859,7 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting
+        query:
           - type: int
             name: limit
             optional: true
@@ -1940,6 +1950,7 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting
+        query:
           - type: boolean
             name: negative
             optional: true
@@ -2089,7 +2100,7 @@ objects:
       - url: /profile
         type: GET
         function: getProfile
-        params:
+        query:
           - type: String
             name: include
             optional: true
@@ -2119,7 +2130,7 @@ objects:
       - url: /proxy/media
         type: GET
         function: proxyMedia
-        params:
+        query:
           - type: String
             name: url
         out:
@@ -2140,7 +2151,7 @@ objects:
       - url: /proxy/link-preview
         type: GET
         function: proxyLinkPreview
-        params:
+        query:
           - type: String
             name: url
         out:
@@ -2166,6 +2177,7 @@ objects:
           - type: String
             name: clientId
             description: ID of the client
+        query:
           - type: int
             name: after
             optional: true
@@ -2563,7 +2575,7 @@ objects:
       - url: /settings/client
         type: GET
         function: getClientSettings
-        params:
+        query:
           - type: String
             name: prefix
             optional: true
@@ -2578,7 +2590,7 @@ objects:
       - url: /settings/node
         type: GET
         function: getNodeSettings
-        params:
+        query:
           - type: String
             name: prefix
             optional: true
@@ -2592,7 +2604,7 @@ objects:
       - url: /settings/node/metadata
         type: GET
         function: getNodeSettingsMetadata
-        params:
+        query:
           - type: String
             name: prefix
             optional: true
@@ -2634,7 +2646,7 @@ objects:
       - url: /sheriff/complains/groups
         type: GET
         function: getSheriffComplaintGroupsSlice
-        params:
+        query:
           - type: int
             name: after
             optional: true
@@ -2791,7 +2803,7 @@ objects:
       - url: /people/subscribers
         type: GET
         function: getSubscribers
-        params:
+        query:
           - type: String
             name: nodeName
             optional: true
@@ -2876,7 +2888,7 @@ objects:
       - url: /people/subscriptions
         type: GET
         function: getSubscriptions
-        params:
+        query:
           - type: String
             name: nodeName
             optional: true
@@ -3035,6 +3047,7 @@ objects:
           - type: String
             name: name
             description: the name of the list
+        query:
           - type: int
             name: after
             optional: true
