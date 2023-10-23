@@ -14,7 +14,7 @@ calls:
         name: updatingKey
         description: >
           the public key for verifying signatures of further updates of the name. May be <code>null</code>, if the
-          current generation of the name is updated - the current key is preserved in this case.
+          current generation of the name is updated – the current key is preserved in this case.
       - type: String
         name: nodeUri
         description: >
@@ -23,11 +23,11 @@ calls:
       - type: byte[]
         name: signingKey
         description: >
-          the public key of the name owner. May be <code>null</code> - the current key is preserved in this case.
+          the public key of the name owner. May be <code>null</code> – the current key is preserved in this case.
       - type: timestamp
         name: validFrom
         description: >
-          The moment in time the owner's key is valid from. May be <code>null</code>, if <code>signingKey</code> is also
+          the moment in time the owner's key is valid from. May be <code>null</code>, if <code>signingKey</code> is also
           <code>null</code>.
       - type: byte[]
         name: previousDigest
@@ -66,7 +66,7 @@ calls:
         name: operationId
     returns:
       struct: OperationStatusInfo
-      description: or <code>null</code>, if the operation ID is unknown
+      description: the operation status or <code>null</code>, if the operation ID is unknown
 
   - name: getCurrent
     description: Get current information about the given generation of the name.
@@ -77,7 +77,7 @@ calls:
         name: generation
     returns:
       struct: RegisteredNameInfo
-      description: or <code>null</code>, if the name/generation is not found
+      description: the information or <code>null</code>, if the name/generation is not found
 
   - name: getPast
     description: Get past information about the given generation of the name.
@@ -91,10 +91,10 @@ calls:
         description: the moment in time the information is related to
     returns:
       struct: RegisteredNameInfo
-      description: or <code>null</code>, if the name/generation did not exist at the given moment
+      description: the information or <code>null</code>, if the name/generation did not exist at the given moment
 
   - name: isFree
-    description: Check if the given name is available for registration
+    description: Check if the given name is available for registration.
     params:
       - type: String
         name: name
@@ -105,16 +105,44 @@ calls:
       description: <code>true</code>, if the name is free, <code>false</code> otherwise
 
   - name: getSimilar
-    description: Find a name that is close to the given name
+    description: Find a name that is close to the given name.
     params:
       - type: String
         name: name
     returns:
       struct: RegisteredNameInfo
-      description: or <code>null</code>, if couldn't find a name that is close enough
+      description: information about the name or <code>null</code>, if no name found that is close enough
+
+  - name: getAllKeys
+    description: Get the whole history of signing keys for the given name.
+    params:
+      - type: String
+        name: name
+      - type: int
+        name: generation
+    returns:
+      struct: SigningKeyInfo
+      array: true
 
   - name: getAll
-    description: Get the list of all registered names at the given moment. The list is returned in pages, one per call
+    description: Get the list of all registered names at the given moment. The list is returned in pages, one per call.
+    params:
+      - type: timestamp
+        name: at
+        description: the moment in time the information is related to
+      - type: int
+        name: page
+        description: number of the page to be returned (starting from 0)
+      - type: int
+        name: size
+        description: size of the page
+    returns:
+      struct: RegisteredNameInfo
+      array: true
+
+  - name: getAllNewer
+    description: >
+      Get the list of all names registered after the given moment. The list is returned in pages, one per call.
     params:
       - type: timestamp
         name: at
@@ -134,6 +162,12 @@ structures:
     fields:
       - type: UUID
         name: operationId
+      - type: String
+        name: name
+        description: the name that was created or updated by the operation
+      - type: int
+        name: generation
+        description: the generation of the name that was created or updated by the operation
       - enum: OperationStatus
         name: status
         description: the current status of the operation
@@ -149,9 +183,6 @@ structures:
       - type: String
         name: errorMessage
         description: the human-readable error description, if the operation have been failed
-      - type: int
-        name: generation
-        description: the generation of the name that was created or updated by the operation, if the operation succeeded
 
   - name: RegisteredNameInfo
     fields:
@@ -166,6 +197,9 @@ structures:
         name: nodeUri
         description: >
           URI of the REST API endpoint of the node to which the name is assigned. May be absent.
+      - type: timestamp
+        name: created
+        description: when the name was created
       - type: byte[]
         name: signingKey
         description: the public key of the name owner. May be <code>null</code>.
@@ -178,6 +212,16 @@ structures:
         description: >
           a unique identifier of the current state of the name. May be transaction ID of the latest transaction with
           this name in the blockchain, or a cryptographic digest of the current state.
+
+  - name: SigningKeyInfo
+    fields:
+      - type: byte[]
+        name: key
+        description: the public key
+      - type: timestamp
+        name: validFrom
+        description: >
+          the moment in time the key is valid from
 
 enums:
   - name: OperationStatus

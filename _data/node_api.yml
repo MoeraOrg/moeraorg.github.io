@@ -26,7 +26,7 @@ objects:
         out:
           struct: RemotePostingVerificationInfo
         auth: admin
-        description: Get status of the asyncronous operation that performs verification of a remote posting signature.
+        description: Get status of the asynchronous operation that performs verification of a remote posting signature.
         errors:
           - code: async-operation.not-found
             description: async operation with the given ID is not found
@@ -41,7 +41,7 @@ objects:
           struct: RemoteReactionVerificationInfo
         auth: admin
         description: >
-          Get status of the asyncronous operation that performs verification of the signature of a reaction to a remote
+          Get status of the asynchronous operation that performs verification of the signature of a reaction to a remote
           posting.
         errors:
           - code: async-operation.not-found
@@ -3200,7 +3200,7 @@ structures:
     fields:
       - type: String
         name: id
-        description: ID of the asyncronous operation that was created
+        description: ID of the asynchronous operation that was created
   - name: AvatarAttributes
     fields:
       - type: String
@@ -5269,7 +5269,7 @@ structures:
       - struct: Body
         name: bodyPreview
         optional: true
-        description: preview of the revisions's body, a string representation of a JSON structure
+        description: preview of the revision's body, a string representation of a JSON structure
       - type: byte[]
         name: bodySrcHash
         description: hash of the source text of the revision
@@ -5587,7 +5587,7 @@ structures:
       - type: String
         name: gender
         optional: true
-        description: node owners's gender
+        description: node owner's gender
       - type: String
         name: email
         optional: true
@@ -5643,7 +5643,7 @@ structures:
       - type: String
         name: gender
         optional: true
-        description: node owners's gender
+        description: node owner's gender
       - type: String
         name: email
         optional: true
@@ -7373,7 +7373,7 @@ structures:
       - type: String
         name: gender
         optional: true
-        description: node owners's gender
+        description: node owner's gender
       - type: String
         name: title
         optional: true
@@ -7381,7 +7381,7 @@ structures:
       - struct: AvatarImage
         name: avatar
         optional: true
-        description: node owners's avatar
+        description: node owner's avatar
 
 operations:
   - name: CommentOperations
