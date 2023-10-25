@@ -54,5 +54,8 @@
 
 - type: end
 
+- name: python-moeralib/index
+  title: Python Library
+
 - name: development-environment
   title: Development Environment
