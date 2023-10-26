@@ -31,10 +31,10 @@ def to_py_doc(s: str) -> str:
              .replace('<code>false</code>', '<code>False</code>'))
 
 
-def read_api(indir: str) -> Tuple[Any, Any]:
-    with open(indir + '/node_api.yml', 'r') as ifile:
+def read_node_api(datadir: str) -> Tuple[Any, Any]:
+    with open(datadir + '/node_api.yml', 'r') as ifile:
         api = yaml.safe_load(ifile)
-    with open(indir + '/py_classes.yml', 'r') as ifile:
+    with open(datadir + '/py_node_classes.yml', 'r') as ifile:
         classes = yaml.safe_load(ifile)
     return api, classes
 
@@ -134,7 +134,7 @@ def convert_operations(operations: Any) -> None:
             field['description'] = to_py_doc(field['description'])
 
 
-def convert_api(api: Any, classes: Any) -> None:
+def convert_node_api(api: Any, classes: Any) -> None:
     del api['http-codes']
     for object in api['objects']:
         if 'requests' not in object:
@@ -149,16 +149,16 @@ def convert_api(api: Any, classes: Any) -> None:
         convert_operations(operations)
 
 
-def write_api(api: Any, outdir: str) -> None:
-    with open(outdir + '/py_node_api.yml', 'w+') as ofile:
+def write_node_api(api: Any, datadir: str) -> None:
+    with open(datadir + '/py_node_api.yml', 'w+') as ofile:
         yaml.safe_dump(api, ofile, default_flow_style=False)
 
 
 if len(sys.argv) < 2 or sys.argv[1] == '':
-    print("Usage: py-moera-api <input directory> <output directory>")
+    print("Usage: py-yaml <directory>")
     exit(1)
 
-api, classes = read_api(sys.argv[1])
-outdir = sys.argv[2] if len(sys.argv) >= 3 else '.'
-convert_api(api, classes)
-write_api(api, outdir)
+datadir = sys.argv[1]
+api, classes = read_node_api(datadir)
+convert_node_api(api, classes)
+write_node_api(api, datadir)

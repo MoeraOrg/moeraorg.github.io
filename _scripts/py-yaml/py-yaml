@@ -1,4 +1,4 @@
 #!/bin/bash
 
 . venv/bin/activate
-python3 pynodeyaml.py "$@"
+python3 pyyaml.py "$@"

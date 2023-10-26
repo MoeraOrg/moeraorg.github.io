@@ -29,7 +29,7 @@ container_class: container-requests
 
 <div>
 <h2 id="Functions">Functions</h2>
-{% for fn in site.data.py_classes.functions %}
+{% for fn in site.data.py_node_classes.functions %}
     <h4 class="identifier function">{{ fn.name }}</h4>
     <p>{{ fn.description }}</p>
     <dl>
@@ -79,7 +79,7 @@ container_class: container-requests
 {% endfor %}
 
 <br id="Classes"/>
-{% for class in site.data.py_classes.classes %}
+{% for class in site.data.py_node_classes.classes %}
     <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
     <p>{{ class.description }}</p>
     {% for field in class.fields %}
