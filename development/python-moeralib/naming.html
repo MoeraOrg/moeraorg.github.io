@@ -1,0 +1,211 @@
+---
+layout: development
+title: Python Library
+up: python-moeralib
+subtitle: moeralib.naming
+---
+
+<h1>moeralib.naming</h1>
+
+<h2 id="Constants">Constants</h2>
+{% for cn in site.data.py_naming_classes.constants %}
+    <h4 class="identifier const">{{ cn.name }} = {{ cn.value }}</h4>
+    <p>{{ cn.description }}</p>
+{% endfor %}
+<h2 id="Functions">Functions</h2>
+{% for fn in site.data.py_naming_classes.functions %}
+    <h4 class="identifier function">{{ fn.name }}</h4>
+    <p>{{ fn.description }}</p>
+    <dl>
+        {% if fn.params %}
+            <dt>Parameters:</dt>
+            {% for param in fn.params %}
+                <dd>
+                    <code>{{ param.name }}</code>:&nbsp;
+                    {% if param.type %}
+                        <code>{{ param.type }}</code>
+                    {% endif %}
+                    {% if param.class %}
+                        <code><a href="#{{ param.class }}">{%
+                            if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if param.description %}
+                        &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                    {% else %}
+                        {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+        {% endif %}
+        {% if fn.out %}
+            <dt>Return value:</dt>
+            <dd>
+                {% if fn.out.type %}
+                    <code>{{ fn.out.type }}</code>
+                {% endif %}
+                {% if fn.out.description %}
+                    &ndash; {{ fn.out.description }}
+                {% endif %}
+            </dd>
+        {% endif %}
+    </dl>
+{% endfor %}
+
+<br id="Classes"/>
+{% for class in site.data.py_naming_classes.classes %}
+    <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
+    <p>{{ class.description }}</p>
+    {% for field in class.fields %}
+        <h4 class="identifier field">{{ field.name }}</h4>
+        <p>
+            {% if field.type %}
+                <code>{{ field.type }}</code> &ndash;
+            {% endif %}
+            {{ field.description }}
+        </p>
+    {% endfor %}
+    {% for fn in class.functions %}
+        <h4 class="identifier {% if forloop.first %}constructor{% else %}method{% endif %}">{{ fn.name }}</h4>
+        <p>{{ fn.description }}</p>
+        <dl>
+            {% if fn.params %}
+                <dt>Parameters:</dt>
+                {% for param in fn.params %}
+                    <dd>
+                        <code>{{ param.name }}</code>:&nbsp;
+                        {% if param.type %}
+                            <code>{{ param.type }}</code>
+                        {% endif %}
+                        {% if param.class %}
+                            <code><a href="#{{ param.class }}">{%
+                                if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                            %}</a></code>
+                        {% endif %}
+                        {% if param.struct %}
+                            <code><a href="#{{ param.struct }}">{%
+                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            %}</a></code>
+                        {% endif %}
+                        {% if param.description %}
+                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                        {% else %}
+                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                        {% endif %}
+                    </dd>
+                {% endfor %}
+            {% endif %}
+            {% if fn.out %}
+                <dt>Return value:</dt>
+                <dd>
+                    {% if fn.out.type %}
+                        <code>{{ fn.out.type }}</code>
+                    {% endif %}
+                    {% if fn.out.struct %}
+                        <code><a href="#{{ fn.out.struct }}">{%
+                            if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if fn.out.description %}
+                        &ndash; {{ fn.out.description }}
+                    {% endif %}
+                </dd>
+            {% endif %}
+        </dl>
+    {% endfor %}
+{% endfor %}
+{% for call in site.data.py_naming_api.calls %}
+    <h4 id="{{ call.name }}" class="identifier method">{{
+        call.name }}({% for param in call.params %}{{ param.name }}{% unless forloop.last %}, {% endunless %}{% endfor %})
+    </h4>
+    <p>{{ call.description }}</p>
+    <dl>
+        {% if call.params %}
+            <dt>Parameters:</dt>
+            {% for param in call.params %}
+                <dd>
+                    <code>{{ param.name }}</code>: <code>{{ param.type }}</code>
+                    {% if param.description %}
+                        &ndash; {{ param.description }}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+        {% endif %}
+        {% if call.returns %}
+            <dt>Return value:</dt>
+            <dd>
+                {% if call.returns.type %}
+                    <code>{{ call.returns.type }}</code>
+                {% endif %}
+                {% if call.returns.struct %}
+                    <code><a href="#{{ call.returns.struct }}">
+                        {% if call.returns.array == true %}List[types.{{ call.returns.struct }}]{% else %}types.{{ call.returns.struct }}{% endif
+                    %}</a></code>
+                {% endif %}
+                {% if call.returns.description %}
+                    &ndash; {{ call.returns.description }}
+                {% endif %}
+            </dd>
+        {% endif %}
+    </dl>
+{% endfor %}
+
+<br/><br/>
+<h2>Structures</h2>
+{% for struct in site.data.py_naming_api.structures %}
+    <h4 id="{{ struct.name }}" class="identifier class">types.{{ struct.name }}</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for field in struct.fields %}
+                <tr>
+                    <td><code>{{ field.name }}</code></td>
+                    <td>
+                        {% if field.type %}
+                            <code>{{ field.type }}</code>
+                        {% endif %}
+                        {% if field.struct %}
+                            <code><a href="#{{ field.struct }}">types.{{ field.struct }}</a></code>
+                        {% endif %}
+                        {% if field.enum %}
+                            <code><a href="#{{ field.enum }}">types.{{ field.enum }}</a></code>
+                        {% endif %}
+                    </td>
+                    <td>{{ field.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+<br/><br/>
+<h2>Enums</h2>
+<p>
+    Enums are string literals. Every particular enum type is a set of allowed values you can choose from.
+</p>
+{% for enum in site.data.py_naming_api.enums %}
+    <h4 id="{{ enum.name }}" class="identifier enum">{{ enum.name }}</h4>
+    <p>{{ enum.description }}</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for value in enum.values %}
+                <tr>
+                    <td><code>"{{ value.name }}"</code></td>
+                    <td>{{ value.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}

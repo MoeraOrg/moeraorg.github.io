@@ -59,6 +59,9 @@
 
 - type: sub
 
+- name: python-moeralib/naming
+  title: moeralib.naming
+
 - name: python-moeralib/node
   title: moeralib.node
 

@@ -28,7 +28,8 @@ def to_py_type(api_type: str) -> str:
 def to_py_doc(s: str) -> str:
     return (s.replace('<code>null</code>', '<code>None</code>')
              .replace('<code>true</code>', '<code>True</code>')
-             .replace('<code>false</code>', '<code>False</code>'))
+             .replace('<code>false</code>', '<code>False</code>')
+             .replace('<code>signingKey</code>', '<code>signing_key</code>'))
 
 
 def read_node_api(datadir: str) -> Tuple[Any, Any]:
@@ -154,11 +155,51 @@ def write_node_api(api: Any, datadir: str) -> None:
         yaml.safe_dump(api, ofile, default_flow_style=False)
 
 
+def read_naming_api(datadir: str) -> Any:
+    with open(datadir + '/naming_api.yml', 'r') as ifile:
+        return yaml.safe_load(ifile)
+
+
+def convert_call(call: Any) -> None:
+    call['name'] = to_snake(call['name'])
+    call['description'] = to_py_doc(call['description'])
+    for param in call.get('params', []):
+        param['name'] = to_snake(param['name'])
+        param['type'] = to_py_type(param['type'])
+        if 'description' in param:
+            param['description'] = to_py_doc(param['description'])
+    if 'returns' in call:
+        if 'type' in call['returns']:
+            call['returns']['type'] = to_py_type(call['returns']['type'])
+        if 'description' in call['returns']:
+            call['returns']['description'] = to_py_doc(call['returns']['description'])
+    if 'fingerprint' in call:
+        del call['fingerprint']
+
+
+def convert_naming_api(api: Any) -> None:
+    for call in api['calls']:
+        convert_call(call)
+    for struct in api['structures']:
+        convert_structure(struct)
+    del api['errors']
+
+
+def write_naming_api(api: Any, datadir: str) -> None:
+    with open(datadir + '/py_naming_api.yml', 'w+') as ofile:
+        yaml.safe_dump(api, ofile, default_flow_style=False)
+
+
 if len(sys.argv) < 2 or sys.argv[1] == '':
     print("Usage: py-yaml <directory>")
     exit(1)
 
 datadir = sys.argv[1]
+
 api, classes = read_node_api(datadir)
 convert_node_api(api, classes)
 write_node_api(api, datadir)
+
+api = read_naming_api(datadir)
+convert_naming_api(api)
+write_naming_api(api, datadir)
