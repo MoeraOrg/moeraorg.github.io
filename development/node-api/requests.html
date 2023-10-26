@@ -10,7 +10,7 @@ container_class: container-requests
 
 <div id="toc" class="toc">
     <h2>Table of Contents</h2>
-    <ol class="objects">
+    <ol class="objects requests">
         {% for object in site.data.node_api.objects %}
             <li><a href="#{{ object.name | replace: ' ', '%20'}}%20object">{{ object.name }}</a></li>
         {% endfor %}

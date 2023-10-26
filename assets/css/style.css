@@ -162,18 +162,22 @@ DT > CODE {
     font-weight: 700;
 }
 
-H4.identifier {
+H2.identifier, H4.identifier {
     font-family: var(--bs-font-monospace);
     margin-top: 2rem;
     margin-left: 5rem;
     text-indent: -5rem;
 }
 
-H2 + H4.identifier {
+H2.identifier {
+    font-weight: 700;
+}
+
+H2 + H4.identifier, H3 + H4.identifier {
     margin-top: 0;
 }
 
-H4.identifier::before {
+H2.identifier::before, H4.identifier::before{
     margin-right: .75rem;
     color: white;
     font-size: .875rem;
@@ -181,11 +185,23 @@ H4.identifier::before {
     padding: .4em .5em .25em .5em;
     border-radius: .75em;
     position: relative;
+}
+
+H2.identifier::before {
+    top: -.4em;
+}
+
+H4.identifier::before {
     top: -.2em;
 }
 
 H4.call::before {
     content: 'CALL';
+    background-color: var(--bs-purple);
+}
+
+H4.function::before {
+    content: 'FUNCTION';
     background-color: var(--bs-purple);
 }
 
@@ -209,13 +225,48 @@ H4.delete::before {
     background-color: var(--bs-blue);
 }
 
+H4.constructor::before {
+    content: 'CONSTRUCTOR';
+    background-color: var(--bs-blue);
+}
+
+H4.method::before {
+    content: 'METHOD';
+    background-color: var(--bs-blue);
+}
+
+H4.field::before {
+    content: 'FIELD';
+    background-color: var(--bs-blue);
+}
+
 H4.struct::before {
     content: 'STRUCT';
     background-color: var(--bs-orange);
 }
 
+H2.class::before, H4.class::before {
+    content: 'CLASS';
+    background-color: var(--bs-orange);
+}
+
+H2.exception::before {
+    content: 'EXCEPTION';
+    background-color: var(--bs-orange);
+}
+
+H2.enum::before {
+    content: 'ENUM CLASS';
+    background-color: var(--bs-orange);
+}
+
 H4.enum::before {
     content: 'ENUM';
+    background-color: var(--bs-green);
+}
+
+H4.type::before {
+    content: 'TYPE';
     background-color: var(--bs-green);
 }
 
@@ -275,9 +326,16 @@ DD {
 
     .toc OL.objects {
         padding-top: .5rem;
-        max-height: calc(100vh - 10.7em);
         overflow-y: scroll;
         overscroll-behavior-y: contain;
+    }
+
+    .toc OL.objects.requests {
+        max-height: calc(100vh - 10.7em);
+    }
+
+    .toc OL.objects.python {
+        max-height: calc(100vh - 13.5em);
     }
 
     .toc A {

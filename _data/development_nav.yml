@@ -57,5 +57,12 @@
 - name: python-moeralib/index
   title: Python Library
 
+- type: sub
+
+- name: python-moeralib/node
+  title: moeralib.node
+
+- type: end
+
 - name: development-environment
   title: Development Environment

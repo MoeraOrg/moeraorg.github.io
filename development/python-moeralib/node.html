@@ -1,0 +1,338 @@
+---
+layout: development
+title: Python Library
+up: python-moeralib
+subtitle: moeralib.node
+container_class: container-requests
+---
+
+<h1>moeralib.node</h1>
+
+<div id="toc" class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+        <li><a href="#Functions"><b>Functions</b></a></li>
+        <li><a href="#Classes"><b>Classes</b></a></li>
+        <li><a href="#MoeraNode"><b>MoeraNode</b></a></li>
+    </ol>
+    <ol class="objects python">
+        {% for object in site.data.py_node_api.objects %}
+            <li><a href="#{{ object.name | replace: ' ', '%20'}}%20object">{{ object.name }}</a></li>
+        {% endfor %}
+    </ol>
+    <ol>
+        <li><a href="#Structures"><b>Structures</b></a></li>
+        <li><a href="#Operations"><b>Operations</b></a></li>
+        <li><a href="#Enums"><b>Enums</b></a></li>
+    </ol>
+</div>
+
+<div>
+<h2 id="Functions">Functions</h2>
+{% for fn in site.data.py_classes.functions %}
+    <h4 class="identifier function">{{ fn.name }}</h4>
+    <p>{{ fn.description }}</p>
+    <dl>
+        {% if fn.params %}
+            <dt>Parameters:</dt>
+            {% for param in fn.params %}
+                <dd>
+                    <code>{{ param.name }}</code>:&nbsp;
+                    {% if param.type %}
+                        <code>{{ param.type }}</code>
+                    {% endif %}
+                    {% if param.class %}
+                        <code><a href="#{{ param.class }}">{%
+                            if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if param.struct %}
+                        <code><a href="#{{ param.struct }}">{%
+                            if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if param.description %}
+                        &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                    {% else %}
+                        {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+        {% endif %}
+        {% if fn.out %}
+            <dt>Return value:</dt>
+            <dd>
+                {% if fn.out.type %}
+                    <code>{{ fn.out.type }}</code>
+                {% endif %}
+                {% if fn.out.struct %}
+                    <code><a href="#{{ fn.out.struct }}">{%
+                        if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                    %}</a></code>
+                {% endif %}
+                {% if fn.out.description %}
+                    &ndash; {{ fn.out.description }}
+                {% endif %}
+            </dd>
+        {% endif %}
+    </dl>
+{% endfor %}
+
+<br id="Classes"/>
+{% for class in site.data.py_classes.classes %}
+    <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
+    <p>{{ class.description }}</p>
+    {% for field in class.fields %}
+        <h4 class="identifier field">{{ field.name }}</h4>
+        <p>
+            {% if field.type %}
+                <code>{{ field.type }}</code> &ndash;
+            {% endif %}
+            {{ field.description }}
+        </p>
+    {% endfor %}
+    {% for fn in class.functions %}
+        <h4 class="identifier {% if forloop.first %}constructor{% else %}method{% endif %}">{{ fn.name }}</h4>
+        <p>{{ fn.description }}</p>
+        <dl>
+            {% if fn.params %}
+                <dt>Parameters:</dt>
+                {% for param in fn.params %}
+                    <dd>
+                        <code>{{ param.name }}</code>:&nbsp;
+                        {% if param.type %}
+                            <code>{{ param.type }}</code>
+                        {% endif %}
+                        {% if param.class %}
+                            <code><a href="#{{ param.class }}">{%
+                                if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                            %}</a></code>
+                        {% endif %}
+                        {% if param.struct %}
+                            <code><a href="#{{ param.struct }}">{%
+                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            %}</a></code>
+                        {% endif %}
+                        {% if param.description %}
+                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                        {% else %}
+                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                        {% endif %}
+                    </dd>
+                {% endfor %}
+            {% endif %}
+            {% if fn.out %}
+                <dt>Return value:</dt>
+                <dd>
+                    {% if fn.out.type %}
+                        <code>{{ fn.out.type }}</code>
+                    {% endif %}
+                    {% if fn.out.struct %}
+                        <code><a href="#{{ fn.out.struct }}">{%
+                            if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if fn.out.description %}
+                        &ndash; {{ fn.out.description }}
+                    {% endif %}
+                </dd>
+            {% endif %}
+        </dl>
+    {% endfor %}
+{% endfor %}
+{% for object in site.data.py_node_api.objects %}
+    <h3 id="{{ object.name }} object">{{ object.name }}</h3>
+    <p>{{ object.description }}</p>
+    {% for req in object.requests %}
+        <h4 class="identifier method">{{ req.function }}</h4>
+        <p>{{ req.description }}</p>
+        <dl>
+            {% if req.params %}
+                <dt>Parameters:</dt>
+                {% for param in req.params %}
+                    <dd>
+                        <code>{{ param.name }}</code>:&nbsp;
+                        {% if param.type %}
+                            <code>{{ param.type }}</code>
+                        {% endif %}
+                        {% if param.enum %}
+                            <code><a href="#{{ param.enum }}">{%
+                                if param.array == true %}List[types.{{ param.enum }}]{% else %}types.{{ param.enum }}{% endif
+                            %}</a></code>
+                        {% endif %}
+                        {% if param.struct %}
+                            <code><a href="#{{ param.struct }}">{%
+                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            %}</a></code>
+                        {% endif %}
+                        {% if param.description %}
+                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                        {% else %}
+                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                        {% endif %}
+                    </dd>
+                {% endfor %}
+            {% endif %}
+            {% if req.out %}
+                <dt>Return value:</dt>
+                <dd>
+                    {% if req.out.type %}
+                        <code>{{ req.out.type }}</code>
+                    {% endif %}
+                    {% if req.out.struct %}
+                        <code><a href="#{{ req.out.struct }}">{%
+                            if req.out.array == true %}List[types.{{ req.out.struct }}]{% else %}types.{{ req.out.struct }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if req.out.description %}
+                        &ndash; {{ req.out.description }}
+                    {% endif %}
+                </dd>
+            {% endif %}
+            {% unless req.auth == 'irrelevant' %}
+                <dt>Authentication:
+                    <span class="read-more">
+                        <a href="/development/node-api/index.html#authentication-requirements">read more</a>
+                    </span>
+                </dt>
+                {% if req.auth %}
+                    <dd>{{ req.auth }}</dd>
+                {% else %}
+                    <dd><i>none</i></dd>
+                {% endif %}
+            {% endunless %}
+            {% if req.errors %}
+                <dt>Errors:</dt>
+                <dd>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col-4">Code</th>
+                                <th class="col-8">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for error in req.errors %}
+                                <tr>
+                                    <td><code>{{ error.code }}</code></td>
+                                    <td>{{ error.description }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </dd>
+            {% endif %}
+        </dl>
+    {% endfor %}
+{% endfor %}
+
+<br/><br/>
+<h2 id="Structures">Structures</h2>
+{% for struct in site.data.py_node_api.structures %}
+    <h4 id="{{ struct.name }}" class="identifier class">types.{{ struct.name }}</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-3">Field Name</th>
+                <th class="col-2">Type</th>
+                <th class="col-7">Description</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for field in struct.fields %}
+            <tr>
+                <td><code>{{ field.name }}</code></td>
+                <td>
+                    {% if field.type %}
+                        <code>{{ field.type }}</code>
+                    {% endif %}
+                    {% if field.enum %}
+                        <code><a href="#{{ field.enum }}">{%
+                            if field.array == true %}List[types.{{ field.enum }}]{% else %}types.{{ field.enum }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if field.struct %}
+                        <code><a href="#{{ field.struct }}">{%
+                            if field.array == true %}List[types.{{ field.struct }}]{% else %}types.{{ field.struct }}{% endif
+                        %}</a></code>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if field.optional == true %}<i>(optional)</i>{% endif %}
+                    {{ field.description }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if struct.errors %}
+        <b>Validation errors:</b>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-4">Code</th>
+                    <th class="col-8">Description</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for error in struct.errors %}
+                    <tr>
+                        <td><code>{{ error.code }}</code></td>
+                        <td>{{ error.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endfor %}
+
+
+<br/><br/>
+<h2 id="Operations">Operations</h2>
+<p><a href="/development/node-api/access-controls.html">Read more about operations</a></p>
+{% for struct in site.data.py_node_api.operations %}
+    <h4 id="{{ struct.name }}" class="identifier class">types.{{ struct.name }}</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-4">Field Name</th>
+                <th class="col-2">Default</th>
+                <th class="col-6">Description</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for op in struct.fields %}
+                <tr>
+                    <td><code>{{ op.name }}</code></td>
+                    <td><code>"{{ op.default }}"</code></td>
+                    <td>{{ op.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+<br/><br/>
+<h2 id="Enums">Enums</h2>
+<p>
+    Enums are string literals. Every particular enum type is a set of allowed values you can choose from.
+</p>
+{% for enum in site.data.py_node_api.enums %}
+    <h4 id="{{ enum.name }}" class="identifier type">types.{{ enum.name }}</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-4">Value</th>
+                <th class="col-8">Description</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for value in enum.values %}
+                <tr>
+                    <td><code>"{{ value.name }}"</code></td>
+                    <td>{{ value.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
