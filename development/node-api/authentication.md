@@ -21,7 +21,7 @@ There are several types of tokens that may be used for authentication.
 
 ### Root secret
 
-_Root secret_ is set in the server configuration and is used to authenticate as
+_Root secret_ is [set in the server configuration][7] and is used to authenticate as
 a topmost administrator _(root admin)_ of the server.
 
 ### Admin token
@@ -111,3 +111,4 @@ token:carte:<carte>
 [4]: fingerprints.html#CarteFingerprint
 [5]: https://datatracker.ietf.org/doc/html/rfc6750
 [6]: events.html
+[7]: /administration/installation/config.html#authentication

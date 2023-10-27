@@ -13,12 +13,12 @@ calls:
       - type: byte[]
         name: updatingKey
         description: >
-          the public key for verifying signatures of further updates of the name. May be <code>null</code>, if the
-          current generation of the name is updated – the current key is preserved in this case.
+          the public key for verifying signatures of further updates of the name. May be <code>null</code> – the current
+          key is preserved in this case.
       - type: String
         name: nodeUri
         description: >
-          URI of the REST API endpoint of the node to which the name is assigned. May be <code>null</code> - the current
+          URI of the REST API endpoint of the node to which the name is assigned. May be <code>null</code> – the current
           URI is preserved in this case.
       - type: byte[]
         name: signingKey

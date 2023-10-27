@@ -12,14 +12,12 @@ calls:
     name: generation
     type: int
   - description: "the public key for verifying signatures of further updates of the\
-      \ name. May be <code>None</code>, if the current generation of the name is updated\
-      \ \u2013 the current key is preserved in this case.\n"
+      \ name. May be <code>None</code> \u2013 the current key is preserved in this\
+      \ case.\n"
     name: updating_key
     type: bytes
-  - description: 'URI of the REST API endpoint of the node to which the name is assigned.
-      May be <code>None</code> - the current URI is preserved in this case.
-
-      '
+  - description: "URI of the REST API endpoint of the node to which the name is assigned.\
+      \ May be <code>None</code> \u2013 the current URI is preserved in this case.\n"
     name: node_uri
     type: str
   - description: "the public key of the name owner. May be <code>None</code> \u2013\
