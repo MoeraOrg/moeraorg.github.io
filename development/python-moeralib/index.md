@@ -16,11 +16,11 @@ pip install moeralib
 
 ## Naming API
 
-`moeralib.naming` module contains classes and routines for interacting with Moera
-naming service. To access a naming server, create `MoeraNaming` class and pass
-the naming server URL in the parameters. There are constants for two well-known
-servers: `MAIN_SERVER` and `DEV_SERVER`. The first one is used by default by
-`MoeraNaming`.
+<code><a href="naming.html">moeralib.naming</a></code> module contains classes and
+routines for interacting with Moera naming service. To access a naming server, create
+`MoeraNaming` class and pass the naming server URL in the parameters. There are
+constants for two well-known servers: `MAIN_SERVER` and `DEV_SERVER`. The first one
+is used by default by `MoeraNaming`.
 
 ```python
 from moeralib.naming import MoeraNaming, DEV_SERVER
@@ -40,8 +40,9 @@ print(resolve('balu-dev_0', naming_server=DEV_SERVER))
 
 ## Node API
 
-`moeralib.node` module contains classes and routines for accessing Moera nodes. Just
-create `MoeraNode` class with the URL of the node, and call the methods you need.
+<code><a href="node.html">moeralib.node</a></code> module contains classes and
+routines for accessing Moera nodes. Just create `MoeraNode` class with the URL of
+the node, and call the methods you need.
 
 ```python
 from moeralib.naming import resolve
