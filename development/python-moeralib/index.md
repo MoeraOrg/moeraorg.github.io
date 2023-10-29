@@ -56,6 +56,33 @@ The library automatically parses JSON structures coming from the node and conver
 them to Python objects derived from `Structure` class. If some field is not present
 in JSON, the corresponding field in Python is set to `None`.
 
+## Structures
+
+Inputs and outputs of API calls are represented as plain Python classes derived from
+`Structure` class. All structures have a constructor with a single parameter that
+creates a structure object from a JSON object represented as a `dict` (as returned
+from `json.load()`). The constructor automatically converts field names from camel
+case to snake case (if needed) and creates nested structures in accordance with fields'
+type specifications.
+
+The constructor is designed to be used internally, but you can also use it to
+initialize a structure. These code snippets are equivalent:
+
+```python
+attrs = DomainAttributes()
+attrs.domain = 'dave.moera.club'
+attrs.node_id = DAVE_NODE_ID
+```
+```python
+attrs = DomainAttributes({
+    'domain': 'dave.moera.club'
+    'node_id': DAVE_NODE_ID
+})
+```
+
+`json()` method converts the structure back to a `dict` representing a JSON structure,
+converting all field names to camel case.
+
 ## Authentication
 
 _[Read more about authentication][3] in the Node API reference._
