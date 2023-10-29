@@ -301,7 +301,7 @@ objects:
   - auth: irrelevant
     description: Generic method for making node API requests.
     function: 'call(name, location, params=None, method=''GET'', body=None, body_file=None,
-      body_file_type=None, auth=True, schema=None, bodies=False)
+      body_file_type=None, auth=True, schema=None, bodies=False, src_bodies=False)
 
       '
     out:
@@ -351,6 +351,13 @@ objects:
 
         '
       name: bodies
+      optional: true
+      type: bool
+    - description: '<code>True</code> to encode <code>Body</code> structures in the
+        request, <code>False</code> otherwise
+
+        '
+      name: src_bodies
       optional: true
       type: bool
 - description: Methods related to authentication.

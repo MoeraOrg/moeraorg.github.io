@@ -101,7 +101,7 @@ objects:
         description: Set node URL.
       - function: >
           call(name, location, params=None, method='GET', body=None, body_file=None, body_file_type=None, auth=True,
-          schema=None, bodies=False)
+          schema=None, bodies=False, src_bodies=False)
         params:
           - name: name
             type: str
@@ -143,6 +143,11 @@ objects:
             optional: true
             description: >
               <code>True</code> to decode <code>Body</code> structures in the response, <code>False</code> otherwise
+          - name: src_bodies
+            type: bool
+            optional: true
+            description: >
+              <code>True</code> to encode <code>Body</code> structures in the request, <code>False</code> otherwise
         out:
           type: Any
           description: the decoded response
