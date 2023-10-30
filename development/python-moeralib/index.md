@@ -59,14 +59,9 @@ in JSON, the corresponding field in Python is set to `None`.
 ## Structures
 
 Inputs and outputs of API calls are represented as plain Python classes derived from
-`Structure` class. All structures have a constructor with a single parameter that
-creates a structure object from a JSON object represented as a `dict` (as returned
-from `json.load()`). The constructor automatically converts field names from camel
-case to snake case (if needed) and creates nested structures in accordance with fields'
-type specifications.
-
-The constructor is designed to be used internally, but you can also use it to
-initialize a structure. These code snippets are equivalent:
+`Structure` class. All structures have a constructor with keyword parameters that
+correspond to fields of the structure. You can use the constructor to initialize
+a structure. These code snippets are equivalent:
 
 ```python
 attrs = DomainAttributes()
@@ -74,11 +69,18 @@ attrs.domain = 'dave.moera.club'
 attrs.node_id = DAVE_NODE_ID
 ```
 ```python
-attrs = DomainAttributes({
-    'domain': 'dave.moera.club'
-    'node_id': DAVE_NODE_ID
-})
+attrs = DomainAttributes(
+    domain='dave.moera.club',
+    node_id=DAVE_NODE_ID
+)
 ```
+
+There are two more methods designed to be used internally.
+
+`from_json()` method creates a structure object from a JSON object represented as
+a `dict` (as returned from `json.load()`). The method automatically converts field
+names from camel case to snake case (if needed) and creates nested structures in
+accordance with fields' type specifications.
 
 `json()` method converts the structure back to a `dict` representing a JSON structure,
 converting all field names to camel case.
