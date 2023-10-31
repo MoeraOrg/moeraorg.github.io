@@ -10,6 +10,8 @@ subtitle: Headers
 These are special Moera HTTP headers. [Read more][1] about them in the
 Architecture Overview section.
 
+## Clients
+
 <h4 class="identifier">
     X-Moera: [root={root}] [page={page}]
 </h4>
@@ -46,6 +48,8 @@ extension-based client.
 This header is sent by the client in HTTP request. It signals that the
 client supports Moera REST API of the given version. Currently only
 version `1.0` is defined.
+
+## Plugins
 
 <h4 class="identifier">
     X-Moera-Auth: [root-admin={true or false}]
