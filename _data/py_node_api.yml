@@ -3337,7 +3337,7 @@ operations:
   name: FriendGroupOperations
 - fields:
   - default: null
-    description: any modification of the node name, prolonging it etc
+    description: any modification of the node name, prolonging it etc.
     name: manage
   name: NodeNameOperations
 - fields:
@@ -4163,6 +4163,7 @@ structures:
 
       '
     name: digest
+    optional: true
     type: bytes
   - description: 'the comment''s owner signature (use <code><a href="fingerprints.html#Comment">Comment</a></code>
       fingerprint)
@@ -4289,6 +4290,7 @@ structures:
 
       '
     name: digest
+    optional: true
     type: bytes
   - description: 'the comment''s owner signature (use <code><a href="fingerprints.html#Comment">Comment</a></code>
       fingerprint)
@@ -5654,6 +5656,7 @@ structures:
 
       '
     name: digest
+    optional: true
     type: bytes
   - description: 'the posting''s owner signature (use <code><a href="fingerprints.html#Posting">Posting</a></code>
       fingerprint)
@@ -5811,6 +5814,7 @@ structures:
 
       '
     name: digest
+    optional: true
     type: bytes
   - description: 'the revision''s owner signature (use <code><a href="fingerprints.html#Posting">Posting</a></code>
       fingerprint)

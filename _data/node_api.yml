@@ -3,7 +3,7 @@ objects:
     description: Local registry of all activity in the form of reactions performed by the node.
     requests:
       - url: /activity/reactions/search
-        type: GET
+        type: POST
         function: searchActivityReactions
         in:
           struct: ActivityReactionFilter
@@ -1117,7 +1117,7 @@ objects:
         errors:
           - code: draft.not-found
             description: there is no draft with the given ID
-      - url: /draft/{id}
+      - url: /drafts/{id}
         type: DELETE
         function: deleteDraft
         params:
@@ -2948,7 +2948,7 @@ objects:
           - code: subscription.not-found
             description: there is no subscription with the given parameters.
       - url: /people/subscriptions/search
-        type: GET
+        type: POST
         function: searchSubscriptions
         in:
           struct: SubscriptionFilter
@@ -3769,6 +3769,7 @@ structures:
         description: comment purging timestamp - the time when the deleted comment will be purged from the database
       - type: byte[]
         name: digest
+        optional: true
         description: >
           cryptographic digest of the comment (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
@@ -3880,6 +3881,7 @@ structures:
           its place
       - type: byte[]
         name: digest
+        optional: true
         description: >
           cryptographic digest of the revision (use <code><a href="fingerprints.html#Comment">Comment</a></code>
           fingerprint)
@@ -5172,6 +5174,7 @@ structures:
           posting purging timestamp - the time when the deleted posting will be purged from the database
       - type: byte[]
         name: digest
+        optional: true
         description: >
           cryptographic digest of the posting (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
@@ -5315,6 +5318,7 @@ structures:
         description: original revision deletion timestamp (for cached copies of remote postings only)
       - type: byte[]
         name: digest
+        optional: true
         description: >
           cryptographic digest of the revision (use <code><a href="fingerprints.html#Posting">Posting</a></code>
           fingerprint)
@@ -7458,7 +7462,7 @@ operations:
     fields:
       - name: manage
         default:
-        description: any modification of the node name, prolonging it etc
+        description: any modification of the node name, prolonging it etc.
   - name: PeopleOperations
     fields:
       - name: viewSubscribers
