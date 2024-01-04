@@ -28,7 +28,18 @@ server {
 	charset utf-8;
 	add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
 
-	location / {
+    location / {
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera";
+            add_header Access-Control-Expose-Headers "x-moera";
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE";
+            add_header Access-Control-Allow-Origin "*";
+            add_header Access-Control-Max-Age 86400;
+            add_header Allow "GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH";
+            add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
+            return 200;
+        }
+
     	proxy_set_header X-Forwarded-Proto https;
 		proxy_set_header X-Forwarded-Host $host;
 		proxy_set_header X-Forwarded-Port 443;
@@ -104,6 +115,10 @@ Change `client_max_body_size` to the maximal size of media files you want to upl
 to your node. Don't forget to change the `moera-node` [configuration file][3]
 accordingly.
 
+`$request_method = OPTIONS` branch is for handling CORS requests. This block is
+optional, because `moera-node` can handle CORS requests as well, but handling them
+in NGINX is much faster. 
+
 `/moera/api/push/` location is used to serve a stream of push messages.
 
 `/moera/api/events` location is used for WebSockets connection.
@@ -168,6 +183,17 @@ server {
 	add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
 
 	location / {
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera";
+            add_header Access-Control-Expose-Headers "x-moera";
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE";
+            add_header Access-Control-Allow-Origin "*";
+            add_header Access-Control-Max-Age 86400;
+            add_header Allow "GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH";
+            add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
+            return 200;
+        }
+
     	proxy_set_header X-Forwarded-Proto https;
 		proxy_set_header X-Forwarded-Host $host;
 		proxy_set_header X-Forwarded-Port 443;
