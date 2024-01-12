@@ -7392,13 +7392,6 @@ structures:
     name: summary_data
     optional: true
     struct: StorySummaryData
-  - description: 'ID (visible by node admin only) that may be used to update the story
-      viewed/read status without authentication
-
-      '
-    name: tracking_id
-    optional: true
-    type: str
   - description: the posting this story is about
     name: posting
     optional: true

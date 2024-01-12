@@ -6813,11 +6813,6 @@ structures:
         name: summaryData
         optional: true
         description: details of the story; they are used by the client to build a user-readable summary of the story
-      - type: String
-        name: trackingId
-        optional: true
-        description: >
-          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
       - struct: PostingInfo
         name: posting
         optional: true

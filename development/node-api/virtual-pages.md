@@ -42,12 +42,6 @@ the given ID.
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
 
-<h4 class="identifier">/gotoname?client={client URL}&name={node name}&location={path}&trackingId={id}</h4>
-
-Resolve the given node `name` and open the given `location` at it. If `client` is
-given, it is opened and the location is passed to it. If `trackingId` is given,
-the story with this tracking ID is marked as read.
-
 <h4 class="identifier">
     /media/private/{id}.{extension}?width={number}&download={true or false}
 </h4>

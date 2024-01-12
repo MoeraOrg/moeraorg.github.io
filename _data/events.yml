@@ -611,10 +611,6 @@ events:
         name: summaryData
         comment: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
-        name: trackingId
-        comment: >
-          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
-      - type: String
         name: remoteNodeName
         comment: name of the node this story is about (may be absent)
       - type: String
@@ -699,10 +695,6 @@ events:
       - struct: StorySummaryData
         name: summaryData
         comment: details of the story; they are used by the client to build a user-readable summary of the story
-      - type: String
-        name: trackingId
-        comment: >
-          ID (visible by node admin only) that may be used to update the story viewed/read status without authentication
       - type: String
         name: remoteNodeName
         comment: name of the node this story is about (may be absent)
