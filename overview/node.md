@@ -44,7 +44,7 @@ Web clients and mobile clients use REST API for all operations.
 Automated operations, like backups, reposts from other social networks,
 data migration, specialized Moera search engines, etc. also use it.
 REST API is also used for internode communication - receiving
-[notifications][2], fetching new posts for the [newsfeed][3] etc.
+[notifications][1], fetching new posts for the [newsfeed][2] etc.
 
 Node REST API may be implemented (fully or partially) by any existing
 website, making its content available for reading and commenting with
@@ -65,8 +65,8 @@ with a web browser, and the server returns data in HTML format that the
 browser knows to display.
 
 The Moera node implements Moera node protocol (REST API). A user connects
-to it with the Moera client (which is a web browser with [add-on][1] or
-a separate application on mobile), and the server returns social network
+to it with the Moera client (which is a web application running in a web browser
+or a desktop or mobile application), and the server returns social network
 data in a structured form that the client knows to display.
 
 But, for backward compatibility, if a user connects with a Moera-capable
@@ -75,6 +75,5 @@ regular HTML interface. And another way around, if a user connects with a
 regular web browser to a Moera-capable site, it will show the fallback
 Web UI described above.
 
-[1]: /overview/browser-extension.html
-[2]: /overview/notifications.html
-[3]: /overview/newsfeed.html
+[1]: /overview/notifications.html
+[2]: /overview/newsfeed.html

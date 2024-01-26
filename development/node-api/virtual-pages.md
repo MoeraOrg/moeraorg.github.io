@@ -145,7 +145,7 @@ Timeline - all publications in reverse chronological order.
 
 Timeline, positioned at about the given [moment][3].
 
-[1]: /overview/browser-extension.html
+[1]: /overview/browsing.html
 <!-- @IGNORE PREVIOUS: link -->
 [2]: headers.html
 <!-- @IGNORE PREVIOUS: link -->

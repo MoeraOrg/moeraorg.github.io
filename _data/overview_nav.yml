@@ -19,8 +19,8 @@
 - name: newsfeed
   title: Newsfeed
 
-- name: browser-extension
-  title: Browser Extension
+- name: browsing
+  title: Browsing
 
 - name: permissions
   title: Permissions

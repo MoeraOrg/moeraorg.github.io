@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Newsfeed
-next: browser-extension
-next_title: Browser Extension
+next: browsing
+next_title: Browsing
 ---
 
 # Newsfeed

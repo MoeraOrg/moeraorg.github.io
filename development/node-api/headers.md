@@ -76,5 +76,5 @@ structure.
 This header is sent by the node to a plugin when forwarding a user request to it.
 It contains the full URL of the user request.
 
-[1]: /overview/browser-extension.html
+[1]: /overview/browsing.html
 [2]: virtual-pages.html
