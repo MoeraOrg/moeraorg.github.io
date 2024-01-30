@@ -6,64 +6,64 @@ events:
     fields:
       - struct: AvatarInfo
         name: avatar
-        comment: the avatar
+        description: the avatar
   - type: AVATAR_DELETED
     description: An avatar was deleted.
     fields:
       - type: String
         name: id
-        comment: ID of the avatar
+        description: ID of the avatar
       - type: String
         name: mediaId
-        comment: ID of the media file
+        description: ID of the media file
   - type: AVATAR_ORDERED
     description: An avatar was assigned a new ordinal.
     fields:
       - type: String
         name: id
-        comment: ID of the avatar
+        description: ID of the avatar
       - type: String
         name: mediaId
-        comment: ID of the media file
+        description: ID of the media file
       - type: int
         name: ordinal
-        comment: ordinal of the avatar
+        description: ordinal of the avatar
   - type: BLOCKED_BY_USER_ADDED
     description: A node has blocked the user.
     fields:
       - struct: BlockedByUserInfo
         name: blockedByUser
-        comment: information about the blocking
+        description: information about the blocking
   - type: BLOCKED_BY_USER_DELETED
     description: A node has unblocked the user.
     fields:
       - struct: BlockedByUserInfo
         name: blockedByUser
-        comment: information about the blocking
+        description: information about the blocking
   - type: BLOCKED_INSTANT_ADDED
     description: Blocking of an instant was added.
     fields:
       - struct: BlockedInstantInfo
         name: blockedInstant
-        comment: information about the blocking
+        description: information about the blocking
   - type: BLOCKED_INSTANT_DELETED
     description: Blocking of an instant was deleted.
     fields:
       - struct: BlockedInstantInfo
         name: blockedInstant
-        comment: information about the blocking
+        description: information about the blocking
   - type: BLOCKED_USER_ADDED
     description: Blocked a node.
     fields:
       - struct: BlockedUserInfo
         name: blockedUser
-        comment: information about the blocking
+        description: information about the blocking
   - type: BLOCKED_USER_DELETED
     description: Unblocked a node.
     fields:
       - struct: BlockedUserInfo
         name: blockedUser
-        comment: information about the blocking
+        description: information about the blocking
   - type: CLIENT_SETTINGS_CHANGED
     description: Some client settings were changed.
   - type: COMMENT_ADDED
@@ -71,49 +71,49 @@ events:
     fields:
       - type: String
         name: id
-        comment: the comment ID
+        description: the comment ID
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: int
         name: moment
-        comment: moment of the comment
+        description: moment of the comment
   - type: COMMENT_DELETED
     description: A comment was added.
     fields:
       - type: String
         name: id
-        comment: the comment ID
+        description: the comment ID
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: int
         name: moment
-        comment: moment of the comment
+        description: moment of the comment
   - type: COMMENT_REACTIONS_CHANGED
     description: Reactions to a comment were changed.
     fields:
       - type: String
         name: id
-        comment: the comment ID
+        description: the comment ID
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: int
         name: moment
-        comment: moment of the comment
+        description: moment of the comment
   - type: COMMENT_UPDATED
     description: A comment was deleted.
     fields:
       - type: String
         name: id
-        comment: the comment ID
+        description: the comment ID
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: int
         name: moment
-        comment: moment of the comment
+        description: moment of the comment
   - type: DRAFT_ADDED
     description: A draft was added.
     fields:
@@ -121,16 +121,16 @@ events:
         name: id
       - enum: DraftType
         name: draftType
-        comment: type of the draft
+        description: type of the draft
       - type: String
         name: receiverName
-        comment: name of the node the draft is related to
+        description: name of the node the draft is related to
       - type: String
         name: receiverPostingId
-        comment: ID of the posting, set for all types, except <code>new-posting</code>
+        description: ID of the posting, set for all types, except <code>new-posting</code>
       - type: String
         name: receiverCommentId
-        comment: ID of the comment, set for <code>comment-update</code> type
+        description: ID of the comment, set for <code>comment-update</code> type
   - type: DRAFT_DELETED
     description: A draft was deleted.
     fields:
@@ -138,16 +138,16 @@ events:
         name: id
       - enum: DraftType
         name: draftType
-        comment: type of the draft
+        description: type of the draft
       - type: String
         name: receiverName
-        comment: name of the node the draft is related to
+        description: name of the node the draft is related to
       - type: String
         name: receiverPostingId
-        comment: ID of the posting, set for all types, except <code>new-posting</code>
+        description: ID of the posting, set for all types, except <code>new-posting</code>
       - type: String
         name: receiverCommentId
-        comment: ID of the comment, set for <code>comment-update</code> type
+        description: ID of the comment, set for <code>comment-update</code> type
   - type: DRAFT_UPDATED
     description: A draft was updated.
     fields:
@@ -155,80 +155,86 @@ events:
         name: id
       - enum: DraftType
         name: draftType
-        comment: type of the draft
+        description: type of the draft
       - type: String
         name: receiverName
-        comment: name of the node the draft is related to
+        description: name of the node the draft is related to
       - type: String
         name: receiverPostingId
-        comment: ID of the posting, set for all types, except <code>new-posting</code>
+        description: ID of the posting, set for all types, except <code>new-posting</code>
       - type: String
         name: receiverCommentId
-        comment: ID of the comment, set for <code>comment-update</code> type
+        description: ID of the comment, set for <code>comment-update</code> type
   - type: FEED_SHERIFF_DATA_UPDATED
     description: Supervising sheriff or sheriff marks of a feed were updated
     fields:
       - type: String
         name: feedName
-        comment: name of the feed
+        description: name of the feed
       - type: String[]
         name: sheriffs
+        optional: true
         description: list of sheriffs supervising the feed
       - struct: SheriffMark
         array: true
         name: sheriffMarks
+        optional: true
         description: list of sheriff marks on the feed
   - type: FEED_STATUS_UPDATED
     description: Status of a feed was updated.
     fields:
       - type: String
         name: feedName
-        comment: name of the feed
+        description: name of the feed
       - struct: FeedStatus
         name: status
-        comment: status of the feed
+        description: status of the feed
   - type: FRIEND_GROUP_ADDED
     description: A group of friends was added
     fields:
       - struct: FriendGroupInfo
         name: friendGroup
-        comment: the group of friends
+        description: the group of friends
   - type: FRIEND_GROUP_DELETED
     description: A group of friends was deleted
     fields:
       - type: String
         name: friendGroupId
-        comment: ID of the group of friends
+        description: ID of the group of friends
   - type: FRIEND_GROUP_UPDATED
     description: A group of friends was updated
     fields:
       - struct: FriendGroupInfo
         name: friendGroup
-        comment: the group of friends
+        description: the group of friends
   - type: FRIENDSHIP_UPDATED
     description: Friendship status of a node was updated
     fields:
       - struct: FriendInfo
         name: friend
-        comment: friendship information
+        description: friendship information
   - type: NODE_NAME_CHANGED
     description: The name of the node or one or more of important profile fields were changed.
     fields:
       - type: String
         name: name
-        comment: the new name
+        description: the new name
       - type: String
         name: fullName
-        comment: the new full name
+        optional: true
+        description: the new full name
       - type: String
         name: gender
-        comment: the new node owners's gender
+        optional: true
+        description: the new node owners's gender
       - type: String
         name: title
-        comment: the new node title
+        optional: true
+        description: the new node title
       - struct: AvatarImage
         name: avatar
-        comment: the new avatar
+        optional: true
+        description: the new avatar
   - type: NODE_SETTINGS_CHANGED
     description: Some node settings were changed.
   - type: NODE_SETTINGS_META_CHANGED
@@ -242,40 +248,40 @@ events:
     fields:
       - type: String
         name: id
-        comment: the posting ID
+        description: the posting ID
   - type: POSTING_COMMENTS_CHANGED
     description: Comments to a posting were changed.
     fields:
       - type: String
         name: id
-        comment: the posting ID
+        description: the posting ID
       - type: int
         name: total
-        comment: the current number of comments
+        description: the current number of comments
   - type: POSTING_DELETED
     description: A posting was deleted.
     fields:
       - type: String
         name: id
-        comment: the posting ID
+        description: the posting ID
   - type: POSTING_REACTIONS_CHANGED
     description: Reactions to a posting were changed.
     fields:
       - type: String
         name: id
-        comment: the posting ID
+        description: the posting ID
   - type: POSTING_RESTORED
     description: A deleted posting was restored.
     fields:
       - type: String
         name: id
-        comment: the posting ID
+        description: the posting ID
   - type: POSTING_UPDATED
     description: A posting was updated.
     fields:
       - type: String
         name: id
-        comment: the posting ID
+        description: the posting ID
   - type: PROFILE_UPDATED
     description: Profile was updated.
   - type: REGISTERED_NAME_OPERATION_STATUS
@@ -285,277 +291,281 @@ events:
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the remote posting ID
+        description: the remote posting ID
       - type: String
         name: remoteCommentId
-        comment: the remote comment ID
+        description: the remote comment ID
   - type: REMOTE_COMMENT_DELETED
     description: This node deleted a comment on a remote node
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the remote posting ID
+        description: the remote posting ID
       - type: String
         name: remoteCommentId
-        comment: the remote comment ID
+        description: the remote comment ID
   - type: REMOTE_COMMENT_UPDATED
     description: This node updated a comment on a remote node
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the remote posting ID
+        description: the remote posting ID
       - type: String
         name: remoteCommentId
-        comment: the remote comment ID
+        description: the remote comment ID
   - type: REMOTE_COMMENT_VERIFICATION_FAILED
     description: Verification of the signature of a comment on a remote node failed.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
+        description: asynchronous operation ID
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: String
         name: commentId
-        comment: the comment ID
+        description: the comment ID
       - type: String
         name: errorCode
-        comment: error code
+        description: error code
       - type: String
         name: errorMessage
-        comment: error message
+        description: error message
   - type: REMOTE_COMMENT_VERIFIED
     description: Signature of a comment on a remote node was verified.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
+        description: asynchronous operation ID
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: String
         name: commentId
-        comment: the comment ID
+        description: the comment ID
       - type: boolean
         name: correct
-        comment: verification result
+        description: verification result
   - type: REMOTE_FRIENDSHIP_UPDATED
     description: Friendship status of the user on a remote node was updated
     fields:
       - struct: FriendOfInfo
         name: friendOf
-        comment: remote node friendship information
+        description: remote node friendship information
   - type: REMOTE_NODE_AVATAR_CHANGED
     description: Avatar of a remote node was changed.
     fields:
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - struct: AvatarImage
         name: avatar
-        comment: the remote node avatar
+        optional: true
+        description: the remote node avatar
   - type: REMOTE_NODE_FULL_NAME_CHANGED
     description: Name of a remote node was changed.
     fields:
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: fullName
-        comment: the remote node full name
+        optional: true
+        description: the remote node full name
   - type: REMOTE_POSTING_ADDED
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the posting ID
+        description: the posting ID
   - type: REMOTE_POSTING_DELETED
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the posting ID
+        description: the posting ID
   - type: REMOTE_POSTING_UPDATED
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the posting ID
+        description: the posting ID
   - type: REMOTE_POSTING_VERIFICATION_FAILED
     description: Verification of the signature of a posting on a remote node failed.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
+        description: asynchronous operation ID
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: receiverName
-        comment: the posting receiver name
+        description: the posting receiver name
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: String
         name: revisionId
-        comment: the posting revision ID
+        description: the posting revision ID
       - type: String
         name: errorCode
-        comment: error code
+        description: error code
       - type: String
         name: errorMessage
-        comment: error message
+        description: error message
   - type: REMOTE_POSTING_VERIFIED
     description: Signature of a posting on a remote node was verified.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
+        description: asynchronous operation ID
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: receiverName
-        comment: the posting receiver name
+        description: the posting receiver name
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: String
         name: revisionId
-        comment: the posting revision ID
+        description: the posting revision ID
       - type: boolean
         name: correct
-        comment: verification result
+        description: verification result
   - type: REMOTE_REACTION_ADDED
     description: This node added a reaction on a remote node
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the remote posting ID
+        description: the remote posting ID
       - type: boolean
         name: negative
-        comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
       - type: int
         name: emoji
-        comment: reaction code, usually interpreted by clients as emoji code point
+        description: reaction code, usually interpreted by clients as emoji code point
       - type: timestamp
         name: createdAt
-        comment: reaction creation timestamp - the real time when the reaction was created
+        description: reaction creation timestamp - the real time when the reaction was created
   - type: REMOTE_REACTION_DELETED
     description: This node deleted a reaction on a remote node
     fields:
       - type: String
         name: remoteNodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: remotePostingId
-        comment: the remote posting ID
+        description: the remote posting ID
   - type: REMOTE_REACTION_VERIFICATION_FAILED
     description: Verification of the signature of a reaction on a remote node failed.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
+        description: asynchronous operation ID
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: String
         name: commentId
-        comment: the comment ID, if any
+        description: the comment ID, if any
       - type: String
         name: reactionOwnerName
-        comment: the reaction owner name
+        description: the reaction owner name
       - type: String
         name: errorCode
-        comment: error code
+        description: error code
       - type: String
         name: errorMessage
-        comment: error message
+        description: error message
   - type: REMOTE_REACTION_VERIFIED
     description: Signature of a reaction on a remote node was verified.
     fields:
       - type: String
         name: id
-        comment: asynchronous operation ID
+        description: asynchronous operation ID
       - type: String
         name: nodeName
-        comment: the remote node name
+        description: the remote node name
       - type: String
         name: postingId
-        comment: the posting ID
+        description: the posting ID
       - type: String
         name: commentId
-        comment: the comment ID, if any
+        description: the comment ID, if any
       - type: String
         name: reactionOwnerName
-        comment: the reaction owner name
+        description: the reaction owner name
       - type: boolean
         name: correct
-        comment: verification result
+        description: verification result
   - type: SHERIFF_COMPLAIN_ADDED
     description: A new complaint was received.
     fields:
       - struct: SheriffComplainInfo
         name: complain
-        comment: the complaint
+        description: the complaint
       - type: String
         name: groupId
-        comment: ID of the group of complaints this complaint was added to
+        description: ID of the group of complaints this complaint was added to
   - type: SHERIFF_COMPLAIN_GROUP_ADDED
     description: A new group of complaints was added.
     fields:
       - struct: SheriffComplainGroupInfo
         name: group
-        comment: the group of complaints
+        description: the group of complaints
   - type: SHERIFF_COMPLAIN_GROUP_UPDATED
     description: A group of complaints was updated.
     fields:
       - struct: SheriffComplainGroupInfo
         name: group
-        comment: the group of complaints
+        description: the group of complaints
   - type: STORIES_STATUS_UPDATED
     description: Viewed/read status of a group of stories in a feed was changed.
     fields:
       - type: String
         name: feedName
-        comment: name of the feed
+        description: name of the feed
       - type: boolean
         name: viewed
-        comment: new value of the <code>viewed</code> flag (<code>null</code>, if the flag is not changed).
+        optional: true
+        description: new value of the <code>viewed</code> flag (<code>null</code> or absent, if the flag is not changed).
       - type: boolean
         name: read
-        comment: new value of the <code>read</code> flag (<code>null</code>, if the flag is not changed).
+        optional: true
+        description: new value of the <code>read</code> flag (<code>null</code> or absent, if the flag is not changed).
       - type: int
         name: before
-        comment: flags for all stories before this moment, inclusive were changed.
+        description: flags for all stories before this moment, inclusive were changed.
   - type: STORY_ADDED
     description: A story was created.
     fields:
@@ -563,68 +573,82 @@ events:
         name: id
       - type: String
         name: storyType
-        comment: type of the story
+        description: type of the story
       - type: String
         name: feedName
-        comment: name of the feed
+        description: name of the feed
       - type: timestamp
         name: publishedAt
-        comment: story publication timestamp - the time the story is published under in the feed
+        description: story publication timestamp - the time the story is published under in the feed
       - type: boolean
         name: pinned
-        comment: >
+        description: >
           <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
       - type: int
         name: moment
       - type: String
         name: postingId
-        comment: ID of the posting this story is about (may be absent)
+        optional: true
+        description: ID of the posting this story is about
       - type: boolean
         name: viewed
-        comment: >
+        optional: true
+        description: >
           (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
       - type: boolean
         name: read
-        comment: >
+        optional: true
+        description: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
       - type: boolean
         name: satisfied
-        comment: >
+        optional: true
+        description: >
           (admin only) if the story is associated with a user action (for example, it contains a form that should be
           submitted), this flag is set to <code>true</code>, if the action is done already, and <code>false</code>
           otherwise
       - type: String
         name: summaryNodeName
+        optional: true
         description: name of the node related to the summary of the story
       - type: String
         name: summaryFullName
+        optional: true
         description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
-        comment: avatar of the summary of the story
+        optional: true
+        description: avatar of the summary of the story
       - type: String
         name: summary
-        comment: >
+        optional: true
+        description: >
           user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
       - struct: StorySummaryData
         name: summaryData
-        comment: details of the story; they are used by the client to build a user-readable summary of the story
+        optional: true
+        description: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
         name: remoteNodeName
-        comment: name of the node this story is about (may be absent)
+        optional: true
+        description: name of the node this story is about
       - type: String
         name: remoteFullName
-        comment: full name of the node this story is about (may be absent)
+        optional: true
+        description: full name of the node this story is about
       - type: String
         name: remotePostingId
-        comment: ID of the posting at remote node this story is about (may be absent)
+        optional: true
+        description: ID of the posting at remote node this story is about
       - type: String
         name: remoteCommentId
-        comment: ID of the comment at remote node this story is about (may be absent)
-      - type: String -> String
+        optional: true
+        description: ID of the comment at remote node this story is about
+      - struct: StoryOperations
         name: operations
-        comment: list of the supported operations and the corresponding principals
+        optional: true
+        description: list of the supported operations and the corresponding principals
   - type: STORY_DELETED
     description: A story was deleted.
     fields:
@@ -632,15 +656,16 @@ events:
         name: id
       - type: String
         name: storyType
-        comment: type of the story
+        description: type of the story
       - type: String
         name: feedName
-        comment: name of the feed
+        description: name of the feed
       - type: int
         name: moment
       - type: String
         name: postingId
-        comment: ID of the posting this story is about (may be absent)
+        optional: true
+        description: ID of the posting this story is about
   - type: STORY_UPDATED
     description: A story was updated.
     fields:
@@ -648,138 +673,152 @@ events:
         name: id
       - type: String
         name: storyType
-        comment: type of the story
+        description: type of the story
       - type: String
         name: feedName
-        comment: name of the feed
+        description: name of the feed
       - type: timestamp
         name: publishedAt
-        comment: story publication timestamp - the time the story is published under in the feed
+        description: story publication timestamp - the time the story is published under in the feed
       - type: boolean
         name: pinned
-        comment: >
+        description: >
           <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
       - type: int
         name: moment
       - type: String
         name: postingId
-        comment: ID of the posting this story is about (may be absent)
+        optional: true
+        description: ID of the posting this story is about
       - type: boolean
         name: viewed
-        comment: >
+        optional: true
+        description: >
           (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
       - type: boolean
         name: read
-        comment: >
+        optional: true
+        description: >
           (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
       - type: boolean
         name: satisfied
-        comment: >
+        optional: true
+        description: >
           (admin only) if the story is associated with a user action (for example, it contains a form that should be
           submitted), this flag is set to <code>true</code>, if the action is done already, and <code>false</code>
           otherwise
       - type: String
         name: summaryNodeName
+        optional: true
         description: name of the node related to the summary of the story
       - type: String
         name: summaryFullName
+        optional: true
         description: full name of the node related to the summary of the story
       - struct: AvatarImage
         name: summaryAvatar
-        comment: avatar of the summary of the story
+        optional: true
+        description: avatar of the summary of the story
       - type: String
         name: summary
-        comment: >
+        optional: true
+        description: >
           user-readable summary of the story - this field is <b>deprecated</b> in favor of <code>summaryData</code>
       - struct: StorySummaryData
         name: summaryData
-        comment: details of the story; they are used by the client to build a user-readable summary of the story
+        optional: true
+        description: details of the story; they are used by the client to build a user-readable summary of the story
       - type: String
         name: remoteNodeName
-        comment: name of the node this story is about (may be absent)
+        optional: true
+        description: name of the node this story is about
       - type: String
         name: remoteFullName
-        comment: full name of the node this story is about (may be absent)
+        optional: true
+        description: full name of the node this story is about
       - type: String
         name: remotePostingId
-        comment: ID of the posting at remote node this story is about (may be absent)
+        optional: true
+        description: ID of the posting at remote node this story is about
       - type: String
         name: remoteCommentId
-        comment: ID of the comment at remote node this story is about (may be absent)
-      - type: String -> String
+        optional: true
+        description: ID of the comment at remote node this story is about
+      - struct: StoryOperations
         name: operations
-        comment: list of the supported operations and the corresponding principals
+        optional: true
+        description: list of the supported operations and the corresponding principals
   - type: SUBSCRIBED
     description: >
       Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.
     fields:
       - type: String
         name: sessionId
-        comment: STOMP session ID
+        description: STOMP session ID
   - type: SUBSCRIBER_ADDED
     description: A node subscribed to notifications from this node.
     fields:
       - struct: SubscriberInfo
         name: subscriber
-        comment: subscriber information
+        description: subscriber information
   - type: SUBSCRIBER_DELETED
     description: A node unsubscribed from notifications from this node.
     fields:
       - struct: SubscriberInfo
         name: subscriber
-        comment: subscriber information
+        description: subscriber information
   - type: SUBSCRIBER_UPDATED
     description: Subscriber information was updated.
     fields:
       - struct: SubscriberInfo
         name: subscriber
-        comment: subscriber information
+        description: subscriber information
   - type: SUBSCRIBERS_TOTAL_CHANGED
     description: Number of subscribers was changed.
     fields:
       - type: int
         name: feedSubscribersTotal
-        comment: total number of subscribers of the node
+        description: total number of subscribers of the node
   - type: SUBSCRIPTION_ADDED
     description: This node has subscribed to notifications from a remote node.
     fields:
       - struct: SubscriptionInfo
         name: subscription
-        comment: subscription information
+        description: subscription information
   - type: SUBSCRIPTION_DELETED
     description: This node has unsubscribed from notifications from a remote node.
     fields:
       - struct: SubscriptionInfo
         name: subscription
-        comment: subscription information
+        description: subscription information
   - type: SUBSCRIPTION_UPDATED
     description: Subscription information was updated.
     fields:
       - struct: SubscriptionInfo
         name: subscription
-        comment: subscription information
+        description: subscription information
   - type: SUBSCRIPTIONS_TOTAL_CHANGED
     description: Numbers of subscriptions was changed.
     fields:
       - type: int
         name: feedSubscriptionsTotal
-        comment: total number of subscriptions of the node
+        description: total number of subscriptions of the node
   - type: TOKEN_ADDED
     description: A token was created.
     fields:
       - struct: TokenInfo
         name: token
-        comment: token information
+        description: token information
   - type: TOKEN_DELETED
     description: A token was deleted.
     fields:
       - type: String
         name: id
-        comment: ID of the token
+        description: ID of the token
   - type: TOKEN_UPDATED
     description: A token was updated.
     fields:
       - struct: TokenInfo
         name: token
-        comment: token information
+        description: token information
