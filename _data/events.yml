@@ -371,7 +371,7 @@ events:
     description: Avatar of a remote node was changed.
     fields:
       - type: String
-        name: nodeName
+        name: name
         description: the remote node name
       - struct: AvatarImage
         name: avatar
@@ -381,7 +381,7 @@ events:
     description: Name of a remote node was changed.
     fields:
       - type: String
-        name: nodeName
+        name: name
         description: the remote node name
       - type: String
         name: fullName
@@ -571,7 +571,7 @@ events:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: StoryType
         name: storyType
         description: type of the story
       - type: String
@@ -654,7 +654,7 @@ events:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: StoryType
         name: storyType
         description: type of the story
       - type: String
@@ -671,7 +671,7 @@ events:
     fields:
       - type: String
         name: id
-      - type: String
+      - enum: StoryType
         name: storyType
         description: type of the story
       - type: String
