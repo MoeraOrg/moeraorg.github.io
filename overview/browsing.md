@@ -57,7 +57,8 @@ redirector (see the previous chapter) can also put the correct hostname into the
 URL if it knows it at the moment of redirection.
 
 If the node does not have a registered name, or it is not known, the node host
-in the URL becomes the only way to locate the node.
+in the URL becomes the only way to locate the node. If the node host is not set
+as well, the user's home node is used if it is known to the client.
 
 If the node uses a protocol other than HTTPS or a different port, they should
 be specified with the host name, like `http:localhost:8000`.
@@ -92,7 +93,7 @@ the same address into it.
 The problem may be solved by the site itself by displaying the Moera logo
 somewhere with a Moera link to the site. But we should take into account that
 
->We cannot trust the node, because it may open a malicious client.
+>We cannot trust the node because it may open a malicious client.
 
 The solution is to make all Moera-capable sites manifest themselves by adding
 a special HTTP header (`X-Moera`) to their HTTP response. A browser extension
