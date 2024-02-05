@@ -114,6 +114,12 @@ events:
       - type: int
         name: moment
         description: moment of the comment
+  - type: DELETE_NODE_STATUS_UPDATED
+    description: Status of a request to delete the node was changed.
+    fields:
+      - type: boolean
+        name: requested
+        description: <code>true</code> if the request was sent, <code>false</code> otherwise
   - type: DRAFT_ADDED
     description: A draft was added.
     fields:
@@ -467,7 +473,7 @@ events:
         description: the remote posting ID
       - type: boolean
         name: negative
-        description: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+        description: <code>true</code> if the reaction is negative, <code>false</code> if positive
       - type: int
         name: emoji
         description: reaction code, usually interpreted by clients as emoji code point
@@ -583,7 +589,7 @@ events:
       - type: boolean
         name: pinned
         description: >
-          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>true</code> if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
       - type: int
         name: moment
@@ -595,18 +601,18 @@ events:
         name: viewed
         optional: true
         description: >
-          (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
+          (admin only) <code>true</code> if the story has been viewed by node owner, <code>false</code> otherwise
       - type: boolean
         name: read
         optional: true
         description: >
-          (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+          (admin only) <code>true</code> if the story has been read by node owner, <code>false</code> otherwise
       - type: boolean
         name: satisfied
         optional: true
         description: >
           (admin only) if the story is associated with a user action (for example, it contains a form that should be
-          submitted), this flag is set to <code>true</code>, if the action is done already, and <code>false</code>
+          submitted), this flag is set to <code>true</code> if the action is done already, and <code>false</code>
           otherwise
       - type: String
         name: summaryNodeName
@@ -683,7 +689,7 @@ events:
       - type: boolean
         name: pinned
         description: >
-          <code>true</code>, if the story is pinned (should appear before any non-pinned story in the feed),
+          <code>true</code> if the story is pinned (should appear before any non-pinned story in the feed),
           <code>false</code> otherwise
       - type: int
         name: moment
@@ -695,18 +701,18 @@ events:
         name: viewed
         optional: true
         description: >
-          (admin only) <code>true</code>, if the story has been viewed by node owner, <code>false</code> otherwise
+          (admin only) <code>true</code> if the story has been viewed by node owner, <code>false</code> otherwise
       - type: boolean
         name: read
         optional: true
         description: >
-          (admin only) <code>true</code>, if the story has been read by node owner, <code>false</code> otherwise
+          (admin only) <code>true</code> if the story has been read by node owner, <code>false</code> otherwise
       - type: boolean
         name: satisfied
         optional: true
         description: >
           (admin only) if the story is associated with a user action (for example, it contains a form that should be
-          submitted), this flag is set to <code>true</code>, if the action is done already, and <code>false</code>
+          submitted), this flag is set to <code>true</code> if the action is done already, and <code>false</code>
           otherwise
       - type: String
         name: summaryNodeName

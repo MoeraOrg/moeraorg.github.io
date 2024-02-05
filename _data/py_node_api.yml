@@ -2368,6 +2368,29 @@ objects:
     params:
     - name: profile
       struct: ProfileAttributes
+- description: Communication with the provider (owner of the server).
+  name: Provider
+  requests:
+  - auth: admin
+    description: Get the current status of the request to delete the node.
+    function: get_delete_node_request_status()
+    out:
+      struct: DeleteNodeStatus
+    params: []
+  - auth: admin
+    description: Send a request to the provider to delete the node.
+    function: send_delete_node_request(delete_node_text)
+    out:
+      struct: DeleteNodeStatus
+    params:
+    - name: delete_node_text
+      struct: DeleteNodeText
+  - auth: admin
+    description: Cancel the request to delete the node.
+    function: cancel_delete_node_request()
+    out:
+      struct: DeleteNodeStatus
+    params: []
 - description: Proxy, that may be used by web clients to workaround CORS restrictions
     of browsers
   name: Proxy
@@ -4627,6 +4650,23 @@ structures:
     name: created
     type: bool
   name: CredentialsCreated
+- fields:
+  - description: <code>True</code> if the request is sent, <code>False</code> otherwise
+    name: requested
+    type: bool
+  name: DeleteNodeStatus
+- errors:
+  - code: delete-node.no-email
+    description: e-mail is required to be set in the profile to communicate with the
+      provider
+  - code: deleteNodeText.message.wrong-size
+    description: the message is too long
+  fields:
+  - description: text message for the provider
+    name: message
+    optional: true
+    type: str
+  name: DeleteNodeText
 - errors:
   - code: domainAttributes.name.blank
     description: the domain name is empty

@@ -2124,6 +2124,33 @@ objects:
         description: >
           Update the profile. Fields that are not set in the request body are left intact. Fields that are set to
           an empty value are reset to their defaults.
+  - name: Provider
+    description: Communication with the provider (owner of the server).
+    requests:
+      - url: /provider/delete-node
+        type: GET
+        function: getDeleteNodeRequestStatus
+        out:
+          struct: DeleteNodeStatus
+        auth: admin
+        description: Get the current status of the request to delete the node.
+      - url: /provider/delete-node
+        type: POST
+        function: sendDeleteNodeRequest
+        in:
+          struct: DeleteNodeText
+          name: deleteNodeText
+        out:
+          struct: DeleteNodeStatus
+        auth: admin
+        description: Send a request to the provider to delete the node.
+      - url: /provider/delete-node
+        type: DELETE
+        function: cancelDeleteNodeRequest
+        out:
+          struct: DeleteNodeStatus
+        auth: admin
+        description: Cancel the request to delete the node.
   - name: Proxy
     description: Proxy, that may be used by web clients to workaround CORS restrictions of browsers
     requests:
@@ -4201,6 +4228,22 @@ structures:
       - type: boolean
         name: created
         description: <code>true</code> if the credentials are initialized already, <code>false</code> otherwise
+  - name: DeleteNodeStatus
+    fields:
+      - type: boolean
+        name: requested
+        description: <code>true</code> if the request is sent, <code>false</code> otherwise
+  - name: DeleteNodeText
+    fields:
+      - type: String
+        name: message
+        optional: true
+        description: text message for the provider
+    errors:
+      - code: delete-node.no-email
+        description: e-mail is required to be set in the profile to communicate with the provider
+      - code: deleteNodeText.message.wrong-size
+        description: the message is too long
   - name: DomainAttributes
     fields:
       - type: String
