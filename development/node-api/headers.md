@@ -34,6 +34,9 @@ This header is sent by the client in HTTP request. It signals that the
 client supports Moera REST API of the given version. Currently only
 version `1.0` is defined.
 
+Node that usually redirects all non-API requests to a web client should
+disable this behavior when receives this header.
+
 ## Plugins
 
 <h4 class="identifier">
