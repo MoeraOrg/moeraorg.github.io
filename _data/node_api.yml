@@ -1607,6 +1607,15 @@ objects:
           Accept a notification packet from other node. Notification packets older than 10 minutes are ignored.
           The sending node should update the packet timestamp and the signature and send the packet again.
           This mechanism prevents attackers from recording and resending old signed packets.
+        errors:
+          - code: ask.too-many
+            description: >
+              the node cannot accept so many <a href="notifications.html#ASKED">ASKED</a> notifications from the same
+              node
+          - code: ask.too-often
+            description: >
+              the node cannot accept so many <a href="notifications.html#ASKED">ASKED</a> notifications over a short
+              period of time
   - name: People
     description: Information related to other nodes.
     requests:
