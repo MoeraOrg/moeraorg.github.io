@@ -27,21 +27,6 @@ subdirectory of the Moera root, the REST API endpoint is located at
 `/moera/api`.
 
 <h4 class="identifier">
-    X-Moera: redirect={url} [connectedOnly={true or false}]
-</h4>
-
-This header is sent by a standalone web client in HTTP response. If
-the browser extension detects it, it immediately performs HTTP redirect to
-the `<url>` specified in the `redirect` parameter. If `connectedOnly`
-parameter is set to `true` and the browser extension has no connection
-data yet, the redirect is delayed until the web client starts and
-transfers its connection data to the browser extension.
-
-This mechanism allows users that have the browser extension installed to
-seamlessly move from a standalone web client to the browser
-extension-based client.
-
-<h4 class="identifier">
     X-Accept-Moera: {version}
 </h4>
 
