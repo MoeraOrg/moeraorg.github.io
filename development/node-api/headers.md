@@ -13,7 +13,7 @@ Architecture Overview section.
 ## Clients
 
 <h4 class="identifier">
-    X-Moera: [root={root}] [page={page}]
+    X-Moera: [root={root}] [page={page}] [name={name}]
 </h4>
 
 This header is sent by a website in HTTP response. It signals that the
@@ -25,6 +25,12 @@ If `root` is set, it points to the *Moera root* of the website (matches
 the website root by default). Virtual pages are located under `/moera`
 subdirectory of the Moera root, the REST API endpoint is located at
 `/moera/api`.
+
+If `name` is set, it defines the name of the node. Knowing the node name earlier
+allows the client to start using REST API without making `/whoami` request
+first. However, the client should not trust the node that the name belongs to
+it. The client should verify the name through a naming server as soon as
+possible.
 
 <h4 class="identifier">
     X-Accept-Moera: {version}
