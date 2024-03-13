@@ -1,0 +1,150 @@
+calls:
+  - name: register
+    description: >
+      Register a client to receive messages from the specified node. The client will be unregistered automatically if
+      the relay gets an error from the push service indicating that the client cannot receive messages anymore.
+    params:
+      - type: String
+        name: clientId
+        description: ID/token of the target client to receive messages
+      - type: String
+        name: nodeName
+        description: name of the node that will send messages
+      - type: String
+        name: lang
+        description: language of the messages (use standard language codes, like "en_US" or "uk")
+      - type: timestamp
+        name: signedAt
+        description: timestamp of the signature, the signature will be valid 2 minutes after the time specified
+      - type: byte[]
+        name: signature
+        fingerprint: PushRelayRegister
+        description: the signature
+
+  - name: feedStatus
+    description: Send a message to node's clients about number of new stories in a feed.
+    params:
+      - type: String
+        name: feedName
+        description: name of the feed
+      - type: int
+        name: notViewed
+        description: number of stories that have not been viewed yet
+      - type: int
+        name: notViewedMoment
+        description: moment of the oldest non-viewed story
+      - type: String
+        name: nodeName
+        description: name of the node that is sending the message
+      - type: timestamp
+        name: signedAt
+        description: timestamp of the signature, the signature will be valid 2 minutes after the time specified
+      - type: byte[]
+        name: signature
+        fingerprint: PushRelayMessage
+        description: the signature
+
+  - name: storyAdded
+    description: Send a message to node's clients about a new story.
+    params:
+      - struct: StoryInfo
+        name: story
+        description: the story
+      - type: String
+        name: nodeName
+        description: name of the node that is sending the message
+      - type: timestamp
+        name: signedAt
+        description: timestamp of the signature, the signature will be valid 2 minutes after the time specified
+      - type: byte[]
+        name: signature
+        fingerprint: PushRelayMessage
+        description: the signature
+
+  - name: storyDeleted
+    description: Send a message to node's clients about deleting a story.
+    params:
+      - type: String
+        name: storyId
+        description: ID of the story
+      - type: String
+        name: nodeName
+        description: name of the node that is sending the message
+      - type: timestamp
+        name: signedAt
+        description: timestamp of the signature, the signature will be valid 2 minutes after the time specified
+      - type: byte[]
+        name: signature
+        fingerprint: PushRelayMessage
+        description: the signature
+
+fingerprints:
+  - name: PushRelayRegister
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>PUSH_RELAY_REGISTER</code>
+          - type: String
+            field: clientId
+          - type: String
+            field: lang
+          - type: timestamp
+            field: signedAt
+            comment: of the current revision
+
+  - name: PushRelayMessage
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>PUSH_RELAY_MESSAGE</code>
+          - type: timestamp
+            field: signedAt
+            comment: of the current revision
+
+errors:
+  - code: 1
+    name: client-id.empty
+    description: <code>clientId</code> is empty
+  - code: 2
+    name: client-id.too-long
+    description: <code>clientId</code> is too long
+  - code: 3
+    name: node-name.empty
+    description: <code>nodeName</code> is empty
+  - code: 4
+    name: node-name.unknown
+    description: <code>nodeName</code> is unknown
+  - code: 5
+    name: lang.too-long
+    description: <code>lang</code> is too long
+  - code: 6
+    name: node.no-clients
+    description: the node has node clients (the node should stop sending messages for them)
+  - code: 7
+    name: story.empty
+    description: <code>story</code> is empty
+  - code: 8
+    name: story.invalid
+    description: <code>story</code> format is invalid
+  - code: 9
+    name: story.type-unknown
+    description: <code>story.storyType</code> is unknown
+  - code: 10
+    name: story-id.empty
+    description: <code>storyId</code> is empty
+  - code: 11
+    name: signed-at.empty
+    description: <code>signedAt</code> is empty
+  - code: 12
+    name: signed-at.too-old
+    description: <code>signedAt</code> is too old
+  - code: 13
+    name: signature.empty
+    description: <code>signature</code> is empty
+  - code: 14
+    name: signature.incorrect
+    description: <code>signature</code> is incorrect

@@ -54,6 +54,9 @@
 
 - type: end
 
+- name: push-relay-api
+  title: Push Relay API
+
 - name: python-moeralib/index
   title: Python Library
 

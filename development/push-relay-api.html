@@ -1,0 +1,131 @@
+---
+layout: development
+title: Push Relay API
+---
+
+<h1>Push Relay API</h1>
+<p>
+    Many services for delivering push messages to mobile devices are not designed for decentralized networks. They
+    require the mobile application to be bound to an account on the service and a single server to send messages to this
+    account. To work around this limitation, the Moera network uses dedicated Push Relay servers that accept push
+    messages from nodes and route them to their clients. Each node should provide a token it got from the client that
+    confirms that the node has the right to send notifications to the client. Nodes authenticate on the relay using
+    short-living tokens signed with the node's signing key.
+</p>
+<p>
+    Moera Push Relay API is based on JSON-RPC protocol. Until the API is stabilized, it may be changed in various ways
+    and backward compatibility is not guaranteed.
+</p>
+<p>
+    <code>timestamp</code> below is the number of seconds that passed since 01-01-1970 00:00:00 in UTC timezone.
+</p>
+<h2>Calls</h2>
+{% for call in site.data.push_relay_api.calls %}
+    <h4 id="{{ call.name }}" class="identifier call">{{
+        call.name }}({% for param in call.params %}{{ param.name }}{% unless forloop.last %}, {% endunless %}{% endfor %})
+    </h4>
+    <p>{{ call.description }}</p>
+    <dl>
+        {% if call.params %}
+            <dt>Parameters:</dt>
+            {% for param in call.params %}
+                <dd>
+                    <code>
+                        {% if param.type %}
+                            {{ param.type }}
+                        {% endif %}
+                        {% if param.struct %}
+                            <a href="node-api/requests.html#{{ param.struct }}">
+                                {{ param.struct }}{% if param.array == true %}[]{% endif
+                            %}</a>
+                        {% endif %}
+                        {{ param.name
+                    }}</code>
+                    {% if param.description %}
+                        &ndash; {{ param.description }}
+                        {% if param.fingerprint %}
+                            (use <a href="#{{param.fingerprint}}">{{param.fingerprint}}</a> fingerprint)
+                        {% endif %}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+        {% endif %}
+        {% if call.returns %}
+            <dt>Returns:</dt>
+            <dd>
+                {% if call.returns.type %}
+                    <code>{{ call.returns.type }}</code>
+                {% endif %}
+                {% if call.returns.struct %}
+                    <code><a href="node-api/requests.html#{{ call.returns.struct }}">
+                        {{ call.returns.struct }}{% if call.returns.array == true %}[]{% endif
+                    %}</a></code>
+                {% endif %}
+                {% if call.returns.description %}
+                    &ndash; {{ call.returns.description }}
+                {% endif %}
+            </dd>
+        {% endif %}
+    </dl>
+{% endfor %}
+
+<br/><br/>
+<h2 id="fingerprints">Fingerprints</h2>
+{% for object in site.data.push_relay_api.fingerprints %}
+    <a name="{{ object.name }}"></a>
+    {% for ver in object.versions %}
+        <h4 id="{{ object.name }}_{{ ver.version }}" class="mt-5">{{ object.name }}, version {{ ver.version }}</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="col-3">Type</th>
+                <th class="col-3">Field</th>
+                <th class="col-6">Comment</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for field in ver.fingerprint %}
+                    <tr>
+                        <td>
+                            {% if field.type %}
+                                <code>{{ field.type }}</code>
+                            {% endif %}
+                            {% if field.digest %}
+                                {% if field.array %}
+                                    array of hashes of <a href="#{{ field.digest }}">{{ field.digest }}</a>
+                                    fingerprint
+                                {% else %}
+                                    hash of <a href="#{{ field.digest }}">{{ field.digest }}</a>
+                                    fingerprint
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td><code>{{ field.field }}</code></td>
+                        <td>{{ field.comment }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endfor %}
+
+<br/><br/>
+<h2 id="error-codes">Error codes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for error in site.data.push_relay_api.errors %}
+            <tr>
+                <td><code>{{ error.code }}</code></td>
+                <td><code>{{ error.name }}</code></td>
+                <td>{{ error.description }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
