@@ -2252,6 +2252,25 @@ objects:
         errors:
           - code: push.not-found
             description: push client is not found
+  - name: Push Relay
+    description: >
+      Moera network uses dedicated Push Relay servers that accept push messages from nodes and route them to their
+      clients. Read more in the <a href="../push-relay-api.html">Push Relay API</a> chapter.
+    requests:
+      - url: /push-relay
+        type: POST
+        function: registerAtPushRelay
+        in:
+          struct: PushRelayClientAttributes
+          name: attributes
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Register a client at the push relay server to receive messages from this node. The operation is synchronous.
+        errors:
+          - code: push-relay.error
+            description: push relay service returned an error
   - name: Remote Ask
     description: >
       The node may send requests to other nodes asking to subscribe to it, to add it to friends etc.
@@ -5784,6 +5803,25 @@ structures:
         name: feedStatus
         optional: true
         description: status of the feed (<code>feed-updated</code> notifications only)
+  - name: PushRelayClientAttributes
+    fields:
+      - enum: PushRelayType
+        name: type
+        description: type of the relay
+      - type: String
+        name: clientId
+        description: ID/token of the client
+      - type: String
+        name: lang
+        optional: true
+        description: language of the messages
+    errors:
+      - code: pushRelayClientAttributes.type.blank
+        description: relay type is empty
+      - code: pushRelayClientAttributes.type.unknown
+        description: relay type is unknown
+      - code: pushRelayClientAttributes.clientId.blank
+        description: client ID is empty
   - name: ReactionAttributes
     fields:
       - type: boolean
@@ -7731,6 +7769,10 @@ enums:
         description: a story was deleted from a feed
       - name: feed-updated
         description: feed status was updated
+  - name: PushRelayType
+    values:
+      - name: fcm
+        description: Google Firebase Cloud Messaging (FCM) relay
   - name: SettingType
     values:
       - name: bool
