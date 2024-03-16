@@ -72,6 +72,26 @@ functions:
       If the node name does not include a generation, generation 0 is returned. If name syntax is invalid,
       <code>ValueError</code> is raised.
 
+  - name: shorten(node_name)
+    params:
+      - name: node_name
+        type: str | None
+        description: the node name in compact or full form
+    out:
+      type: str | None
+      description: the node name in the compact form
+    description: Converts the node name to the compact form, omitting generation 0.
+
+  - name: expand(node_name)
+    params:
+      - name: node_name
+        type: str | None
+        description: the node name in compact or full form
+    out:
+      type: str | None
+      description: the node name in the full form
+    description: Converts the node name to the full form, containing generation.
+
   - name: resolve(name, naming_server=MAIN_SERVER)
     params:
       - name: name
