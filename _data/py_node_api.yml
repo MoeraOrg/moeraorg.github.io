@@ -94,6 +94,10 @@ enums:
     name: story-deleted
   - description: feed status was updated
     name: feed-updated
+- name: PushRelayType
+  values:
+  - description: Google Firebase Cloud Messaging (FCM) relay
+    name: fcm
 - name: SettingType
   values:
   - description: boolean, may have value <code>true</code> or <code>false</code>
@@ -1953,6 +1957,17 @@ objects:
       attackers from recording and resending old signed packets.
 
       '
+    errors:
+    - code: ask.too-many
+      description: 'the node cannot accept so many <a href="notifications.html#ASKED">ASKED</a>
+        notifications from the same node
+
+        '
+    - code: ask.too-often
+      description: 'the node cannot accept so many <a href="notifications.html#ASKED">ASKED</a>
+        notifications over a short period of time
+
+        '
     function: send_notification(packet)
     out:
       struct: Result
@@ -2442,6 +2457,27 @@ objects:
     '
   name: Push Notifications
   requests: []
+- description: 'Moera network uses dedicated Push Relay servers that accept push messages
+    from nodes and route them to their clients. Read more in the <a href="../push-relay-api.html">Push
+    Relay API</a> chapter.
+
+    '
+  name: Push Relay
+  requests:
+  - auth: admin
+    description: 'Register a client at the push relay server to receive messages from
+      this node. The operation is synchronous.
+
+      '
+    errors:
+    - code: push-relay.error
+      description: push relay service returned an error
+    function: register_at_push_relay(attributes)
+    out:
+      struct: Result
+    params:
+    - name: attributes
+      struct: PushRelayClientAttributes
 - description: 'The node may send requests to other nodes asking to subscribe to it,
     to add it to friends etc.
 
@@ -6294,6 +6330,25 @@ structures:
     optional: true
     struct: FeedWithStatus
   name: PushContent
+- errors:
+  - code: pushRelayClientAttributes.type.blank
+    description: relay type is empty
+  - code: pushRelayClientAttributes.type.unknown
+    description: relay type is unknown
+  - code: pushRelayClientAttributes.clientId.blank
+    description: client ID is empty
+  fields:
+  - description: type of the relay
+    enum: PushRelayType
+    name: type
+  - description: ID/token of the client
+    name: client_id
+    type: str
+  - description: language of the messages
+    name: lang
+    optional: true
+    type: str
+  name: PushRelayClientAttributes
 - fields:
   - description: <code>True</code>, if the reaction is negative, <code>False</code>,
       if positive
