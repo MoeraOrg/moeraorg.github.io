@@ -130,6 +130,46 @@ for story in slice.stories:
         print(story.posting.operations.view, story.posting.heading)
 ```
 
+## Universal URLs
+
+<code><a href="universal_location.html">moeralib.universal_location</a></code>
+module contains classes and routines for creating and parsing Moera universal
+URLs.
+
+To parse a universal URL, pass it to `parse()` function. It returns a
+`UniversalLocation` instance containing the result of parsing.
+
+```python
+from moeralib.universal_location import parse
+
+uni = parse("https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3")
+print(uni.node_name, uni.authority, uni.path)
+```
+
+To build a universal URL from parts, use `redirect_to()` function.
+
+```python
+from moeralib.universal_location import redirect_to
+
+print(redirect_to(
+    node_name="Alice_0",
+    root_url="https://alice.moera.blog/",
+    path="/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3"
+))
+```
+
+`redirect_to_url()` function converts URL of a page on a node to a corresponding
+universal URL.
+
+```python
+from moeralib.universal_location import redirect_to
+
+print(redirect_to_url(
+    "Alice_0",
+    "https://alice.moera.blog/moera/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3"
+))
+```
+
 [1]: https://github.com/MoeraOrg/python-moeralib
 [2]: https://pypi.org/project/moeralib/
 [3]: /development/node-api/authentication.html

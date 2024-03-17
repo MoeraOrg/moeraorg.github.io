@@ -68,6 +68,9 @@
 - name: python-moeralib/node
   title: moeralib.node
 
+- name: python-moeralib/universal_location
+  title: moeralib.universal_location
+
 - type: end
 
 - name: development-environment
