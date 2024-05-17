@@ -4850,6 +4850,12 @@ structures:
       - type: int
         name: targetWidth
         description: the width the preview was prepared for viewing at
+      - type: String
+        name: directPath
+        optional: true
+        description: >
+          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
+          a filesystem; static images do not accept any query parameters including authentication parameters
       - type: int
         name: width
         description: actual width of the preview in pixels
@@ -5616,6 +5622,12 @@ structures:
         description: >
           virtual location of the media file, relative to the <code>/media</code>
           <a href="virtual-pages.html">virtual page</a>
+      - type: String
+        name: directPath
+        optional: true
+        description: >
+          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
+          a filesystem; static images do not accept any query parameters including authentication parameters
       - type: String
         name: mimeType
         description: MIME type of the media

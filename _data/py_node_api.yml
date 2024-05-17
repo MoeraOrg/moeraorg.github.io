@@ -5300,6 +5300,14 @@ structures:
   - description: the width the preview was prepared for viewing at
     name: target_width
     type: int
+  - description: 'location of the media file, relative to the <code>/media</code>;
+      points to a static image served directly from a filesystem; static images do
+      not accept any query parameters including authentication parameters
+
+      '
+    name: direct_path
+    optional: true
+    type: str
   - description: actual width of the preview in pixels
     name: width
     type: int
@@ -6131,6 +6139,14 @@ structures:
 
       '
     name: path
+    type: str
+  - description: 'location of the media file, relative to the <code>/media</code>;
+      points to a static image served directly from a filesystem; static images do
+      not accept any query parameters including authentication parameters
+
+      '
+    name: direct_path
+    optional: true
     type: str
   - description: MIME type of the media
     name: mime_type
