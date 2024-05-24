@@ -7483,6 +7483,11 @@ structures:
         name: avatar
         optional: true
         description: node owner's avatar
+      - type: boolean
+        name: frozen
+        optional: true
+        description: >
+          <code>true</code> if the node is frozen due to inactivity, <code>false</code> (the default) otherwise
 
 operations:
   - name: CommentOperations
