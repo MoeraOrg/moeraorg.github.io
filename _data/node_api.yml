@@ -7904,6 +7904,8 @@ enums:
         description: a failed attempt to post a reaction to a comment
       - name: comment-update-task-failed
         description: a failed attempt to update a comment
+      - name: defrosting
+        description: the node's owner has connected to it after long inactivity and the node is leaving the frozen state
       - name: friend-added
         description: a remote node has added the user to friends
       - name: friend-deleted

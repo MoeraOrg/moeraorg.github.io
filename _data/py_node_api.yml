@@ -208,6 +208,9 @@ enums:
     name: comment-reaction-task-failed
   - description: a failed attempt to update a comment
     name: comment-update-task-failed
+  - description: the node's owner has connected to it after long inactivity and the
+      node is leaving the frozen state
+    name: defrosting
   - description: a remote node has added the user to friends
     name: friend-added
   - description: a remote node has removed the user from friends
@@ -8078,4 +8081,11 @@ structures:
     name: avatar
     optional: true
     struct: AvatarImage
+  - description: '<code>True</code> if the node is frozen due to inactivity, <code>False</code>
+      (the default) otherwise
+
+      '
+    name: frozen
+    optional: true
+    type: bool
   name: WhoAmI
