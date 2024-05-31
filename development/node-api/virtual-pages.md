@@ -22,11 +22,11 @@ Node API specification in OpenAPI format.
 
 Web interface for executing node API requests.
 
-<h4 class="identifier">/complains</h4>
+<h4 class="identifier">/complaints</h4>
 
 _(for sheriffs only)_ Complaints management interface.
 
-<h4 class="identifier">/complains/{id}</h4>
+<h4 class="identifier">/complaints/{id}</h4>
 
 _(for sheriffs only)_ Management interface for a particular group of complaints,
 related to the same posting or comment.

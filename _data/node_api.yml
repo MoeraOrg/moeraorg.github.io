@@ -2698,7 +2698,7 @@ objects:
       Similar complaints sent to the sheriff are grouped together and the sheriff makes decisions on a group as whole.
       <a href="/overview/supervision.html">Read more</a> about sheriff supervision in the Architecture Overview section.
     requests:
-      - url: /sheriff/complains/groups
+      - url: /sheriff/complaints/groups
         type: GET
         function: getSheriffComplaintGroupsSlice
         query:
@@ -2714,21 +2714,21 @@ objects:
             name: limit
             optional: true
             description: maximum number of groups returned
-          - enum: SheriffComplainStatus
+          - enum: SheriffComplaintStatus
             name: status
             optional: true
             description: filter groups by status
         out:
-          struct: SheriffComplainGroupsSliceInfo
+          struct: SheriffComplaintGroupsSliceInfo
         description: >
           Get a slice of the list of groups of complaints, optionally filtered by status, delimited by
           <code>before</code> or <code>after</code> moment and the given <code>limit</code>. If neither
           <code>before</code> nor <code>after</code> are provided, the latest groups are returned. The node may decide
           to return less groups than the given <code>limit</code>. The groups are always sorted by moment, descending.
         errors:
-          - code: sheriff-complain-groups.before-after-exclusive
+          - code: sheriff-complaint-groups.before-after-exclusive
             description: before and after parameters are mutually exclusive
-      - url: /sheriff/complains/groups/{id}
+      - url: /sheriff/complaints/groups/{id}
         type: GET
         function: getSheriffComplaintGroup
         params:
@@ -2736,12 +2736,12 @@ objects:
             name: id
             description: ID of the group of complaints
         out:
-          struct: SheriffComplainGroupInfo
+          struct: SheriffComplaintGroupInfo
         description: Get details of the given group of complaints.
         errors:
-          - code: sheriff-complain-group.not-found
+          - code: sheriff-complaint-group.not-found
             name: the group of complaints is not found
-      - url: /sheriff/complains/groups/{id}/complains
+      - url: /sheriff/complaints/groups/{id}/complaints
         type: GET
         function: getSheriffComplaintsByGroup
         params:
@@ -2749,13 +2749,13 @@ objects:
             name: id
             description: ID of the group of complaints
         out:
-          struct: SheriffComplainInfo
+          struct: SheriffComplaintInfo
           array: true
         description: Get complaints included into the given group of complaints.
         errors:
-          - code: sheriff-complain-group.not-found
+          - code: sheriff-complaint-group.not-found
             name: the group of complaints is not found
-      - url: /sheriff/complains/groups/{id}
+      - url: /sheriff/complaints/groups/{id}
         type: PUT
         function: updateSheriffComplaintGroup
         params:
@@ -2763,28 +2763,28 @@ objects:
             name: id
             description: ID of the group of complaints
         in:
-          struct: SheriffComplainDecisionText
+          struct: SheriffComplaintDecisionText
           name: decision
         out:
-          struct: SheriffComplainGroupInfo
+          struct: SheriffComplaintGroupInfo
         auth: admin
         description: Make decision on the given group of complaints.
         errors:
-          - code: sheriff-complain-group.not-found
+          - code: sheriff-complaint-group.not-found
             name: the group of complaints is not found
   - name: Sheriff Complaints
     description: >
       Complaints are sent to the sheriff via sheriff's node. <a href="/overview/supervision.html">Read more</a> about
       sheriff supervision in the Architecture Overview section.
     requests:
-      - url: /sheriff/complains
+      - url: /sheriff/complaints
         type: POST
         function: createSheriffComplaint
         in:
-          struct: SheriffComplainText
+          struct: SheriffComplaintText
           name: complaint
         out:
-          struct: SheriffComplainInfo
+          struct: SheriffComplaintInfo
         auth: required
         description: Send a complaint to the sheriff.
   - name: Sheriff Orders
@@ -6352,7 +6352,7 @@ structures:
         name: principals
         optional: true
         description: (<code>Principal</code>) list of allowed principals
-  - name: SheriffComplainDecisionText
+  - name: SheriffComplaintDecisionText
     fields:
       - type: boolean
         name: reject
@@ -6371,11 +6371,11 @@ structures:
         description: >
           <code>true</code>, if the complaints' owners' names are not to be published, <code>false</code> otherwise
     errors:
-      - code: sheriffComplainDecisionText.decisionCode.blank
+      - code: sheriffComplaintDecisionText.decisionCode.blank
         description: decision code is not set
-      - code: sheriffComplainDecisionText.decisionDetails.wrong-size
+      - code: sheriffComplaintDecisionText.decisionDetails.wrong-size
         description: decision details are too long
-  - name: SheriffComplainGroupInfo
+  - name: SheriffComplaintGroupInfo
     fields:
       - type: String
         name: id
@@ -6443,7 +6443,7 @@ structures:
       - type: int
         name: moment
         description: moment of the group of complaints
-      - enum: SheriffComplainStatus
+      - enum: SheriffComplaintStatus
         name: status
         description: status of the group of complaints
       - enum: SheriffOrderReason
@@ -6463,7 +6463,7 @@ structures:
         optional: true
         description: >
           <code>true</code>, if the complaints' owners' names are not published, <code>false</code> otherwise
-  - name: SheriffComplainGroupsSliceInfo
+  - name: SheriffComplaintGroupsSliceInfo
     fields:
       - type: int
         name: before
@@ -6471,7 +6471,7 @@ structures:
       - type: int
         name: after
         description: the slice contains all groups after this moment, exclusive. May be the far past.
-      - struct: SheriffComplainGroupInfo
+      - struct: SheriffComplaintGroupInfo
         array: true
         name: groups
         description: the groups
@@ -6484,7 +6484,7 @@ structures:
       - type: int
         name: totalInFuture
         description: number of groups after this slice till the far future
-  - name: SheriffComplainInfo
+  - name: SheriffComplaintInfo
     fields:
       - type: String
         name: id
@@ -6499,10 +6499,10 @@ structures:
         name: ownerGender
         optional: true
         description: complaint owner's gender
-      - struct: SheriffComplainGroupInfo
+      - struct: SheriffComplaintGroupInfo
         name: group
         optional: true
-        description: the group of complains this complaint belongs to
+        description: the group of complaints this complaint belongs to
       - enum: SheriffOrderReason
         name: reasonCode
         description: reason of the complaint
@@ -6518,7 +6518,7 @@ structures:
       - type: timestamp
         name: createdAt
         description: complaint creation timestamp - the real time when the order was created
-  - name: SheriffComplainText
+  - name: SheriffComplaintText
     fields:
       - type: String
         name: ownerFullName
@@ -6592,41 +6592,41 @@ structures:
         description: >
           <code>true</code>, if the complaint's owner wants his name not to be published, <code>false</code> otherwise
     errors:
-      - code: sheriffComplainText.ownerFullName.wrong-size
+      - code: sheriffComplaintText.ownerFullName.wrong-size
         description: owner's full name is too long
-      - code: sheriffComplainText.ownerGender.wrong-size
+      - code: sheriffComplaintText.ownerGender.wrong-size
         description: owner's gender is too long
-      - code: sheriffComplainText.nodeName.blank
+      - code: sheriffComplaintText.nodeName.blank
         description: node name is empty
-      - code: sheriffComplainText.nodeName.wrong-size
+      - code: sheriffComplaintText.nodeName.wrong-size
         description: node name is too long
-      - code: sheriffComplainText.fullName.wrong-size
+      - code: sheriffComplaintText.fullName.wrong-size
         description: node's full name is too long
-      - code: sheriffComplainText.feedName.blank
+      - code: sheriffComplaintText.feedName.blank
         description: feed name is empty
-      - code: sheriffComplainText.feedName.wrong-size
+      - code: sheriffComplaintText.feedName.wrong-size
         description: feed name is too long
-      - code: sheriffComplainText.postingOwnerName.wrong-size
+      - code: sheriffComplaintText.postingOwnerName.wrong-size
         description: posting owner's name is too long
-      - code: sheriffComplainText.postingOwnerFullName.wrong-size
+      - code: sheriffComplaintText.postingOwnerFullName.wrong-size
         description: posting owner's full name is too long
-      - code: sheriffComplainText.postingOwnerGender.wrong-size
+      - code: sheriffComplaintText.postingOwnerGender.wrong-size
         description: posting owner's gender is too long
-      - code: sheriffComplainText.postingHeading.wrong-size
+      - code: sheriffComplaintText.postingHeading.wrong-size
         description: posting heading is too long
-      - code: sheriffComplainText.postingId.wrong-size
+      - code: sheriffComplaintText.postingId.wrong-size
         description: posting ID is too long
-      - code: sheriffComplainText.commentOwnerName.wrong-size
+      - code: sheriffComplaintText.commentOwnerName.wrong-size
         description: comment owner's name is too long
-      - code: sheriffComplainText.commentOwnerFullName.wrong-size
+      - code: sheriffComplaintText.commentOwnerFullName.wrong-size
         description: comment owner's full name is too long
-      - code: sheriffComplainText.commentOwnerGender.wrong-size
+      - code: sheriffComplaintText.commentOwnerGender.wrong-size
         description: comment owner's gender is too long
-      - code: sheriffComplainText.commentHeading.wrong-size
+      - code: sheriffComplaintText.commentHeading.wrong-size
         description: comment heading is too long
-      - code: sheriffComplainText.commentId.wrong-size
+      - code: sheriffComplaintText.commentId.wrong-size
         description: comment ID is too long
-      - code: sheriffComplainText.reasonDetails.wrong-size
+      - code: sheriffComplaintText.reasonDetails.wrong-size
         description: reason details are too long
   - name: SheriffOrderAttributes
     fields:
@@ -6825,7 +6825,7 @@ structures:
         name: signatureVersion
         description: signature version (i.e. fingerprint version)
       - type: String
-        name: complainGroupId
+        name: complaintGroupId
         optional: true
         description: ID of the groups of complaints that were the cause of the order
   - name: StoryAttributes
@@ -7112,7 +7112,7 @@ structures:
         optional: true
         description: ID of the sheriff's order
       - type: String
-        name: complainId
+        name: complaintId
         optional: true
         description: ID of the complaint, if any
   - name: SubscriberDescription
@@ -7820,7 +7820,7 @@ enums:
         description: UUID
       - name: Principal
         description: <a href="access-controls.html#principals">principal</a>
-  - name: SheriffComplainStatus
+  - name: SheriffComplaintStatus
     values:
       - name: posted
         description: the group is just added
@@ -7942,9 +7942,9 @@ enums:
         description: a comment was added under a posting the user is subscribed to
       - name: reply-comment
         description: a reply was added to the user's comment
-      - name: sheriff-complain-added
+      - name: sheriff-complaint-added
         description: a new complaint was received
-      - name: sheriff-complain-decided
+      - name: sheriff-complaint-decided
         description: a decision was made on the user's complaint
       - name: sheriff-marked
         description: user's entry was marked by a sheriff

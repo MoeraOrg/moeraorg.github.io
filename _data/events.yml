@@ -534,25 +534,25 @@ events:
       - type: boolean
         name: correct
         description: verification result
-  - type: SHERIFF_COMPLAIN_ADDED
+  - type: SHERIFF_COMPLAINT_ADDED
     description: A new complaint was received.
     fields:
-      - struct: SheriffComplainInfo
-        name: complain
+      - struct: SheriffComplaintInfo
+        name: complaint
         description: the complaint
       - type: String
         name: groupId
         description: ID of the group of complaints this complaint was added to
-  - type: SHERIFF_COMPLAIN_GROUP_ADDED
+  - type: SHERIFF_COMPLAINT_GROUP_ADDED
     description: A new group of complaints was added.
     fields:
-      - struct: SheriffComplainGroupInfo
+      - struct: SheriffComplaintGroupInfo
         name: group
         description: the group of complaints
-  - type: SHERIFF_COMPLAIN_GROUP_UPDATED
+  - type: SHERIFF_COMPLAINT_GROUP_UPDATED
     description: A group of complaints was updated.
     fields:
-      - struct: SheriffComplainGroupInfo
+      - struct: SheriffComplaintGroupInfo
         name: group
         description: the group of complaints
   - type: STORIES_STATUS_UPDATED

@@ -568,7 +568,7 @@ notifications:
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
-  - type: SHERIFF_COMPLAIN_DECIDED
+  - type: SHERIFF_COMPLAINT_DECIDED
     description: The sheriff made a decision on the receiver's complaint
     fields:
       - type: String
@@ -602,7 +602,7 @@ notifications:
         name: commentId
         comment: ID of the comment the complaint is related to
       - type: String
-        name: complainGroupId
+        name: complaintGroupId
         comment: ID of the group of complaints the complaint was included into
   - type: SHERIFF_ORDER_FOR_COMMENT_ADDED
     description: The sending node got a sheriff's order related to the receiver's comment
