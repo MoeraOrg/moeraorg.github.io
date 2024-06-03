@@ -32,6 +32,9 @@ first. However, the client should not trust the node that the name belongs to
 it. The client should verify the name through a naming server as soon as
 possible.
 
+Since the name may contain non-ASCII characters and special symbols,
+it is URL-encoded.
+
 <h4 class="identifier">
     X-Accept-Moera: {version}
 </h4>
