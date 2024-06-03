@@ -1608,6 +1608,10 @@ objects:
           The sending node should update the packet timestamp and the signature and send the packet again.
           This mechanism prevents attackers from recording and resending old signed packets.
         errors:
+          - code: frozen
+            description: >
+              not an error; the notification was accepted, but will not be processed immediately, because the node is
+              frozen due to inactivity
           - code: ask.too-many
             description: >
               the node cannot accept so many <a href="notifications.html#ASKED">ASKED</a> notifications from the same
