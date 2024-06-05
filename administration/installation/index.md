@@ -15,8 +15,9 @@ The simplest way to install the Moera server software (`moera-node`) is as follo
 5. Create a [configuration file][3].
 6. [Run][4] the server.
 7. Configure [NGINX as a reverse proxy][5].
-8. _(optional)_ Configure a [watchdog][6].
-9. _(optional)_ Configure [logrotate][7].
+8. _(recommended)_ Configure [direct serving of media files][6].
+9. _(optional)_ Configure a [watchdog][7].
+10. _(optional)_ Configure [logrotate][8].
 
 
 [1]: https://github.com/MoeraOrg/moera-node/releases
@@ -24,5 +25,6 @@ The simplest way to install the Moera server software (`moera-node`) is as follo
 [3]: /administration/installation/config.html
 [4]: /administration/installation/running.html
 [5]: /administration/installation/nginx.html
-[6]: /administration/installation/watchdog.html
-[7]: /administration/installation/logrotate.html
+[6]: /administration/installation/direct-serving.html
+[7]: /administration/installation/watchdog.html
+[8]: /administration/installation/logrotate.html

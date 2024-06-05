@@ -18,6 +18,9 @@
 - name: installation/nginx
   title: NGINX
 
+- name: installation/direct-serving
+  title: Direct Serving
+
 - name: installation/watchdog
   title: Watchdog
 

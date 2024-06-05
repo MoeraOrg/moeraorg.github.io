@@ -157,6 +157,12 @@ If `node.media.serve` is set to `accel`, this option sets a prefix added to
 the names of media files. This prefix is then used in NGINX configuration to
 configure serving media files from the media files directory. 
 
+```yaml
+node.media.direct-serve: false
+```
+
+If `true`, enables [serving media files directly][6] from the filesystem.
+
 ## Multiple domains
 
 `moera-node` allows to run several nodes on a single server instance. Each node
@@ -345,3 +351,4 @@ to simulate network latency.
 [3]: https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data-migration
 [4]: https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.mail.spring.mail.properties
 [5]: https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html
+[6]: direct-serving.html
