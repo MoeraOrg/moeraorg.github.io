@@ -10,6 +10,16 @@ BODY {
     padding-bottom: 2rem;
 }
 
+.top-line {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+MAIN.welcome-page {
+    margin-top: 2rem;
+}
+
 .overview-page {
     --page-color: var(--overview-color);
 }
