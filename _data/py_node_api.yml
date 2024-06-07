@@ -1961,6 +1961,11 @@ objects:
 
       '
     errors:
+    - code: frozen
+      description: 'not an error; the notification was accepted, but will not be processed
+        immediately, because the node is frozen due to inactivity
+
+        '
     - code: ask.too-many
       description: 'the node cannot accept so many <a href="notifications.html#ASKED">ASKED</a>
         notifications from the same node
