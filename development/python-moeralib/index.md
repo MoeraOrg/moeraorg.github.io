@@ -142,7 +142,7 @@ To parse a universal URL, pass it to `parse()` function. It returns a
 ```python
 from moeralib.universal_location import parse
 
-uni = parse("https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3")
+uni = parse('https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3')
 print(uni.node_name, uni.authority, uni.path)
 ```
 
@@ -152,9 +152,9 @@ To build a universal URL from parts, use `redirect_to()` function.
 from moeralib.universal_location import redirect_to
 
 print(redirect_to(
-    node_name="Alice_0",
-    root_url="https://alice.moera.blog/",
-    path="/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3"
+    node_name='Alice_0',
+    root_url='https://alice.moera.blog/',
+    path='/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3'
 ))
 ```
 
@@ -162,11 +162,11 @@ print(redirect_to(
 universal URL.
 
 ```python
-from moeralib.universal_location import redirect_to
+from moeralib.universal_location import redirect_to_url
 
 print(redirect_to_url(
-    "Alice_0",
-    "https://alice.moera.blog/moera/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3"
+    'Alice_0',
+    'https://alice.moera.blog/moera/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3'
 ))
 ```
 

@@ -73,5 +73,21 @@
 
 - type: end
 
+- name: typescript-moeralib/index
+  title: TypeScript Library
+
+- type: sub
+
+- name: typescript-moeralib/naming
+  title: moeralib/naming
+
+- name: typescript-moeralib/node
+  title: moeralib/node
+
+- name: typescript-moeralib/universal_location
+  title: moeralib/universal-location
+
+- type: end
+
 - name: development-environment
   title: Development Environment
