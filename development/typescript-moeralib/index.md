@@ -52,8 +52,16 @@ const node = new MoeraNode(resolve('Alice'));
 console.log(node.whoAmI().fullName);
 ```
 
-The library automatically parses JSON structures coming from the node and converts
-them to JavaScript objects.
+The library automatically parses JSON structures coming from the node and
+converts them to JavaScript objects. The corresponding types are defined in
+`moeralib/naming/types` and `moeralib/node/types` submodules.
+
+```typescript
+const attrs: DomainAttributes = {
+    domain: 'dave.moera.club',
+    node_id: DAVE_NODE_ID
+};
+```
 
 ## Authentication
 
@@ -115,7 +123,7 @@ To parse a universal URL, pass it to `parse()` function. It returns a
 import { parse } from 'moeralib/universal-location';
 
 const uni = parse('https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3');
-console.log(uni.nodeName, uni.authority, uni.path);
+console.log(uni.nodeName, uni.authority, uni.path, uni.toString());
 ```
 
 To build a universal URL from parts, use `redirectTo()` function.
