@@ -13,8 +13,8 @@ objects:
           array: true
         auth: admin
         description: Get the list of all reactions performed by the node, filtered by some criteria.
-  - name: Asyncronous Operations
-    description: Asyncronous operations pending or just finished on the node.
+  - name: Asynchronous Operations
+    description: Asynchronous operations pending or just finished on the node.
     requests:
       - url: /async-operations/remote-posting-verification/{id}
         type: GET
@@ -26,7 +26,8 @@ objects:
         out:
           struct: RemotePostingVerificationInfo
         auth: admin
-        description: Get status of the asynchronous operation that performs verification of a remote posting signature.
+        description: >
+          Get the status of the asynchronous operation that performs verification of a remote posting signature.
         errors:
           - code: async-operation.not-found
             description: async operation with the given ID is not found
@@ -41,8 +42,8 @@ objects:
           struct: RemoteReactionVerificationInfo
         auth: admin
         description: >
-          Get status of the asynchronous operation that performs verification of the signature of a reaction to a remote
-          posting.
+          Get the status of the asynchronous operation that performs verification of the signature of a reaction to
+          a remote posting.
         errors:
           - code: async-operation.not-found
             description: async operation with the given ID is not found
@@ -70,8 +71,8 @@ objects:
           struct: AvatarInfo
         auth: admin
         description: >
-          Create a new avatar from a public media file that exists on the node. New public media file is created for
-          the avatar. If avatar's ordinal is not provided in the input, the avatar is assigned an ordinal that is
+          Create a new avatar from a public media file that exists on the node. A new public media file is created for
+          the avatar. If the avatar's ordinal is not provided in the input, the avatar is assigned an ordinal that is
           greater than ordinals of all existing avatars.
         errors:
           - code: media.storage-error
@@ -276,7 +277,7 @@ objects:
           struct: BlockedByUserInfo
           array: true
         auth: optional
-        description: Search nodes, that blocked this node, by the given criteria.
+        description: Search nodes that blocked this node, by the given criteria.
   - name: Cartes
     description: >
       <a href="authentication.html#carte">Cartes</a> - cryptographic tokens used to authenticate on any node besides
@@ -295,7 +296,7 @@ objects:
         auth: admin
         description: >
           Get a set of cartes that correspond to successive periods of time. Two sequences of cartes are returned: one
-          with all permissions and another with `view-media` permission only. The node may decide to return less cartes
+          with all permissions and another with `view-media` permission only. The node may decide to return fewer cartes
           than the given <code>limit</code>.
   - name: Comments
     description: Comments to a posting.
@@ -326,7 +327,7 @@ objects:
         description: >
           Get a slice of the list of comments, delimited by <code>before</code> or <code>after</code> moments (but not
           both) and the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided,
-          the latest comments are returned. The node may decide to return less comments than the given
+          the latest comments are returned. The node may decide to return fewer comments than the given
           <code>limit</code>. The stories are always sorted by moment, ascending.
         errors:
           - code: posting.not-found
@@ -351,7 +352,7 @@ objects:
         description: >
           Create a comment from the given text and add it to the given posting. The comment owner must authenticate in
           some way. If the comment is not signed, it will be kept for a limited period of time and then erased. If
-          authenticated as admin, the comment is signed by the node.
+          authenticated as admin, the node signs the comment.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
@@ -616,7 +617,7 @@ objects:
         description: >
           Get a slice of the list of reactions to the given comment, optionally filtered by reaction type, delimited by
           <code>before</code> moment and the given <code>limit</code>. If <code>before</code> is not provided,
-          the latest reactions are returned. The node may decide to return less reactions than the given
+          the latest reactions are returned. The node may decide to return fewer reactions than the given
           <code>limit</code>. The reactions are always sorted by moment, descending.
         errors:
           - code: comment.not-found
@@ -643,7 +644,7 @@ objects:
         auth: optional
         description: >
           Get the detailed information about the reaction of the given owner to the given comment. If no reaction with
-          such owner exist, an empty structure with just <code>commentId</code> is returned.
+          such an owner exists, an empty structure with just <code>commentId</code> is returned.
         errors:
           - code: comment.not-found
             description: there is no comment with the given ID
@@ -706,7 +707,7 @@ objects:
         out:
           struct: ReactionTotalsInfo
         auth: optional
-        description: Get summary of reactions to the comment given.
+        description: Get a summary of reactions to the comment given.
         errors:
           - code: comment.not-found
             description: there is no comment with the given ID
@@ -732,11 +733,11 @@ objects:
           array: true
         auth: admin
         description: >
-          Search for contacts matching the search <code>query</code>. Every space-delimited word in the query must
-          case-insensitively match a beginning of the contact's node name or a beginning of any space-delimited word in
+          Search for contacts matching the search <code>query</code>. Every space-delimited word in the query must match
+          case-insensitively a beginning of the contact's node name or a beginning of any space-delimited word in
           the contact's full name. The order of words is not significant.
           <br><br>
-          The node may decide to return less contacts than the given <code>limit</code>.
+          The node may decide to return fewer contacts than the given <code>limit</code>.
           <br><br>
           The contacts are sorted by their <i>closeness</i> to the node, which is calculated from the number of
           reactions and comments and their age.
@@ -761,7 +762,7 @@ objects:
         out:
           struct: Result
         description: >
-          Initialize credentials, if they are not set yet. Note that this operation can be executed without
+          Initialize credentials if they are not set yet. Note that this operation can be executed without
           authentication, so this should be done as soon as possible after the node installation. Sign in is not allowed
           until the credentials are set.
         errors:
@@ -800,7 +801,7 @@ objects:
           struct: EmailHint
         description: >
           The node generates credentials reset token that is sent to the node admin by E-mail or using any other way
-          that is defined for credentials recovery. This token then may be used to change the credentials without
+          that is defined for recovery of credentials. This token then may be used to change the credentials without
           knowing the password.
         errors:
           - code: credentials.email-not-set
@@ -826,7 +827,7 @@ objects:
           array: true
         auth: admin
         description: >
-          Get the list of deleted postings, page by page. The node may decide to use smaller page size than the given
+          Get the list of deleted postings, page by page. The node may decide to use a smaller page size than the given
           <code>limit</code>. The postings are always sorted by the deletion timestamp, descending.
         errors:
           - code: page.invalid
@@ -884,7 +885,7 @@ objects:
         auth: optional
         description: >
           Get all revisions of the deleted posting, but not more than <code>limit</code>. The node may decide to return
-          less revisions than the given <code>limit</code>.
+          fewer revisions than the given <code>limit</code>.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
@@ -1030,8 +1031,8 @@ objects:
         out:
           struct: DomainAvailable
         description: >
-          Get an available domain name that is recommended for the given node name. The domain name is usually chosen to
-          be close to the node name in English transcription. If domain registration for this server is not public, this
+          Get an available domain name recommended for the given node name. The domain name is usually chosen to be
+          close to the node name in English transcription. If domain registration for this server is not public, this
           request is not accessible.
   - name: Drafts
     description: >
@@ -1069,8 +1070,9 @@ objects:
           array: true
         auth: admin
         description: >
-          Get the list of drafts, page by page, filtered by the given criteria. The node may decide to use smaller page
-          size than the given <code>limit</code>. The drafts are always sorted by the creation timestamp, descending.
+          Get the list of drafts, page by page, filtered by the given criteria. The node may decide to use a smaller
+          page size than the given <code>limit</code>. The drafts are always sorted by the creation timestamp,
+          descending.
         errors:
           - code: page.invalid
             description: <code>page</code> parameter has an invalid value
@@ -1187,7 +1189,7 @@ objects:
         out:
           struct: FeedStatus
         auth: admin or none
-        description: Get information about total number and number of non-read and non-viewed stories in the feed.
+        description: Get information about the total number and number of non-read and non-viewed stories in the feed.
         errors:
           - code: feed.not-found
             description: there is no accessible feed with this name
@@ -1234,7 +1236,7 @@ objects:
         description: >
           Get a slice of the feed, delimited by <code>before</code> or <code>after</code> moments (but not both) and
           the given <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest
-          stories are returned. The node may decide to return less stories than the given <code>limit</code>. The
+          stories are returned. The node may decide to return fewer stories than the given <code>limit</code>. The
           stories are always sorted by moment, descending.
         errors:
           - code: feed.not-found
@@ -1355,9 +1357,9 @@ objects:
           array: true
         auth: admin
         description: >
-          Update the friendship status of the nodes passed in the input. If some of the nodes passed in the input is not
+          Update the friendship status of the nodes passed in the input. If some node passed in the input is not
           a member of some of the groups of friends listed for it, the node is added to them. If it is a member of some
-          of the groups of friends that are not listed for it, the node is removed from them.
+          groups of friends that are not listed for it, the node is removed from them.
   - name: Friend-ofs
     description: >
       The node receives notifications from nodes that added it to their friends. This information is stored on the node
@@ -1474,7 +1476,7 @@ objects:
           struct: PublicMediaFileInfo
         auth: required
         description: >
-          Upload a new media file. Content of the file is passed in the request body
+          Upload a new media file. The content of the file is passed in the request body
         errors:
           - code: media.image-invalid
             description: media file is not a readable image
@@ -1536,8 +1538,7 @@ objects:
           struct: NodeNameInfo
         auth: admin or none
         description: >
-          Get the name of the node. Admin user receives also the current status of the latest operation with
-          the node name.
+          Get the name of the node. Admin user receives the current status of the latest operation with the node name.
       - url: /node-name
         type: POST
         function: createNodeName
@@ -1550,8 +1551,8 @@ objects:
         description: >
           Register a new name for the node. The corresponding signing key is generated automatically and stored at
           the node. The updating key is generated and returned in the encoded form and in the form of mnemonic
-          (a sequence of English words) that need to be written down and stored securely to be able to perform further
-          operations with the name.
+          (a sequence of English words). The words need to be written down and stored securely to be able to perform
+          further operations with the name.
         errors:
           - code: naming.operation-pending
             description: another operation with the node name is pending currently
@@ -1604,7 +1605,7 @@ objects:
           struct: Result
         auth: signature
         description: >
-          Accept a notification packet from other node. Notification packets older than 10 minutes are ignored.
+          Accept a notification packet from another node. Notification packets older than 10 minutes are ignored.
           The sending node should update the packet timestamp and the signature and send the packet again.
           This mechanism prevents attackers from recording and resending old signed packets.
         errors:
@@ -1787,7 +1788,7 @@ objects:
           Create a new posting from the text given and publish it in the given feeds (if any). The heading and
           the preview of the posting are created automatically, if needed. The posting owner must authenticate in
           some way. If the posting is not signed, it will be kept for a limited period of time and then erased. If
-          authenticated as admin, the posting is signed by the node.
+          authenticated as admin, the node signs the posting.
       - url: /postings/{id}
         type: PUT
         function: updatePosting
@@ -1882,7 +1883,7 @@ objects:
           array: true
         auth: optional
         description: >
-          Get all revisions of the posting, but not more than <code>limit</code>. The node may decide to return less
+          Get all revisions of the posting, but not more than <code>limit</code>. The node may decide to return fewer
           revisions than the given <code>limit</code>.
         errors:
           - code: posting.not-found
@@ -2029,7 +2030,7 @@ objects:
         auth: optional
         description: >
           Get the detailed information about the reaction of the given owner to the given posting. If no reaction with
-          such owner exist, an empty structure with just <code>postingId</code> is returned.
+          such an owner exists, an empty structure with just <code>postingId</code> is returned.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
@@ -2090,7 +2091,7 @@ objects:
         out:
           struct: ReactionTotalsInfo
         auth: optional
-        description: Get summary of reactions to the posting given.
+        description: Get a summary of reactions to the posting given.
         errors:
           - code: posting.not-found
             description: there is no posting with the given ID
@@ -2615,7 +2616,7 @@ objects:
         auth: admin or root admin
         description:
           Update the given settings. If the input contains node settings, they are validated and the first validation
-          error is returned, if any. The update is always performed as whole - if there is an error saving any one of
+          error is returned, if any. The update is always performed as a whole - if there is an error saving any one of
           the settings in the input, none of them are updated.
           <br><br>
           If one of the settings to be updated is privileged, <i>root secret</i> authentication is required. If one of
@@ -2726,7 +2727,7 @@ objects:
           struct: SheriffComplaintGroupsSliceInfo
         description: >
           Get a slice of the list of groups of complaints, optionally filtered by status, delimited by
-          <code>before</code> or <code>after</code> moment and the given <code>limit</code>. If neither
+          the <code>before</code> or <code>after</code> moment and the given <code>limit</code>. If neither
           <code>before</code> nor <code>after</code> are provided, the latest groups are returned. The node may decide
           to return less groups than the given <code>limit</code>. The groups are always sorted by moment, descending.
         errors:
@@ -2755,7 +2756,7 @@ objects:
         out:
           struct: SheriffComplaintInfo
           array: true
-        description: Get complaints included into the given group of complaints.
+        description: Get complaints included in the given group of complaints.
         errors:
           - code: sheriff-complaint-group.not-found
             name: the group of complaints is not found
@@ -2772,7 +2773,7 @@ objects:
         out:
           struct: SheriffComplaintGroupInfo
         auth: admin
-        description: Make decision on the given group of complaints.
+        description: Make a decision on the given group of complaints.
         errors:
           - code: sheriff-complaint-group.not-found
             name: the group of complaints is not found
@@ -3122,9 +3123,9 @@ objects:
         out:
           struct: UserListSliceInfo
         description: >
-          Get a slice of the user list, delimited by <code>before</code> or <code>after</code> moment and the given
+          Get a slice of the user list, delimited by the <code>before</code> or <code>after</code> moment and the given
           <code>limit</code>. If neither <code>before</code> nor <code>after</code> are provided, the latest items are
-          returned. The node may decide to return less items than the given <code>limit</code>. The items are always
+          returned. The node may decide to return fewer items than the given <code>limit</code>. The items are always
           sorted by moment, descending.
         errors:
           - code: user-list-items.before-after-exclusive
