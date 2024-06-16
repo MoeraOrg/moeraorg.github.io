@@ -4287,7 +4287,7 @@ structures:
     name: senior_reaction
     optional: true
     struct: ClientReactionInfo
-  - description: reactions summary of the comment
+  - description: summary of reactions to the comment
     name: reactions
     optional: true
     struct: ReactionTotalsInfo
@@ -4374,7 +4374,7 @@ structures:
     name: client_reaction
     optional: true
     struct: ClientReactionInfo
-  - description: reactions summary of the revision
+  - description: summary of reactions to the revision
     name: reactions
     optional: true
     struct: ReactionTotalsInfo
@@ -5288,7 +5288,7 @@ structures:
     type: str
   name: LinkPreviewInfo
 - fields:
-  - description: details of the attached media, may be absent, if the media is not
+  - description: details of the attached media, may be absent if the media is not
       located on the node
     name: media
     optional: true
@@ -5507,7 +5507,7 @@ structures:
     name: title
     optional: true
     type: str
-  - description: user-readable description of purpose of the plugin
+  - description: user-readable description of the purpose of the plugin
     name: description
     optional: true
     type: str
@@ -5548,7 +5548,7 @@ structures:
     name: title
     optional: true
     type: str
-  - description: user-readable description of purpose of the plugin
+  - description: user-readable description of the purpose of the plugin
     name: description
     optional: true
     type: str
@@ -6841,8 +6841,8 @@ structures:
     optional: true
     type: str
   - description: 'additional modifiers that may help to choose a proper UI component
-      for the setting value and to validate the input; meaning of the modifiers depend
-      on the setting type
+      for the setting value and to validate the input; the meaning of the modifiers
+      depends on the setting type
 
       '
     name: modifiers
@@ -6868,8 +6868,8 @@ structures:
     name: title
     type: str
   - description: 'additional modifiers that may help to choose a proper UI component
-      for the setting value and to validate the input; meaning of the modifiers depend
-      on the setting type
+      for the setting value and to validate the input; the meaning of the modifiers
+      depends on the setting type
 
       '
     name: modifiers
@@ -6877,9 +6877,9 @@ structures:
     struct: SettingTypeModifiers
   name: SettingMetaInfo
 - fields:
-  - description: "preferred format of displaying the value <ul>\n  <li>\n    <code>int</code>:\n\
-      \    <ul>\n      <li>\n        <code>size</code> - data size in bytes/kilobytes/megabytes\
-      \ etc.\n      </li>\n    </ul>\n  </li>\n</ul>\n"
+  - description: "preferred format of displaying the value<br> (<code>int</code>)\
+      \ <ul>\n  <li><code>size</code> - data size in bytes/kilobytes/megabytes etc.</li>\n\
+      </ul>\n"
     name: format
     optional: true
     type: str
@@ -7480,8 +7480,8 @@ structures:
     optional: true
     type: bool
   - description: 'if the story is associated with a user action (for example, it contains
-      a form that should be submitted), this flag is set to <code>True</code>, if
-      the action is done already, and <code>False</code> otherwise
+      a form that should be submitted), this flag is set to <code>True</code> if the
+      action is done already, and <code>False</code> otherwise
 
       '
     name: satisfied
@@ -7835,14 +7835,15 @@ structures:
   - description: subscription type
     enum: SubscriptionType
     name: type
-  - description: feed name on this node that receives notifications
+  - description: the name of the feed on this node that receives notifications
     name: feed_name
     optional: true
     type: str
-  - description: name of the node this node is subscribed to
+  - description: the name of the node this node is subscribed to
     name: remote_node_name
     type: str
-  - description: feed name on the remote node, if the subscription type requires one
+  - description: the name of the feed on the remote node, if the subscription type
+      requires one
     name: remote_feed_name
     optional: true
     type: str

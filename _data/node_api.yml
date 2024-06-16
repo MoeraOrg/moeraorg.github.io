@@ -3885,7 +3885,7 @@ structures:
       - struct: ReactionTotalsInfo
         name: reactions
         optional: true
-        description: reactions summary of the comment
+        description: summary of reactions to the comment
   - name: CommentMassAttributes
     fields:
       - struct: CommentOperations
@@ -3962,7 +3962,7 @@ structures:
       - struct: ReactionTotalsInfo
         name: reactions
         optional: true
-        description: reactions summary of the revision
+        description: summary of reactions to the revision
   - name: CommentsSliceInfo
     fields:
       - type: int
@@ -4841,7 +4841,7 @@ structures:
       - struct: PrivateMediaFileInfo
         name: media
         optional: true
-        description: details of the attached media, may be absent, if the media is not located on the node
+        description: details of the attached media, may be absent if the media is not located on the node
       - struct: RemoteMediaInfo
         name: remoteMedia
         optional: true
@@ -5032,7 +5032,7 @@ structures:
       - type: String
         name: description
         optional: true
-        description: user-readable description of purpose of the plugin
+        description: user-readable description of the purpose of the plugin
       - type: String
         name: location
         optional: true
@@ -5083,7 +5083,7 @@ structures:
       - type: String
         name: description
         optional: true
-        description: user-readable description of purpose of the plugin
+        description: user-readable description of the purpose of the plugin
       - type: String
         name: location
         optional: true
@@ -6289,7 +6289,7 @@ structures:
         optional: true
         description: >
           additional modifiers that may help to choose a proper UI component for the setting value and to validate the
-          input; meaning of the modifiers depend on the setting type
+          input; the meaning of the modifiers depends on the setting type
   - name: SettingMetaInfo
     fields:
       - type: String
@@ -6314,23 +6314,17 @@ structures:
         optional: true
         description: >
           additional modifiers that may help to choose a proper UI component for the setting value and to validate the
-          input; meaning of the modifiers depend on the setting type
+          input; the meaning of the modifiers depends on the setting type
   - name: SettingTypeModifiers
     fields:
       - type: String
         name: format
         optional: true
         description: >
-          preferred format of displaying the value
+          preferred format of displaying the value<br>
+          (<code>int</code>)
           <ul>
-            <li>
-              <code>int</code>:
-              <ul>
-                <li>
-                  <code>size</code> - data size in bytes/kilobytes/megabytes etc.
-                </li>
-              </ul>
-            </li>
+            <li><code>size</code> - data size in bytes/kilobytes/megabytes etc.</li>
           </ul>
       - type: String
         name: min
@@ -6898,7 +6892,7 @@ structures:
         optional: true
         description: >
           if the story is associated with a user action (for example, it contains a form that should be submitted), this
-          flag is set to <code>true</code>, if the action is done already, and <code>false</code> otherwise
+          flag is set to <code>true</code> if the action is done already, and <code>false</code> otherwise
       - type: String
         name: summaryNodeName
         optional: true
@@ -7217,14 +7211,14 @@ structures:
       - type: String
         name: feedName
         optional: true
-        description: feed name on this node that receives notifications
+        description: the name of the feed on this node that receives notifications
       - type: String
         name: remoteNodeName
-        description: name of the node this node is subscribed to
+        description: the name of the node this node is subscribed to
       - type: String
         name: remoteFeedName
         optional: true
-        description: feed name on the remote node, if the subscription type requires one
+        description: the name of the feed on the remote node, if the subscription type requires one
       - type: String
         name: remotePostingId
         optional: true
