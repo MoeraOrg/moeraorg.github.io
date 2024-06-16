@@ -275,7 +275,7 @@ H4.enum::before {
     background-color: var(--bs-green);
 }
 
-H4.type::before {
+H2.type::before, H4.type::before {
     content: 'TYPE';
     background-color: var(--bs-green);
 }

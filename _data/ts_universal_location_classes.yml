@@ -1,0 +1,111 @@
+classes:
+  - name: UniversalLocation
+    category: class
+    description: Represents location part of a universal Moera URL.
+    fields:
+      - name: nodeName
+        type: string | null
+        description: The node name.
+      - name: scheme
+        type: string
+        description: Scheme specifier of the node location.
+      - name: authority
+        type: string | null
+        description: Authority (host name and optional port) of the node location.
+      - name: path
+        type: string | null
+        description: Virtual path at the node.
+      - name: location
+        type: string
+        readonly: true
+        description: Universal Moera location (without query and fragment).
+      - name: query
+        type: string | null
+        description: Query component of the URL.
+      - name: fragment
+        type: string | null
+        description: Fragment identifier of the URL.
+    functions:
+      - name: UniversalLocation(nodeName=null, scheme=null, authority=null, path=null, query=null, fragment=null)
+        params:
+          - name: nodeName
+            type: string | null
+            optional: true
+            description: the node name
+          - name: scheme
+            type: string | null
+            optional: true
+            description: >
+              scheme specifier of the node location (<code>'https'</code>, if set to <code>null</code> or empty)
+          - name: authority
+            type: string | null
+            optional: true
+            description: authority (host name and optional port) of the node location
+          - name: path
+            type: string | null
+            optional: true
+            description: virtual path at the node (<code>'/'</code>, if set to <code>null</code> or empty)
+          - name: query
+            type: string | null
+            optional: true
+            description: query component of the URL (without <code>?</code>)
+          - name: fragment
+            type: string | null
+            optional: true
+            description: fragment identifier of the URL (without <code>#</code>)
+
+constants:
+  - name: REDIRECTOR
+    value: '"moera-page"'
+    description: Host used as redirector in universal URLs.
+
+functions:
+  - name: parse(url)
+    params:
+      - name: url
+        type: string | null
+        description: the URL to be parsed
+    out:
+      type: UniversalLocation
+      description: the parsed location
+    description: Parse the location part (including query and fragment) of a universal URL.
+
+  - name: redirectToUrl(nodeName, url=null)
+    params:
+      - name: nodeName
+        type: string | null
+        description: the node name
+      - name: url
+        type: string | null
+        optional: true
+        description: the direct URL
+    out:
+      type: string
+      description: the universal URL
+    description: Build a universal Moera URL from the direct URL of a page on a node, adding the node name provided.
+
+  - name: redirectTo(nodeName, rootUrl, path=null, query=null, fragment=null)
+    params:
+      - name: node_name
+        type: string | null
+        description: the node name
+      - name: rootUrl
+        type: string | null
+        description: the Moera root URL of the node
+      - name: path
+        type: string | null
+        optional: true
+        description: virtual path at the node (<code>'/'</code>, if set to <code>null</code> or empty)
+      - name: query
+        type: string | null
+        optional: true
+        description: query component of the URL
+      - name: fragment
+        type: string | null
+        optional: true
+        description: fragment identifier of the URL
+    out:
+      type: string
+      description: the universal URL
+    description: >
+      Build a universal Moera URL from the node name, the Moera root URL of the node, virtual path and other components.

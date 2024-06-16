@@ -1,19 +1,19 @@
 ---
 layout: development
-title: Python Library
-up: python-moeralib
-subtitle: moeralib.universal_location
+title: TypeScript Library
+up: typescript-moeralib
+subtitle: moeralib/universal-location
 ---
 
-<h1>moeralib.universal_location</h1>
+<h1>moeralib/universal-location</h1>
 
 <h2 id="Constants">Constants</h2>
-{% for cn in site.data.py_universal_location_classes.constants %}
+{% for cn in site.data.ts_universal_location_classes.constants %}
     <h4 class="identifier const">{{ cn.name }} = {{ cn.value }}</h4>
     <p>{{ cn.description }}</p>
 {% endfor %}
 <h2 id="Functions">Functions</h2>
-{% for fn in site.data.py_universal_location_classes.functions %}
+{% for fn in site.data.ts_universal_location_classes.functions %}
     <h4 class="identifier function">{{ fn.name }}</h4>
     <p>{{ fn.description }}</p>
     <dl>
@@ -21,19 +21,17 @@ subtitle: moeralib.universal_location
             <dt>Parameters:</dt>
             {% for param in fn.params %}
                 <dd>
-                    <code>{{ param.name }}</code>:&nbsp;
+                    <code>{{ param.name }}{% if param.optional == true %}?{% endif %}</code>:&nbsp;
                     {% if param.type %}
                         <code>{{ param.type }}</code>
                     {% endif %}
                     {% if param.class %}
-                        <code><a href="#{{ param.class }}">{%
-                            if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                        <code><a href="#{{ param.class }}">{{ param.class }}{%
+                            if param.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if param.description %}
-                        &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
-                    {% else %}
-                        {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                        &ndash; {{ param.description }}
                     {% endif %}
                 </dd>
             {% endfor %}
@@ -53,7 +51,7 @@ subtitle: moeralib.universal_location
 {% endfor %}
 
 <a name="Classes"/>
-{% for class in site.data.py_universal_location_classes.classes %}
+{% for class in site.data.ts_universal_location_classes.classes %}
     <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
     <p>{{ class.description }}</p>
     {% for field in class.fields %}
@@ -73,24 +71,22 @@ subtitle: moeralib.universal_location
                 <dt>Parameters:</dt>
                 {% for param in fn.params %}
                     <dd>
-                        <code>{{ param.name }}</code>:&nbsp;
+                        <code>{{ param.name }}{% if param.optional == true %}?{% endif %}</code>:&nbsp;
                         {% if param.type %}
                             <code>{{ param.type }}</code>
                         {% endif %}
                         {% if param.class %}
-                            <code><a href="#{{ param.class }}">{%
-                                if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                            <code><a href="#{{ param.class }}">{{ param.class }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.struct %}
-                            <code><a href="#{{ param.struct }}">{%
-                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            <code><a href="#{{ param.struct }}">{{ param.struct }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.description %}
-                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
-                        {% else %}
-                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                            &ndash; {{ param.description }}
                         {% endif %}
                     </dd>
                 {% endfor %}
@@ -102,8 +98,8 @@ subtitle: moeralib.universal_location
                         <code>{{ fn.out.type }}</code>
                     {% endif %}
                     {% if fn.out.struct %}
-                        <code><a href="#{{ fn.out.struct }}">{%
-                            if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                        <code><a href="#{{ fn.out.struct }}">{{ fn.out.struct }}{%
+                            if fn.out.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if fn.out.description %}

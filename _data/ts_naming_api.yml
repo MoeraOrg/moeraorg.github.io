@@ -1,0 +1,234 @@
+calls:
+- description: 'Register or update the name. See Architecture Overview for the <a
+    href="/overview/naming.html">detailed description</a> of the algorithm.
+
+    '
+  name: put
+  params:
+  - description: the name to be registered/updated. Required.
+    name: name
+    type: string
+  - description: the name generation to be registered/updated. Required.
+    name: generation
+    type: number
+  - description: "the public key for verifying signatures of further updates of the\
+      \ name. May be <code>null</code> \u2013 the current key is preserved in this\
+      \ case.\n"
+    name: updatingKey
+    type: string
+  - description: "URI of the REST API endpoint of the node to which the name is assigned.\
+      \ May be <code>null</code> \u2013 the current URI is preserved in this case.\n"
+    name: nodeUri
+    type: string
+  - description: "the public key of the name owner. May be <code>null</code> \u2013\
+      \ the current key is preserved in this case.\n"
+    name: signingKey
+    type: string
+  - description: 'the moment in time the owner''s key is valid from. May be <code>null</code>,
+      if <code>signingKey</code> is also <code>null</code>.
+
+      '
+    name: validFrom
+    type: number
+  - description: 'the unique identifier as reported by a naming server of the current
+      state of the name. Used to detect the situations when the name was changed by
+      someone else between sending the request and processing it. May be <code>null</code>,
+      if the name was never registered before.
+
+      '
+    name: previousDigest
+    type: string
+  - description: the signature, if required, <code>null</code> otherwise.
+    name: signature
+    type: string
+  returns:
+    description: identifier of the operation that was created
+    type: string
+- description: Get current status of the operation.
+  name: getStatus
+  params:
+  - name: operationId
+    type: string
+  returns:
+    description: the operation status or <code>null</code>, if the operation ID is
+      unknown
+    struct: OperationStatusInfo
+- description: Get current information about the given generation of the name.
+  name: getCurrent
+  params:
+  - name: name
+    type: string
+  - name: generation
+    type: number
+  returns:
+    description: the information or <code>null</code>, if the name/generation is not
+      found
+    struct: RegisteredNameInfo
+- description: Get past information about the given generation of the name.
+  name: getPast
+  params:
+  - name: name
+    type: string
+  - name: generation
+    type: number
+  - description: the moment in time the information is related to
+    name: at
+    type: number
+  returns:
+    description: the information or <code>null</code>, if the name/generation did
+      not exist at the given moment
+    struct: RegisteredNameInfo
+- description: Check if the given name is available for registration.
+  name: isFree
+  params:
+  - name: name
+    type: string
+  - name: generation
+    type: number
+  returns:
+    description: <code>true</code>, if the name is free, <code>false</code> otherwise
+    type: boolean
+- description: Find a name that is close to the given name.
+  name: getSimilar
+  params:
+  - name: name
+    type: string
+  returns:
+    description: information about the name or <code>null</code>, if no name found
+      that is close enough
+    struct: RegisteredNameInfo
+- description: Get the whole history of signing keys for the given name.
+  name: getAllKeys
+  params:
+  - name: name
+    type: string
+  - name: generation
+    type: number
+  returns:
+    array: true
+    struct: SigningKeyInfo
+- description: Get the list of all registered names at the given moment. The list
+    is returned in pages, one per call.
+  name: getAll
+  params:
+  - description: the moment in time the information is related to
+    name: at
+    type: number
+  - description: number of the page to be returned (starting from 0)
+    name: page
+    type: number
+  - description: size of the page
+    name: size
+    type: number
+  returns:
+    array: true
+    struct: RegisteredNameInfo
+- description: 'Get the list of all names registered after the given moment. The list
+    is returned in pages, one per call.
+
+    '
+  name: getAllNewer
+  params:
+  - description: the moment in time the information is related to
+    name: at
+    type: number
+  - description: number of the page to be returned (starting from 0)
+    name: page
+    type: number
+  - description: size of the page
+    name: size
+    type: number
+  returns:
+    array: true
+    struct: RegisteredNameInfo
+enums:
+- description: 'This enum is used to designate the operation status both by the naming
+    server and by the node.
+
+    '
+  name: OperationStatus
+  values:
+  - description: operation is waiting to be sent to the naming server
+    name: WAITING
+  - description: operation was accepted by the naming server
+    name: ADDED
+  - description: the naming server started to proceed the operation
+    name: STARTED
+  - description: operation completed successfully
+    name: SUCCEEDED
+  - description: operation failed
+    name: FAILED
+  - description: operation status is unknown
+    name: UNKNOWN
+structures:
+- fields:
+  - name: operationId
+    type: string
+  - description: the name that was created or updated by the operation
+    name: name
+    type: string
+  - description: the generation of the name that was created or updated by the operation
+    name: generation
+    type: number
+  - description: the current status of the operation
+    enum: OperationStatus
+    name: status
+  - description: when the operation was added
+    name: added
+    type: number
+  - description: when the operation was completed
+    name: completed
+    type: number
+  - description: the error code, if the operation have been failed
+    name: errorCode
+    type: string
+  - description: the human-readable error description, if the operation have been
+      failed
+    name: errorMessage
+    type: string
+  name: OperationStatusInfo
+- fields:
+  - name: name
+    type: string
+  - name: generation
+    type: number
+  - description: the public key for verifying signatures of further updates of the
+      name
+    name: updatingKey
+    type: string
+  - description: 'URI of the REST API endpoint of the node to which the name is assigned.
+      May be absent.
+
+      '
+    name: nodeUri
+    type: string
+  - description: when the name was created
+    name: created
+    type: number
+  - description: the public key of the name owner. May be <code>null</code>.
+    name: signingKey
+    type: string
+  - description: 'the moment in time the owner''s key is valid from. May be absent,
+      if <code>signingKey</code> is also absent.
+
+      '
+    name: validFrom
+    type: number
+  - description: 'a unique identifier of the current state of the name. May be transaction
+      ID of the latest transaction with this name in the blockchain, or a cryptographic
+      digest of the current state.
+
+      '
+    name: digest
+    type: string
+  name: RegisteredNameInfo
+- fields:
+  - description: the public key
+    name: key
+    type: string
+  - description: 'the moment in time the key is valid from
+
+      '
+    name: validFrom
+    type: number
+  name: SigningKeyInfo

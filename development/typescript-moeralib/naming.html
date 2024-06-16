@@ -1,19 +1,19 @@
 ---
 layout: development
-title: Python Library
-up: python-moeralib
-subtitle: moeralib.naming
+title: TypeScript Library
+up: typescript-moeralib
+subtitle: moeralib/naming
 ---
 
-<h1>moeralib.naming</h1>
+<h1>moeralib/naming</h1>
 
 <h2 id="Constants">Constants</h2>
-{% for cn in site.data.py_naming_classes.constants %}
+{% for cn in site.data.ts_naming_classes.constants %}
     <h4 class="identifier const">{{ cn.name }} = {{ cn.value }}</h4>
     <p>{{ cn.description }}</p>
 {% endfor %}
 <h2 id="Functions">Functions</h2>
-{% for fn in site.data.py_naming_classes.functions %}
+{% for fn in site.data.ts_naming_classes.functions %}
     <h4 class="identifier function">{{ fn.name }}</h4>
     <p>{{ fn.description }}</p>
     <dl>
@@ -26,8 +26,8 @@ subtitle: moeralib.naming
                         <code>{{ param.type }}</code>
                     {% endif %}
                     {% if param.class %}
-                        <code><a href="#{{ param.class }}">{%
-                            if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                        <code><a href="#{{ param.class }}">{{ param.class }}{%
+                            if param.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if param.description %}
@@ -53,7 +53,7 @@ subtitle: moeralib.naming
 {% endfor %}
 
 <br id="Classes"/>
-{% for class in site.data.py_naming_classes.classes %}
+{% for class in site.data.ts_naming_classes.classes %}
     <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
     <p>{{ class.description }}</p>
     {% for field in class.fields %}
@@ -78,13 +78,13 @@ subtitle: moeralib.naming
                             <code>{{ param.type }}</code>
                         {% endif %}
                         {% if param.class %}
-                            <code><a href="#{{ param.class }}">{%
-                                if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                            <code><a href="#{{ param.class }}">{{ param.class }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.struct %}
-                            <code><a href="#{{ param.struct }}">{%
-                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            <code><a href="#{{ param.struct }}">{{ param.struct }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.description %}
@@ -102,8 +102,8 @@ subtitle: moeralib.naming
                         <code>{{ fn.out.type }}</code>
                     {% endif %}
                     {% if fn.out.struct %}
-                        <code><a href="#{{ fn.out.struct }}">{%
-                            if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                        <code><a href="#{{ fn.out.struct }}">{{ fn.out.struct }}{%
+                            if fn.out.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if fn.out.description %}
@@ -114,7 +114,7 @@ subtitle: moeralib.naming
         </dl>
     {% endfor %}
 {% endfor %}
-{% for call in site.data.py_naming_api.calls %}
+{% for call in site.data.ts_naming_api.calls %}
     <h4 id="{{ call.name }}" class="identifier method">{{
         call.name }}({% for param in call.params %}{{ param.name }}{% unless forloop.last %}, {% endunless %}{% endfor %})
     </h4>
@@ -135,12 +135,12 @@ subtitle: moeralib.naming
             <dt>Return value:</dt>
             <dd>
                 {% if call.returns.type %}
-                    <code>{{ call.returns.type }}</code>
+                    <code>Promise&lt;{{ call.returns.type }}></code>
                 {% endif %}
                 {% if call.returns.struct %}
-                    <code><a href="#{{ call.returns.struct }}">
-                        {% if call.returns.array == true %}List[types.{{ call.returns.struct }}]{% else %}types.{{ call.returns.struct }}{% endif
-                    %}</a></code>
+                    <code>Promise&lt;<a href="#{{ call.returns.struct }}">{{ call.returns.struct }}{%
+                        if call.returns.array == true %}[]{% endif
+                    %}</a>&gt;</code>
                 {% endif %}
                 {% if call.returns.description %}
                     &ndash; {{ call.returns.description }}
@@ -152,8 +152,8 @@ subtitle: moeralib.naming
 
 <br/><br/>
 <h2>Structures</h2>
-{% for struct in site.data.py_naming_api.structures %}
-    <h4 id="{{ struct.name }}" class="identifier class">types.{{ struct.name }}</h4>
+{% for struct in site.data.ts_naming_api.structures %}
+    <h4 id="{{ struct.name }}" class="identifier class">{{ struct.name }}</h4>
     <table class="table">
         <thead>
             <tr>
@@ -171,10 +171,10 @@ subtitle: moeralib.naming
                             <code>{{ field.type }}</code>
                         {% endif %}
                         {% if field.struct %}
-                            <code><a href="#{{ field.struct }}">types.{{ field.struct }}</a></code>
+                            <code><a href="#{{ field.struct }}">{{ field.struct }}</a></code>
                         {% endif %}
                         {% if field.enum %}
-                            <code><a href="#{{ field.enum }}">types.{{ field.enum }}</a></code>
+                            <code><a href="#{{ field.enum }}">{{ field.enum }}</a></code>
                         {% endif %}
                     </td>
                     <td>{{ field.description }}</td>
@@ -189,7 +189,7 @@ subtitle: moeralib.naming
 <p>
     Enums are string literals. Every particular enum type is a set of allowed values you can choose from.
 </p>
-{% for enum in site.data.py_naming_api.enums %}
+{% for enum in site.data.ts_naming_api.enums %}
     <h4 id="{{ enum.name }}" class="identifier enum">{{ enum.name }}</h4>
     <p>{{ enum.description }}</p>
     <table class="table">

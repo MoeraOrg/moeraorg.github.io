@@ -6,27 +6,27 @@ classes:
       - name: MoeraNamingError(name, message)
         params:
           - name: name
-            type: str
+            type: string
             description: API method name
           - name: message
-            type: str
+            type: string
             description: error message
 
   - name: MoeraNamingApiError
     category: exception
-    description: Naming server returned an error response.
+    description: Naming server connection error.
     fields:
-      - name: error_code
-        type: str
+      - name: errorCode
+        type: string
         description: Error code.
     functions:
-      - name: MoeraNamingApiError(name, response)
+      - name: MoeraNamingApiError(name, result)
         params:
-          - name: name
-            type: str
-            description: request name
-          - name: response
-            type: Mapping[str, Any]
+          - name: message
+            type: string
+            description: error message
+          - name: result
+            struct: ErrorResult
             description: server response
 
   - name: MoeraNamingConnectionError
@@ -36,89 +36,73 @@ classes:
       - name: MoeraNamingConnectionError(name)
         params:
           - name: message
-            type: str
+            type: string
             description: error message
 
   - name: MoeraNaming
     category: class
     description: Naming API interface.
     functions:
-      - name: MoeraNaming(server=MAIN_SERVER)
+      - name: MoeraNaming(server=MAIN_NAMING_SERVER)
         params:
           - name: server
-            type: str
+            type: string
             optional: true
             description: the naming server URL
-      - name: call(method, params, schema=None)
-        params:
-          - name: method
-            type: str
-            description: name of the method to be called
-          - name: params
-            type: Sequence[Any]
-            description: parameters of the call
-          - name: schema
-            type: Any
-            optional: true
-            description: JSON schema to validate the return value
-        out:
-          type: Any
-          description: the return value, if any
-        description: Generic naming API call.
 
 constants:
-  - name: MAIN_SERVER
+  - name: MAIN_NAMING_SERVER
     value: '"https://naming.moera.org/moera-naming"'
     description: Main Moera naming server.
-  - name: DEV_SERVER
+  - name: DEV_NAMING_SERVER
     value: '"https://naming-dev.moera.org/moera-naming"'
     description: Moera developers' naming server.
 
 functions:
-  - name: node_name_parse(node_name)
+  - name: parseNodeName(nodeName)
     params:
-      - name: node_name
-        type: str
+      - name: nodeName
+        type: string
         description: the node name to be parsed
     out:
-      type: Tuple[str, int]
-      description: tuple (name, generation)
+      type: "[string, number]"
+      description: array [name, generation]
     description: >
       Parse a node name and return its name and generation parts.
 
       If the node name does not include a generation, generation 0 is returned. If name syntax is invalid,
-      <code>ValueError</code> is raised.
+      <code>Error</code> is thrown.
 
-  - name: shorten(node_name)
+  - name: shorten(nodeName)
     params:
-      - name: node_name
-        type: str | None
+      - name: nodeName
+        type: string | null
         description: the node name in compact or full form
     out:
-      type: str | None
+      type: string | null
       description: the node name in the compact form
     description: Converts the node name to the compact form, omitting generation 0.
 
-  - name: expand(node_name)
+  - name: expand(nodeName)
     params:
-      - name: node_name
-        type: str | None
+      - name: nodeName
+        type: string | null
         description: the node name in compact or full form
     out:
-      type: str | None
+      type: string | null
       description: the node name in the full form
     description: Converts the node name to the full form, containing generation.
 
-  - name: resolve(name, naming_server=MAIN_SERVER)
+  - name: resolve(name, namingServer=MAIN_NAMING_SERVER)
     params:
       - name: name
-        type: str
+        type: string
         description: the node name
-      - name: naming_server
-        type: str
+      - name: namingServer
+        type: string
         optional: true
         description: a naming server to be used
     out:
-      type: str | None
-      description: the node URI, or <code>None</code> if the name does not exist
+      type: string | null
+      description: the node URI, or <code>null</code> if the name does not exist
     description: Shortcut function to resolve a node name and get the node URI.

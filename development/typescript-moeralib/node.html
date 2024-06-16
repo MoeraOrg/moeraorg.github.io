@@ -1,12 +1,12 @@
 ---
 layout: development
-title: Python Library
-up: python-moeralib
-subtitle: moeralib.node
+title: TypeScript Library
+up: typescript-moeralib
+subtitle: moeralib/node
 container_class: container-requests
 ---
 
-<h1>moeralib.node</h1>
+<h1>moeralib/node</h1>
 
 <div id="toc" class="toc">
     <h2>Table of Contents</h2>
@@ -29,7 +29,7 @@ container_class: container-requests
 
 <div>
 <h2 id="Functions">Functions</h2>
-{% for fn in site.data.py_node_classes.functions %}
+{% for fn in site.data.ts_node_classes.functions %}
     <h4 class="identifier function">{{ fn.name }}</h4>
     <p>{{ fn.description }}</p>
     <dl>
@@ -37,24 +37,22 @@ container_class: container-requests
             <dt>Parameters:</dt>
             {% for param in fn.params %}
                 <dd>
-                    <code>{{ param.name }}</code>:&nbsp;
+                    <code>{{ param.name }}{% if param.optional == true %}?{% endif %}</code>:&nbsp;
                     {% if param.type %}
                         <code>{{ param.type }}</code>
                     {% endif %}
                     {% if param.class %}
-                        <code><a href="#{{ param.class }}">{%
-                            if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                        <code><a href="#{{ param.class }}">{{ param.class }}{%
+                            if param.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if param.struct %}
-                        <code><a href="#{{ param.struct }}">{%
-                            if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                        <code><a href="#{{ param.struct }}">{{ param.struct }}{%
+                            if param.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if param.description %}
-                        &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
-                    {% else %}
-                        {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                        &ndash; {{ param.description }}
                     {% endif %}
                 </dd>
             {% endfor %}
@@ -66,8 +64,8 @@ container_class: container-requests
                     <code>{{ fn.out.type }}</code>
                 {% endif %}
                 {% if fn.out.struct %}
-                    <code><a href="#{{ fn.out.struct }}">{%
-                        if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                    <code><a href="#{{ fn.out.struct }}">{{ fn.out.struct }}{%
+                        if fn.out.array == true %}[]{% endif
                     %}</a></code>
                 {% endif %}
                 {% if fn.out.description %}
@@ -79,7 +77,27 @@ container_class: container-requests
 {% endfor %}
 
 <br id="Classes"/>
-{% for class in site.data.py_node_classes.classes %}
+{% for enum in site.data.ts_node_classes.enums %}
+    <h2 id="{{ enum.name }}" class="identifier type">{{ enum.name }}</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="col-4">Value</th>
+            <th class="col-8">Description</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        {% for value in enum.values %}
+        <tr>
+            <td><code>"{{ value.name }}"</code></td>
+            <td>{{ value.description }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+{% for class in site.data.ts_node_classes.classes %}
     <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
     <p>{{ class.description }}</p>
     {% for field in class.fields %}
@@ -99,24 +117,22 @@ container_class: container-requests
                 <dt>Parameters:</dt>
                 {% for param in fn.params %}
                     <dd>
-                        <code>{{ param.name }}</code>:&nbsp;
+                        <code>{{ param.name }}{% if param.optional == true %}?{% endif %}</code>:&nbsp;
                         {% if param.type %}
                             <code>{{ param.type }}</code>
                         {% endif %}
                         {% if param.class %}
-                            <code><a href="#{{ param.class }}">{%
-                                if param.array == true %}List[{{ param.class }}]{% else %}{{ param.class }}{% endif
+                            <code><a href="#{{ param.class }}">{{ param.class }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.struct %}
-                            <code><a href="#{{ param.struct }}">{%
-                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            <code><a href="#{{ param.struct }}">{{ param.struct }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.description %}
-                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
-                        {% else %}
-                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                            &ndash; {{ param.description }}
                         {% endif %}
                     </dd>
                 {% endfor %}
@@ -128,8 +144,8 @@ container_class: container-requests
                         <code>{{ fn.out.type }}</code>
                     {% endif %}
                     {% if fn.out.struct %}
-                        <code><a href="#{{ fn.out.struct }}">{%
-                            if fn.out.array == true %}List[types.{{ fn.out.struct }}]{% else %}types.{{ fn.out.struct }}{% endif
+                        <code><a href="#{{ fn.out.struct }}">{{ fn.out.struct }}{%
+                            if fn.out.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if fn.out.description %}
@@ -140,7 +156,8 @@ container_class: container-requests
         </dl>
     {% endfor %}
 {% endfor %}
-{% for object in site.data.py_node_api.objects %}
+
+{% for object in site.data.ts_node_api.objects %}
     <h3 id="{{ object.name }} object">{{ object.name }}</h3>
     <p>{{ object.description }}</p>
     {% for req in object.requests %}
@@ -151,24 +168,22 @@ container_class: container-requests
                 <dt>Parameters:</dt>
                 {% for param in req.params %}
                     <dd>
-                        <code>{{ param.name }}</code>:&nbsp;
+                        <code>{{ param.name }}{% if param.optional == true %}?{% endif %}</code>:&nbsp;
                         {% if param.type %}
                             <code>{{ param.type }}</code>
                         {% endif %}
                         {% if param.enum %}
-                            <code><a href="#{{ param.enum }}">{%
-                                if param.array == true %}List[types.{{ param.enum }}]{% else %}types.{{ param.enum }}{% endif
+                            <code><a href="#{{ param.enum }}">{{ param.enum }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.struct %}
-                            <code><a href="#{{ param.struct }}">{%
-                                if param.array == true %}List[types.{{ param.struct }}]{% else %}types.{{ param.struct }}{% endif
+                            <code><a href="#{{ param.struct }}">{{ param.struct }}{%
+                                if param.array == true %}[]{% endif
                             %}</a></code>
                         {% endif %}
                         {% if param.description %}
-                            &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
-                        {% else %}
-                            {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                            &ndash; {{ param.description }}
                         {% endif %}
                     </dd>
                 {% endfor %}
@@ -177,12 +192,12 @@ container_class: container-requests
                 <dt>Return value:</dt>
                 <dd>
                     {% if req.out.type %}
-                        <code>{{ req.out.type }}</code>
+                        <code>Promise&lt;{{ req.out.type }}&gt;</code>
                     {% endif %}
                     {% if req.out.struct %}
-                        <code><a href="#{{ req.out.struct }}">{%
-                            if req.out.array == true %}List[types.{{ req.out.struct }}]{% else %}types.{{ req.out.struct }}{% endif
-                        %}</a></code>
+                        <code>Promise&lt;<a href="#{{ req.out.struct }}">{{ req.out.struct }}{%
+                            if req.out.array == true %}[]{% endif
+                        %}</a>&gt;</code>
                     {% endif %}
                     {% if req.out.description %}
                         &ndash; {{ req.out.description }}
@@ -228,8 +243,8 @@ container_class: container-requests
 
 <br/><br/>
 <h2 id="Structures">Structures</h2>
-{% for struct in site.data.py_node_api.structures %}
-    <h4 id="{{ struct.name }}" class="identifier class">types.{{ struct.name }}</h4>
+{% for struct in site.data.ts_node_api.structures %}
+    <h4 id="{{ struct.name }}" class="identifier class">{{ struct.name }}</h4>
     <table class="table">
         <thead>
             <tr>
@@ -241,24 +256,23 @@ container_class: container-requests
         <tbody class="table-group-divider">
             {% for field in struct.fields %}
             <tr>
-                <td><code>{{ field.name }}</code></td>
+                <td><code>{{ field.name }}{% if field.optional == true %}?{% endif %}</code></td>
                 <td>
                     {% if field.type %}
                         <code>{{ field.type }}</code>
                     {% endif %}
                     {% if field.enum %}
-                        <code><a href="#{{ field.enum }}">{%
-                            if field.array == true %}List[types.{{ field.enum }}]{% else %}types.{{ field.enum }}{% endif
+                        <code><a href="#{{ field.enum }}">{{ field.enum }}{%
+                            if field.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                     {% if field.struct %}
-                        <code><a href="#{{ field.struct }}">{%
-                            if field.array == true %}List[types.{{ field.struct }}]{% else %}types.{{ field.struct }}{% endif
+                        <code><a href="#{{ field.struct }}">{{ field.struct }}{%
+                            if field.array == true %}[]{% endif
                         %}</a></code>
                     {% endif %}
                 </td>
                 <td>
-                    {% if field.optional == true %}<i>(optional)</i>{% endif %}
                     {{ field.description }}
                 </td>
             </tr>
@@ -290,8 +304,8 @@ container_class: container-requests
 <br/><br/>
 <h2 id="Operations">Operations</h2>
 <p><a href="/development/node-api/access-controls.html">Read more about operations</a></p>
-{% for struct in site.data.py_node_api.operations %}
-    <h4 id="{{ struct.name }}" class="identifier class">types.{{ struct.name }}</h4>
+{% for struct in site.data.ts_node_api.operations %}
+    <h4 id="{{ struct.name }}" class="identifier class">{{ struct.name }}</h4>
     <table class="table">
         <thead>
             <tr>
@@ -317,8 +331,8 @@ container_class: container-requests
 <p>
     Enums are string literals. Every particular enum type is a set of allowed values you can choose from.
 </p>
-{% for enum in site.data.py_node_api.enums %}
-    <h4 id="{{ enum.name }}" class="identifier type">types.{{ enum.name }}</h4>
+{% for enum in site.data.ts_node_api.enums %}
+    <h4 id="{{ enum.name }}" class="identifier type">{{ enum.name }}</h4>
     <table class="table">
         <thead>
             <tr>

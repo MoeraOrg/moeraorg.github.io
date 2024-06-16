@@ -1,0 +1,223 @@
+classes:
+  - name: MoeraNodeError
+    category: exception
+    description: Generic node error.
+    functions:
+      - name: MoeraNodeError(name, message)
+        params:
+          - name: name
+            type: string
+            description: request name
+          - name: message
+            type: string
+            description: error message
+
+  - name: MoeraNodeApiError
+    category: exception
+    description: Node returned an error response.
+    fields:
+      - name: errorCode
+        type: string
+        description: Error code.
+    functions:
+      - name: MoeraNodeApiError(name, result)
+        params:
+          - name: name
+            type: string
+            description: request name
+          - name: result
+            struct: Result
+            description: node response
+
+  - name: MoeraNodeConnectionError
+    category: exception
+    description: Error while connecting the node.
+    functions:
+      - name: MoeraNodeConnectionError(name)
+        params:
+          - name: message
+            type: string
+            description: error message
+
+  - name: MoeraNodeCallError
+    category: exception
+    description: Missing context of the call (authentication parameters or node URL).
+    functions:
+      - name: MoeraNodeCallError(name)
+        params:
+          - name: message
+            type: string
+            description: error message
+
+  - name: MoeraCartesError
+    category: exception
+    description: Error obtaining valid cartes.
+    functions:
+      - name: MoeraNodeCartesError(name)
+        params:
+          - name: message
+            type: string
+            description: error message
+
+  - name: MoeraCarteSource
+    category: class
+    description: Class that gets cartes from the given node, caches them and supplies them for authentication.
+    functions:
+      - name: MoeraCarteSource(node)
+        params:
+          - name: node
+            class: MoeraNode
+            description: node to get cartes from
+      - name: renew()
+        description: Force renewing the cached list of cartes.
+      - name: getCarte()
+        description: Get a valid carte. Use one of the cached ones, if possible.
+        out:
+          type: string
+          description: the carte
+
+  - name: MoeraNode
+    category: class
+    description: >
+      Node API interface. This class contains a lot of methods, so we divided them to groups by their purpose.
+    fields:
+      - name: root
+        type: string
+        description: API endpoint URL of the node.
+    functions:
+      - name: MoeraNode(nodeUrl=null)
+        params:
+          - name: nodeUrl
+            type: string | null
+            optional: true
+            description: node URL
+
+enums:
+  - name: NodeAuth
+    description: Authentication type.
+    values:
+      - name: none
+        description: No authentication.
+      - name: peer
+        description: Carte authentication.
+      - name: admin
+        description: Admin token authentication.
+      - name: root-admin
+        description: Root admin secret authentication.
+
+objects:
+  - name: General
+    description: General-purpose methods.
+    requests:
+      - function: nodeUrl(url)
+        params:
+          - name: url
+            type: string
+        auth: irrelevant
+        description: Set node URL.
+      - function: >
+          call(name, location, {params=null, method='GET', body=null, contentType=null, auth=true, schema, bodies=false,
+          srcBodies=false})
+        params:
+          - name: name
+            type: string
+            description: request name (for error messages)
+          - name: location
+            type: string
+            description: request path
+          - name: params
+            type: Partial&lt;Record&lt;string, string | number | boolean | null>> | null
+            optional: true
+            description: query parameters, mapping name to value, None values are skipped
+          - name: method
+            type: string
+            optional: true
+            description: >
+              request method (one of <code>'GET'</code>, <code>'POST'</code>, <code>'PUT'</code>, <code>'DELETE'</code>)
+          - name: body
+            type: Partial&lt;Record&lt;string, any>> | Partial&lt;Record&lt;string, any>>[] | Buffer | null
+            optional: true
+            description: request body
+          - name: contentType
+            type: string | null
+            optional: true
+            description: content-type of the request body, when read from a file
+          - name: auth
+            type: boolean
+            optional: true
+            description: <code>true</code> to authenticate the request, <code>false</code> otherwise
+          - name: schema
+            type: string
+            description: >
+              JSON schema name to validate the response, or <code>"blob"</code> if the result is <code>Buffer</code>
+          - name: bodies
+            type: boolean
+            optional: true
+            description: >
+              <code>true</code> to decode <code>Body</code> structures in the response, <code>false</code> otherwise
+          - name: srcBodies
+            type: boolean
+            optional: true
+            description: >
+              <code>true</code> to encode <code>Body</code> structures in the request, <code>false</code> otherwise
+        out:
+          type: any
+          description: the decoded response
+        auth: irrelevant
+        description: Generic method for making node API requests.
+  - name: Authentication
+    description: Methods related to authentication.
+    requests:
+      - function: rootSecret(secret)
+        params:
+          - name: secret
+            type: string
+        auth: irrelevant
+        description: Set root secret for authentication.
+      - function: token(token)
+        params:
+          - name: token
+            type: string
+        auth: irrelevant
+        description: Set admin token for authentication.
+      - function: carte(carte)
+        params:
+          - name: carte
+            type: string
+        auth: irrelevant
+        description: Set carte for authentication.
+      - function: carteSource(carteSource)
+        params:
+          - name: carteSource
+            class: CarteSource
+        auth: irrelevant
+        description: Set a source of cartes for authentication.
+      - function: authMethod(authMethod)
+        params:
+          - name: authMethod
+            class: NodeAuth
+        auth: irrelevant
+        description: Select authentication method for the following requests.
+      - function: noAuth()
+        auth: irrelevant
+        description: Switch off authentication for the following requests.
+      - function: auth()
+        auth: irrelevant
+        description: Select carte authentication for the following requests.
+      - function: authAdmin()
+        auth: irrelevant
+        description: Select admin token authentication for the following requests.
+      - function: authRootAdmin()
+        auth: irrelevant
+        description: Select root admin secret authentication for the following requests.
+
+functions:
+  - name: moeraRoot(url)
+    params:
+      - name: url
+        type: string
+        description: partial URL
+    out:
+      type: string
+      description: standard URL
+    description: Convert partial node URL to a standardized form.
