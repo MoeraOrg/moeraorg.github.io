@@ -58,8 +58,8 @@ converts them to JavaScript objects. The corresponding types are defined in
 
 ```typescript
 const attrs: DomainAttributes = {
-    domain: 'dave.moera.club',
-    node_id: DAVE_NODE_ID
+    name: 'dave.moera.club',
+    nodeId: DAVE_NODE_ID
 };
 ```
 

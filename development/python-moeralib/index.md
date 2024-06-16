@@ -65,12 +65,12 @@ a structure. These code snippets are equivalent:
 
 ```python
 attrs = DomainAttributes()
-attrs.domain = 'dave.moera.club'
+attrs.name = 'dave.moera.club'
 attrs.node_id = DAVE_NODE_ID
 ```
 ```python
 attrs = DomainAttributes(
-    domain='dave.moera.club',
+    name='dave.moera.club',
     node_id=DAVE_NODE_ID
 )
 ```
