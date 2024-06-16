@@ -106,3 +106,18 @@ functions:
       type: string | null
       description: the node URI, or <code>null</code> if the name does not exist
     description: Shortcut function to resolve a node name and get the node URI.
+
+  - name: validateNamingSchema(schemaName, data)
+    params:
+      - name: schemaName
+        type: string
+        description: the schema name (same as the validated structure name)
+      - name: data
+        type: any
+        description: the data structure being validated
+    out:
+      type: "{ valid: boolean; errors?: { message?: string }[] | null }"
+      description: result of the validation and error messages
+    description: >
+      Validates a data structure against the given JSON schema. In the process of validation, additional fields in
+      the input that are absent in the schema are deleted.

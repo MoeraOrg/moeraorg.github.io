@@ -44,6 +44,11 @@ subtitle: moeralib/naming
                 {% if fn.out.type %}
                     <code>{{ fn.out.type }}</code>
                 {% endif %}
+                {% if fn.out.struct %}
+                <code><a href="#{{ fn.out.struct }}">{{ fn.out.struct }}{%
+                    if fn.out.array == true %}[]{% endif
+                    %}</a></code>
+                {% endif %}
                 {% if fn.out.description %}
                     &ndash; {{ fn.out.description }}
                 {% endif %}
