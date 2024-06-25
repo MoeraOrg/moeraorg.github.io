@@ -14,9 +14,12 @@ subtitle: moname
 ## Synopsis
 
 ```
-moname [-h] [-c] [-d] [-k] [-K] [-l]
-       [-s SERVER] [-S] [-t AT]
-       [-w NEWER] [-V] [<name>]
+moname [--dev | --server SERVER] [--created] [--keys | --all-keys] [--similar] [--at AT] <name>
+moname --list [--dev | --server SERVER] [--created] [--at AT] [--newer NEWER] [<name>]
+moname --add [--dev | --server SERVER] <name> <uri>
+moname --update [--dev | --server SERVER] [--uri URI] [--signing-key] [--updating-key] <name>
+moname --help
+moname --version
 ```
 
 ## Node Names
@@ -178,3 +181,64 @@ networks. If the generation is missing, generation `0` is used by default.
   Леямеламуд_0	https://leyamelamud.moera.blog/moera
   Олексій_0	https://alexeyvk.moera.blog/moera
   ```
+
+### Add a name
+
+`-a, --add <name> <uri>`
+
+: Add a new name to the naming server and set its node URI to `<uri>`.
+The updating and signing keys are generated automatically.
+
+  ```
+  $ moname -da moname-sample https://moname.moera.social/moera
+  Request sent, waiting for the operation to complete...
+  Secret words:
+   1. sauce
+   2. ordinary
+   3. force
+   4. mix
+   5. meadow
+   6. hockey
+   7. cook
+   8. maple
+   9. swear
+  10. dinner
+  11. hint
+  12. settle
+  13. wheat
+  14. fabric
+  15. sleep
+  16. memory
+  17. radio
+  18. collect
+  19. much
+  20. eager
+  21. adult
+  22. bleak
+  23. cash
+  24. innocent
+
+  Signing key: af0eee5798fabc78332d945ab0b001ad60409c1343ed34edf927d1b0d1cdb498
+  ```
+
+### Update a name
+
+`-u, --update <name>`
+
+: Update the given name on the naming server. Without any other options, this
+command does not change anything (can be used to verify the secret words). The
+secret words should be passed to the standard input. It is allowed to pass them
+exactly how they are printed, with each word prepended with its number. These
+numbers are ignored.
+
+`-U, --uri URI`
+
+: Set a new node URI.
+
+`-g, --signing-key`
+
+: Generate a new signing key.
+
+`-G, --updating-key`
+
+: Generate a new updating key.
