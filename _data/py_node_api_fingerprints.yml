@@ -1,0 +1,202 @@
+objects:
+- name: attachment
+  versions:
+  - fingerprint:
+    - comment: cryptographic hash of the attachment as a file
+      field: digest
+      type: bytes
+    version: 0
+- name: carte
+  versions:
+  - fingerprint:
+    - field: owner_name
+      type: str
+    - comment: IP address of the client
+      field: address
+      type: str
+    - comment: timestamp of the beginning of the carte's life
+      field: beginning
+      type: Timestamp
+    - comment: timestamp of the end of the carte's life
+      field: deadline
+      type: Timestamp
+    - comment: if set, the carte is valid for authentication on the specified node
+        only
+      field: node_name
+      type: str
+    - comment: "A bit mask describing which permissions should be granted to the carte.\
+        \ If not set, all permissions of the carte's owner are granted. The bits have\
+        \ the following meaning: <ul>\n  <li><code>other (0x0001)</code> - any other\
+        \ permission not listed below;</li>\n  <li><code>view-media (0x0002)</code>\
+        \ - view media files.</li>\n</ul>\n"
+      field: auth_category
+      type: int
+    - comment: 8 random bytes
+      field: salt
+      type: bytes
+    version: 1
+  - fingerprint:
+    - field: owner_name
+      type: str
+    - comment: IP address of the client
+      field: address
+      type: str
+    - comment: timestamp of the beginning of the carte's life
+      field: beginning
+      type: Timestamp
+    - comment: timestamp of the end of the carte's life
+      field: deadline
+      type: Timestamp
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: int
+    - comment: 8 random bytes
+      field: salt
+      type: bytes
+    version: 0
+- name: comment
+  versions:
+  - fingerprint:
+    - field: owner_name
+      type: str
+    - field: posting_fingerprint
+      type: bytes
+    - field: replied_to_fingerprint
+      type: bytes
+    - comment: hash of <code>bodySrc</code> field
+      field: body_src_hash
+      type: bytes
+    - field: body_src_format
+      type: str
+    - field: body
+      type: str
+    - field: body_format
+      type: str
+    - comment: of the current revision
+      field: created_at
+      type: Timestamp
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: int
+    - field: attachments
+      type: List[bytes]
+    version: 0
+- name: notification_packet
+  versions:
+  - fingerprint:
+    - field: id
+      type: str
+    - field: node_name
+      type: str
+    - field: full_name
+      type: str
+    - field: created_at
+      type: Timestamp
+    - field: type
+      type: str
+    - field: notification
+      type: str
+    version: 1
+  - fingerprint:
+    - field: id
+      type: str
+    - field: node_name
+      type: str
+    - field: created_at
+      type: Timestamp
+    - field: type
+      type: str
+    - field: notification
+      type: str
+    version: 0
+- name: posting
+  versions:
+  - fingerprint:
+    - field: receiver_name
+      type: str
+    - field: owner_name
+      type: str
+    - comment: hash of <code>bodySrc</code> field
+      field: body_src_hash
+      type: bytes
+    - field: body_src_format
+      type: str
+    - field: body
+      type: str
+    - field: body_format
+      type: str
+    - comment: of the current revision
+      field: created_at
+      type: Timestamp
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: int
+    - comment: if the posting is linked to a media, its fingerprint should be put
+        at the beginning of the list
+      field: attachments
+      type: List[bytes]
+    version: 1
+  - fingerprint:
+    - field: receiver_name
+      type: str
+    - field: owner_name
+      type: str
+    - comment: hash of <code>bodySrc</code> field
+      field: body_src_hash
+      type: bytes
+    - field: body_src_format
+      type: str
+    - field: body
+      type: str
+    - field: body_format
+      type: str
+    - comment: of the current revision
+      field: created_at
+      type: Timestamp
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: int
+    - comment: 0 <i>(reserved for future use)</i>
+      field: attachments
+      type: int
+    version: 0
+- name: reaction
+  versions:
+  - fingerprint:
+    - field: owner_name
+      type: str
+    - comment: 'hash of <a href="#Posting">Posting</a> or <a href="#Comment">Comment</a>
+        fingerprint
+
+        '
+      field: entry_fingerprint
+      type: bytes
+    - field: negative
+      type: bool
+    - field: emoji
+      type: int
+    version: 0
+- name: sheriff_order
+  versions:
+  - fingerprint:
+    - field: sheriff_name
+      type: str
+    - field: node_name
+      type: str
+    - field: feed_name
+      type: str
+    - comment: 'hash of <a href="#Posting">Posting</a> or <a href="#Comment">Comment</a>
+        fingerprint
+
+        '
+      field: entry_fingerprint
+      type: bytes
+    - field: category
+      type: str
+    - field: reason_code
+      type: str
+    - field: reason_details
+      type: str
+    - field: created_at
+      type: Timestamp
+    version: 0

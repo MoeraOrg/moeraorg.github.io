@@ -170,6 +170,44 @@ print(redirect_to_url(
 ))
 ```
 
+## Cryptography
+
+<code><a href="crypto.html">moeralib.crypto</a></code> module provides utilities
+for generation of cryptographic keys, signing
+<a href="../cryptography/fingerprint.html">fingerprints</a> and validating
+signatures. These functions are wrappers around
+<code><a href="https://pypi.org/project/cryptography/">cryptography</a></code>
+library using the <a href="../cryptography/algorithms.html">algorithms</a>
+defined in the Moera protocol.
+
+Functions for building fingerprints for various objects are defined in
+<code><a href="naming-fingerprints.html">moeralib.naming.fingerprints</a></code>
+and <code><a href="node-fingerprints.html">moeralib.node.fingerprints</a></code>
+modules. (The functions may have several versions for different versions of
+the fingerprint.)
+
+The following code changes a node URL on the naming server.
+(The user should provide mnemonic of the updating key.)
+
+```python
+from moeralib import naming
+from moeralib.crypto import sign_fingerprint, mnemonic_to_private_key
+from moeralib.naming.fingerprints import create_put_call_fingerprint0
+
+private_updating_key = mnemonic_to_private_key(mnemonic)
+
+srv = naming.MoeraNaming()
+info = srv.get_current(name, generation)
+
+fingerprint = create_put_call_fingerprint0(
+    name, generation, info.updating_key, new_node_uri, info.signing_key,
+    info.valid_from, info.digest
+)
+signature = sign_fingerprint(fingerprint, private_updating_key)
+
+srv.put(name, generation, None, new_node_uri, None, None, info.digest, signature)
+```
+
 [1]: https://github.com/MoeraOrg/python-moeralib
 [2]: https://pypi.org/project/moeralib/
 [3]: /development/node-api/authentication.html

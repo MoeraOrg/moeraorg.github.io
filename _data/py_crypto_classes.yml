@@ -1,0 +1,65 @@
+functions:
+  - name: generate_key()
+    out:
+      type: ec.EllipticCurvePrivateKey
+      description: the keys
+    description: Generate a pair of cryptographic keys.
+  - name: generate_mnemonic_key()
+    out:
+      type: (str, ec.EllipticCurvePrivateKey)
+      description: the mnemonic and the keys
+    description: Generate a pair of cryptographic keys with a mnemonic for the private key.
+  - name: mnemonic_to_private_key(mnemonic)
+    params:
+      - name: mnemonic
+        type: str
+        description: the mnemonic
+    out:
+      type: ec.EllipticCurvePrivateKey
+      description: the private key
+    description: Restore a private key from the given mnemonic.
+  - name: raw_public_key(public_key)
+    params:
+      - name: public_key
+        type: ec.EllipticCurvePublicKey
+        description: the public key
+    out:
+      type: bytes
+      description: the raw public key
+    description: Convert a public key to the raw format used by the naming server.
+  - name: digest_fingerprint(fingerprint)
+    params:
+      - name: fingerprint
+        type: bytes
+        description: the fingerprint
+    out:
+      type: bytes
+      description: the digest
+    description: Calculate a cryptographic digest of the fingerprint.
+  - name: sign_fingerprint(fingerprint, private_key)
+    params:
+      - name: fingerprint
+        type: bytes
+        description: the fingerprint to be signed
+      - name: private_key
+        type: ec.EllipticCurvePrivateKey
+        description: the private key
+    out:
+      type: bytes
+      description: the signature
+    description: Sign a fingerprint with a private key.
+  - name: verify_fingerprint_signature(fingerprint, signature, public_key)
+    params:
+      - name: fingerprint
+        type: bytes
+        description: the original fingerprint
+      - name: signature
+        type: bytes
+        description: the signature to be verified
+      - name: public_key
+        type: ec.EllipticCurvePublicKey
+        description: the public key for verification
+    out:
+      type: bool
+      description: <code>True</code>, if the signature is correct, <code>False</code> otherwise
+    description: Verify a fingerprint signature with the given public key.

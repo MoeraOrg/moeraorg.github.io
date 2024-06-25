@@ -52,7 +52,7 @@ calls:
         value: <code>nodeUri</code>, if not <code>null</code>, or the current URI otherwise
       - type: byte[]
         value: <code>signingKey</code>, if not <code>null</code>, or the current key otherwise
-      - type: int
+      - type: timestamp
         value: >
           <code>validFrom</code>, if <code>signingKey</code> is not <code>null</code>, or the timestamp of the current
           key otherwise

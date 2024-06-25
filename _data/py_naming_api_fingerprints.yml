@@ -1,0 +1,19 @@
+objects:
+- name: put_call
+  versions:
+  - fingerprint:
+    - field: name
+      type: str
+    - field: generation
+      type: int
+    - field: updating_key
+      type: bytes
+    - field: node_uri
+      type: str
+    - field: signing_key
+      type: bytes
+    - field: valid_from
+      type: Timestamp
+    - field: previous_digest
+      type: bytes
+    version: 0

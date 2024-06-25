@@ -62,11 +62,20 @@
 
 - type: sub
 
+- name: python-moeralib/crypto
+  title: moeralib.crypto
+
 - name: python-moeralib/naming
   title: moeralib.naming
 
+- name: python-moeralib/naming-fingerprints
+  title: moeralib.naming.fingerprints
+
 - name: python-moeralib/node
   title: moeralib.node
+
+- name: python-moeralib/node-fingerprints
+  title: moeralib.node.fingerprints
 
 - name: python-moeralib/universal_location
   title: moeralib.universal_location

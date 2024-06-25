@@ -1,0 +1,19 @@
+objects:
+  - name: PutCall
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: name
+          - type: int
+            field: generation
+          - type: byte[]
+            field: updatingKey
+          - type: String
+            field: nodeUri
+          - type: byte[]
+            field: signingKey
+          - type: timestamp
+            field: validFrom
+          - type: byte[]
+            field: previousDigest
