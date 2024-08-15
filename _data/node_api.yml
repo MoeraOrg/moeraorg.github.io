@@ -280,24 +280,20 @@ objects:
         description: Search nodes that blocked this node, by the given criteria.
   - name: Cartes
     description: >
-      <a href="authentication.html#carte">Cartes</a> - cryptographic tokens used to authenticate on any node besides
-      the home node.
+      <a href="authentication.html#carte">Cartes</a> - cryptographic tokens used to authenticate on any node.
     requests:
       - url: /cartes
-        type: GET
-        function: getCartes
-        query:
-          - type: int
-            name: limit
-            optional: true
-            description: maximum number of sequential cartes returned
+        type: POST
+        function: createCartes
+        in:
+          struct: CarteAttributes
+          name: attributes
         out:
           struct: CarteSet
         auth: admin
         description: >
-          Get a set of cartes that correspond to successive periods of time. Two sequences of cartes are returned: one
-          with all permissions and another with `view-media` permission only. The node may decide to return fewer cartes
-          than the given <code>limit</code>.
+          Create a set of cartes with the given attributes. Cartes in the sequence correspond to successive periods of
+          time.
   - name: Comments
     description: Comments to a posting.
     requests:
@@ -1384,6 +1380,46 @@ objects:
           struct: FriendOfInfo
         auth: optional
         description: Get the information for the node given, whether it has added this node to its friends.
+  - name: Grants
+    description: >
+      The node may grant administrative permissions (of a limited scope) on itself to other nodes.
+    requests:
+      - url: /grants/{nodeName}
+        type: GET
+        function: getGrant
+        params:
+          - type: String
+            name: nodeName
+            description: name of the node
+        out:
+          struct: GrantInfo
+        auth: admin
+        description: Get information about the administrative permissions granted to the node.
+      - url: /grants/{nodeName}
+        type: PUT
+        function: grantOrRevoke
+        params:
+          - type: String
+            name: nodeName
+            description: name of the node
+        in:
+          struct: GrantChange
+          name: change
+        out:
+          struct: GrantInfo
+        auth: admin
+        description: Grant a set of administrative permissions to the node or revoke them.
+      - url: /grants/{nodeName}
+        type: DELETE
+        function: revokeAll
+        params:
+          - type: String
+            name: nodeName
+            description: name of the node
+        out:
+          struct: Result
+        auth: admin
+        description: Revoke all administrative permissions granted to the node.
   - name: Media (private)
     description: >
       Media files that are bound to a particular uploader and may be inaccessible to other clients. Private media files
@@ -1393,14 +1429,35 @@ objects:
     requests:
       - url: /media/private
         type: POST
+        function: uploadAdminMedia
+        in:
+          type: blob
+        out:
+          struct: PrivateMediaFileInfo
+        auth: admin
+        description: >
+          Upload a new media file owned by the node admin. Content of the file is passed in the request body.
+        errors:
+          - code: media.image-invalid
+            description: media file is not a readable image
+          - code: media.wrong-size
+            description: media file is too large
+          - code: media.storage-error
+            description: media file cannot be stored
+      - url: /media/private/{clientName}
+        type: POST
         function: uploadPrivateMedia
+        params:
+          - type: String
+            name: clientName
+            description: name of the node owning the media file
         in:
           type: blob
         out:
           struct: PrivateMediaFileInfo
         auth: required
         description: >
-          Upload a new media file. Content of the file is passed in the request body
+          Upload a new media file owned by the given node. Content of the file is passed in the request body.
         errors:
           - code: media.image-invalid
             description: media file is not a readable image
@@ -3684,6 +3741,30 @@ structures:
         name: linkPreviews
         optional: true
         description: link previews
+  - name: CarteAttributes
+    fields:
+      - enum: Scope
+        array: true
+        name: clientScope
+        optional: true
+        description: >
+          permissions to be granted to the carte; if not set, all permissions of the carte's owner are granted
+      - enum: Scope
+        array: true
+        name: adminScope
+        optional: true
+        description: >
+          additional administrative permissions (of those granted to the carte's owner by the target node) to be granted
+          to the carte
+      - type: String
+        name: nodeName
+        optional: true
+        description: if set, the carte is valid for authentication on the specified node only
+      - type: int
+        name: limit
+        optional: true
+        description: maximum number of sequential cartes to be returned; the node may decide to return fewer cartes than
+          the given limit
   - name: CarteInfo
     fields:
       - type: String
@@ -3694,15 +3775,18 @@ structures:
       - type: timestamp
         name: deadline
         description: timestamp of the end of the carte's life
-      - type: String[]
-        name: permissions
+      - enum: Scope
+        array: true
+        name: clientScope
+        optional: true
+        description: the list of permissions granted to the carte
+      - enum: Scope
+        array: true
+        name: adminScope
         optional: true
         description: >
-          the list of permissions granted to the carte; the possible values are: 
-          <ul>
-            <li><code>other</code> - any other permission not listed below;</li>
-            <li><code>view-media</code> - view media files.</li>
-          </ul>
+          the list of additional administrative permissions (of those granted to the carte's owner by the target node)
+          granted to the carte
   - name: CarteSet
     fields:
       - type: String
@@ -4792,6 +4876,25 @@ structures:
       - type: any
         name: any
         description: any other fields understood by Moera clients
+  - name: GrantChange
+    fields:
+      - enum: Scope
+        array: true
+        name: scope
+        description: a set of permissions to be granted or revoked
+      - type: boolean
+        name: revoke
+        description: >
+          <code>true</code> if the permissions must be revoked, <code>false</code> if the permissions must be granted
+  - name: GrantInfo
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node the permissions are granted to
+      - enum: Scope
+        array: true
+        name: scope
+        description: the set of administrative permissions granted to the node
   - name: LinkPreview
     fields:
       - type: String
@@ -7324,16 +7427,13 @@ structures:
         name: login
       - type: String
         name: password
-      - type: int
-        name: authCategory
+      - enum: Scope
+        array: true
+        name: permissions
         optional: true
         description: >
-          A bit mask describing which permissions should be granted to the token. If not set, all permissions of
-          the administrator are granted. The bits have the following meaning:
-          <ul>
-            <li><code>other (0x0001)</code> - any other permission not listed below;</li>
-            <li><code>view-media (0x0002)</code> - view media files.</li>
-          </ul>
+          a bit mask describing which permissions should be granted to the token; if not set, all permissions of
+          the administrator are granted.
       - type: String
         name: name
         optional: true
@@ -7355,16 +7455,12 @@ structures:
         name: name
         optional: true
         description: a user-readable name of the token
-      - type: String[]
+      - enum: Scope
+        array: true
         name: permissions
         optional: true
         js-default: '[]'
-        description: >
-          The list of permissions granted to the token. The values are: 
-          <ul>
-            <li><code>other</code> - any other permission not listed below;</li>
-            <li><code>view-media</code> - view media files.</li>
-          </ul>
+        description: the list of permissions granted to the token
       - type: String
         name: pluginName
         optional: true
@@ -7789,6 +7885,76 @@ enums:
     values:
       - name: fcm
         description: Google Firebase Cloud Messaging (FCM) relay
+  - name: Scope
+    values:
+      - name: none
+        description: no permissions
+      - name: identify
+        description: allow to identify under the corresponding node name
+      - name: other
+        description: other permissions
+      - name: view-media
+        description: view any media file
+      - name: view-content
+        description: view any content (posts, comments, reactions), except media files
+      - name: add-post
+        description: create posts owned by the node
+      - name: update-post
+        description: modify posts owned by the node
+      - name: add-comment
+        description: create comments owned by the node
+      - name: update-comment
+        description: modify comments owned by the node
+      - name: react
+        description: create and delete reactions owned by the node
+      - name: delete-own-content
+        description: delete any content owned by the node
+      - name: delete-others-content
+        description: delete any content not owned by the node, but stored on it
+      - name: view-people
+        description: view all contacts of the node
+      - name: block
+        description: block and unblock people
+      - name: friend
+        description: add and remove friends and friend groups
+      - name: remote-identify
+        description: create cartes for authentication on other nodes
+      - name: drafts
+        description: use drafts
+      - name: view-feeds
+        description: view all feeds and status of stories in them
+      - name: update-feeds
+        description: modify status of stories in feeds
+      - name: name
+        description: update the name of the node
+      - name: plugins
+        description: administrate plugins
+      - name: view-profile
+        description: view all fields of the profile
+      - name: update-profile
+        description: change the profile
+      - name: sheriff
+        description: use sheriff's powers
+      - name: view-settings
+        description: view the node settings
+      - name: update-settings
+        description: modify the node settings
+      - name: subscribe
+        description: subscribe and unsubscribe to feeds
+      - name: tokens
+        description: manage authentication tokens
+      - name: user-lists
+        description: modify lists of users
+      - name: grant
+        description: grant administrative permission on this node to other nodes
+      - name: upload-public-media
+        description: upload a public media file
+      - name: upload-private-media
+        description: upload a private media file
+      - name: view-all
+        description: all view-only permissions
+      - name: all
+        description: all permissions
   - name: SettingType
     values:
       - name: bool

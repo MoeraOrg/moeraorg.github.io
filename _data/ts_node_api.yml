@@ -98,6 +98,76 @@ enums:
   values:
   - description: Google Firebase Cloud Messaging (FCM) relay
     name: fcm
+- name: Scope
+  values:
+  - description: no permissions
+    name: none
+  - description: allow to identify under the corresponding node name
+    name: identify
+  - description: other permissions
+    name: other
+  - description: view any media file
+    name: view-media
+  - description: view any content (posts, comments, reactions), except media files
+    name: view-content
+  - description: create posts owned by the node
+    name: add-post
+  - description: modify posts owned by the node
+    name: update-post
+  - description: create comments owned by the node
+    name: add-comment
+  - description: modify comments owned by the node
+    name: update-comment
+  - description: create and delete reactions owned by the node
+    name: react
+  - description: delete any content owned by the node
+    name: delete-own-content
+  - description: delete any content not owned by the node, but stored on it
+    name: delete-others-content
+  - description: view all contacts of the node
+    name: view-people
+  - description: block and unblock people
+    name: block
+  - description: add and remove friends and friend groups
+    name: friend
+  - description: create cartes for authentication on other nodes
+    name: remote-identify
+  - description: use drafts
+    name: drafts
+  - description: view all feeds and status of stories in them
+    name: view-feeds
+  - description: modify status of stories in feeds
+    name: update-feeds
+  - description: update the name of the node
+    name: name
+  - description: administrate plugins
+    name: plugins
+  - description: view all fields of the profile
+    name: view-profile
+  - description: change the profile
+    name: update-profile
+  - description: use sheriff's powers
+    name: sheriff
+  - description: view the node settings
+    name: view-settings
+  - description: modify the node settings
+    name: update-settings
+  - description: subscribe and unsubscribe to feeds
+    name: subscribe
+  - description: manage authentication tokens
+    name: tokens
+  - description: modify lists of users
+    name: user-lists
+  - description: grant administrative permission on this node to other nodes
+    name: grant
+  - description: upload a public media file
+    name: upload-public-media
+  - description: upload a private media file
+    name: upload-private-media
+  - description: all view-only permissions
+    name: view-all
+  - description: all permissions
+    name: all
 - name: SettingType
   values:
   - description: boolean, may have value <code>true</code> or <code>false</code>
@@ -674,26 +744,22 @@ objects:
     - name: filter
       struct: BlockedByUserFilter
 - description: '<a href="authentication.html#carte">Cartes</a> - cryptographic tokens
-    used to authenticate on any node besides the home node.
+    used to authenticate on any node.
 
     '
   name: Cartes
   requests:
   - auth: admin
-    description: 'Get a set of cartes that correspond to successive periods of time.
-      Two sequences of cartes are returned: one with all permissions and another with
-      `view-media` permission only. The node may decide to return fewer cartes than
-      the given <code>limit</code>.
+    description: 'Create a set of cartes with the given attributes. Cartes in the
+      sequence correspond to successive periods of time.
 
       '
-    function: getCartes(limit=null)
+    function: createCartes(attributes)
     out:
       struct: CarteSet
     params:
-    - description: maximum number of sequential cartes returned
-      name: limit
-      optional: true
-      type: number
+    - name: attributes
+      struct: CarteAttributes
 - description: Comments to a posting.
   name: Comments
   requests:
@@ -1722,6 +1788,42 @@ objects:
     - description: name of the node
       name: name
       type: string
+- description: 'The node may grant administrative permissions (of a limited scope)
+    on itself to other nodes.
+
+    '
+  name: Grants
+  requests:
+  - auth: admin
+    description: Get information about the administrative permissions granted to the
+      node.
+    function: getGrant(nodeName)
+    out:
+      struct: GrantInfo
+    params:
+    - description: name of the node
+      name: nodeName
+      type: string
+  - auth: admin
+    description: Grant a set of administrative permissions to the node or revoke them.
+    function: grantOrRevoke(nodeName, change)
+    out:
+      struct: GrantInfo
+    params:
+    - description: name of the node
+      name: nodeName
+      type: string
+    - name: change
+      struct: GrantChange
+  - auth: admin
+    description: Revoke all administrative permissions granted to the node.
+    function: revokeAll(nodeName)
+    out:
+      struct: Result
+    params:
+    - description: name of the node
+      name: nodeName
+      type: string
 - description: 'Media files that are bound to a particular uploader and may be inaccessible
     to other clients. Private media files cannot be retrieved by their hash, only
     by their ID. The ID is unique to the client that uploaded the file and the node
@@ -1732,9 +1834,9 @@ objects:
     '
   name: Media (private)
   requests:
-  - auth: required
-    description: 'Upload a new media file. Content of the file is passed in the request
-      body
+  - auth: admin
+    description: 'Upload a new media file owned by the node admin. Content of the
+      file is passed in the request body.
 
       '
     errors:
@@ -1744,10 +1846,34 @@ objects:
       description: media file is too large
     - code: media.storage-error
       description: media file cannot be stored
-    function: uploadPrivateMedia(body, contentType)
+    function: uploadAdminMedia(body, contentType)
     out:
       struct: PrivateMediaFileInfo
     params:
+    - name: body
+      type: Buffer
+    - description: content-type of <code>body</code>
+      name: contentType
+      type: string
+  - auth: required
+    description: 'Upload a new media file owned by the given node. Content of the
+      file is passed in the request body.
+
+      '
+    errors:
+    - code: media.image-invalid
+      description: media file is not a readable image
+    - code: media.wrong-size
+      description: media file is too large
+    - code: media.storage-error
+      description: media file cannot be stored
+    function: uploadPrivateMedia(clientName, body, contentType)
+    out:
+      struct: PrivateMediaFileInfo
+    params:
+    - description: name of the node owning the media file
+      name: clientName
+      type: string
     - name: body
       type: Buffer
     - description: content-type of <code>body</code>
@@ -4075,6 +4201,34 @@ structures:
     struct: LinkPreview
   name: Body
 - fields:
+  - array: true
+    description: 'permissions to be granted to the carte; if not set, all permissions
+      of the carte''s owner are granted
+
+      '
+    enum: Scope
+    name: clientScope
+    optional: true
+  - array: true
+    description: 'additional administrative permissions (of those granted to the carte''s
+      owner by the target node) to be granted to the carte
+
+      '
+    enum: Scope
+    name: adminScope
+    optional: true
+  - description: if set, the carte is valid for authentication on the specified node
+      only
+    name: nodeName
+    optional: true
+    type: string
+  - description: maximum number of sequential cartes to be returned; the node may
+      decide to return fewer cartes than the given limit
+    name: limit
+    optional: true
+    type: number
+  name: CarteAttributes
+- fields:
   - name: carte
     type: string
   - description: timestamp of the beginning of the carte's life
@@ -4083,12 +4237,19 @@ structures:
   - description: timestamp of the end of the carte's life
     name: deadline
     type: number
-  - description: "the list of permissions granted to the carte; the possible values\
-      \ are:  <ul>\n  <li><code>other</code> - any other permission not listed below;</li>\n\
-      \  <li><code>view-media</code> - view media files.</li>\n</ul>\n"
-    name: permissions
+  - array: true
+    description: the list of permissions granted to the carte
+    enum: Scope
+    name: clientScope
     optional: true
-    type: string[]
+  - array: true
+    description: 'the list of additional administrative permissions (of those granted
+      to the carte''s owner by the target node) granted to the carte
+
+      '
+    enum: Scope
+    name: adminScope
+    optional: true
   name: CarteInfo
 - fields:
   - description: the client IP address the cartes are bound to
@@ -5240,6 +5401,27 @@ structures:
     optional: true
     type: string
   name: FundraiserInfo
+- fields:
+  - array: true
+    description: a set of permissions to be granted or revoked
+    enum: Scope
+    name: scope
+  - description: '<code>true</code> if the permissions must be revoked, <code>false</code>
+      if the permissions must be granted
+
+      '
+    name: revoke
+    type: boolean
+  name: GrantChange
+- fields:
+  - description: name of the node the permissions are granted to
+    name: nodeName
+    type: string
+  - array: true
+    description: the set of administrative permissions granted to the node
+    enum: Scope
+    name: scope
+  name: GrantInfo
 - fields:
   - description: name of the site
     name: siteName
@@ -7931,14 +8113,14 @@ structures:
     type: string
   - name: password
     type: string
-  - description: "A bit mask describing which permissions should be granted to the\
-      \ token. If not set, all permissions of the administrator are granted. The bits\
-      \ have the following meaning: <ul>\n  <li><code>other (0x0001)</code> - any\
-      \ other permission not listed below;</li>\n  <li><code>view-media (0x0002)</code>\
-      \ - view media files.</li>\n</ul>\n"
-    name: authCategory
+  - array: true
+    description: 'a bit mask describing which permissions should be granted to the
+      token; if not set, all permissions of the administrator are granted.
+
+      '
+    enum: Scope
+    name: permissions
     optional: true
-    type: number
   - description: a user-readable name of the token
     name: name
     optional: true
@@ -7955,13 +8137,12 @@ structures:
     name: name
     optional: true
     type: string
-  - description: "The list of permissions granted to the token. The values are:  <ul>\n\
-      \  <li><code>other</code> - any other permission not listed below;</li>\n  <li><code>view-media</code>\
-      \ - view media files.</li>\n</ul>\n"
+  - array: true
+    description: the list of permissions granted to the token
+    enum: Scope
     js-default: '[]'
     name: permissions
     optional: true
-    type: string[]
   - description: a plugin the token belongs to; if set, only this plugin may use the
       token
     name: pluginName

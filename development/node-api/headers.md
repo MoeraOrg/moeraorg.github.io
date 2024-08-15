@@ -50,9 +50,10 @@ disable this behavior when receives this header.
 
 <h4 class="identifier">
     X-Moera-Auth: [root-admin={true or false}]
-        [admin={true or false}]
-        [auth-category={comma-separated list}]
+        [admin-scope={comma-separated list}]
+        [auth-scope={comma-separated list}]
         [client-name={name}]
+        [owner={true or false}]
         [remote-address={IP address}]
         [user-agent={browser name}]
         [user-agent-os={OS name}]

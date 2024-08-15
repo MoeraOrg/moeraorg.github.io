@@ -11,6 +11,42 @@ objects:
             comment: cryptographic hash of the attachment as a file
   - name: Carte
     versions:
+      - version: 2
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>CARTE</code>
+          - type: String
+            field: ownerName
+          - type: InetAddress
+            field: address
+            comment: IP address of the client
+          - type: timestamp
+            field: beginning
+            comment: timestamp of the beginning of the carte's life
+          - type: timestamp
+            field: deadline
+            comment: timestamp of the end of the carte's life
+          - type: String
+            field: nodeName
+            comment: if set, the carte is valid for authentication on the specified node only
+          - type: int
+            field: clientScope
+            comment: >
+              A bit mask describing which permissions should be granted to the carte. If not set, all permissions of
+              the carte's owner are granted. Meaning of particular bits can be seen in the source code of
+              <a href="https://github.com/MoeraOrg/moera-node/blob/admin-scopes/src/main/java/org/moera/node/auth/Scope.java">Scope</a>
+              class
+          - type: int
+            field: adminScope
+            comment: >
+              A bit mask describing which additional administrative permissions (of those granted to the carte's owner
+              by the target node) should be granted to the carte. Meaning of particular bits can be seen in the source code of
+              <a href="https://github.com/MoeraOrg/moera-node/blob/admin-scopes/src/main/java/org/moera/node/auth/Scope.java">Scope</a>
+              class
+          - type: byte[]
+            field: salt
+            comment: 8 random bytes
       - version: 1
         fingerprint:
           - type: String

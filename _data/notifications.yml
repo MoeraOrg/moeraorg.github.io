@@ -125,6 +125,12 @@ notifications:
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+  - type: GRANT_UPDATED
+    description: The set of administrative permissions granted by the sending node to this node has been updated.
+    fields:
+      - enum: Scope
+        array: true
+        comment: the updated set of permissions
   - type: MENTION_COMMENT_ADDED
     description: A mention of the receiver in a comment on the sending node added.
     fields:
