@@ -760,6 +760,21 @@ objects:
     params:
     - name: attributes
       struct: CarteAttributes
+  - auth: admin
+    description: 'Verify if the given carte may be used for authentication on this
+      node. Additionally, if <code>clientName<code> is provided, it is compared to
+      the carte owner''s name.
+
+      '
+    errors:
+    - code: carte.wrong-client
+      description: carte authenticates a different node name
+    function: verifyCarte(clientCarte)
+    out:
+      struct: CarteVerificationInfo
+    params:
+    - name: clientCarte
+      struct: ClientCarte
 - description: Comments to a posting.
   name: Comments
   requests:
@@ -1806,6 +1821,9 @@ objects:
       type: string
   - auth: admin
     description: Grant a set of administrative permissions to the node or revoke them.
+    errors:
+    - code: grant.name-not-registered
+      description: node name is not registered yet
     function: grantOrRevoke(nodeName, change)
     out:
       struct: GrantInfo
@@ -3333,16 +3351,20 @@ objects:
       name: id
       type: string
   - auth: admin
-    description: Update the name of the token.
-    function: updateToken(id, token)
+    description: 'Update the name or permissions of the token. It is not possible
+      to grant token additional permissions with this request, but the granted permissions
+      can be revoked.
+
+      '
+    function: updateToken(id, update)
     out:
       struct: TokenInfo
     params:
     - description: ID of the token
       name: id
       type: string
-    - name: token
-      struct: TokenName
+    - name: update
+      struct: TokenUpdate
   - auth: admin
     description: Delete the token.
     function: deleteToken(id)
@@ -4237,6 +4259,11 @@ structures:
   - description: timestamp of the end of the carte's life
     name: deadline
     type: number
+  - description: if set, the carte is valid for authentication on the specified node
+      only
+    name: nodeName
+    optional: true
+    type: string
   - array: true
     description: the list of permissions granted to the carte
     enum: Scope
@@ -4264,6 +4291,49 @@ structures:
     name: createdAt
     type: number
   name: CarteSet
+- fields:
+  - description: <code>true</code>, if the carte can be accepted for authentication,
+      <code>false</code> otherwise
+    name: valid
+    type: boolean
+  - description: name of the node the carte authenticates
+    name: clientName
+    optional: true
+    type: string
+  - array: true
+    description: the list of permissions granted to the carte
+    enum: Scope
+    name: clientScope
+    optional: true
+  - array: true
+    description: 'the list of additional administrative permissions (of those granted
+      to the carte''s owner by the target node) granted to the carte
+
+      '
+    enum: Scope
+    name: adminScope
+    optional: true
+  - description: error code
+    name: errorCode
+    optional: true
+    type: string
+  - description: human-readable error message
+    name: errorMessage
+    optional: true
+    type: string
+  name: CarteVerificationInfo
+- errors:
+  - code: clientCarte.carte.blank
+    description: carte is empty
+  fields:
+  - description: the node name the client (carte owner) wants to authenticate under
+    name: clientName
+    optional: true
+    type: string
+  - description: the carte to verify
+    name: carte
+    type: string
+  name: ClientCarte
 - fields:
   - description: <code>true</code>, if the reaction is negative, <code>false</code>,
       if positive
@@ -8173,7 +8243,15 @@ structures:
     name: name
     optional: true
     type: string
-  name: TokenName
+  - array: true
+    description: 'a bit mask describing which permissions should be granted to the
+      token; if not set, the token permissions are left untouched
+
+      '
+    enum: Scope
+    name: permissions
+    optional: true
+  name: TokenUpdate
 - fields:
   - description: <code>true</code>, if the update is important, <code>false</code>
       (the default) otherwise

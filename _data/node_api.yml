@@ -294,6 +294,21 @@ objects:
         description: >
           Create a set of cartes with the given attributes. Cartes in the sequence correspond to successive periods of
           time.
+      - url: /cartes/verify
+        type: POST
+        function: verifyCarte
+        in:
+          struct: ClientCarte
+          name: clientCarte
+        out:
+          struct: CarteVerificationInfo
+        auth: admin
+        description: >
+          Verify if the given carte may be used for authentication on this node. Additionally, if <code>clientName<code>
+          is provided, it is compared to the carte owner's name.
+        errors:
+          - code: carte.wrong-client
+            description: carte authenticates a different node name
   - name: Comments
     description: Comments to a posting.
     requests:
@@ -1409,6 +1424,9 @@ objects:
           struct: GrantInfo
         auth: admin
         description: Grant a set of administrative permissions to the node or revoke them.
+        errors:
+          - code: grant.name-not-registered
+            description: node name is not registered yet
       - url: /grants/{nodeName}
         type: DELETE
         function: revokeAll
@@ -3123,12 +3141,14 @@ objects:
             name: id
             description: ID of the token
         in:
-          struct: TokenName
-          name: token
+          struct: TokenUpdate
+          name: update
         out:
           struct: TokenInfo
         auth: admin
-        description: Update the name of the token.
+        description: >
+          Update the name or permissions of the token. It is not possible to grant token additional permissions with
+          this request, but the granted permissions can be revoked.
       - url: /tokens/{id}
         type: DELETE
         function: deleteToken
@@ -3775,6 +3795,10 @@ structures:
       - type: timestamp
         name: deadline
         description: timestamp of the end of the carte's life
+      - type: String
+        name: nodeName
+        optional: true
+        description: if set, the carte is valid for authentication on the specified node only
       - enum: Scope
         array: true
         name: clientScope
@@ -3800,6 +3824,47 @@ structures:
       - type: timestamp
         name: createdAt
         description: cartes creation timestamp
+  - name: CarteVerificationInfo
+    fields:
+      - type: boolean
+        name: valid
+        description: <code>true</code>, if the carte can be accepted for authentication, <code>false</code> otherwise
+      - type: String
+        name: clientName
+        optional: true
+        description: name of the node the carte authenticates
+      - enum: Scope
+        array: true
+        name: clientScope
+        optional: true
+        description: the list of permissions granted to the carte
+      - enum: Scope
+        array: true
+        name: adminScope
+        optional: true
+        description: >
+          the list of additional administrative permissions (of those granted to the carte's owner by the target node)
+          granted to the carte
+      - type: String
+        name: errorCode
+        optional: true
+        description: error code
+      - type: String
+        name: errorMessage
+        optional: true
+        description: human-readable error message
+  - name: ClientCarte
+    fields:
+      - type: String
+        name: clientName
+        optional: true
+        description: the node name the client (carte owner) wants to authenticate under
+      - type: String
+        name: carte
+        description: the carte to verify
+    errors:
+      - code: clientCarte.carte.blank
+        description: carte is empty
   - name: ClientReactionInfo
     fields:
       - type: boolean
@@ -7484,12 +7549,19 @@ structures:
         name: lastUsedIp
         optional: true
         description: IP address of the latest user of the token
-  - name: TokenName
+  - name: TokenUpdate
     fields:
       - type: String
         name: name
         optional: true
         description: a user-readable name of the token
+      - enum: Scope
+        array: true
+        name: permissions
+        optional: true
+        description: >
+          a bit mask describing which permissions should be granted to the token; if not set, the token permissions are
+          left untouched
   - name: UpdateInfo
     fields:
       - type: boolean
