@@ -1399,6 +1399,14 @@ objects:
     description: >
       The node may grant administrative permissions (of a limited scope) on itself to other nodes.
     requests:
+      - url: /grants
+        type: GET
+        function: getAllGrants
+        out:
+          struct: GrantInfo
+          array: true
+        auth: admin
+        description: Get the list of all nodes having administrative permissions on this node.
       - url: /grants/{nodeName}
         type: GET
         function: getGrant

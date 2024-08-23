@@ -1810,6 +1810,14 @@ objects:
   name: Grants
   requests:
   - auth: admin
+    description: Get the list of all nodes having administrative permissions on this
+      node.
+    function: getAllGrants()
+    out:
+      array: true
+      struct: GrantInfo
+    params: []
+  - auth: admin
     description: Get information about the administrative permissions granted to the
       node.
     function: getGrant(nodeName)
