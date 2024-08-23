@@ -219,6 +219,12 @@ events:
       - struct: FriendInfo
         name: friend
         description: friendship information
+  - type: GRANT_UPDATED
+    description: Administrative permissions granted to a node were updated
+    fields:
+      - struct: GrantInfo
+        name: grant
+        description: the updated permissions
   - type: NODE_NAME_CHANGED
     description: The name of the node or one or more of important profile fields were changed.
     fields:
