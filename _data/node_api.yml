@@ -304,8 +304,8 @@ objects:
           struct: CarteVerificationInfo
         auth: admin
         description: >
-          Verify if the given carte may be used for authentication on this node. Additionally, if <code>clientName<code>
-          is provided, it is compared to the carte owner's name.
+          Verify if the given carte may be used for authentication on this node. Additionally, if
+          <code>clientName</code> is provided, it is compared to the carte owner's name.
         errors:
           - code: carte.wrong-client
             description: carte authenticates a different node name
