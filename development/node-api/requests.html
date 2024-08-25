@@ -249,7 +249,10 @@ container_class: container-requests
             {% for value in enum.values %}
                 <tr>
                     <td><code>{{ value.name }}</code></td>
-                    <td>{{ value.description }}</td>
+                    <td>
+                        {% if value.value %}<code class="me-2">{{ value.value }}</code>{% endif %}
+                        {{ value.description }}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

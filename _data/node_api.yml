@@ -7969,72 +7969,106 @@ enums:
     values:
       - name: none
         description: no permissions
+        value: "0x00000000"
       - name: identify
         description: allow to identify under the corresponding node name
+        value: "0x00000000"
       - name: other
         description: other permissions
+        value: "0x00000001"
       - name: view-media
         description: view any media file
+        value: "0x00000002"
       - name: view-content
         description: view any content (posts, comments, reactions), except media files
+        value: "0x00000004"
       - name: add-post
         description: create posts owned by the node
+        value: "0x00000008"
       - name: update-post
         description: modify posts owned by the node
+        value: "0x00000010"
       - name: add-comment
         description: create comments owned by the node
+        value: "0x00000020"
       - name: update-comment
         description: modify comments owned by the node
+        value: "0x00000040"
       - name: react
         description: create and delete reactions owned by the node
+        value: "0x00000080"
       - name: delete-own-content
         description: delete any content owned by the node
+        value: "0x00000100"
       - name: delete-others-content
         description: delete any content not owned by the node, but stored on it
+        value: "0x00000200"
       - name: view-people
         description: view all contacts of the node
+        value: "0x00000400"
       - name: block
         description: block and unblock people
+        value: "0x00000800"
       - name: friend
         description: add and remove friends and friend groups
+        value: "0x00001000"
       - name: remote-identify
         description: create cartes for authentication on other nodes
+        value: "0x00002000"
       - name: drafts
         description: use drafts
+        value: "0x00004000"
       - name: view-feeds
         description: view all feeds and status of stories in them
+        value: "0x00008000"
       - name: update-feeds
         description: modify status of stories in feeds
+        value: "0x00010000"
       - name: name
         description: update the name of the node
+        value: "0x00020000"
       - name: plugins
         description: administrate plugins
+        value: "0x00040000"
       - name: view-profile
         description: view all fields of the profile
+        value: "0x00080000"
       - name: update-profile
         description: change the profile
+        value: "0x00100000"
       - name: sheriff
         description: use sheriff's powers
+        value: "0x00200000"
       - name: view-settings
         description: view the node settings
+        value: "0x00400000"
       - name: update-settings
         description: modify the node settings
+        value: "0x00800000"
       - name: subscribe
         description: subscribe and unsubscribe to feeds
+        value: "0x01000000"
       - name: tokens
         description: manage authentication tokens
+        value: "0x02000000"
       - name: user-lists
         description: modify lists of users
+        value: "0x04000000"
       - name: grant
         description: grant administrative permission on this node to other nodes
+        value: "0x08000000"
       - name: upload-public-media
         description: upload a public media file
+        value: "0x10000000"
       - name: upload-private-media
         description: upload a private media file
+        value: "0x20000000"
       - name: view-all
         description: all view-only permissions
+        value: "0x00088406"
       - name: all
         description: all permissions
+        value: "0x3fffffff"
   - name: SettingType
     values:
       - name: bool
