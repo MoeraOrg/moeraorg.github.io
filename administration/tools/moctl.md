@@ -182,22 +182,30 @@ operations on the token use token ID to identify the particular token.
 
 : Show the detailed information about the token with the given `ID`.
 
-`token create [-n NAME] PASSWORD`
+`token create [-n NAME] [-p PERMISSIONS] PASSWORD`
 
 : Create a new token. This operation requires additional authentication with
   `PASSWORD`.
 
 : `-n NAME, --token-name NAME`
 
-  : Assign a human-readable name to the token.
+  : The name to be assigned to the token. If not set, the token becomes unnamed.
 
-`token rename [-n NAME] ID`
+: `-p PERMISSIONS, --permissions PERMISSIONS`
 
-: Change the human-readable name of the token.
+  : Comma-separated list of permissions to be assigned to the token.
+
+`token update [-n NAME] [-p PERMISSIONS] ID`
+
+: Change token's name or permissions.
 
 : `-n NAME, --token-name NAME`
 
-  : The name to be assigned to the token. If not set, the token becomes unnamed.
+  : Assign a human-readable name to the token.
+
+: `-p PERMISSIONS, --permissions PERMISSIONS`
+
+  : Comma-separated list of permissions to be assigned to the token.
 
 `token delete [-h] ID`
 
