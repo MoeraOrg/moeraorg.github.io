@@ -130,6 +130,21 @@ for story in slice.stories:
         print(story.posting.operations.view, story.posting.heading)
 ```
 
+## Generating cartes
+
+`generate_carte()` function generates a carte with the given parameters and signs
+it with the provided private signing key.
+
+```python
+import time
+
+from moeralib.crypto import raw_to_private_key
+from moeralib.node import generate_carte
+
+signing_key = raw_to_private_key(bytes.fromhex("72d0817beaf1800c5448841e490139b680f134a56e140bdb4f33aeb2c43e3c48"))
+carte = generate_carte("app0_0", signing_key, int(time.time()), node_name='Alice')
+```
+
 ## Universal URLs
 
 <code><a href="universal_location.html">moeralib.universal_location</a></code>

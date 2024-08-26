@@ -1,4 +1,13 @@
 functions:
+  - name: digest_fingerprint(fingerprint)
+    params:
+      - name: fingerprint
+        type: bytes
+        description: the fingerprint
+    out:
+      type: bytes
+      description: the digest
+    description: Calculate a cryptographic digest of the fingerprint.
   - name: generate_key()
     out:
       type: ec.EllipticCurvePrivateKey
@@ -18,6 +27,15 @@ functions:
       type: ec.EllipticCurvePrivateKey
       description: the private key
     description: Restore a private key from the given mnemonic.
+  - name: raw_private_key(private_key)
+    params:
+      - name: private_key
+        type: ec.EllipticCurvePrivateKey
+        description: the private key
+    out:
+      type: bytes
+      description: the raw private key
+    description: Convert a private key to the raw format to pass to the client.
   - name: raw_public_key(public_key)
     params:
       - name: public_key
@@ -27,15 +45,15 @@ functions:
       type: bytes
       description: the raw public key
     description: Convert a public key to the raw format used by the naming server.
-  - name: digest_fingerprint(fingerprint)
+  - name: raw_to_private_key(raw_private_key)
     params:
-      - name: fingerprint
+      - name: raw_private_key
         type: bytes
-        description: the fingerprint
+        description: the raw private key
     out:
-      type: bytes
-      description: the digest
-    description: Calculate a cryptographic digest of the fingerprint.
+      type: ec.EllipticCurvePrivateKey
+      description: the private key
+    description: Restore a private key from the raw format.
   - name: sign_fingerprint(fingerprint, private_key)
     params:
       - name: fingerprint

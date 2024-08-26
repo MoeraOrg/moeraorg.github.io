@@ -60,11 +60,24 @@ classes:
     category: class
     description: Class that gets cartes from the given node, caches them and supplies them for authentication.
     functions:
-      - name: MoeraCarteSource(node)
+      - name: MoeraCarteSource(node, client_scope, admin_scope)
         params:
           - name: node
             class: MoeraNode
             description: node to get cartes from
+          - name: client_scope
+            class: Scope
+            array: true
+            optional: true
+            description: >
+              permissions to be granted to the carte; if not set, all permissions of the carte's owner are granted
+          - name: admin_scope
+            class: Scope
+            array: true
+            optional: true
+            description: >
+              additional administrative permissions (of those granted to the carte's owner by the target node) to be
+              granted to the carte
       - name: renew()
         description: Force renewing the cached list of cartes.
       - name: get_carte()
@@ -209,3 +222,43 @@ functions:
       type: str
       description: standard URL
     description: Convert partial node URL to a standardized form.
+  - name: generate_carte(owner_name, signing_key, beginning, ttl, address, node_name, client_scope, admin_scope)
+    params:
+      - name: owner_name
+        type: str
+        optional: true
+        description: name of the node authenticating with the carte
+      - name: signing_key
+        type: ec.EllipticCurvePrivateKey
+        description: the private signing key to sign the carte
+      - name: beginning
+        type: Timestamp
+        optional: true
+        description: timestamp of the beginning of the carte's life
+      - name: ttl
+        type: int
+        optional: true
+        description: length of the carte's life, in seconds
+      - name: address
+        type: str
+        optional: true
+        description: if set, the carte is valid for authentication from the given IP address only
+      - name: node_name
+        type: str
+        optional: true
+        description: if set, the carte is valid for authentication on the specified node only
+      - name: client_scope
+        class: Scope
+        array: true
+        optional: true
+        description: list of permissions granted to the carte
+      - name: admin_scope
+        class: Scope
+        array: true
+        optional: true
+        description: >
+          list of additional administrative permissions (of those granted to the carte's owner by the target node)
+          granted to the carte
+    out:
+      type: str
+      description: the carte
