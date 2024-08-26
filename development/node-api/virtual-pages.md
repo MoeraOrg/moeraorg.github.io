@@ -43,6 +43,12 @@ Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
 
 <h4 class="identifier">
+    /grant?client_id={name}&client_secret={carte}&scope={scope}&redirect_uri={uri}
+</h4>
+
+[OAuth2][4] authorization page.
+
+<h4 class="identifier">
     /media/private/{id}.{extension}?width={number}&download={true or false}
 </h4>
 
@@ -151,3 +157,4 @@ Timeline, positioned at about the given [moment][3].
 <!-- @IGNORE PREVIOUS: link -->
 [3]: moment.html
 <!-- @IGNORE PREVIOUS: link -->
+[4]: oauth2.html
