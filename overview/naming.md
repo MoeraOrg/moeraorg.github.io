@@ -7,17 +7,17 @@ next_title: Cheaper Names
 
 # Naming
 
-The *naming database* - the public database that keeps the names of the
-users, and the corresponding public keys - is a single point of failure
+The *naming database* — the public database that keeps the names of the
+users, and the corresponding public keys — is a single point of failure
 in this scheme. Making this database fault-tolerant, tamper-resistant
 and censorship-resistant is critically important for the security of the
 decentralized network. Blockchain is a natural choice for this task.
 
 ## Blockchain
 
-[Blockchain][1] is a public database that is kept simultaneously on any
-number of independent nodes that do not trust one another. No permission
-is needed to become a node.
+[Blockchain][1] is a public database kept simultaneously on any number of
+independent nodes that do not trust one another. No permission is necessary
+to become a node.
  
 Only one state of the blockchain can be considered valid at any moment.
 Old records in the blockchain cannot be modified or removed, only new

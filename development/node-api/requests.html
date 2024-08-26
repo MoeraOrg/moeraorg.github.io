@@ -247,7 +247,7 @@ container_class: container-requests
         </thead>
         <tbody class="table-group-divider">
             {% for value in enum.values %}
-                <tr>
+                <tr id="{{ enum.name }}_{{ value.name }}">
                     <td><code>{{ value.name }}</code></td>
                     <td>
                         {% if value.value %}<code class="me-2">{{ value.value }}</code>{% endif %}

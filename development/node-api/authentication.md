@@ -51,14 +51,15 @@ of [CarteFingerprint][4] and its signature.
 carte = fingerprint + signature
 ```
 
-The fingerprint contains the name of the home node, the IP address of the client,
-optional name of the target node, beginning and end timestamps of the carte's life
-and a random salt. Binding to time, IP address and target node minimizes the ability
-of an attacker to use a carte that was intercepted somehow. For the same reason, 
-it is recommended to use cartes with a short lifetime (several minutes).
-If the client needs to work longer, it can request several cartes in a single
-request that correspond to successive periods of time. When one carte expires,
-the client throws it off and uses the next one in the sequence.
+The fingerprint contains the name of the home node, optional IP address of
+the client, optional name of the target node, permission scope, beginning and
+end timestamps of the carte's life and a random salt. Binding to time,
+IP address and target node minimizes the ability of an attacker to use a carte
+that was intercepted somehow. For the same reason, it is recommended to use
+cartes with a short lifetime (several minutes). If the client needs to work
+longer, it can request several cartes in a single request for successive periods
+of time. When one carte expires, the client throws it off and uses the next one
+in the sequence.
 
 ## Signature
 

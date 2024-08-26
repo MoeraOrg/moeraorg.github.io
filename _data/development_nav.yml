@@ -52,6 +52,9 @@
 - name: node-api/fingerprints
   title: Fingerprints
 
+- name: node-api/oauth2
+  title: OAuth2
+
 - type: end
 
 - name: push-relay-api

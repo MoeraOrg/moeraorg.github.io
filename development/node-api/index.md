@@ -24,6 +24,7 @@ UTC timezone.
 8. [Authentication](authentication.html)
 9. [Access Controls](access-controls.html)
 10. [Fingerprints](fingerprints.html)
+10. [OAuth2](oauth2.html)
 
 ## General errors
 
