@@ -103,7 +103,7 @@ functions:
         optional: true
         description: a naming server to be used
     out:
-      type: string | null
+      type: Promise&lt;string | null>
       description: the node URI, or <code>null</code> if the name does not exist
     description: Shortcut function to resolve a node name and get the node URI.
 

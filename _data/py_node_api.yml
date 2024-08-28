@@ -102,72 +102,106 @@ enums:
   values:
   - description: no permissions
     name: none
+    value: '0x00000000'
   - description: allow to identify under the corresponding node name
     name: identify
+    value: '0x00000000'
   - description: other permissions
     name: other
+    value: '0x00000001'
   - description: view any media file
     name: view-media
+    value: '0x00000002'
   - description: view any content (posts, comments, reactions), except media files
     name: view-content
+    value: '0x00000004'
   - description: create posts owned by the node
     name: add-post
+    value: '0x00000008'
   - description: modify posts owned by the node
     name: update-post
+    value: '0x00000010'
   - description: create comments owned by the node
     name: add-comment
+    value: '0x00000020'
   - description: modify comments owned by the node
     name: update-comment
+    value: '0x00000040'
   - description: create and delete reactions owned by the node
     name: react
+    value: '0x00000080'
   - description: delete any content owned by the node
     name: delete-own-content
+    value: '0x00000100'
   - description: delete any content not owned by the node, but stored on it
     name: delete-others-content
+    value: '0x00000200'
   - description: view all contacts of the node
     name: view-people
+    value: '0x00000400'
   - description: block and unblock people
     name: block
+    value: '0x00000800'
   - description: add and remove friends and friend groups
     name: friend
+    value: '0x00001000'
   - description: create cartes for authentication on other nodes
     name: remote-identify
+    value: '0x00002000'
   - description: use drafts
     name: drafts
+    value: '0x00004000'
   - description: view all feeds and status of stories in them
     name: view-feeds
+    value: '0x00008000'
   - description: modify status of stories in feeds
     name: update-feeds
+    value: '0x00010000'
   - description: update the name of the node
     name: name
+    value: '0x00020000'
   - description: administrate plugins
     name: plugins
+    value: '0x00040000'
   - description: view all fields of the profile
     name: view-profile
+    value: '0x00080000'
   - description: change the profile
     name: update-profile
+    value: '0x00100000'
   - description: use sheriff's powers
     name: sheriff
+    value: '0x00200000'
   - description: view the node settings
     name: view-settings
+    value: '0x00400000'
   - description: modify the node settings
     name: update-settings
+    value: '0x00800000'
   - description: subscribe and unsubscribe to feeds
     name: subscribe
+    value: '0x01000000'
   - description: manage authentication tokens
     name: tokens
+    value: '0x02000000'
   - description: modify lists of users
     name: user-lists
+    value: '0x04000000'
   - description: grant administrative permission on this node to other nodes
     name: grant
+    value: '0x08000000'
   - description: upload a public media file
     name: upload-public-media
+    value: '0x10000000'
   - description: upload a private media file
     name: upload-private-media
+    value: '0x20000000'
   - description: all view-only permissions
     name: view-all
+    value: '0x00088406'
   - description: all permissions
     name: all
+    value: '0x3fffffff'
 - name: SettingType
   values:
   - description: boolean, may have value <code>true</code> or <code>false</code>
@@ -763,7 +797,7 @@ objects:
       struct: CarteAttributes
   - auth: admin
     description: 'Verify if the given carte may be used for authentication on this
-      node. Additionally, if <code>clientName<code> is provided, it is compared to
+      node. Additionally, if <code>clientName</code> is provided, it is compared to
       the carte owner''s name.
 
       '

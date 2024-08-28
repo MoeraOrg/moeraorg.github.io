@@ -60,7 +60,7 @@ classes:
     category: class
     description: Class that gets cartes from the given node, caches them and supplies them for authentication.
     functions:
-      - name: MoeraCarteSource(node, client_scope, admin_scope)
+      - name: MoeraCarteSource(node, client_scope, admin_scope, target_node_name)
         params:
           - name: node
             class: MoeraNode
@@ -70,14 +70,18 @@ classes:
             array: true
             optional: true
             description: >
-              permissions to be granted to the carte; if not set, all permissions of the carte's owner are granted
+              permissions to be granted to the cartes; if not set, all permissions of the cartes' owner are granted
           - name: admin_scope
             class: Scope
             array: true
             optional: true
             description: >
-              additional administrative permissions (of those granted to the carte's owner by the target node) to be
-              granted to the carte
+              additional administrative permissions (of those granted to the cartes' owner by the target node) to be
+              granted to the cartes
+          - name: target_node_name
+            type: str
+            optional: true
+            description: if set, the cartes are valid for authentication on the specified node only
       - name: renew()
         description: Force renewing the cached list of cartes.
       - name: get_carte()
@@ -233,12 +237,11 @@ functions:
         description: the private signing key to sign the carte
       - name: beginning
         type: Timestamp
-        optional: true
         description: timestamp of the beginning of the carte's life
       - name: ttl
         type: int
         optional: true
-        description: length of the carte's life, in seconds
+        description: length of the carte's life, in seconds (10 minutes by default)
       - name: address
         type: str
         optional: true

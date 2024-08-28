@@ -26,17 +26,16 @@ objects:
       type: str
     - comment: 'A bit mask describing which permissions should be granted to the carte.
         If not set, all permissions of the carte''s owner are granted. Meaning of
-        particular bits can be seen in the source code of <a href="https://github.com/MoeraOrg/moera-node/blob/admin-scopes/src/main/java/org/moera/node/auth/Scope.java">Scope</a>
-        class
+        particular bits can be seen in the description of <a href="requests.html#Scope">Scope</a>
+        enum
 
         '
       field: client_scope
       type: int
     - comment: 'A bit mask describing which additional administrative permissions
         (of those granted to the carte''s owner by the target node) should be granted
-        to the carte. Meaning of particular bits can be seen in the source code of
-        <a href="https://github.com/MoeraOrg/moera-node/blob/admin-scopes/src/main/java/org/moera/node/auth/Scope.java">Scope</a>
-        class
+        to the carte. Meaning of particular bits can be seen in the description of
+        <a href="requests.html#Scope">Scope</a> enum
 
         '
       field: admin_scope
