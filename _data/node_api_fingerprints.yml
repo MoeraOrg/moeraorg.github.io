@@ -220,6 +220,28 @@ objects:
           - type: byte
             field: attachments
             comment: 0 <i>(reserved for future use)</i>
+  - name: PushRelayMessage
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>PUSH_RELAY_MESSAGE</code>
+          - type: timestamp
+            field: signedAt
+  - name: PushRelayRegister
+    versions:
+      - version: 0
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>PUSH_RELAY_REGISTER</code>
+          - type: String
+            field: clientId
+          - type: String
+            field: lang
+          - type: timestamp
+            field: signedAt
   - name: Reaction
     versions:
       - version: 0

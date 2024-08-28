@@ -196,6 +196,22 @@ objects:
       field: attachments
       type: int
     version: 0
+- name: push_relay_message
+  versions:
+  - fingerprint:
+    - field: signed_at
+      type: Timestamp
+    version: 0
+- name: push_relay_register
+  versions:
+  - fingerprint:
+    - field: client_id
+      type: str
+    - field: lang
+      type: str
+    - field: signed_at
+      type: Timestamp
+    version: 0
 - name: reaction
   versions:
   - fingerprint:
