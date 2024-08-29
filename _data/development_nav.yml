@@ -96,8 +96,14 @@
 - name: typescript-moeralib/naming
   title: moeralib/naming
 
+- name: typescript-moeralib/naming-fingerprints
+  title: moeralib/naming/fingerprints
+
 - name: typescript-moeralib/node
   title: moeralib/node
+
+- name: typescript-moeralib/node-fingerprints
+  title: moeralib/node/fingerprints
 
 - name: typescript-moeralib/universal_location
   title: moeralib/universal-location

@@ -160,6 +160,53 @@ def write_naming_api(api: Any, datadir: str) -> None:
         yaml.safe_dump(api, ofile, default_flow_style=False)
 
 
+TS_FP_TYPES = {
+    'String': 'string',
+    'InetAddress': 'string',
+    'int': 'number',
+    'timestamp': 'number',
+    'byte': 'number',
+    'byte[]': 'Buffer',
+    'boolean': 'boolean'
+}
+
+
+def read_node_fingerprints(datadir: str) -> Any:
+    with open(datadir + '/node_api_fingerprints.yml', 'r') as ifile:
+        return yaml.safe_load(ifile)
+
+
+def write_node_fingerprints(fp: Any, datadir: str) -> None:
+    with open(datadir + '/ts_node_api_fingerprints.yml', 'w+') as ofile:
+        yaml.safe_dump(fp, ofile, default_flow_style=False)
+
+
+def read_naming_fingerprints(datadir: str) -> Any:
+    with open(datadir + '/naming_api_fingerprints.yml', 'r') as ifile:
+        return yaml.safe_load(ifile)
+
+
+def write_naming_fingerprints(fp: Any, datadir: str) -> None:
+    with open(datadir + '/ts_naming_api_fingerprints.yml', 'w+') as ofile:
+        yaml.safe_dump(fp, ofile, default_flow_style=False)
+
+
+def convert_fingerprints(fp: Any) -> None:
+    for object in fp['objects']:
+        for schema in object['versions']:
+            for field in schema['fingerprint']:
+                if 'type' in field:
+                    field_type = TS_FP_TYPES[field['type']]
+                else:
+                    field_type = 'Buffer'
+                if field.get('array', False):
+                    field_type = f'{field_type}[]'
+                field['type'] = field_type
+                field.pop('digest', None)
+                field.pop('array', None)
+            schema['fingerprint'] = [field for field in schema['fingerprint'] if field['field'] != 'object_type']
+
+
 if len(sys.argv) < 2 or sys.argv[1] == '':
     print("Usage: ts-yaml <directory>")
     exit(1)
@@ -173,3 +220,11 @@ write_node_api(api, datadir)
 api = read_naming_api(datadir)
 convert_naming_api(api)
 write_naming_api(api, datadir)
+
+fp = read_node_fingerprints(datadir)
+convert_fingerprints(fp)
+write_node_fingerprints(fp, datadir)
+
+fp = read_naming_fingerprints(datadir)
+convert_fingerprints(fp)
+write_naming_fingerprints(fp, datadir)

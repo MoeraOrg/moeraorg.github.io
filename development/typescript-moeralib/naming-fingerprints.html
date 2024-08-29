@@ -1,0 +1,39 @@
+---
+layout: development
+title: TypeScript Library
+up: typescript-moeralib
+subtitle: moeralib/naming/fingerprints
+---
+
+<h1>moeralib/naming/fingerprints</h1>
+
+<h2 id="Functions">Functions</h2>
+{% for object in site.data.ts_naming_api_fingerprints.objects %}
+    {% for version in object.versions %}
+        <h4 class="identifier function">{{
+            }}create{{ object.name }}Fingerprint{{ version.version }}{%
+                for field in version.fingerprint %}{%
+                    if forloop.first %}({% else %}, {% endif %}{{ field.field
+                }}{% endfor
+            %})
+        </h4>
+        <dl>
+            <dt>Parameters:</dt>
+            {% for field in version.fingerprint %}
+                <dd>
+                    <code>{{ field.field }}</code>:&nbsp;
+                    {% if field.type %}
+                        <code>{{ field.type }} | null</code>
+                    {% endif %}
+                    {% if field.comment %}
+                        &ndash; {{ field.comment }}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+            <dt>Return value:</dt>
+            <dd>
+                <code>Buffer</code> - the fingerprint in binary form
+            </dd>
+        </dl>
+    {% endfor %}
+{% endfor %}

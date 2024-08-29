@@ -1,0 +1,293 @@
+objects:
+- name: Attachment
+  versions:
+  - fingerprint:
+    - comment: <code>ATTACHMENT</code>
+      field: objectType
+      type: string
+    - comment: cryptographic hash of the attachment as a file
+      field: digest
+      type: Buffer
+    version: 0
+- name: Carte
+  versions:
+  - fingerprint:
+    - comment: <code>CARTE</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
+    - comment: IP address of the client
+      field: address
+      type: string
+    - comment: timestamp of the beginning of the carte's life
+      field: beginning
+      type: number
+    - comment: timestamp of the end of the carte's life
+      field: deadline
+      type: number
+    - comment: if set, the carte is valid for authentication on the specified node
+        only
+      field: nodeName
+      type: string
+    - comment: 'A bit mask describing which permissions should be granted to the carte.
+        If not set, all permissions of the carte''s owner are granted. Meaning of
+        particular bits can be seen in the description of <a href="requests.html#Scope">Scope</a>
+        enum
+
+        '
+      field: clientScope
+      type: number
+    - comment: 'A bit mask describing which additional administrative permissions
+        (of those granted to the carte''s owner by the target node) should be granted
+        to the carte. Meaning of particular bits can be seen in the description of
+        <a href="requests.html#Scope">Scope</a> enum
+
+        '
+      field: adminScope
+      type: number
+    - comment: 8 random bytes
+      field: salt
+      type: Buffer
+    version: 2
+  - fingerprint:
+    - comment: <code>CARTE</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
+    - comment: IP address of the client
+      field: address
+      type: string
+    - comment: timestamp of the beginning of the carte's life
+      field: beginning
+      type: number
+    - comment: timestamp of the end of the carte's life
+      field: deadline
+      type: number
+    - comment: if set, the carte is valid for authentication on the specified node
+        only
+      field: nodeName
+      type: string
+    - comment: "A bit mask describing which permissions should be granted to the carte.\
+        \ If not set, all permissions of the carte's owner are granted. The bits have\
+        \ the following meaning: <ul>\n  <li><code>other (0x0001)</code> - any other\
+        \ permission not listed below;</li>\n  <li><code>view-media (0x0002)</code>\
+        \ - view media files.</li>\n</ul>\n"
+      field: authCategory
+      type: number
+    - comment: 8 random bytes
+      field: salt
+      type: Buffer
+    version: 1
+  - fingerprint:
+    - comment: <code>CARTE</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
+    - comment: IP address of the client
+      field: address
+      type: string
+    - comment: timestamp of the beginning of the carte's life
+      field: beginning
+      type: number
+    - comment: timestamp of the end of the carte's life
+      field: deadline
+      type: number
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: number
+    - comment: 8 random bytes
+      field: salt
+      type: Buffer
+    version: 0
+- name: Comment
+  versions:
+  - fingerprint:
+    - comment: <code>COMMENT</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
+    - field: postingFingerprint
+      type: Buffer
+    - field: repliedToFingerprint
+      type: Buffer
+    - comment: hash of <code>bodySrc</code> field
+      field: bodySrcHash
+      type: Buffer
+    - field: bodySrcFormat
+      type: string
+    - field: body
+      type: string
+    - field: bodyFormat
+      type: string
+    - comment: of the current revision
+      field: createdAt
+      type: number
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: number
+    - field: attachments
+      type: Buffer[]
+    version: 0
+- name: NotificationPacket
+  versions:
+  - fingerprint:
+    - comment: <code>NOTIFICATION_PACKET</code>
+      field: objectType
+      type: string
+    - field: id
+      type: string
+    - field: nodeName
+      type: string
+    - field: fullName
+      type: string
+    - field: createdAt
+      type: number
+    - field: type
+      type: string
+    - field: notification
+      type: string
+    version: 1
+  - fingerprint:
+    - comment: <code>NOTIFICATION_PACKET</code>
+      field: objectType
+      type: string
+    - field: id
+      type: string
+    - field: nodeName
+      type: string
+    - field: createdAt
+      type: number
+    - field: type
+      type: string
+    - field: notification
+      type: string
+    version: 0
+- name: Posting
+  versions:
+  - fingerprint:
+    - comment: <code>POSTING</code>
+      field: objectType
+      type: string
+    - field: receiverName
+      type: string
+    - field: ownerName
+      type: string
+    - comment: hash of <code>bodySrc</code> field
+      field: bodySrcHash
+      type: Buffer
+    - field: bodySrcFormat
+      type: string
+    - field: body
+      type: string
+    - field: bodyFormat
+      type: string
+    - comment: of the current revision
+      field: createdAt
+      type: number
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: number
+    - comment: if the posting is linked to a media, its fingerprint should be put
+        at the beginning of the list
+      field: attachments
+      type: Buffer[]
+    version: 1
+  - fingerprint:
+    - comment: <code>POSTING</code>
+      field: objectType
+      type: string
+    - field: receiverName
+      type: string
+    - field: ownerName
+      type: string
+    - comment: hash of <code>bodySrc</code> field
+      field: bodySrcHash
+      type: Buffer
+    - field: bodySrcFormat
+      type: string
+    - field: body
+      type: string
+    - field: bodyFormat
+      type: string
+    - comment: of the current revision
+      field: createdAt
+      type: number
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: number
+    - comment: 0 <i>(reserved for future use)</i>
+      field: attachments
+      type: number
+    version: 0
+- name: PushRelayMessage
+  versions:
+  - fingerprint:
+    - comment: <code>PUSH_RELAY_MESSAGE</code>
+      field: objectType
+      type: string
+    - field: signedAt
+      type: number
+    version: 0
+- name: PushRelayRegister
+  versions:
+  - fingerprint:
+    - comment: <code>PUSH_RELAY_REGISTER</code>
+      field: objectType
+      type: string
+    - field: clientId
+      type: string
+    - field: lang
+      type: string
+    - field: signedAt
+      type: number
+    version: 0
+- name: Reaction
+  versions:
+  - fingerprint:
+    - comment: <code>REACTION</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
+    - comment: 'hash of <a href="#Posting">Posting</a> or <a href="#Comment">Comment</a>
+        fingerprint
+
+        '
+      field: entryFingerprint
+      type: Buffer
+    - field: negative
+      type: boolean
+    - field: emoji
+      type: number
+    version: 0
+- name: SheriffOrder
+  versions:
+  - fingerprint:
+    - comment: <code>SHERIFF_ORDER</code>
+      field: objectType
+      type: string
+    - field: sheriffName
+      type: string
+    - field: nodeName
+      type: string
+    - field: feedName
+      type: string
+    - comment: 'hash of <a href="#Posting">Posting</a> or <a href="#Comment">Comment</a>
+        fingerprint
+
+        '
+      field: entryFingerprint
+      type: Buffer
+    - field: category
+      type: string
+    - field: reasonCode
+      type: string
+    - field: reasonDetails
+      type: string
+    - field: createdAt
+      type: number
+    version: 0
