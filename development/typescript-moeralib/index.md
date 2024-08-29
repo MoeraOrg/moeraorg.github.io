@@ -110,6 +110,21 @@ for (const story of slice.stories) {
 }
 ```
 
+## Generating cartes
+
+`generateCarte()` function generates a carte with the given parameters and signs
+it with the provided private signing key.
+
+```typescript
+import { rawToPrivateKey } from 'moeralib/crypto';
+import { generateCarte } from 'moeralib/node';
+
+signingKey = rawToPrivateKey(
+    Buffer.from('72d0817beaf1800c5448841e490139b680f134a56e140bdb4f33aeb2c43e3c48', 'hex')
+);
+carte = generateCarte('app0_0', signingKey, Math.floor(Date.now() / 1000), {nodeName: 'Alice'});
+```
+
 ## Universal URLs
 
 <code><a href="universal_location.html">moeralib/universal-location</a></code>

@@ -141,8 +141,10 @@ import time
 from moeralib.crypto import raw_to_private_key
 from moeralib.node import generate_carte
 
-signing_key = raw_to_private_key(bytes.fromhex("72d0817beaf1800c5448841e490139b680f134a56e140bdb4f33aeb2c43e3c48"))
-carte = generate_carte("app0_0", signing_key, int(time.time()), node_name='Alice')
+signing_key = raw_to_private_key(
+    bytes.fromhex('72d0817beaf1800c5448841e490139b680f134a56e140bdb4f33aeb2c43e3c48')
+)
+carte = generate_carte('app0_0', signing_key, int(time.time()), node_name='Alice')
 ```
 
 ## Universal URLs
