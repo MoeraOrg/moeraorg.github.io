@@ -90,6 +90,9 @@
 
 - type: sub
 
+- name: typescript-moeralib/crypto
+  title: moeralib/crypto
+
 - name: typescript-moeralib/naming
   title: moeralib/naming
 

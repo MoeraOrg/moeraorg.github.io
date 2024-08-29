@@ -1,0 +1,92 @@
+functions:
+  - name: digestFingerprint(fingerprint)
+    params:
+      - name: fingerprint
+        type: Buffer
+        description: the fingerprint
+    out:
+      type: Buffer
+      description: the digest
+    description: Calculate a cryptographic digest of the fingerprint.
+  - name: generateKey()
+    out:
+      type: Promise&lt;crypto.KeyPairKeyObjectResult>
+      description: the keys
+    description: Generate a pair of cryptographic keys.
+  - name: generateMnemonicKey()
+    out:
+      type: Promise&lt;[string, crypto.KeyObject]>
+      description: the mnemonic and the key
+    description: Generate a private cryptographic key with a mnemonic.
+  - name: mnemonicToPrivateKey(mnemonic)
+    params:
+      - name: mnemonic
+        type: string
+        description: the mnemonic
+    out:
+      type: Promise&lt;crypto.KeyObject>
+      description: the private key
+    description: Restore a private key from the given mnemonic.
+  - name: rawPrivateKey(privateKey)
+    params:
+      - name: privateKey
+        type: crypto.KeyObject
+        description: the private key
+    out:
+      type: Buffer
+      description: the raw private key
+    description: Convert a private key to the raw format to pass to the client.
+  - name: rawPublicKey(publicKey)
+    params:
+      - name: publicKey
+        type: crypto.KeyObject
+        description: the public key
+    out:
+      type: Buffer
+      description: the raw public key
+    description: Convert a public key to the raw format used by the naming server.
+  - name: rawToPrivateKey(rawPrivateKey)
+    params:
+      - name: rawPrivateKey
+        type: Buffer
+        description: the raw private key
+    out:
+      type: crypto.KeyObject
+      description: the private key
+    description: Restore a private key from the raw format.
+  - name: rawToPublicKey(rawPublicKey)
+    params:
+      - name: rawPublicKey
+        type: Buffer
+        description: the raw public key
+    out:
+      type: crypto.KeyObject
+      description: the public key
+    description: Restore a public key from the raw format.
+  - name: signFingerprint(fingerprint, privateKey)
+    params:
+      - name: fingerprint
+        type: Buffer
+        description: the fingerprint to be signed
+      - name: privateKey
+        type: crypto.KeyObject
+        description: the private key
+    out:
+      type: Buffer
+      description: the signature
+    description: Sign a fingerprint with a private key.
+  - name: verifyFingerprintSignature(fingerprint, signature, publicKey)
+    params:
+      - name: fingerprint
+        type: Buffer
+        description: the original fingerprint
+      - name: signature
+        type: Buffer
+        description: the signature to be verified
+      - name: publicKey
+        type: crypto.KeyObject
+        description: the public key for verification
+    out:
+      type: boolean
+      description: <code>true</code>, if the signature is correct, <code>false</code> otherwise
+    description: Verify a fingerprint signature with the given public key.

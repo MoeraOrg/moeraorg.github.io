@@ -1,0 +1,48 @@
+---
+layout: development
+title: TypeScript Library
+up: typescript-moeralib
+subtitle: moeralib/crypto
+---
+
+<h1>moeralib/crypto</h1>
+
+<h2 id="Functions">Functions</h2>
+{% for fn in site.data.ts_crypto_classes.functions %}
+    <h4 class="identifier function">{{ fn.name }}</h4>
+    <p>{{ fn.description }}</p>
+    <dl>
+        {% if fn.params %}
+            <dt>Parameters:</dt>
+            {% for param in fn.params %}
+                <dd>
+                    <code>{{ param.name }}</code>:&nbsp;
+                    {% if param.type %}
+                        <code>{{ param.type }}</code>
+                    {% endif %}
+                    {% if param.class %}
+                        <code><a href="#{{ param.class }}">{{ param.class }}{%
+                            if param.array == true %}[]{% endif
+                        %}</a></code>
+                    {% endif %}
+                    {% if param.description %}
+                        &ndash; {% if param.optional == true %}<i>(optional)</i>{% endif %} {{ param.description }}
+                    {% else %}
+                        {% if param.optional == true %}&ndash; <i>(optional)</i>{% endif %}
+                    {% endif %}
+                </dd>
+            {% endfor %}
+        {% endif %}
+        {% if fn.out %}
+            <dt>Return value:</dt>
+            <dd>
+                {% if fn.out.type %}
+                    <code>{{ fn.out.type }}</code>
+                {% endif %}
+                {% if fn.out.description %}
+                    &ndash; {{ fn.out.description }}
+                {% endif %}
+            </dd>
+        {% endif %}
+    </dl>
+{% endfor %}
