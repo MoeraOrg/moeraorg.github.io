@@ -217,20 +217,10 @@ objects:
         description: Select root admin secret authentication for the following requests.
 
 functions:
-  - name: moera_root(url)
-    params:
-      - name: url
-        type: str
-        description: partial URL
-    out:
-      type: str
-      description: standard URL
-    description: Convert partial node URL to a standardized form.
   - name: generate_carte(owner_name, signing_key, beginning, ttl, address, node_name, client_scope, admin_scope)
     params:
       - name: owner_name
         type: str
-        optional: true
         description: name of the node authenticating with the carte
       - name: signing_key
         type: ec.EllipticCurvePrivateKey
@@ -265,3 +255,13 @@ functions:
     out:
       type: str
       description: the carte
+
+  - name: moera_root(url)
+    params:
+      - name: url
+        type: str
+        description: partial URL
+    out:
+      type: str
+      description: standard URL
+    description: Convert partial node URL to a standardized form.

@@ -1,4 +1,35 @@
 classes:
+  - name: GenerateCarteOptions
+    category: class
+    description: Interface containing optional parameters of a carte
+    fields:
+      - name: ttl
+        type: number
+        optional: true
+        description: length of the carte's life, in seconds (10 minutes by default)
+      - name: address
+        type: string | null
+        optional: true
+        description: if set, the carte is valid for authentication from the given IP address only
+      - name: nodeName
+        type: string | null
+        optional: true
+        description: if set, the carte is valid for authentication on the specified node only
+      - name: clientScope
+        class: Scope
+        array: true
+        or_type: number
+        optional: true
+        description: list of permissions granted to the carte
+      - name: adminScope
+        class: Scope
+        array: true
+        or_type: number
+        optional: true
+        description: >
+          list of additional administrative permissions (of those granted to the carte's owner by the target node)
+          granted to the carte
+
   - name: MoeraNodeError
     category: exception
     description: Generic node error.
@@ -63,11 +94,30 @@ classes:
     category: class
     description: Class that gets cartes from the given node, caches them and supplies them for authentication.
     functions:
-      - name: MoeraCarteSource(node)
+      - name: MoeraCarteSource(node, clientScope, adminScope, targetNodeName)
         params:
           - name: node
             class: MoeraNode
             description: node to get cartes from
+          - name: clientScope
+            class: Scope
+            array: true
+            or_type: "null"
+            optional: true
+            description: >
+              permissions to be granted to the cartes; if not set, all permissions of the cartes' owner are granted
+          - name: adminScope
+            class: Scope
+            array: true
+            or_type: "null"
+            optional: true
+            description: >
+              additional administrative permissions (of those granted to the cartes' owner by the target node) to be
+              granted to the cartes
+          - name: targetNodeName
+            type: string | null
+            optional: true
+            description: if set, the cartes are valid for authentication on the specified node only
       - name: renew()
         description: Force renewing the cached list of cartes.
       - name: getCarte()
@@ -212,6 +262,25 @@ objects:
         description: Select root admin secret authentication for the following requests.
 
 functions:
+  - name: generateCarte(ownerName, signingKey, beginning, options)
+    params:
+      - name: ownerName
+        type: string
+        description: name of the node authenticating with the carte
+      - name: signingKey
+        type: crypto.KeyObject
+        description: the private signing key to sign the carte
+      - name: beginning
+        type: number
+        description: timestamp of the beginning of the carte's life
+      - name: options
+        class: GenerateCarteOptions
+        optional: true
+        description: carte options
+    out:
+      type: string
+      description: the carte
+
   - name: moeraRoot(url)
     params:
       - name: url

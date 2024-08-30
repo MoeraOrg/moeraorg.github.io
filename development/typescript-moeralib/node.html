@@ -101,10 +101,15 @@ container_class: container-requests
     <h2 id="{{ class.name }}" class="identifier {{ class.category }}">{{ class.name }}</h2>
     <p>{{ class.description }}</p>
     {% for field in class.fields %}
-        <h4 class="identifier field">{{ field.name }}</h4>
+        <h4 class="identifier field">{{ field.name }}{% if field.optional == true %}?{% endif %}</h4>
         <p>
             {% if field.type %}
                 <code>{{ field.type }}</code> &ndash;
+            {% endif %}
+            {% if field.class %}
+                <code><a href="#{{ field.class }}">{{ field.class }}{%
+                    if field.array == true %}[]{% endif
+                %}</a>{% if field.or_type %} | {{ field.or_type }}{% endif %}</code> &ndash;
             {% endif %}
             {{ field.description }}
         </p>
@@ -124,7 +129,7 @@ container_class: container-requests
                         {% if param.class %}
                             <code><a href="#{{ param.class }}">{{ param.class }}{%
                                 if param.array == true %}[]{% endif
-                            %}</a></code>
+                            %}</a>{% if param.or_type %} | {{ param.or_type }}{% endif %}</code>
                         {% endif %}
                         {% if param.struct %}
                             <code><a href="#{{ param.struct }}">{{ param.struct }}{%
