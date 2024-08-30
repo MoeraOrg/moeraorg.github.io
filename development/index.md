@@ -35,7 +35,8 @@ I share my thoughts about Moera and the latest Moera news in [Moera blog][4] and
 3. [Node API](node-api/)
 4. [Push Relay API](push-relay-api.html)
 5. [Python Library](python-moeralib/)
-6. [Development Environment](development-environment.html)
+6. [TypeScript Library](typescript-moeralib/)
+7. [Development Environment](development-environment.html)
 
 [1]: /overview/index.html
 [2]: https://github.com/MoeraOrg/
