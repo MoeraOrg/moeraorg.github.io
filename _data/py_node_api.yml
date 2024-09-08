@@ -352,6 +352,8 @@ enums:
     name: remote-comment-added
   - description: a reply was added to the user's comment
     name: reply-comment
+  - description: visits from search engines report
+    name: search-report
   - description: a new complaint was received
     name: sheriff-complaint-added
   - description: a decision was made on the user's complaint
@@ -3212,6 +3214,20 @@ objects:
       type: str
     - name: story
       struct: StoryAttributes
+  - auth: admin
+    description: 'Delete the story.
+
+      '
+    errors:
+    - code: story.not-found
+      description: there is no story with the given ID
+    function: delete_story(id)
+    out:
+      struct: Result
+    params:
+    - description: ID of the story
+      name: id
+      type: str
 - description: 'All nodes that have subscribed to notifications from this node.
 
     '
@@ -7915,6 +7931,11 @@ structures:
     name: description
     optional: true
     type: str
+  - array: true
+    description: list of pages with number of clicks on each of them
+    name: clicks
+    optional: true
+    struct: StorySummaryPageClicks
   name: StorySummaryData
 - fields:
   - array: true
@@ -7977,6 +7998,18 @@ structures:
     optional: true
     type: str
   name: StorySummaryNode
+- fields:
+  - description: page heading, <code>None</code> for the blog itself
+    name: heading
+    optional: true
+    type: str
+  - description: page URL
+    name: href
+    type: str
+  - description: number of clicks on the page
+    name: clicks
+    type: int
+  name: StorySummaryPageClicks
 - fields:
   - description: reaction owner's name
     name: owner_name

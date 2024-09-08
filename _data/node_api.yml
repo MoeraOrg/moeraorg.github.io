@@ -2939,6 +2939,21 @@ objects:
         errors:
           - code: story.not-found
             description: there is no story with the given ID
+      - url: /stories/{id}
+        type: DELETE
+        function: deleteStory
+        params:
+          - type: String
+            name: id
+            description: ID of the story
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Delete the story.
+        errors:
+          - code: story.not-found
+            description: there is no story with the given ID
   - name: Subscribers
     description: >
       All nodes that have subscribed to notifications from this node.
@@ -7198,6 +7213,11 @@ structures:
         name: description
         optional: true
         description: additional descriptive text
+      - struct: StorySummaryPageClicks
+        array: true
+        name: clicks
+        optional: true
+        description: list of pages with number of clicks on each of them
   - name: StorySummaryBlocked
     fields:
       - enum: BlockedOperation
@@ -7259,6 +7279,18 @@ structures:
         name: ownerGender
         optional: true
         description: node owner's gender
+  - name: StorySummaryPageClicks
+    fields:
+      - type: String
+        name: heading
+        optional: true
+        description: page heading, <code>null</code> for the blog itself
+      - type: String
+        name: href
+        description: page URL
+      - type: int
+        name: clicks
+        description: number of clicks on the page
   - name: StorySummaryReaction
     fields:
       - type: String
@@ -8221,6 +8253,8 @@ enums:
         description: a comment was added under a posting the user is subscribed to
       - name: reply-comment
         description: a reply was added to the user's comment
+      - name: search-report
+        description: visits from search engines report
       - name: sheriff-complaint-added
         description: a new complaint was received
       - name: sheriff-complaint-decided
