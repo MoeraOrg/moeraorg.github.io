@@ -8249,6 +8249,8 @@ enums:
         description: a negative reaction was added to the user's posting
       - name: reaction-added-positive
         description: a positive reaction was added to the user's posting
+      - name: reminder-full-name
+        description: reminder for the user to set a full name
       - name: remote-comment-added
         description: a comment was added under a posting the user is subscribed to
       - name: reply-comment
