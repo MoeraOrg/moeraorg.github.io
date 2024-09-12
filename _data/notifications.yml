@@ -130,6 +130,7 @@ notifications:
     fields:
       - enum: Scope
         array: true
+        name: scope
         comment: the updated set of permissions
   - type: MENTION_COMMENT_ADDED
     description: A mention of the receiver in a comment on the sending node added.
