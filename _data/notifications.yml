@@ -575,6 +575,27 @@ notifications:
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
+  - type: SEARCH_ENGINE_CLICKED
+    description: The receiver's posting/comment/media has been visited on the sending node from a search engine.
+    fields:
+      - enum: SearchEngine
+        name: searchEngine
+        comment: the search engine
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+      - type: String
+        name: mediaId
+        comment: ID of the media on the sending node
+      - type: String
+        name: heading
+        comment: heading of the posting/comment/media
+      - type: timestamp
+        name: clickedAt
+        comment: the real time when the posting/comment/media was visited
   - type: SHERIFF_COMPLAINT_DECIDED
     description: The sheriff made a decision on the receiver's complaint
     fields:

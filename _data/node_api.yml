@@ -8101,6 +8101,10 @@ enums:
       - name: all
         description: all permissions
         value: "0x3fffffff"
+  - name: SearchEngine
+    values:
+      - name: google
+        description: Google
   - name: SettingType
     values:
       - name: bool
