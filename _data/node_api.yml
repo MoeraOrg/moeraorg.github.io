@@ -1675,6 +1675,33 @@ objects:
         errors:
           - code: naming.operation-pending
             description: another operation with the node name is pending currently
+      - url: /node-name/mnemonic
+        type: GET
+        function: getStoredMnemonic
+        out:
+          struct: KeyMnemonic
+        auth: admin
+        description: Get the updating key mnemonic stored on the node.
+        errors:
+          - code: not-found
+            description: the mnemonic is not stored
+      - url: /node-name/mnemonic
+        type: POST
+        function: storeMnemonic
+        in:
+          struct: KeyMnemonic
+          name: mnemonic
+        out:
+          struct: Result
+        auth: admin
+        description: Store the updating key mnemonic on the node.
+      - url: /node-name/mnemonic
+        type: DELETE
+        function: deleteStoredMnemonic
+        out:
+          struct: Result
+        auth: admin
+        description: Delete the updating key mnemonic stored on the node.
   - name: Notifications
     description: Receiver of notifications from other nodes.
     requests:
@@ -4983,6 +5010,11 @@ structures:
         array: true
         name: scope
         description: the set of administrative permissions granted to the node
+  - name: KeyMnemonic
+    fields:
+      - type: String[]
+        name: mnemonic
+        description: the words
   - name: LinkPreview
     fields:
       - type: String
@@ -5140,6 +5172,11 @@ structures:
         name: operationErrorMessage
         optional: true
         description: if the operation with the node name was failed, the human-readable description of the failure
+      - type: boolean
+        name: storedMnemonic
+        optional: true
+        description: >
+          <code>true</code>, if updating key mnemonic is being stored on the node, <code>false</code> otherwise
       - struct: NodeNameOperations
         name: operations
         optional: true
@@ -8253,8 +8290,14 @@ enums:
         description: a negative reaction was added to the user's posting
       - name: reaction-added-positive
         description: a positive reaction was added to the user's posting
+      - name: reminder-avatar
+        description: reminder for the user to set an avatar
+      - name: reminder-email
+        description: reminder for the user to set an email
       - name: reminder-full-name
         description: reminder for the user to set a full name
+      - name: reminder-sheriff-allow
+        description: reminder for the user to allow access for Google Play sheriff
       - name: remote-comment-added
         description: a comment was added under a posting the user is subscribed to
       - name: reply-comment

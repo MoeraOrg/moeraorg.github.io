@@ -202,6 +202,10 @@ enums:
   - description: all permissions
     name: all
     value: '0x3fffffff'
+- name: SearchEngine
+  values:
+  - description: Google
+    name: google
 - name: SettingType
   values:
   - description: boolean, may have value <code>true</code> or <code>false</code>
@@ -348,8 +352,14 @@ enums:
     name: reaction-added-negative
   - description: a positive reaction was added to the user's posting
     name: reaction-added-positive
+  - description: reminder for the user to set an avatar
+    name: reminder-avatar
+  - description: reminder for the user to set an email
+    name: reminder-email
   - description: reminder for the user to set a full name
     name: reminder-full-name
+  - description: reminder for the user to allow access for Google Play sheriff
+    name: reminder-sheriff-allow
   - description: a comment was added under a posting the user is subscribed to
     name: remote-comment-added
   - description: a reply was added to the user's comment
@@ -2137,6 +2147,29 @@ objects:
     - code: naming.operation-pending
       description: another operation with the node name is pending currently
     function: delete_node_name()
+    out:
+      struct: Result
+    params: []
+  - auth: admin
+    description: Get the updating key mnemonic stored on the node.
+    errors:
+    - code: not-found
+      description: the mnemonic is not stored
+    function: get_stored_mnemonic()
+    out:
+      struct: KeyMnemonic
+    params: []
+  - auth: admin
+    description: Store the updating key mnemonic on the node.
+    function: store_mnemonic(mnemonic)
+    out:
+      struct: Result
+    params:
+    - name: mnemonic
+      struct: KeyMnemonic
+  - auth: admin
+    description: Delete the updating key mnemonic stored on the node.
+    function: delete_stored_mnemonic()
     out:
       struct: Result
     params: []
@@ -5556,6 +5589,11 @@ structures:
     name: scope
   name: GrantInfo
 - fields:
+  - description: the words
+    name: mnemonic
+    type: List[str]
+  name: KeyMnemonic
+- fields:
   - description: name of the site
     name: site_name
     optional: true
@@ -5721,6 +5759,13 @@ structures:
     name: operation_error_message
     optional: true
     type: str
+  - description: '<code>True</code>, if updating key mnemonic is being stored on the
+      node, <code>False</code> otherwise
+
+      '
+    name: stored_mnemonic
+    optional: true
+    type: bool
   - description: the supported operations and the corresponding principals
     name: operations
     optional: true
