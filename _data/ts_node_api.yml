@@ -286,6 +286,8 @@ enums:
     name: html
   - description: text in Markdown format
     name: markdown
+  - description: HTML-formatted text, WYSIWYG editor
+    name: html/visual
   - description: application-specific format
     name: application
 - name: StoryType

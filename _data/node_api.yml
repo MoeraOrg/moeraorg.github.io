@@ -8226,6 +8226,8 @@ enums:
         description: HTML-formatted text, the node may allow only limited set of tags
       - name: markdown
         description: text in Markdown format
+      - name: html/visual
+        description: HTML-formatted text, WYSIWYG editor
       - name: application
         description: application-specific format
   - name: StoryType
