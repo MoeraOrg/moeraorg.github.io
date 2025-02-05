@@ -14,7 +14,7 @@ classes:
 
   - name: MoeraNamingApiError
     category: exception
-    description: Naming server connection error.
+    description: Naming server returned an error response.
     fields:
       - name: errorCode
         type: string
