@@ -6,7 +6,9 @@ import yaml
 TS_TYPES = {
     'String': 'string',
     'String[]': 'string[]',
+    'short': 'number',
     'int': 'number',
+    'long': 'number',
     'float': 'number',
     'boolean': 'boolean',
     'timestamp': 'number',
@@ -164,6 +166,7 @@ TS_FP_TYPES = {
     'String': 'string',
     'InetAddress': 'string',
     'int': 'number',
+    'long': 'number',
     'timestamp': 'number',
     'byte': 'number',
     'byte[]': 'Buffer',

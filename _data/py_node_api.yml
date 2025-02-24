@@ -392,6 +392,8 @@ enums:
     name: mention
   - description: node owner commented the posting
     name: comment
+  - description: node was subscribed automatically according to the settings
+    name: auto
 - name: SubscriptionType
   values:
   - description: subscribe to new stories in the feed
@@ -877,6 +879,15 @@ objects:
     - code: posting.not-signed
       description: the posting is not signed, so it is impossible to add comments
         to it
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
+    - code: media.not-found
+      description: there is no media with the given ID
+    - code: media.not-compressed
+      description: 'media attachment is not compressed as the node requires, the parameters
+        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
+
+        '
     function: create_comment(posting_id, comment)
     out:
       struct: CommentCreated
@@ -937,6 +948,15 @@ objects:
       description: there is no comment with the given ID
     - code: comment.wrong-posting
       description: the comment is not related to the given posting
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
+    - code: media.not-found
+      description: there is no media with the given ID
+    - code: media.not-compressed
+      description: 'media attachment is not compressed as the node requires, the parameters
+        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
+
+        '
     function: update_comment(posting_id, comment_id, comment)
     out:
       struct: CommentInfo
@@ -1056,6 +1076,8 @@ objects:
       description: cannot add a reaction to an unsigned comment
     - code: reaction.not-accepted
       description: the reaction is not acceptable
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
     function: create_comment_reaction(posting_id, comment_id, reaction)
     out:
       struct: ReactionCreated
@@ -1469,6 +1491,8 @@ objects:
 
       '
     errors:
+    - code: domain.name.blank
+      description: the domain name is empty
     - code: domain.already-exists
       description: a domain with the given hostname already exists
     - code: domain.node-id-used
@@ -1579,6 +1603,11 @@ objects:
       type: int
   - auth: admin
     description: Create a new draft from the text given.
+    errors:
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
+    - code: media.not-found
+      description: there is no media with the given ID
     function: create_draft(draft)
     out:
       struct: DraftInfo
@@ -1602,6 +1631,8 @@ objects:
     errors:
     - code: draft.not-found
       description: there is no draft with the given ID
+    - code: media.not-found
+      description: there is no media with the given ID
     function: update_draft(id, draft)
     out:
       struct: DraftInfo
@@ -2286,6 +2317,16 @@ objects:
       authenticated as admin, the node signs the posting.
 
       '
+    errors:
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
+    - code: media.not-found
+      description: there is no media with the given ID
+    - code: media.not-compressed
+      description: 'media attachment is not compressed as the node requires, the parameters
+        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
+
+        '
     function: create_posting(posting)
     out:
       struct: PostingInfo
@@ -2302,6 +2343,15 @@ objects:
       description: there is no posting with the given ID
     - code: posting.not-original
       description: updating a non-original posting is not allowed
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
+    - code: media.not-found
+      description: there is no media with the given ID
+    - code: media.not-compressed
+      description: 'media attachment is not compressed as the node requires, the parameters
+        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
+
+        '
     function: update_posting(id, posting)
     out:
       struct: PostingInfo
@@ -2438,6 +2488,8 @@ objects:
         to it
     - code: reaction.not-accepted
       description: the reaction is not acceptable
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
     function: create_posting_reaction(posting_id, reaction)
     out:
       struct: ReactionCreated
@@ -2610,6 +2662,9 @@ objects:
       are left intact. Fields that are set to an empty value are reset to their defaults.
 
       '
+    errors:
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
     function: update_profile(profile)
     out:
       struct: ProfileInfo
@@ -2627,6 +2682,10 @@ objects:
     params: []
   - auth: admin
     description: Send a request to the provider to delete the node.
+    errors:
+    - code: delete-node.no-email
+      description: e-mail is required to be set in the profile to communicate with
+        the provider
     function: send_delete_node_request(delete_node_text)
     out:
       struct: DeleteNodeStatus
@@ -3209,6 +3268,8 @@ objects:
       description: comment is not found
     - code: comment.wrong-posting
       description: comment is located under a different posting
+    - code: avatar.not-found
+      description: there is no avatar with the given ID
     function: create_sheriff_order(sheriff_order)
     out:
       struct: Result
@@ -3295,6 +3356,13 @@ objects:
       type: str
   - auth: required
     description: Subscribe to a particular group of notifications.
+    errors:
+    - code: feed.not-found
+      description: there is no feed with the given name
+    - code: posting.not-found
+      description: there is no posting with the given ID
+    - code: user-list.not-found
+      description: there is no list of users with the given name
     function: create_subscriber(subscriber)
     out:
       struct: SubscriberInfo
@@ -3367,6 +3435,8 @@ objects:
     errors:
     - code: subscription.already-exists
       description: an identical subscription already exists
+    - code: feed.not-found
+      description: there is no feed with the given name
     function: create_subscription(subscription)
     out:
       struct: SubscriptionInfo
@@ -3606,6 +3676,9 @@ operations:
   - default: signed
     description: add a negative reaction to the comment
     name: add_negative_reaction
+  - default: owner
+    description: override the permissions of the comment's reactions
+    name: override_reaction
   name: CommentOperations
 - fields:
   - default: public
@@ -3739,10 +3812,10 @@ operations:
     name: view
   name: PrivateMediaFileOperations
 - fields:
-  - default: null
+  - default: admin
     description: change the profile
     name: edit
-  - default: null
+  - default: admin
     description: view the e-mail address in the profile
     name: view_email
   name: ProfileOperations
@@ -3780,14 +3853,26 @@ operations:
   name: SubscriptionOperations
 structures:
 - fields:
-  - description: 'comma-separated list of codes of the positive reactions that are
+  - constraints:
+    - length:
+        error: accepted-reactions.positive.wrong-size
+        max: 255
+    - emojilist:
+        error: accepted-reactions.positive.invalid
+    description: 'comma-separated list of codes of the positive reactions that are
       accepted; a code may be prefixed by <code>0x</code> to designate hexadecimal
       number and <code>+</code> to designate a recommended reaction
 
       '
     name: positive
     type: str
-  - description: 'comma-separated list of codes of the negative reactions that are
+  - constraints:
+    - length:
+        error: accepted-reactions.negative.wrong-size
+        max: 255
+    - emojilist:
+        error: accepted-reactions.negative.invalid
+    description: 'comma-separated list of codes of the negative reactions that are
       accepted (the format is the same as above)
 
       '
@@ -3828,25 +3913,29 @@ structures:
     name: created_at
     type: Timestamp
   name: ActivityReactionInfo
-- errors:
-  - code: askDescription.friendGroupId.blank
-    description: friend group ID is empty
-  - code: askDescription.friendGroupId.wrong-size
-    description: friend group ID is too long
-  - code: askDescription.message.wrong-size
-    description: message is too long
-  fields:
-  - description: request subject
+- fields:
+  - constraints:
+    - notnull:
+        error: ask.subject.missing
+    description: request subject
     enum: AskSubject
     name: subject
-  - description: 'if the request is to add this node to friends, this field contains
+  - constraints:
+    - length:
+        error: ask.friend-group-id.wrong-size
+        max: 40
+    description: 'if the request is to add this node to friends, this field contains
       ID of the corresponding group of friends on the remote node
 
       '
     name: friend_group_id
     optional: true
     type: str
-  - description: message to the node admin
+  - constraints:
+    - length:
+        error: ask.message.wrong-size
+        max: 70
+    description: message to the node admin
     name: message
     optional: true
     type: str
@@ -3856,33 +3945,39 @@ structures:
     name: id
     type: str
   name: AsyncOperationCreated
-- errors:
-  - code: avatarAttributes.mediaId.blank
-    description: media ID is not set
-  - code: avatarAttributes.mediaId.not-found
-    description: the source media is not found
-  - code: avatarAttributes.clipX.out-of-range
-    description: clipping area left side is out of the image bounds
-  - code: avatarAttributes.clipY.out-of-range
-    description: clipping area top side is out of the image bounds
-  - code: avatarAttributes.clipSize.out-of-range
-    description: clipping area size is out of range (usually too small)
-  - code: avatarAttributes.avatarSize.out-of-range
-    description: avatar size is out of range (usually too small)
-  fields:
-  - description: ID of the public media file used as a source image
+- fields:
+  - constraints:
+    - notblank:
+        error: avatar.media-id.blank
+    description: ID of the public media file used as a source image
     name: media_id
     type: str
-  - description: x coordinate of the top-left corner of the clipping square
+  - constraints:
+    - other:
+        description: is out of the image bounds
+        error: avatar.clip-x.out-of-range
+    description: x coordinate of the top-left corner of the clipping square
     name: clip_x
     type: int
-  - description: y coordinate of the top-left corner of the clipping square
+  - constraints:
+    - other:
+        description: is out of the image bounds
+        error: avatar.clip-y.out-of-range
+    description: y coordinate of the top-left corner of the clipping square
     name: clip_y
     type: int
-  - description: size of the clipping square
+  - constraints:
+    - value:
+        error: avatar.clip-size.out-of-range
+        min: 100
+    description: size of the clipping square
     name: clip_size
     type: int
-  - description: size of the avatar to be created
+  - constraints:
+    - value:
+        error: avatar.avatar-size.out-of-range
+        min: 200
+    description: size of the avatar to be created
     name: avatar_size
     type: int
   - description: rotation angle of the source image
@@ -4038,11 +4133,11 @@ structures:
     optional: true
     type: str
   name: BlockedByUserInfo
-- errors:
-  - code: blockedInstantAttributes.storyType.blank
-    description: story type is not set
-  fields:
-  - description: type of the story
+- fields:
+  - constraints:
+    - notnull:
+        error: blocked-instant.story-type.missing
+    description: type of the story
     enum: StoryType
     name: story_type
   - description: ID of the local entry the blocked story should be related to
@@ -4148,16 +4243,17 @@ structures:
     optional: true
     type: Timestamp
   name: BlockedPostingInstantInfo
-- errors:
-  - code: blockedUserAttributes.blockedOperation.blank
-    description: blocked operation is not set
-  - code: blockedUserAttributes.reasonSrc.wrong-size
-    description: reason is too long
-  fields:
-  - description: operation that is to be blocked
+- fields:
+  - constraints:
+    - notnull:
+        error: blocked-user.blocked-operation.missing
+    description: operation that is to be blocked
     enum: BlockedOperation
     name: blocked_operation
-  - description: name of the blocked node
+  - constraints:
+    - notblank:
+        error: blocked-user.node-name.blank
+    description: name of the blocked node
     name: node_name
     type: str
   - description: 'ID of the local entry, where the node is blocked; <code>None</code>
@@ -4188,7 +4284,11 @@ structures:
     name: deadline
     optional: true
     type: Timestamp
-  - description: source text of the reason of blocking
+  - constraints:
+    - length:
+        error: blocked-user.reason-src.wrong-size
+        max: 4096
+    description: source text of the reason of blocking
     name: reason_src
     optional: true
     type: str
@@ -4420,15 +4520,15 @@ structures:
     optional: true
     type: str
   name: CarteVerificationInfo
-- errors:
-  - code: clientCarte.carte.blank
-    description: carte is empty
-  fields:
+- fields:
   - description: the node name the client (carte owner) wants to authenticate under
     name: client_name
     optional: true
     type: str
-  - description: the carte to verify
+  - constraints:
+    - notblank:
+        error: carte.carte.blank
+    description: the carte to verify
     name: carte
     type: str
   name: ClientCarte
@@ -4617,12 +4717,15 @@ structures:
     name: reactions
     optional: true
     struct: ReactionTotalsInfo
+  java-interfaces:
+  - MediaInfo
   name: CommentInfo
-- errors:
-  - code: commentMassAttributes.seniorOperations.wrong-principal
-    description: principal for one of senior operations is invalid
-  fields:
-  - description: 'the operations and the corresponding principals that are overridden
+- fields:
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.senior-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
       by the comment''s owner ("senior")
 
       '
@@ -4728,27 +4831,18 @@ structures:
     name: total_in_future
     type: int
   name: CommentsSliceInfo
-- errors:
-  - code: commentText.bodySrc.blank
-    description: body text is empty
-  - code: commentText.bodySrc.wrong-size
-    description: body text is too long
-  - code: commentText.bodySrc.wrong-encoding
-    description: body text is formatted incorrectly
-  - code: commentText.acceptedReactions.positive.wrong-size
-    description: list of accepted positive reactions is too long
-  - code: commentText.acceptedReactions.positive.wrong-pattern
-    description: list of accepted positive reactions has wrong format
-  - code: commentText.acceptedReactions.negative.wrong-size
-    description: list of accepted negative reactions is too long
-  - code: commentText.acceptedReactions.negative.wrong-pattern
-    description: list of accepted negative reactions has wrong format
-  fields:
+- fields:
   - description: avatar of the comment's owner
     name: owner_avatar
     optional: true
     struct: AvatarDescription
-  - description: the source text of the comment, a string representation of a JSON
+  - constraints:
+    - notnull:
+        error: comment.body-src.blank
+    - length:
+        error: comment.body-src.wrong-size
+        max: 65535
+    description: the source text of the comment, a string representation of a JSON
       structure
     name: body_src
     optional: true
@@ -4773,11 +4867,28 @@ structures:
     name: replied_to_id
     optional: true
     type: str
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: CommentOperations
-  - description: 'the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.reaction-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
+      in reactions to the comment
+    name: reaction_operations
+    optional: true
+    struct: ReactionOperations
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.senior-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
       by the posting''s owner ("senior"); only the senior may set this
 
       '
@@ -4785,66 +4896,28 @@ structures:
     optional: true
     struct: CommentOperations
   name: CommentSourceText
-- errors:
-  - code: commentText.ownerAvatar.mediaId.not-found
-    description: owner's avatar is not found
-  - code: commentText.bodySrc.blank
-    description: body text is empty
-  - code: commentText.bodySrc.wrong-size
-    description: body text is too long
-  - code: commentText.bodySrc.wrong-encoding
-    description: body text is formatted incorrectly
-  - code: commentText.bodySrcFormat.unknown
-    description: unknown body text format
-  - code: commentText.body.blank
-    description: body is empty
-  - code: commentText.body.wrong-size
-    description: body is too long
-  - code: commentText.body.wrong-encoding
-    description: body encoding is incorrect
-  - code: commentText.bodyPreview.wrong-encoding
-    description: body preview encoding is incorrect
-  - code: commentText.bodyFormat.blank
-    description: body format is not set
-  - code: commentText.bodyFormat.wrong-size
-    description: body format is too long
-  - code: commentText.media.not-found
-    description: media attachment is not found
-  - code: commentText.media.not-compressed
-    description: 'media attachment is not compressed as the node requires, the parameters
-      of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
-
-      '
-  - code: commentText.createdAt.blank
-    description: body creation timestamp is not set
-  - code: commentText.createdAt.out-of-range
-    description: body creation timestamp is too far from the current timestamp
-  - code: commentText.acceptedReactions.positive.wrong-size
-    description: list of accepted positive reactions is too long
-  - code: commentText.acceptedReactions.positive.wrong-pattern
-    description: list of accepted positive reactions has wrong format
-  - code: commentText.acceptedReactions.negative.wrong-size
-    description: list of accepted negative reactions is too long
-  - code: commentText.acceptedReactions.negative.wrong-pattern
-    description: list of accepted negative reactions has wrong format
-  - code: commentText.repliedToId.not-found
-    description: comment referred in `repliedToId` is not found
-  - code: commentText.operations.wrong-principal
-    description: principal for one of operations is invalid
-  - code: commentText.reactionOperations.wrong-principal
-    description: principal for one of reaction operations is invalid
-  - code: commentText.seniorOperations.wrong-principal
-    description: principal for one of senior operations is invalid
-  fields:
-  - description: node name of the comment's owner
+- fields:
+  - constraints:
+    - length:
+        error: comment.owner-name.wrong-size
+        max: 63
+    description: node name of the comment's owner
     name: owner_name
     optional: true
     type: str
-  - description: full name of the comment's owner
+  - constraints:
+    - length:
+        error: comment.owner-full-name.wrong-size
+        max: 96
+    description: full name of the comment's owner
     name: owner_full_name
     optional: true
     type: str
-  - description: gender of the comment's owner
+  - constraints:
+    - length:
+        error: comment.owner-gender.wrong-size
+        max: 31
+    description: gender of the comment's owner
     name: owner_gender
     optional: true
     type: str
@@ -4857,7 +4930,14 @@ structures:
     name: body_preview
     optional: true
     struct: Body
-  - description: the source text of the comment, a string representation of a JSON
+  - constraints:
+    - other:
+        description: is empty
+        error: comment.body-src.blank
+    - other:
+        description: is too long
+        error: comment.body-src.wrong-size
+    description: the source text of the comment, a string representation of a JSON
       structure
     name: body_src
     optional: true
@@ -4869,11 +4949,22 @@ structures:
     enum: SourceFormat
     name: body_src_format
     optional: true
-  - description: body of the comment, a string representation of a JSON structure
+  - constraints:
+    - other:
+        description: is empty
+        error: comment.body.blank
+    - other:
+        description: is too long
+        error: comment.body.wrong-size
+    description: body of the comment, a string representation of a JSON structure
     name: body
     optional: true
     struct: Body
-  - description: format of the body of the comment, may have any value meaningful
+  - constraints:
+    - other:
+        description: is missing
+        error: comment.body-format.missing
+    description: format of the body of the comment, may have any value meaningful
       for the client
     enum: BodyFormat
     name: body_format
@@ -4882,7 +4973,14 @@ structures:
     name: media
     optional: true
     type: List[str]
-  - description: comment creation timestamp - the real time when the comment was created
+  - constraints:
+    - other:
+        description: is missing
+        error: comment.created-at.missing
+    - other:
+        description: is too far from now
+        error: comment.created-at.out-of-range
+    description: comment creation timestamp - the real time when the comment was created
     name: created_at
     optional: true
     type: Timestamp
@@ -4890,7 +4988,11 @@ structures:
     name: accepted_reactions
     optional: true
     struct: AcceptedReactions
-  - description: ID of the comment this comment is replying to
+  - constraints:
+    - other:
+        description: is not found
+        error: comment.replied-to-id.not-found
+    description: ID of the comment this comment is replying to
     name: replied_to_id
     optional: true
     type: str
@@ -4905,16 +5007,28 @@ structures:
     name: signature_version
     optional: true
     type: int
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: CommentOperations
-  - description: the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.reaction-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
       in reactions to the comment
     name: reaction_operations
     optional: true
     struct: ReactionOperations
-  - description: 'the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: comment.senior-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
       by the posting''s owner ("senior"); only the senior may set this
 
       '
@@ -4984,23 +5098,19 @@ structures:
     optional: true
     struct: ContactOperations
   name: ContactInfo
-- errors:
-  - code: credentials.login.blank
-    description: the login is empty
-  - code: credentials.password.blank
-    description: the password is empty
-  fields:
-  - name: login
+- fields:
+  - constraints:
+    - notblank:
+        error: credentials.login.blank
+    name: login
     type: str
-  - name: password
+  - constraints:
+    - notblank:
+        error: credentials.password.blank
+    name: password
     type: str
   name: Credentials
-- errors:
-  - code: credentials.login.blank
-    description: the login is empty
-  - code: credentials.password.blank
-    description: the password is empty
-  fields:
+- fields:
   - description: credentials reset token
     name: token
     optional: true
@@ -5009,9 +5119,15 @@ structures:
     name: old_password
     optional: true
     type: str
-  - name: login
+  - constraints:
+    - notblank:
+        error: credentials.login.blank
+    name: login
     type: str
-  - name: password
+  - constraints:
+    - notblank:
+        error: credentials.password.blank
+    name: password
     type: str
   name: CredentialsChange
 - fields:
@@ -5025,27 +5141,21 @@ structures:
     name: requested
     type: bool
   name: DeleteNodeStatus
-- errors:
-  - code: delete-node.no-email
-    description: e-mail is required to be set in the profile to communicate with the
-      provider
-  - code: deleteNodeText.message.wrong-size
-    description: the message is too long
-  fields:
-  - description: text message for the provider
+- fields:
+  - constraints:
+    - length:
+        error: delete-node.message.wrong-size
+        max: 1024
+    description: text message for the provider
     name: message
     optional: true
     type: str
   name: DeleteNodeText
-- errors:
-  - code: domainAttributes.name.blank
-    description: the domain name is empty
-  - code: domainAttributes.name.wrong-hostname
-    description: the domain name is not a valid hostname
-  - code: domainAttributes.nodeId.wrong-uuid
-    description: the node ID is not a valid UUID
-  fields:
-  - description: domain's hostname or <code>_default_</code> for the default domain
+- fields:
+  - constraints:
+    - domainname:
+        error: domain.name.invalid-domain
+    description: domain's hostname or <code>_default_</code> for the default domain
     name: name
     optional: true
     type: str
@@ -5059,14 +5169,7 @@ structures:
     name: name
     type: str
   name: DomainAvailable
-- errors:
-  - code: domainInfo.name.blank
-    description: the domain name is empty
-  - code: domainInfo.name.wrong-hostname
-    description: the domain name is not a valid hostname
-  - code: domainInfo.nodeId.wrong-uuid
-    description: the node ID is not a valid UUID
-  fields:
+- fields:
   - description: domain's hostname or <code>_default_</code> for the default domain
     name: name
     type: str
@@ -5152,7 +5255,7 @@ structures:
       under in the feed
     name: publish_at
     optional: true
-    type: int
+    type: Timestamp
   - description: description of the update
     name: update_info
     optional: true
@@ -5169,49 +5272,54 @@ structures:
     optional: true
     struct: CommentOperations
   name: DraftInfo
-- errors:
-  - code: draftText.postingId.blank
-    description: posting ID is not set
-  - code: draftText.commentId.blank
-    description: comment ID is not set
-  - code: draftText.ownerFullName.wrong-size
-    description: owner's full name is too long
-  - code: draftText.ownerAvatar.mediaId.not-found
-    description: owner's avatar is not found
-  - code: draftText.bodySrc.wrong-size
-    description: body text is too long
-  - code: draftText.bodySrc.wrong-encoding
-    description: body text encoding is incorrect
-  - code: draftText.bodySrcFormat.unknown
-    description: unknown body text format
-  - code: draftText.acceptedReactions.positive.wrong-size
-    description: list of accepted positive reactions is too long
-  - code: draftText.acceptedReactions.positive.wrong-pattern
-    description: list of accepted positive reactions has wrong format
-  - code: draftText.acceptedReactions.negative.wrong-size
-    description: list of accepted negative reactions is too long
-  - code: draftText.acceptedReactions.negative.wrong-pattern
-    description: list of accepted negative reactions has wrong format
-  fields:
+- fields:
   - description: type of the draft
     enum: DraftType
     name: draft_type
-  - description: name of the node the draft is related to
+  - constraints:
+    - notblank:
+        error: draft.receiver-name.blank
+    - length:
+        error: draft.receiver-name.wrong-size
+        max: 63
+    description: name of the node the draft is related to
     name: receiver_name
     type: str
-  - description: ID of the posting, mandatory for all types, except <code>new-posting</code>
+  - constraints:
+    - other:
+        description: is empty
+        error: draft.receiver-posting-id.blank
+    - length:
+        error: draft.receiver-posting-id.wrong-size
+        max: 40
+    description: ID of the posting, mandatory for all types, except <code>new-posting</code>
     name: receiver_posting_id
     optional: true
     type: str
-  - description: ID of the comment, mandatory for <code>comment-update</code> type
+  - constraints:
+    - other:
+        description: is empty
+        error: draft.receiver-comment-id.blank
+    - length:
+        error: draft.receiver-comment-id.wrong-size
+        max: 40
+    description: ID of the comment, mandatory for <code>comment-update</code> type
     name: receiver_comment_id
     optional: true
     type: str
-  - description: ID of the comment replied to
+  - constraints:
+    - length:
+        error: draft.replied-to-id.wrong-size
+        max: 40
+    description: ID of the comment replied to
     name: replied_to_id
     optional: true
     type: str
-  - description: full name of the posting's/comment's owner
+  - constraints:
+    - length:
+        error: draft.owner-full-name.wrong-size
+        max: 96
+    description: full name of the posting's/comment's owner
     name: owner_full_name
     optional: true
     type: str
@@ -5223,7 +5331,14 @@ structures:
     name: accepted_reactions
     optional: true
     struct: AcceptedReactions
-  - description: the source text of the draft, a string representation of a JSON structure
+  - constraints:
+    - other:
+        description: is too large
+        error: draft.body-src.wrong-size
+    - other:
+        description: has incorrect structure
+        error: draft.body-src.wrong-encoding
+    description: the source text of the draft, a string representation of a JSON structure
     name: body_src
     optional: true
     struct: Body
@@ -5244,7 +5359,7 @@ structures:
       under in the feed
     name: publish_at
     optional: true
-    type: int
+    type: Timestamp
   - description: description of the update
     name: update_info
     optional: true
@@ -5437,16 +5552,23 @@ structures:
   - description: number of stories in the feed that have not been read yet
     name: not_read
     type: int
+  - description: moment of the oldest non-viewed story
+    name: not_viewed_moment
+    optional: true
+    type: int
+  - description: moment of the oldest non-read story
+    name: not_read_moment
+    optional: true
+    type: int
   name: FeedWithStatus
-- errors:
-  - code: friendDescription.nodeName.blank
-    description: friend's node name is empty
-  - code: friendDescription.nodeName.wrong-size
-    description: friend's node name is too long
-  - code: friendDescription.groups.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
-  - description: name of the node
+- fields:
+  - constraints:
+    - notblank:
+        error: friend.node-name.blank
+    - length:
+        error: friend.node-name.wrong-size
+        max: 63
+    description: name of the node
     name: node_name
     type: str
   - array: true
@@ -5459,23 +5581,30 @@ structures:
   - description: ID of the group of friends
     name: id
     type: str
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: friend.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: FriendOperations
   name: FriendGroupAssignment
-- errors:
-  - code: friendGroupDescription.title.blank
-    description: title of group of friends is empty
-  - code: friendGroupDescription.title.wrong-size
-    description: title of group of friends is too long
-  - code: friendGroupDescription.operations.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
-  - description: title of the group of friends
+- fields:
+  - constraints:
+    - notblank:
+        error: friend-group.title.blank
+    - length:
+        error: friend-group.title.wrong-size
+        max: 63
+    description: title of the group of friends
     name: title
     type: str
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: friend-group.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: FriendGroupOperations
@@ -5591,7 +5720,10 @@ structures:
     name: scope
   name: GrantInfo
 - fields:
-  - description: the words
+  - constraints:
+    - notnull:
+        error: node-name.mnemonic.missing
+    description: the words
     name: mnemonic
     type: List[str]
   name: KeyMnemonic
@@ -5689,13 +5821,14 @@ structures:
     optional: true
     type: str
   name: MediaWithDigest
-- errors:
-  - code: nameToRegister.name.blank
-    description: the name is empty
-  - code: nameToRegister.name.invalid
-    description: the name is reserved, too long or contains invalid characters
-  fields:
-  - name: name
+- fields:
+  - constraints:
+    - notblank:
+        error: node-name.name.blank
+    - other:
+        description: is reserved, too long or contains invalid characters
+        error: node-name.name.invalid
+    name: name
     type: str
   name: NameToRegister
 - fields:
@@ -5703,14 +5836,28 @@ structures:
       out duplicates)
     name: id
     type: str
-  - description: name of the sending node
+  - constraints:
+    - notblank:
+        error: notification.node-name.blank
+    - length:
+        error: notification.node-name.wrong-size
+        max: 63
+    description: name of the sending node
     name: node_name
     type: str
-  - description: full name of the sending node
+  - constraints:
+    - length:
+        error: notification.full-name.wrong-size
+        max: 96
+    description: full name of the sending node
     name: full_name
     optional: true
     type: str
-  - description: gender of the sending node
+  - constraints:
+    - length:
+        error: notification.gender.wrong-size
+        max: 31
+    description: gender of the sending node
     name: gender
     optional: true
     type: str
@@ -5718,13 +5865,29 @@ structures:
     name: avatar
     optional: true
     struct: AvatarImage
-  - description: notification packet creation timestamp
+  - constraints:
+    - other:
+        description: is too far in the past
+        error: notification.created-at.too-old
+    description: notification packet creation timestamp
     name: created_at
     type: Timestamp
-  - description: notification type
+  - constraints:
+    - notblank:
+        error: notification.type.blank
+    - other:
+        description: is unknown
+        error: notification.type.unknown
+    description: notification type
     name: type
     type: str
-  - description: 'the notification, a string representation of a JSON structure (see
+  - constraints:
+    - notblank:
+        error: notification.notification.blank
+    - other:
+        description: has invalid structure
+        error: notification.notification.invalid
+    description: 'the notification, a string representation of a JSON structure (see
       <a href="notifications.html">Notifications</a> page for details)
 
       '
@@ -5844,29 +6007,33 @@ structures:
     name: origin_url
     type: str
   name: PluginContext
-- errors:
-  - code: pluginDescription.name.blank
-    description: plugin name is empty
-  - code: pluginDescription.name.wrong-size
-    description: plugin name is too long
-  - code: pluginDescription.name.wrong-pattern
-    description: plugin name format is incorrect
-  - code: pluginDescription.title.wrong-size
-    description: plugin title is too long
-  - code: pluginDescription.description.wrong-size
-    description: plugin description is too long
-  - code: pluginDescription.options.unknown-type
-    description: option has an unknown type
-  fields:
-  - description: a unique plugin name; can contain only small latin letters, digits
+- fields:
+  - constraints:
+    - notblank:
+        error: plugin.name.blank
+    - length:
+        error: plugin.name.wrong-size
+        max: 48
+    - other:
+        description: has incorrect format
+        error: plugin.name.invalid
+    description: a unique plugin name; can contain only small latin letters, digits
       or hyphen
     name: name
     type: str
-  - description: user-readable title of the plugin
+  - constraints:
+    - length:
+        error: plugin.title.wrong-size
+        max: 80
+    description: user-readable title of the plugin
     name: title
     optional: true
     type: str
-  - description: user-readable description of the purpose of the plugin
+  - constraints:
+    - length:
+        error: plugin.description.wrong-size
+        max: 256
+    description: user-readable description of the purpose of the plugin
     name: description
     optional: true
     type: str
@@ -5882,6 +6049,10 @@ structures:
     optional: true
     type: List[str]
   - array: true
+    constraints:
+    - other:
+        description: contain an option of an unknown type
+        error: plugin.options.unknown-type
     description: 'plugin settings to be added to the list of node settings, the settings
       appear in the list with a prefix <code>plugin.&lt;plugin name>.</code>
 
@@ -6199,6 +6370,8 @@ structures:
     name: total_comments
     optional: true
     type: int
+  java-interfaces:
+  - MediaInfo
   name: PostingInfo
 - fields:
   - name: id
@@ -6314,7 +6487,13 @@ structures:
     name: owner_avatar
     optional: true
     struct: AvatarDescription
-  - description: the source text of the posting, a string representation of a JSON
+  - constraints:
+    - notnull:
+        error: posting.body-src.blank
+    - length:
+        error: posting.body-src.wrong-size
+        max: 65535
+    description: the source text of the posting, a string representation of a JSON
       structure
     name: body_src
     optional: true
@@ -6335,77 +6514,66 @@ structures:
     name: accepted_reactions
     optional: true
     struct: AcceptedReactions
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: PostingOperations
-  - description: the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.comment-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
       in the posting's comments
     name: comment_operations
     optional: true
     struct: CommentOperations
-  name: PostingSourceText
-- errors:
-  - code: postingText.ownerAvatar.mediaId.not-found
-    description: owner's avatar is not found
-  - code: postingText.bodySrc.blank
-    description: body source text is empty
-  - code: postingText.bodySrc.wrong-size
-    description: body source text is too long
-  - code: postingText.bodySrc.wrong-encoding
-    description: body source text is formatted incorrectly
-  - code: postingText.bodySrcFormat.unknown
-    description: unknown body source text format
-  - code: postingText.body.blank
-    description: body text is empty
-  - code: postingText.body.wrong-size
-    description: body text is too long
-  - code: postingText.bodyPreview.wrong-encoding
-    description: body preview encoding is incorrect
-  - code: postingText.bodyFormat.blank
-    description: body format is not set
-  - code: postingText.bodyFormat.wrong-size
-    description: body format is too long
-  - code: postingText.media.not-found
-    description: media attachment is not found
-  - code: postingText.media.not-compressed
-    description: 'media attachment is not compressed as the node requires, the parameters
-      of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.reaction-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
+      in reactions to the posting
+    name: reaction_operations
+    optional: true
+    struct: ReactionOperations
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.comment-reaction-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
+      in reactions to the posting''s comments
 
       '
-  - code: postingText.createdAt.blank
-    description: body creation timestamp is not set
-  - code: postingText.createdAt.out-of-range
-    description: body creation timestamp is too far from the current timestamp
-  - code: postingText.acceptedReactions.positive.wrong-size
-    description: list of accepted positive reactions is too long
-  - code: postingText.acceptedReactions.positive.wrong-pattern
-    description: list of accepted positive reactions has wrong format
-  - code: postingText.acceptedReactions.negative.wrong-size
-    description: list of accepted negative reactions is too long
-  - code: postingText.acceptedReactions.negative.wrong-pattern
-    description: list of accepted negative reactions has wrong format
-  - code: postingText.publications.cannot-modify
-    description: <code>publications</code> field is not allowed in posting modification
-      query
-  - code: postingText.operations.wrong-principal
-    description: principal for one of operations is invalid
-  - code: postingText.commentOperations.wrong-principal
-    description: principal for one of comment operations is invalid
-  - code: postingText.reactionOperations.wrong-principal
-    description: principal for one of reaction operations is invalid
-  - code: postingText.commentReactionOperations.wrong-principal
-    description: principal for one of comment reaction operations is invalid
-  fields:
-  - description: node name of the posting's owner
+    name: comment_reaction_operations
+    optional: true
+    struct: ReactionOperations
+  name: PostingSourceText
+- fields:
+  - constraints:
+    - length:
+        error: posting.owner-name.wrong-size
+        max: 63
+    description: node name of the posting's owner
     name: owner_name
     optional: true
     type: str
-  - description: full name of the posting's owner
+  - constraints:
+    - length:
+        error: posting.owner-full-name.wrong-size
+        max: 96
+    description: full name of the posting's owner
     name: owner_full_name
     optional: true
     type: str
-  - description: gender of the posting's owner
+  - constraints:
+    - length:
+        error: posting.owner-gender.wrong-size
+        max: 31
+    description: gender of the posting's owner
     name: owner_gender
     optional: true
     type: str
@@ -6418,7 +6586,17 @@ structures:
     name: body_preview
     optional: true
     struct: Body
-  - description: the source text of the posting, a string representation of a JSON
+  - constraints:
+    - other:
+        description: is empty
+        error: posting.body-src.blank
+    - other:
+        description: is too long
+        error: posting.body-src.wrong-size
+    - other:
+        description: has incorrect structure
+        error: posting.body-src.wrong-encoding
+    description: the source text of the posting, a string representation of a JSON
       structure
     name: body_src
     optional: true
@@ -6430,11 +6608,22 @@ structures:
     enum: SourceFormat
     name: body_src_format
     optional: true
-  - description: body of the posting, a string representation of a JSON structure
+  - constraints:
+    - other:
+        description: is empty
+        error: posting.body.blank
+    - other:
+        description: is too long
+        error: posting.body.wrong-size
+    description: body of the posting, a string representation of a JSON structure
     name: body
     optional: true
     struct: Body
-  - description: format of the body of the posting, may have any value meaningful
+  - constraints:
+    - other:
+        description: is missing
+        error: posting.body-format.missing
+    description: format of the body of the posting, may have any value meaningful
       for the client
     enum: BodyFormat
     name: body_format
@@ -6443,7 +6632,14 @@ structures:
     name: media
     optional: true
     type: List[str]
-  - description: posting creation timestamp - the real time when the posting was created
+  - constraints:
+    - other:
+        description: is missing
+        error: posting.created-at.missing
+    - other:
+        description: is too far from now
+        error: posting.created-at.out-of-range
+    description: posting creation timestamp - the real time when the posting was created
     name: created_at
     optional: true
     type: Timestamp
@@ -6452,6 +6648,10 @@ structures:
     optional: true
     struct: AcceptedReactions
   - array: true
+    constraints:
+    - other:
+        description: cannot be modified
+        error: posting.publications.cannot-modify
     description: list of publications in feeds that must be made after creating the
       posting (for new postings only)
     name: publications
@@ -6472,21 +6672,37 @@ structures:
     name: signature_version
     optional: true
     type: int
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: PostingOperations
-  - description: the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.comment-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
       in the posting's comments
     name: comment_operations
     optional: true
     struct: CommentOperations
-  - description: the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.reaction-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
       in reactions to the posting
     name: reaction_operations
     optional: true
     struct: ReactionOperations
-  - description: 'the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: posting.comment-reaction-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
       in reactions to the posting''s comments
 
       '
@@ -6556,39 +6772,46 @@ structures:
     optional: true
     struct: PrivateMediaFileOperations
   name: PrivateMediaFileInfo
-- errors:
-  - code: profileAttributes.fullName.wrong-size
-    description: the full name is too long
-  - code: profileAttributes.gender.wrong-size
-    description: the gender string is too long
-  - code: profileAttributes.email.wrong-size
-    description: the E-mail is too long
-  - code: profileAttributes.email.wrong-email
-    description: the E-mail is not a well-formed E-mail address
-  - code: profileAttributes.title.wrong-size
-    description: the title is too long
-  - code: profileAttributes.bioSrc.wrong-size
-    description: the bio is too long
-  - code: profileAttributes.operations.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
-  - description: node owner's full name
+- fields:
+  - constraints:
+    - length:
+        error: profile.full-name.wrong-size
+        max: 96
+    description: node owner's full name
     name: full_name
     optional: true
     type: str
-  - description: node owner's gender
+  - constraints:
+    - length:
+        error: profile.gender.wrong-size
+        max: 31
+    description: node owner's gender
     name: gender
     optional: true
     type: str
-  - description: node owner's E-mail address
+  - constraints:
+    - length:
+        error: profile.email.wrong-size
+        max: 63
+    - email:
+        error: profile.email.invalid
+    description: node owner's E-mail address
     name: email
     optional: true
     type: str
-  - description: node title
+  - constraints:
+    - length:
+        error: profile.title.wrong-size
+        max: 120
+    description: node title
     name: title
     optional: true
     type: str
-  - description: the source text of node owner's bio (arbitrary text)
+  - constraints:
+    - length:
+        error: profile.bio-src.wrong-size
+        max: 4096
+    description: the source text of node owner's bio (arbitrary text)
     name: bio_src
     optional: true
     type: str
@@ -6608,7 +6831,11 @@ structures:
     name: fundraisers
     optional: true
     struct: FundraiserInfo
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: profile.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: ProfileOperations
@@ -6713,18 +6940,20 @@ structures:
     optional: true
     struct: FeedWithStatus
   name: PushContent
-- errors:
-  - code: pushRelayClientAttributes.type.blank
-    description: relay type is empty
-  - code: pushRelayClientAttributes.type.unknown
-    description: relay type is unknown
-  - code: pushRelayClientAttributes.clientId.blank
-    description: client ID is empty
-  fields:
-  - description: type of the relay
+- fields:
+  - constraints:
+    - notnull:
+        error: push-relay.type.missing
+    - other:
+        description: is unknown
+        error: push-relay.type.unknown
+    description: type of the relay
     enum: PushRelayType
     name: type
-  - description: ID/token of the client
+  - constraints:
+    - notblank:
+        error: push-relay.client-id.blank
+    description: ID/token of the client
     name: client_id
     type: str
   - description: language of the messages
@@ -6754,12 +6983,7 @@ structures:
     name: totals
     struct: ReactionTotalsInfo
   name: ReactionCreated
-- errors:
-  - code: reactionDescription.ownerAvatar.mediaId.not-found
-    description: owner's avatar is not found
-  - code: reactionDescription.operations.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
+- fields:
   - description: reaction owner's node name
     name: owner_name
     optional: true
@@ -6794,7 +7018,11 @@ structures:
     name: signature_version
     optional: true
     type: int
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: reaction.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: ReactionOperations
@@ -6957,19 +7185,20 @@ structures:
     optional: true
     struct: ReactionTotalInfo
   name: ReactionTotalsInfo
-- errors:
-  - code: reactionOverride.operations.wrong-principal
-    description: principal for one of operations is invalid
-  - code: reactionOverride.seniorOperations.wrong-principal
-    description: principal for one of senior operations is invalid
-  - code: reactionOverride.majorOperations.wrong-principal
-    description: principal for one of major operations is invalid
-  fields:
-  - description: the supported operations and the corresponding principals
+- fields:
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: reaction.operations.wrong-principal
+    description: the supported operations and the corresponding principals
     name: operations
     optional: true
     struct: ReactionOperations
-  - description: 'the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: reaction.senior-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
       by the reaction''s "senior": the posting''s owner in the case of reaction to
       a posting or the comment''s owner in the case of reaction to a comment
 
@@ -6977,7 +7206,11 @@ structures:
     name: senior_operations
     optional: true
     struct: ReactionOperations
-  - description: 'the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: reaction.major-operations.wrong-principal
+    description: 'the operations and the corresponding principals that are overridden
       by the posting''s owner ("major") in the case of reaction to a comment; not
       set in the case of reaction to a posting
 
@@ -7007,6 +7240,7 @@ structures:
   - description: name of the feed on the node
     name: feed_name
     type: str
+  java-equals: true
   name: RemoteFeed
 - fields:
   - description: ID of the media file
@@ -7041,6 +7275,7 @@ structures:
   - description: ID of the posting on the node
     name: posting_id
     type: str
+  java-equals: true
   name: RemotePosting
 - fields:
   - description: name of the node
@@ -7050,6 +7285,7 @@ structures:
     name: posting_id
     optional: true
     type: str
+  java-equals: true
   name: RemotePostingOrNode
 - fields:
   - description: asynchronous operation ID
@@ -7195,6 +7431,10 @@ structures:
     name: privileged
     optional: true
     type: bool
+  - description: the setting is stored in the database in encrypted form
+    name: encrypted
+    optional: true
+    type: bool
   - description: human-friendly description of the setting
     name: title
     optional: true
@@ -7271,21 +7511,24 @@ structures:
     name: principals
     optional: true
   name: SettingTypeModifiers
-- errors:
-  - code: sheriffComplaintDecisionText.decisionCode.blank
-    description: decision code is not set
-  - code: sheriffComplaintDecisionText.decisionDetails.wrong-size
-    description: decision details are too long
-  fields:
+- fields:
   - description: <code>True</code>, if the complaints in the group are to be rejected,
       <code>False</code> otherwise
     name: reject
     type: bool
-  - description: the decision
+  - constraints:
+    - other:
+        description: is missing
+        error: sheriff-complaint-decision.decision-code.missing
+    description: the decision
     enum: SheriffOrderReason
     name: decision_code
     optional: true
-  - description: detailed explanation of the decision in user-readable form
+  - constraints:
+    - length:
+        error: sheriff-complaint-decision.decision-details.wrong-size
+        max: 4096
+    description: detailed explanation of the decision in user-readable form
     name: decision_details
     optional: true
     type: str
@@ -7449,99 +7692,126 @@ structures:
     name: created_at
     type: Timestamp
   name: SheriffComplaintInfo
-- errors:
-  - code: sheriffComplaintText.ownerFullName.wrong-size
-    description: owner's full name is too long
-  - code: sheriffComplaintText.ownerGender.wrong-size
-    description: owner's gender is too long
-  - code: sheriffComplaintText.nodeName.blank
-    description: node name is empty
-  - code: sheriffComplaintText.nodeName.wrong-size
-    description: node name is too long
-  - code: sheriffComplaintText.fullName.wrong-size
-    description: node's full name is too long
-  - code: sheriffComplaintText.feedName.blank
-    description: feed name is empty
-  - code: sheriffComplaintText.feedName.wrong-size
-    description: feed name is too long
-  - code: sheriffComplaintText.postingOwnerName.wrong-size
-    description: posting owner's name is too long
-  - code: sheriffComplaintText.postingOwnerFullName.wrong-size
-    description: posting owner's full name is too long
-  - code: sheriffComplaintText.postingOwnerGender.wrong-size
-    description: posting owner's gender is too long
-  - code: sheriffComplaintText.postingHeading.wrong-size
-    description: posting heading is too long
-  - code: sheriffComplaintText.postingId.wrong-size
-    description: posting ID is too long
-  - code: sheriffComplaintText.commentOwnerName.wrong-size
-    description: comment owner's name is too long
-  - code: sheriffComplaintText.commentOwnerFullName.wrong-size
-    description: comment owner's full name is too long
-  - code: sheriffComplaintText.commentOwnerGender.wrong-size
-    description: comment owner's gender is too long
-  - code: sheriffComplaintText.commentHeading.wrong-size
-    description: comment heading is too long
-  - code: sheriffComplaintText.commentId.wrong-size
-    description: comment ID is too long
-  - code: sheriffComplaintText.reasonDetails.wrong-size
-    description: reason details are too long
-  fields:
-  - description: complaint owner's full name
+- fields:
+  - constraints:
+    - length:
+        error: sheriff-complaint.owner-full-name.wrong-size
+        max: 96
+    description: complaint owner's full name
     name: owner_full_name
     optional: true
     type: str
-  - description: complaint owner's gender
+  - constraints:
+    - length:
+        error: sheriff-complaint.owner-gender.wrong-size
+        max: 31
+    description: complaint owner's gender
     name: owner_gender
     optional: true
     type: str
-  - description: name of the node the complaint is related to
+  - constraints:
+    - notblank:
+        error: sheriff-complaint.node-name.blank
+    - length:
+        error: sheriff-complaint.node-name.wrong-size
+        max: 63
+    description: name of the node the complaint is related to
     name: node_name
     type: str
-  - description: full name of the node the complaint is related to
+  - constraints:
+    - length:
+        error: sheriff-complaint.full-name.wrong-size
+        max: 96
+    description: full name of the node the complaint is related to
     name: full_name
     optional: true
     type: str
-  - description: name of the feed the complaint is related to
+  - constraints:
+    - notblank:
+        error: sheriff-complaint.feed-name.blank
+    - length:
+        error: sheriff-complaint.feed-name.wrong-size
+        max: 63
+    description: name of the feed the complaint is related to
     name: feed_name
     type: str
-  - description: ID of the posting the complaint is related to
+  - constraints:
+    - length:
+        error: sheriff-complaint.posting-id.wrong-size
+        max: 40
+    description: ID of the posting the complaint is related to
     name: posting_id
     optional: true
     type: str
-  - description: posting owner's node name
+  - constraints:
+    - length:
+        error: sheriff-complaint.posting-owner-name.wrong-size
+        max: 63
+    description: posting owner's node name
     name: posting_owner_name
     optional: true
     type: str
-  - description: posting owner's full name
+  - constraints:
+    - length:
+        error: sheriff-complaint.posting-owner-full-name.wrong-size
+        max: 96
+    description: posting owner's full name
     name: posting_owner_full_name
     optional: true
     type: str
-  - description: posting owner's gender
+  - constraints:
+    - length:
+        error: sheriff-complaint.posting-owner-gender.wrong-size
+        max: 31
+    description: posting owner's gender
     name: posting_owner_gender
     optional: true
     type: str
-  - description: heading of the posting
+  - constraints:
+    - length:
+        error: sheriff-complaint.posting-heading.wrong-size
+        max: 255
+    description: heading of the posting
     name: posting_heading
     optional: true
     type: str
-  - description: ID of the comment the complaint is related to
+  - constraints:
+    - length:
+        error: sheriff-complaint.comment-id.wrong-size
+        max: 40
+    description: ID of the comment the complaint is related to
     name: comment_id
     optional: true
     type: str
-  - description: comment owner's node name
+  - constraints:
+    - length:
+        error: sheriff-complaint.comment-owner-name.wrong-size
+        max: 63
+    description: comment owner's node name
     name: comment_owner_name
     optional: true
     type: str
-  - description: comment owner's full name
+  - constraints:
+    - length:
+        error: sheriff-complaint.comment-owner-full-name.wrong-size
+        max: 96
+    description: comment owner's full name
     name: comment_owner_full_name
     optional: true
     type: str
-  - description: comment owner's gender
+  - constraints:
+    - length:
+        error: sheriff-complaint.comment-owner-gender.wrong-size
+        max: 31
+    description: comment owner's gender
     name: comment_owner_gender
     optional: true
     type: str
-  - description: heading of the comment
+  - constraints:
+    - length:
+        error: sheriff-complaint.comment-heading.wrong-size
+        max: 255
+    description: heading of the comment
     name: comment_heading
     optional: true
     type: str
@@ -7549,7 +7819,11 @@ structures:
     enum: SheriffOrderReason
     name: reason_code
     optional: true
-  - description: detailed explanation of reason of the complaint in user-readable
+  - constraints:
+    - length:
+        error: sheriff-complaint.reason-details.wrong-size
+        max: 4096
+    description: detailed explanation of reason of the complaint in user-readable
       form
     name: reason_details
     optional: true
@@ -7562,14 +7836,7 @@ structures:
     optional: true
     type: bool
   name: SheriffComplaintText
-- errors:
-  - code: sheriffOrderAttributes.feedName.blank
-    description: feed name is empty
-  - code: sheriffOrderAttributes.feedName.wrong-size
-    description: feed name is too long
-  - code: sheriffOrderAttributes.reasonDetails.wrong-size
-    description: reason details are too long
-  fields:
+- fields:
   - description: '<code>True</code>, if the order is to cancel the previous order
       of this type, <code>False</code> otherwise
 
@@ -7577,7 +7844,13 @@ structures:
     name: delete
     optional: true
     type: bool
-  - description: name of the feed the order is related to
+  - constraints:
+    - notblank:
+        error: sheriff-order.feed-name.blank
+    - length:
+        error: sheriff-order.feed-name.wrong-size
+        max: 63
+    description: name of the feed the order is related to
     name: feed_name
     type: str
   - description: ID of the posting the order is related to
@@ -7595,32 +7868,23 @@ structures:
     enum: SheriffOrderReason
     name: reason_code
     optional: true
-  - description: detailed explanation of reason of the order in user-readable form
+  - constraints:
+    - length:
+        error: sheriff-order.reason-details.wrong-size
+        max: 4096
+    description: detailed explanation of reason of the order in user-readable form
     name: reason_details
     optional: true
     type: str
   name: SheriffOrderAttributes
-- errors:
-  - code: sheriffOrderDetails.id.blank
-    description: ID is empty
-  - code: sheriffOrderDetails.id.wrong-size
-    description: ID is too long
-  - code: sheriffOrderDetails.sheriffName.blank
-    description: sheriff name is empty
-  - code: sheriffOrderDetails.sheriffName.wrong-size
-    description: sheriff name is too long
-  - code: sheriffOrderDetails.sheriffAvatar.mediaId.not-found
-    description: sheriff's avatar is not found
-  - code: sheriffOrderDetails.feedName.blank
-    description: feed name is empty
-  - code: sheriffOrderDetails.feedName.wrong-size
-    description: feed name is too long
-  - code: sheriffOrderDetails.reasonDetails.wrong-size
-    description: reason details are too long
-  - code: sheriffOrderDetails.createdAt.out-of-range
-    description: order creation timestamp is too far from the current timestamp
-  fields:
-  - name: id
+- fields:
+  - constraints:
+    - notblank:
+        error: sheriff-order.id.blank
+    - length:
+        error: sheriff-order.id.wrong-size
+        max: 40
+    name: id
     type: str
   - description: '<code>True</code>, if the order is to cancel the previous order
       of this type, <code>False</code> otherwise
@@ -7629,14 +7893,26 @@ structures:
     name: delete
     optional: true
     type: bool
-  - description: node name of the sheriff
+  - constraints:
+    - notblank:
+        error: sheriff-order.sheriff-name.blank
+    - length:
+        error: sheriff-order.sheriff-name.wrong-size
+        max: 63
+    description: node name of the sheriff
     name: sheriff_name
     type: str
   - description: sheriff's avatar
     name: sheriff_avatar
     optional: true
     struct: AvatarDescription
-  - description: name of the feed the order is related to
+  - constraints:
+    - notblank:
+        error: sheriff-order.feed-name.blank
+    - length:
+        error: sheriff-order.feed-name.wrong-size
+        max: 63
+    description: name of the feed the order is related to
     name: feed_name
     type: str
   - description: ID of the posting the order is related to
@@ -7654,11 +7930,19 @@ structures:
     enum: SheriffOrderReason
     name: reason_code
     optional: true
-  - description: detailed explanation of reason of the order in user-readable form
+  - constraints:
+    - length:
+        error: sheriff-order.reason-details.wrong-size
+        max: 4096
+    description: detailed explanation of reason of the order in user-readable form
     name: reason_details
     optional: true
     type: str
-  - description: order creation timestamp - the real time when the order was created
+  - constraints:
+    - other:
+        description: is too far from now
+        error: sheriff-order.created-at.out-of-range
+    description: order creation timestamp - the real time when the order was created
     name: created_at
     type: Timestamp
   - description: 'the sheriff''s signature (use <code><a href="fingerprints.html#SheriffOrder">SheriffOrder</a></code>
@@ -8090,30 +8374,29 @@ structures:
     optional: true
     type: str
   name: StorySummarySheriff
-- errors:
-  - code: subscriberDescription.type.blank
-    description: type is empty
-  - code: subscriberDescription.feedName.blank
-    description: feed name is empty
-  - code: subscriberDescription.feedName.not-found
-    description: feed is not found
-  - code: subscriberDescription.postingId.blank
-    description: posting ID is empty
-  - code: subscriberDescription.postingId.not-found
-    description: posting is not found
-  - code: subscriberDescription.ownerAvatar.mediaId.not-found
-    description: subscriber's avatar is not found
-  - code: subscriberDescription.operations.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
-  - description: subscription type
+- fields:
+  - constraints:
+    - notnull:
+        error: subscriber.type.missing
+    description: subscription type
     enum: SubscriptionType
     name: type
-  - description: feed name, if the subscription type requires one
+  - constraints:
+    - other:
+        description: is empty
+        error: subscriber.feed-name.blank
+    - length:
+        error: subscriber.feed-name.wrong-size
+        max: 63
+    description: feed name, if the subscription type requires one
     name: feed_name
     optional: true
     type: str
-  - description: posting ID, if the subscription type requires one
+  - constraints:
+    - other:
+        description: is empty
+        error: subscriber.posting-id.blank
+    description: posting ID, if the subscription type requires one
     name: posting_id
     optional: true
     type: str
@@ -8121,7 +8404,11 @@ structures:
     name: last_updated_at
     optional: true
     type: Timestamp
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: subscriber.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: SubscriberOperations
@@ -8166,73 +8453,82 @@ structures:
     optional: true
     struct: SubscriberOperations
   name: SubscriberInfo
-- errors:
-  - code: subscriberOverride.operations.wrong-principal
-    description: principal for one of operations is invalid
-  - code: subscriberOverride.adminOperations.wrong-principal
-    description: principal for one of admin operations is invalid
-  fields:
-  - description: the supported operations and the corresponding principals
+- fields:
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: subscriber.operations.wrong-principal
+    description: the supported operations and the corresponding principals
     name: operations
     optional: true
     struct: SubscriberOperations
-  - description: the operations and the corresponding principals that are overridden
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: subscriber.admin-operations.wrong-principal
+    description: the operations and the corresponding principals that are overridden
       by the node administrator
     name: admin_operations
     optional: true
     struct: SubscriberOperations
   name: SubscriberOverride
-- errors:
-  - code: subscriptionDescription.type.blank
-    description: type is empty
-  - code: subscriptionDescription.feedName.blank
-    description: feed name is empty
-  - code: subscriptionDescription.feedName.not-found
-    description: feed is not found
-  - code: subscriptionDescription.remoteSubscriberId.blank
-    description: subscriber ID is empty
-  - code: subscriptionDescription.remoteSubscriberId.wrong-size
-    description: subscriber ID is too long
-  - code: subscriptionDescription.remoteNodeName.blank
-    description: node name is empty
-  - code: subscriptionDescription.remoteNodeName.wrong-size
-    description: node name is too long
-  - code: subscriptionDescription.remoteAvatar.mediaId.not-found
-    description: node avatar is not found
-  - code: subscriptionDescription.remoteFeedName.wrong-size
-    description: remote feed name is too long
-  - code: subscriptionDescription.remotePostingId.wrong-size
-    description: posting ID is too long
-  - code: subscriptionDescription.reason.blank
-    description: subscription reason is empty
-  - code: subscriptionDescription.operations.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
-  - description: subscription type
+- fields:
+  - constraints:
+    - notnull:
+        error: subscription.type.missing
+    description: subscription type
     enum: SubscriptionType
     name: type
-  - description: the name of the feed on this node that receives notifications
+  - constraints:
+    - other:
+        description: is empty
+        error: subscription.feed-name.blank
+    - length:
+        error: subscription.feed-name.wrong-size
+        max: 63
+    description: the name of the feed on this node that receives notifications
     name: feed_name
     optional: true
     type: str
-  - description: the name of the node this node is subscribed to
+  - constraints:
+    - notblank:
+        error: subscription.remote-node-name.blank
+    - length:
+        error: subscription.remote-node-name.wrong-size
+        max: 63
+    description: the name of the node this node is subscribed to
     name: remote_node_name
     type: str
-  - description: the name of the feed on the remote node, if the subscription type
+  - constraints:
+    - length:
+        error: subscription.remote-feed-name.wrong-size
+        max: 63
+    description: the name of the feed on the remote node, if the subscription type
       requires one
     name: remote_feed_name
     optional: true
     type: str
-  - description: posting ID on the remote node, if the subscription type requires
+  - constraints:
+    - length:
+        error: subscription.remote-posting-id.wrong-size
+        max: 40
+    description: posting ID on the remote node, if the subscription type requires
       one
     name: remote_posting_id
     optional: true
     type: str
-  - description: subscription reason
+  - constraints:
+    - notnull:
+        error: subscription.reason.missing
+    description: subscription reason
     enum: SubscriptionReason
     name: reason
     optional: true
-  - description: the operations and the corresponding principals
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: subscription.operations.wrong-principal
+    description: the operations and the corresponding principals
     name: operations
     optional: true
     struct: SubscriptionOperations
@@ -8291,24 +8587,26 @@ structures:
     optional: true
     struct: SubscriptionOperations
   name: SubscriptionInfo
-- errors:
-  - code: subscriptionOverride.operations.wrong-principal
-    description: principal for one of operations is invalid
-  fields:
-  - description: the supported operations and the corresponding principals
+- fields:
+  - constraints:
+    - other:
+        description: contain an incorrect principal
+        error: subscription.operations.wrong-principal
+    description: the supported operations and the corresponding principals
     name: operations
     optional: true
     struct: SubscriptionOperations
   name: SubscriptionOverride
-- errors:
-  - code: tokenAttributes.login.blank
-    description: the login is empty
-  - code: tokenAttributes.password.blank
-    description: the password is empty
-  fields:
-  - name: login
+- fields:
+  - constraints:
+    - notblank:
+        error: credentials.login.blank
+    name: login
     type: str
-  - name: password
+  - constraints:
+    - notblank:
+        error: credentials.password.blank
+    name: password
     type: str
   - array: true
     description: 'a bit mask describing which permissions should be granted to the
@@ -8385,7 +8683,11 @@ structures:
     name: important
     optional: true
     type: bool
-  - description: description of the update
+  - constraints:
+    - length:
+        error: update.description.wrong-size
+        max: 128
+    description: description of the update
     name: description
     optional: true
     type: str
@@ -8398,13 +8700,14 @@ structures:
     name: total
     type: int
   name: UserListInfo
-- errors:
-  - code: userListItemAttributes.nodeName.blank
-    description: node name is empty
-  - code: userListItemAttributes.nodeName.wrong-size
-    description: node name is too long
-  fields:
-  - description: the name of the node
+- fields:
+  - constraints:
+    - notblank:
+        error: user-list-item.node-name.blank
+    - length:
+        error: user-list-item.node-name.wrong-size
+        max: 63
+    description: the name of the node
     name: node_name
     type: str
   name: UserListItemAttributes

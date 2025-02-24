@@ -7,7 +7,9 @@ from camel_converter import to_snake
 PY_TYPES = {
     'String': 'str',
     'String[]': 'List[str]',
+    'short': 'int',
     'int': 'int',
+    'long': 'int',
     'float': 'float',
     'boolean': 'bool',
     'timestamp': 'Timestamp',
@@ -194,6 +196,7 @@ PY_FP_TYPES = {
     'String': 'str',
     'InetAddress': 'str',
     'int': 'int',
+    'long': 'int',
     'timestamp': 'Timestamp',
     'byte': 'int',
     'byte[]': 'bytes',

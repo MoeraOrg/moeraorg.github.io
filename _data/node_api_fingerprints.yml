@@ -30,13 +30,13 @@ objects:
           - type: String
             field: nodeName
             comment: if set, the carte is valid for authentication on the specified node only
-          - type: int
+          - type: long
             field: clientScope
             comment: >
               A bit mask describing which permissions should be granted to the carte. If not set, all permissions of
               the carte's owner are granted. Meaning of particular bits can be seen in the description of
               <a href="requests.html#Scope">Scope</a> enum
-          - type: int
+          - type: long
             field: adminScope
             comment: >
               A bit mask describing which additional administrative permissions (of those granted to the carte's owner
