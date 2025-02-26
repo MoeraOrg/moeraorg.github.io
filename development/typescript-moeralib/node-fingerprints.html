@@ -10,12 +10,12 @@ subtitle: moeralib/node/fingerprints
 <h2 id="Functions">Functions</h2>
 {% for object in site.data.ts_node_api_fingerprints.objects %}
     {% for version in object.versions %}
-        <h4 class="identifier function">{{
-            }}create{{ object.name }}Fingerprint{{ version.version }}{%
-                for field in version.fingerprint %}{%
-                    if forloop.first %}({% else %}, {% endif %}{{ field.field
-                }}{% endfor
-            %})
+        <h4 class="identifier function">
+            {{- "create" }}{{ object.name }}Fingerprint{{ version.version }}
+                {%- for field in version.fingerprint -%}
+                    {%- if forloop.first -%}({%- else -%}, {% endif -%}{{ field.field }}
+                {%- endfor -%}
+            )
         </h4>
         <dl>
             <dt>Parameters:</dt>

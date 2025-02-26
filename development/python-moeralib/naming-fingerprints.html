@@ -10,12 +10,12 @@ subtitle: moeralib.naming.fingerprints
 <h2 id="Functions">Functions</h2>
 {% for object in site.data.py_naming_api_fingerprints.objects %}
     {% for version in object.versions %}
-        <h4 class="identifier function">{{
-            }}create_{{ object.name }}_fingerprint{{ version.version }}{%
-                for field in version.fingerprint %}{%
-                    if forloop.first %}({% else %}, {% endif %}{{ field.field
-                }}{% endfor
-            %})
+        <h4 class="identifier function">
+            {{- "create_" }}{{ object.name }}_fingerprint{{ version.version }}
+                {%- for field in version.fingerprint -%}
+                    {%- if forloop.first -%}({%- else -%}, {% endif -%}{{ field.field }}
+                {%- endfor -%}
+            )
         </h4>
         <dl>
             <dt>Parameters:</dt>
