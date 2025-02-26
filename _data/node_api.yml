@@ -8496,128 +8496,188 @@ enums:
     values:
       - name: unlawful
         description: violation of a law
+        ordinal: 1
       - name: defamatory
         description: defamatory content
+        ordinal: 2
       - name: threat
         description: contains a threat against a person
+        ordinal: 3
       - name: spam
         description: spam
+        ordinal: 4
       - name: scam
         description: fraudulent content
+        ordinal: 5
       - name: malware
-        description: distribution of a malware
+        description: distribution of malware
+        ordinal: 6
       - name: copyright
         description: copyright infringement
+        ordinal: 7
       - name: impersonating
         description: the author pretends to be someone else
+        ordinal: 8
       - name: privacy
         description: violation of someone's privacy
+        ordinal: 9
       - name: other
         description: any other reason
+        ordinal: 0
   - name: SourceFormat
     values:
       - name: plain-text
         description: plain text with newlines and paragraphs delimited by empty line
+        ordinal: 0
       - name: html
         description: HTML-formatted text, the node may allow only limited set of tags
+        ordinal: 1
       - name: markdown
         description: text in Markdown format
+        ordinal: 2
       - name: html/visual
         description: HTML-formatted text, WYSIWYG editor
+        ordinal: 4
       - name: application
         description: application-specific format
+        ordinal: 3
   - name: StoryType
     values:
       - name: asked-to-friend
         description: a remote node asked to add it to friends
+        ordinal: 30
       - name: asked-to-subscribe
         description: a remote node asked to subscribe to it
+        ordinal: 29
       - name: blocked-user
         description: a remote node has blocked the user globally
+        ordinal: 31
       - name: blocked-user-in-posting
         description: a remote node has blocked the user in a posting
+        ordinal: 33
       - name: comment-added
         description: a comment was added under the user's posting
+        ordinal: 6
       - name: comment-media-reaction-added-negative
         description: a positive reaction was added to a media attached to a comment
+        ordinal: 20
       - name: comment-media-reaction-added-positive
         description: a positive reaction was added to a media attached to a comment
+        ordinal: 19
       - name: comment-media-reaction-failed
         description: a failed attempt to add a reaction to a media attached to a comment
+        ordinal: 22
       - name: comment-post-task-failed
         description: a failed attempt to post a comment
+        ordinal: 12
       - name: comment-reaction-added-negative
         description: a negative reaction was added to the user's comment
+        ordinal: 10
       - name: comment-reaction-added-positive
         description: a positive reaction was added to the user's comment
+        ordinal: 9
       - name: comment-reaction-task-failed
         description: a failed attempt to post a reaction to a comment
+        ordinal: 25
       - name: comment-update-task-failed
         description: a failed attempt to update a comment
+        ordinal: 13
       - name: defrosting
         description: the node's owner has connected to it after long inactivity and the node is leaving the frozen state
+        ordinal: 39
       - name: friend-added
         description: a remote node has added the user to friends
+        ordinal: 26
       - name: friend-deleted
         description: a remote node has removed the user from friends
+        ordinal: 27
       - name: friend-group-deleted
         description: a remote group of friends, the user was a member of, has been deleted
+        ordinal: 28
       - name: mention-comment
         description: the user was mentioned in a comment
+        ordinal: 7
       - name: mention-posting
         description: the user was mentioned in a posting on another node
+        ordinal: 3
       - name: posting-added
-        description: a posting was added; **stories of this type are used for feeds containing postings**
+        description: a posting was added; <b>stories of this type are used for feeds containing postings</b>
+        ordinal: 0
       - name: posting-media-reaction-added-negative
         description: a negative reaction was added to a media attached to a posting
+        ordinal: 18
       - name: posting-media-reaction-added-positive
         description: a positive reaction was added to a media attached to a posting
+        ordinal: 17
       - name: posting-media-reaction-failed
         description: a failed attempt to add a reaction to a media attached to a posting
+        ordinal: 21
       - name: posting-post-task-failed
         description: a failed attempt to create a posting
+        ordinal: 15
       - name: posting-reaction-task-failed
         description: a failed attempt to post a reaction to a posting
+        ordinal: 24
       - name: posting-subscribe-task-failed
         description: a failed attempt to subscribe to a posting
+        ordinal: 23
       - name: posting-update-task-failed
         description: a failed attempt to update a posting
+        ordinal: 16
       - name: posting-updated
         description: a posting was updated
+        ordinal: 14
       - name: reaction-added-negative
         description: a negative reaction was added to the user's posting
+        ordinal: 2
       - name: reaction-added-positive
         description: a positive reaction was added to the user's posting
+        ordinal: 1
       - name: reminder-avatar
         description: reminder for the user to set an avatar
+        ordinal: 42
       - name: reminder-email
         description: reminder for the user to set an email
+        ordinal: 43
       - name: reminder-full-name
         description: reminder for the user to set a full name
+        ordinal: 41
       - name: reminder-sheriff-allow
         description: reminder for the user to allow access for Google Play sheriff
+        ordinal: 44
       - name: remote-comment-added
         description: a comment was added under a posting the user is subscribed to
+        ordinal: 11
       - name: reply-comment
         description: a reply was added to the user's comment
+        ordinal: 8
       - name: search-report
         description: visits from search engines report
+        ordinal: 40
       - name: sheriff-complaint-added
         description: a new complaint was received
+        ordinal: 37
       - name: sheriff-complaint-decided
         description: a decision was made on the user's complaint
+        ordinal: 38
       - name: sheriff-marked
         description: user's entry was marked by a sheriff
+        ordinal: 35
       - name: sheriff-unmarked
         description: user's entry was unmarked by a sheriff
+        ordinal: 36
       - name: subscriber-added
         description: another node subscribed to user's feed
+        ordinal: 4
       - name: subscriber-deleted
         description: another node unsubscribed from user's feed
+        ordinal: 5
       - name: unblocked-user
         description: a remote node has unblocked the user globally
+        ordinal: 32
       - name: unblocked-user-in-posting
         description: a remote node has unblocked the user in a posting
+        ordinal: 34
   - name: SubscriptionReason
     values:
       - name: user

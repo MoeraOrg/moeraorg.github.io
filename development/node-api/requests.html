@@ -188,68 +188,7 @@ container_class: container-requests
         </tbody>
     </table>
     {% capture constraints %}
-        {% for field in struct.fields %}
-            {% for constraint in field.constraints %}
-                {% if constraint.notnull %}
-                    <tr>
-                        <td><code>{{ constraint.notnull.error }}</code></td>
-                        <td><code>{{ field.name }}</code> is missing</td>
-                    </tr>
-                {% endif %}
-                {% if constraint.notblank %}
-                    <tr>
-                        <td><code>{{ constraint.notblank.error }}</code></td>
-                        <td><code>{{ field.name }}</code> is empty</td>
-                    </tr>
-                {% endif %}
-                {% if constraint.length %}
-                    <tr>
-                        <td><code>{{ constraint.length.error }}</code></td>
-                        <td><code>{{ field.name }}</code> is longer than {{ constraint.length.max }} characters</td>
-                    </tr>
-                {% endif %}
-                {% if constraint.value %}
-                    {% if constraint.value.min %}
-                        <tr>
-                            <td><code>{{ constraint.value.error }}</code></td>
-                            <td><code>{{ field.name }}</code> is less than {{ constraint.value.min }}</td>
-                        </tr>
-                    {% endif %}
-                {% endif %}
-                {% if constraint.value %}
-                    {% if constraint.value.max %}
-                        <tr>
-                            <td><code>{{ constraint.value.error }}</code></td>
-                            <td><code>{{ field.name }}</code> is greater than {{ constraint.value.max }}</td>
-                        </tr>
-                    {% endif %}
-                {% endif %}
-                {% if constraint.domainname %}
-                    <tr>
-                        <td><code>{{ constraint.domainname.error }}</code></td>
-                        <td><code>{{ field.name }}</code> is not a valid domain name</td>
-                    </tr>
-                {% endif %}
-                {% if constraint.email %}
-                    <tr>
-                        <td><code>{{ constraint.email.error }}</code></td>
-                        <td><code>{{ field.name }}</code> is not a valid e-mail address</td>
-                    </tr>
-                {% endif %}
-                {% if constraint.emojilist %}
-                    <tr>
-                        <td><code>{{ constraint.emojilist.error }}</code></td>
-                        <td><code>{{ field.name }}</code> is not a valid list of accepted emojis</td>
-                    </tr>
-                {% endif %}
-                {% if constraint.other %}
-                    <tr>
-                        <td><code>{{ constraint.other.error }}</code></td>
-                        <td><code>{{ field.name }}</code> {{ constraint.other.description }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
+        {% include constraints.html fields=struct.fields %}
     {% endcapture %}
     {% assign constraints = constraints | strip %}
     {% if constraints != '' %}
