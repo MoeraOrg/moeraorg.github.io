@@ -7207,12 +7207,15 @@ structures:
     name: total
     optional: true
     type: int
-  - description: 'share the reactions with the given code stand from the total number
+  - constraints:
+    - value:
+        error: reaction-total.share.out-of-range
+        max: 1
+        min: 0
+    description: 'share the reactions with the given code stand from the total number
       of reactions (may be absent, if <code>total</code> is present)
 
       '
-    max: 1
-    min: 0
     name: share
     optional: true
     type: float
@@ -7276,9 +7279,12 @@ structures:
 - fields:
   - name: name
     type: str
-  - description: human-friendly mnemonic of the updating key
-    max-items: 24
-    min-items: 24
+  - constraints:
+    - items:
+        error: node-name.secret.wrong-number
+        max: 24
+        min: 24
+    description: human-friendly mnemonic of the updating key
     name: mnemonic
     optional: true
     type: List[str]

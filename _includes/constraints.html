@@ -34,6 +34,22 @@
                 </tr>
             {% endif %}
         {% endif %}
+        {% if constraint.items %}
+            {% if constraint.items.min %}
+                <tr>
+                    <td><code>{{ constraint.items.error }}</code></td>
+                    <td><code>{{ field.name }}</code> has less than {{ constraint.items.min }} items</td>
+                </tr>
+            {% endif %}
+        {% endif %}
+        {% if constraint.items %}
+            {% if constraint.items.max %}
+                <tr>
+                    <td><code>{{ constraint.items.error }}</code></td>
+                    <td><code>{{ field.name }}</code> has more than {{ constraint.items.max }} items</td>
+                </tr>
+            {% endif %}
+        {% endif %}
         {% if constraint.domainname %}
             <tr>
                 <td><code>{{ constraint.domainname.error }}</code></td>

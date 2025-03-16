@@ -6463,8 +6463,11 @@ structures:
       - type: float
         name: share
         optional: true
-        min: 0
-        max: 1
+        constraints:
+          - value:
+              min: 0
+              max: 1
+              error: reaction-total.share.out-of-range
         description: >
           share the reactions with the given code stand from the total number of reactions (may be absent, if
           <code>total</code> is present)
@@ -6527,8 +6530,11 @@ structures:
       - type: String[]
         name: mnemonic
         optional: true
-        min-items: 24
-        max-items: 24
+        constraints:
+          - items:
+              min: 24
+              max: 24
+              error: node-name.secret.wrong-number
         description: human-friendly mnemonic of the updating key
       - type: String
         name: secret
