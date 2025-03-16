@@ -320,11 +320,11 @@ objects:
             name: postingId
             description: ID of the posting
         query:
-          - type: int
+          - type: long
             name: after
             optional: true
             description: filter comments posted strongly after this moment
-          - type: int
+          - type: long
             name: before
             optional: true
             description: filter comments posted at or before this moment
@@ -632,7 +632,7 @@ objects:
             name: emoji
             optional: true
             description: filter by reaction code, usually interpreted by clients as emoji code point
-          - type: int
+          - type: long
             name: before
             optional: true
             description: filter reactions created at or before this moment
@@ -1256,11 +1256,11 @@ objects:
             name: feedName
             description: name of the feed
         query:
-          - type: int
+          - type: long
             name: after
             optional: true
             description: filter stories posted strongly after this moment
-          - type: int
+          - type: long
             name: before
             optional: true
             description: filter stories posted at or before this moment
@@ -1489,7 +1489,7 @@ objects:
           struct: PrivateMediaFileInfo
         auth: admin
         description: >
-          Upload a new media file owned by the node admin. Content of the file is passed in the request body.
+          Upload a new media file owned by the node admin. The content of the file is passed in the request body.
         errors:
           - code: media.image-invalid
             description: media file is not a readable image
@@ -1510,7 +1510,7 @@ objects:
           struct: PrivateMediaFileInfo
         auth: required
         description: >
-          Upload a new media file owned by the given node. Content of the file is passed in the request body.
+          Upload a new media file owned by the given node. The content of the file is passed in the request body.
         errors:
           - code: media.image-invalid
             description: media file is not a readable image
@@ -1682,7 +1682,7 @@ objects:
         errors:
           - code: naming.operation-pending
             description: another operation with the node name is pending currently
-          - code: registeredNameSecret.empty
+          - code: node-name.secret.empty
             description: the registered name secret or mnemonic are not provided
           - code: node-name.name-absent
             description: the node name is not provided and not known by the node
@@ -1837,7 +1837,7 @@ objects:
             name: pluginName
             description: name of the plugin
         query:
-          - type: int
+          - type: long
             name: after
             optional: true
             description: >
@@ -2129,7 +2129,7 @@ objects:
             name: emoji
             optional: true
             description: filter by reaction code, usually interpreted by clients as emoji code point
-          - type: int
+          - type: long
             name: before
             optional: true
             description: filter reactions created at or before this moment
@@ -2143,7 +2143,7 @@ objects:
         description: >
           Get a slice of the list of reactions to the given posting, optionally filtered by reaction type, delimited by
           <code>before</code> moment and the given <code>limit</code>. If <code>before</code> is not provided,
-          the latest reactions are returned. The node may decide to return less reactions than the given
+          the latest reactions are returned. The node may decide to return fewer reactions than the given
           <code>limit</code>. The reactions are always sorted by moment, descending.
         errors:
           - code: posting.not-found
@@ -2381,7 +2381,7 @@ objects:
             name: clientId
             description: ID of the client
         query:
-          - type: int
+          - type: long
             name: after
             optional: true
             description: >
@@ -2869,11 +2869,11 @@ objects:
         type: GET
         function: getSheriffComplaintGroupsSlice
         query:
-          - type: int
+          - type: long
             name: after
             optional: true
             description: filter groups created strongly after this moment
-          - type: int
+          - type: long
             name: before
             optional: true
             description: filter groups created at or before this moment
@@ -2891,7 +2891,7 @@ objects:
           Get a slice of the list of groups of complaints, optionally filtered by status, delimited by
           the <code>before</code> or <code>after</code> moment and the given <code>limit</code>. If neither
           <code>before</code> nor <code>after</code> are provided, the latest groups are returned. The node may decide
-          to return less groups than the given <code>limit</code>. The groups are always sorted by moment, descending.
+          to return fewer groups than the given <code>limit</code>. The groups are always sorted by moment, descending.
         errors:
           - code: sheriff-complaint-groups.before-after-exclusive
             description: before and after parameters are mutually exclusive
@@ -3298,11 +3298,11 @@ objects:
             name: name
             description: the name of the list
         query:
-          - type: int
+          - type: long
             name: after
             optional: true
             description: filter items created strongly after this moment
-          - type: int
+          - type: long
             name: before
             optional: true
             description: filter items created at or before this moment
@@ -4766,9 +4766,6 @@ structures:
           - other:
               error: draft.body-src.wrong-size
               description: is too large
-          - other:
-              error: draft.body-src.wrong-encoding
-              description: has incorrect structure
       - enum: SourceFormat
         name: bodySrcFormat
         optional: true
@@ -5945,9 +5942,6 @@ structures:
           - other:
               error: posting.body-src.wrong-size
               description: is too long
-          - other:
-              error: posting.body-src.wrong-encoding
-              description: has incorrect structure
       - enum: SourceFormat
         name: bodySrcFormat
         optional: true
@@ -8336,7 +8330,7 @@ enums:
         description: no permissions
         value: "0x00000000"
       - name: identify
-        description: allow to identify under the corresponding node name
+        description: allow identifying under the corresponding node name
         value: "0x00000000"
       - name: other
         description: other permissions
@@ -8411,7 +8405,7 @@ enums:
         description: modify the node settings
         value: "0x00800000"
       - name: subscribe
-        description: subscribe and unsubscribe to feeds
+        description: subscribe and unsubscribe to the feeds
         value: "0x01000000"
       - name: tokens
         description: manage authentication tokens

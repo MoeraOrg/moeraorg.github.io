@@ -20,8 +20,8 @@ calls:
       \ May be <code>null</code> \u2013 the current URI is preserved in this case.\n"
     name: nodeUri
     type: string
-  - description: "the public key of the name owner. May be <code>null</code> \u2013\
-      \ the current key is preserved in this case.\n"
+  - description: "the public signing key of the name owner. May be <code>null</code>\
+      \ \u2013 the current key is preserved in this case.\n"
     name: signingKey
     type: string
   - description: 'the moment in time the owner''s key is valid from. May be <code>null</code>,
@@ -205,7 +205,7 @@ structures:
   - description: when the name was created
     name: created
     type: number
-  - description: the public key of the name owner. May be <code>null</code>.
+  - description: the public signing key of the name owner. May be <code>null</code>.
     name: signingKey
     type: string
   - description: 'the moment in time the owner''s key is valid from. May be absent,

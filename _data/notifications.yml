@@ -1,5 +1,6 @@
 notifications:
   - type: ASKED
+    ordinal: 24
     description: A remote node asks this node for something.
     fields:
       - enum: AskSubject
@@ -10,10 +11,19 @@ notifications:
         comment: >
           if the request is to add this node to friends, this field contains ID of the corresponding group of friends on
           the remote node
+        constraints:
+          - length:
+              max: 40
+              error: ask.friend-group-id.wrong-size
       - type: String
         name: message
         comment: optional message to the node admin
+        constraints:
+          - length:
+              max: 70
+              error: ask.message.wrong-size
   - type: BLOCKING_ADDED
+    ordinal: 25
     description: A remote node has blocked this node.
     fields:
       - enum: BlockedOperation
@@ -23,9 +33,17 @@ notifications:
         name: postingId
         comment: >
           ID of the posting, where the node is blocked; <code>null</code> or absent, if the node is blocked globally
+        constraints:
+          - length:
+              max: 40
+              error: blocking.posting-id.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting, where the node is blocked; may be absent
+        constraints:
+          - length:
+              max: 255
+              error: blocking.posting-heading.wrong-size
       - type: timestamp
         name: deadline
         comment: >
@@ -34,7 +52,12 @@ notifications:
       - type: String
         name: reason
         comment: reason of blocking, may be absent
+        constraints:
+          - length:
+              max: 1024
+              error: blocking-added.posting-heading.wrong-size
   - type: BLOCKING_DELETED
+    ordinal: 26
     description: A remote node has unblocked this node.
     fields:
       - enum: BlockedOperation
@@ -44,88 +67,208 @@ notifications:
         name: postingId
         comment: >
           ID of the posting, where the node was blocked; <code>null</code> or absent, if the node was blocked globally
+        constraints:
+          - length:
+              max: 40
+              error: blocking.posting-id.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting, where the node was blocked; may be absent
+        constraints:
+          - length:
+              max: 255
+              error: blocking.posting-heading.wrong-size
   - type: COMMENT_REACTION_ADDED
+    ordinal: 11
     description: Reaction added to a comment owned by the receiver.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.comment-id.wrong-size
+        log: true
       - type: String
         name: ownerName
         comment: name of the reaction owner
+        constraints:
+          - length:
+              max: 63
+              error: reaction.owner-name.wrong-size
+        log: true
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+        constraints:
+          - length:
+              max: 96
+              error: reaction.owner-full-name.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the reaction owner
+        constraints:
+          - length:
+              max: 31
+              error: reaction.owner-gender.wrong-size
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
       - type: boolean
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+        log: true
       - type: int
         name: emoji
         comment: reaction code, usually interpreted by clients as emoji code point
+        log: true
       - type: String
         name: postingNodeName
         comment: posting owner's node name
+        constraints:
+          - length:
+              max: 63
+              error: reaction.posting-node-name.wrong-size
+        log: true
       - type: String
         name: postingFullName
         comment: posting owner's full name
+        constraints:
+          - length:
+              max: 96
+              error: reaction.posting-full-name.wrong-size
       - type: String
         name: postingGender
         comment: posting owner's gender
+        constraints:
+          - length:
+              max: 31
+              error: reaction.posting-gender.wrong-size
       - struct: AvatarImage
         name: postingAvatar
         comment: posting owner's avatar
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: reaction.posting-heading.wrong-size
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: reaction.comment-heading.wrong-size
   - type: COMMENT_REACTION_DELETED
+    ordinal: 12
     description: Reaction deleted from a comment owned by the receiver.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.comment-id.wrong-size
+        log: true
       - type: String
         name: ownerName
         comment: name of the reaction owner
+        constraints:
+          - length:
+              max: 63
+              error: reaction.owner-name.wrong-size
+        log: true
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+        constraints:
+          - length:
+              max: 96
+              error: reaction.owner-full-name.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the reaction owner
+        constraints:
+          - length:
+              max: 31
+              error: reaction.owner-gender.wrong-size
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
       - type: boolean
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
+        log: true
   - type: COMMENT_REACTION_DELETED_ALL
+    ordinal: 13
     description: All reactions deleted from a comment owned by the receiver.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.comment-id.wrong-size
+        log: true
+  - type: FRIEND_GROUP_DELETED
+    ordinal: 23
+    description: A group of friends that includes the receiver has been deleted on the sending node.
+    fields:
+      - type: String
+        name: friendGroupId
+        comment: ID of the group of friends on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: friend-group.friend-group-id.wrong-size
+        log: true
+  - type: FRIEND_GROUP_UPDATED
+    ordinal: 22
+    description: A group of friends that includes the receiver has been updated on the sending node.
+    fields:
+      - struct: FriendGroupInfo
+        name: friendGroup
+        comment: the updated information about the group of friends
+        log: true
+  - type: FRIENDSHIP_UPDATED
+    ordinal: 21
+    description: The receiver was added to or removed from groups of friends on the sending node.
+    fields:
+      - struct: FriendGroupDetails
+        array: true
+        name: friendGroups
+        comment: the updated list of group of friends the receiver is member of
   - type: GRANT_UPDATED
+    ordinal: 34
     description: The set of administrative permissions granted by the sending node to this node has been updated.
     fields:
       - enum: Scope
@@ -133,29 +276,58 @@ notifications:
         name: scope
         comment: the updated set of permissions
   - type: MENTION_COMMENT_ADDED
+    ordinal: 6
     description: A mention of the receiver in a comment on the sending node added.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: mention.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: mention.comment-id.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: name of the posting's owner
+        constraints:
+          - length:
+              max: 63
+              error: mention.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: full name of the posting's owner
+        constraints:
+          - length:
+              max: 96
+              error: mention.posting-owner-full-name.wrong-size
       - type: String
         name: postingOwnerGender
         comment: gender of the posting's owner
+        constraints:
+          - length:
+              max: 31
+              error: mention.posting-owner-gender.wrong-size
       - struct: AvatarImage
         name: postingOwnerAvatar
         comment: avatar of the posting's owner
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: mention.posting-heading.wrong-size
+        log: true
       - type: String[]
         name: postingSheriffs
         comment: list of sheriffs supervising the posting
@@ -166,52 +338,105 @@ notifications:
       - type: String
         name: commentOwnerName
         comment: name of the comment's owner
+        constraints:
+          - length:
+              max: 63
+              error: mention.comment-owner-name.wrong-size
+        log: true
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment's owner
+        constraints:
+          - length:
+              max: 96
+              error: mention.comment-owner-full-name.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment's owner
+        constraints:
+          - length:
+              max: 31
+              error: mention.comment-owner-gender.wrong-size
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment's owner
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: mention.comment-heading.wrong-size
+        log: true
       - struct: SheriffMark
         array: true
         name: commentSheriffMarks
         comment: list of sheriff marks on the comment
   - type: MENTION_COMMENT_DELETED
+    ordinal: 7
     description: A mention of the receiver in a comment on the sending node deleted.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: mention.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: mention.comment-id.wrong-size
+        log: true
   - type: MENTION_POSTING_ADDED
+    ordinal: 0
     description: A mention of the receiver in a posting on the sending node added.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: mention.posting-id.wrong-size
+        log: true
       - type: String
         name: ownerName
         comment: name of the posting's owner
+        constraints:
+          - length:
+              max: 63
+              error: mention.owner-name.wrong-size
+        log: true
       - type: String
         name: ownerFullName
         comment: full name of the posting's owner
+        constraints:
+          - length:
+              max: 96
+              error: mention.owner-full-name.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the posting's owner
+        constraints:
+          - length:
+              max: 31
+              error: mention.owner-gender.wrong-size
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the posting's owner
       - type: String
         name: heading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: mention.heading.wrong-size
+        log: true
       - type: String[]
         name: sheriffs
         comment: list of sheriffs supervising the posting
@@ -220,35 +445,72 @@ notifications:
         name: sheriffMarks
         comment: list of sheriff marks on the posting
   - type: MENTION_POSTING_DELETED
+    ordinal: 1
     description: A mention of the receiver in a posting on the sending node deleted.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: mention.posting-id.wrong-size
+        log: true
   - type: POSTING_COMMENT_ADDED
+    ordinal: 14
+    java-interfaces:
+      - PostingSubscriberNotification
     description: A comment added to the posting the receiver is subscribed to.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.posting-id.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: name of the posting owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: full name of the posting owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.posting-owner-full-name.wrong-size
       - type: String
         name: postingOwnerGender
         comment: gender of the posting owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.posting-owner-gender.wrong-size
       - struct: AvatarImage
         name: postingOwnerAvatar
         comment: avatar of the posting owner
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: comment.posting-heading.wrong-size
+        log: true
       - type: String[]
         name: postingSheriffs
         comment: list of sheriffs supervising the posting
@@ -259,21 +521,44 @@ notifications:
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.comment-id.wrong-size
+        log: true
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.comment-owner-name.wrong-size
+        log: true
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.comment-owner-full-name.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.comment-owner-gender.wrong-size
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: comment.comment-heading.wrong-size
+        log: true
       - struct: SheriffMark
         array: true
         name: commentSheriffMarks
@@ -281,80 +566,178 @@ notifications:
       - type: String
         name: commentRepliedTo
         comment: ID of the comment on the sending node this comment replies to
+        constraints:
+          - length:
+              max: 40
+              error: comment.comment-replied-to.wrong-size
   - type: POSTING_COMMENT_DELETED
+    ordinal: 15
+    java-interfaces:
+      - PostingSubscriberNotification
     description: A comment deleted from the posting the receiver is subscribed to.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.comment-id.wrong-size
+        log: true
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.comment-owner-name.wrong-size
+        log: true
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.comment-owner-full-name.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.comment-owner-gender.wrong-size
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
   - type: POSTING_COMMENTS_UPDATED
+    ordinal: 8
+    java-interfaces:
+      - PostingSubscriberNotification
     description: Comments have been updated at the posting the receiver is subscribed to.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+        log: true
       - type: int
         name: total
         comment: updated total number of comments to the posting
   - type: POSTING_DELETED
+    ordinal: 4
+    java-interfaces:
+      - PostingSubscriberNotification
     description: Posting the receiver is subscribed to has been deleted.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+        log: true
   - type: POSTING_IMPORTANT_UPDATE
+    ordinal: 17
+    java-interfaces:
+      - PostingSubscriberNotification
     description: >
       An important update was done to the posting the receiver is subscribed to (subscription to comments is enough).
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: name of the posting owner
+        constraints:
+          - length:
+              max: 63
+              error: posting.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: full name of the posting owner
+        constraints:
+          - length:
+              max: 96
+              error: posting.posting-owner-full-name.wrong-size
       - type: String
         name: postingOwnerGender
         comment: gender of the posting owner
+        constraints:
+          - length:
+              max: 31
+              error: posting.posting-owner-gender.wrong-size
       - struct: AvatarImage
         name: postingOwnerAvatar
         comment: avatar of the posting owner
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: posting.posting-heading.wrong-size
+        log: true
       - type: String
         name: description
         comment: description of the update
+        constraints:
+          - length:
+              max: 255
+              error: posting.description.wrong-size
+        log: true
   - type: POSTING_REACTION_ADDED
+    ordinal: 18
     description: Reaction added to a posting owned by the receiver.
     fields:
       - type: String
@@ -362,28 +745,61 @@ notifications:
         comment: >
           ID of the posting containing the media or containing the comment that contains the media linked to the posting
           in question (present only if the posting in question is linked to a media)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-posting-id.wrong-size
+        log: true
       - type: String
         name: parentCommentId
         comment: >
           ID of the comment containing the media linked to the posting in question (present only if the posting in
           question is linked to a media attached to a comment)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-comment-id.wrong-size
+        log: true
       - type: String
         name: parentMediaId
         comment: >
           ID of the media linked to the posting in question (present only if the posting in question is linked to
           a media)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-media-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.posting-id.wrong-size
+        log: true
       - type: String
         name: ownerName
         comment: name of the reaction owner
+        constraints:
+          - length:
+              max: 63
+              error: reaction.owner-name.wrong-size
+        log: true
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+        constraints:
+          - length:
+              max: 96
+              error: reaction.owner-full-name.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the reaction owner
+        constraints:
+          - length:
+              max: 31
+              error: reaction.owner-gender.wrong-size
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
@@ -396,22 +812,46 @@ notifications:
       - type: String
         name: parentPostingNodeName
         comment: parent's owner node name (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+        constraints:
+          - length:
+              max: 63
+              error: reaction.parent-posting-node-name.wrong-size
+        log: true
       - type: String
         name: parentPostingFullName
         comment: parent's owner full name (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+        constraints:
+          - length:
+              max: 96
+              error: reaction.parent-posting-full-name.wrong-size
       - type: String
         name: parentPostingGender
         comment: parent's owner gender (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+        constraints:
+          - length:
+              max: 31
+              error: reaction.parent-posting-gender.wrong-size
       - struct: AvatarImage
         name: parentPostingAvatar
         comment: parent's owner avatar (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
       - type: String
         name: parentHeading
         comment: heading of the parent (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
+        constraints:
+          - length:
+              max: 255
+              error: reaction.parent-heading.wrong-size
+        log: true
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: reaction.posting-heading.wrong-size
+        log: true
   - type: POSTING_REACTION_DELETED
+    ordinal: 19
     description: Reaction deleted from a posting owned by the receiver.
     fields:
       - type: String
@@ -419,28 +859,61 @@ notifications:
         comment: >
           ID of the posting containing the media or containing the comment that contains the media linked to the posting
           in question (present only if the posting in question is linked to a media)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-posting-id.wrong-size
+        log: true
       - type: String
         name: parentCommentId
         comment: >
           ID of the comment containing the media linked to the posting in question (present only if the posting in
           question is linked to a media attached to a comment)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-comment-id.wrong-size
+        log: true
       - type: String
         name: parentMediaId
         comment: >
           ID of the media linked to the posting in question (present only if the posting in question is linked to
           a media)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-media-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.posting-id.wrong-size
+        log: true
       - type: String
         name: ownerName
         comment: name of the reaction owner
+        constraints:
+          - length:
+              max: 63
+              error: reaction.owner-name.wrong-size
+        log: true
       - type: String
         name: ownerFullName
         comment: full name of the reaction owner
+        constraints:
+          - length:
+              max: 96
+              error: reaction.owner-full-name.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the reaction owner
+        constraints:
+          - length:
+              max: 31
+              error: reaction.owner-gender.wrong-size
       - struct: AvatarImage
         name: ownerAvatar
         comment: avatar of the reaction owner
@@ -448,6 +921,7 @@ notifications:
         name: negative
         comment: <code>true</code>, if the reaction is negative, <code>false</code>, if positive
   - type: POSTING_REACTION_DELETED_ALL
+    ordinal: 20
     description: Deleted all reactions from a posting owned by the receiver.
     fields:
       - type: String
@@ -455,25 +929,53 @@ notifications:
         comment: >
           ID of the posting containing the media or containing the comment that contains the media linked to the posting
           in question (present only if the posting in question is linked to a media)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-posting-id.wrong-size
+        log: true
       - type: String
         name: parentCommentId
         comment: >
           ID of the comment containing the media linked to the posting in question (present only if the posting in
           question is linked to a media attached to a comment)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-comment-id.wrong-size
+        log: true
       - type: String
         name: parentMediaId
         comment: >
           ID of the media linked to the posting in question (present only if the posting in question is linked to
           a media)
+        constraints:
+          - length:
+              max: 40
+              error: reaction.parent-media-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: reaction.posting-id.wrong-size
+        log: true
   - type: POSTING_REACTIONS_UPDATED
+    ordinal: 5
+    java-interfaces:
+      - PostingSubscriberNotification
     description: Reactions have been updated at the posting the receiver is subscribed to.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
@@ -481,47 +983,100 @@ notifications:
         name: totals
         comment: updated reaction totals of the posting
   - type: POSTING_UPDATED
+    ordinal: 3
+    java-interfaces:
+      - PostingSubscriberNotification
     description: Posting the receiver is subscribed to has been updated.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+        log: true
   - type: PROFILE_UPDATED
+    ordinal: 16
     description: Sender's profile the receiver is subscribed to has been updated.
     fields:
       - type: String
         name: subscriberId
         comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
   - type: REPLY_COMMENT_ADDED
+    ordinal: 9
     description: A reply to a comment of the receiver on the sending node added.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.comment-id.wrong-size
+        log: true
       - type: String
         name: repliedToId
         comment: ID of the comment on the sending node that is replied to
+        constraints:
+          - length:
+              max: 40
+              error: comment.replied-to-id.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: name of the posting owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: full name of the posting owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.posting-owner-full-name.wrong-size
       - type: String
         name: postingOwnerGender
         comment: gender of the posting owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.posting-owner-gender.wrong-size
       - struct: AvatarImage
         name: postingOwnerAvatar
         comment: avatar of the posting owner
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: comment.posting-heading.wrong-size
+        log: true
       - type: String[]
         name: postingSheriffs
         comment: list of sheriffs supervising the posting
@@ -532,18 +1087,36 @@ notifications:
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.comment-owner-name.wrong-size
+        log: true
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.comment-owner-full-name.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.comment-owner-gender.wrong-size
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: comment.comment-heading.wrong-size
+        log: true
       - struct: SheriffMark
         array: true
         name: commentSheriffMarks
@@ -551,213 +1124,582 @@ notifications:
       - type: String
         name: repliedToHeading
         comment: heading of the comment that is replied to
+        constraints:
+          - length:
+              max: 255
+              error: comment.replied-to-heading.wrong-size
+        log: true
   - type: REPLY_COMMENT_DELETED
+    ordinal: 10
     description: A reply to a comment of the receiver on the sending node deleted.
     fields:
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.comment-id.wrong-size
+        log: true
       - type: String
         name: repliedToId
         comment: ID of the comment on the sending node that is replied to
+        constraints:
+          - length:
+              max: 40
+              error: comment.replied-to-id.wrong-size
+        log: true
       - type: String
         name: commentOwnerName
         comment: name of the comment owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.comment-owner-name.wrong-size
+        log: true
       - type: String
         name: commentOwnerFullName
         comment: full name of the comment owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.comment-owner-full-name.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.comment-owner-gender.wrong-size
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
   - type: SEARCH_ENGINE_CLICKED
+    ordinal: 35
     description: The receiver's posting/comment/media has been visited on the sending node from a search engine.
     fields:
       - enum: SearchEngine
         name: searchEngine
         comment: the search engine
+        constraints:
+          - notnull:
+              error: search.search-engine.missing
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: search.comment-id.wrong-size
+        log: true
       - type: String
         name: mediaId
         comment: ID of the media on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: search.media-id.wrong-size
+        log: true
       - type: String
         name: heading
         comment: heading of the posting/comment/media
+        constraints:
+          - notblank:
+              error: search.heading.empty
+          - length:
+              max: 255
+              error: search.heading.wrong-size
+        log: true
       - type: timestamp
         name: clickedAt
         comment: the real time when the posting/comment/media was visited
+        constraints:
+          - notnull:
+              error: search.clicked-at.missing
   - type: SHERIFF_COMPLAINT_DECIDED
-    description: The sheriff made a decision on the receiver's complaint
+    ordinal: 31
+    description: The sheriff made a decision on the receiver's complaint.
     fields:
       - type: String
         name: remoteNodeName
         comment: name of the node the complaint is related to
+        constraints:
+          - notblank:
+              error: sheriff-complaint.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-complaint.remote-node-name.wrong-size
+        log: true
       - type: String
         name: remoteFeedName
         comment: name of the feed the complaint is related to
+        constraints:
+          - notblank:
+              error: sheriff-complaint.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-complaint.remote-feed-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: posting owner's node name
+        constraints:
+          - length:
+              max: 63
+              error: sheriff-complaint.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: posting owner's full name
+        constraints:
+          - length:
+              max: 96
+              error: sheriff-complaint.posting-owner-full-name.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-complaint.posting-heading.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting the complaint is related to
+        constraints:
+          - length:
+              max: 40
+              error: sheriff-complaint.posting-id.wrong-size
+        log: true
       - type: String
         name: commentOwnerName
         comment: comment owner's node name
+        constraints:
+          - length:
+              max: 63
+              error: sheriff-complaint.comment-owner-name.wrong-size
+        log: true
       - type: String
         name: commentOwnerFullName
         comment: comment owner's full name
+        constraints:
+          - length:
+              max: 96
+              error: sheriff-complaint.comment-owner-full-name.wrong-size
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-complaint.comment-heading.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment the complaint is related to
+        constraints:
+          - length:
+              max: 40
+              error: sheriff-complaint.comment-id.wrong-size
+        log: true
       - type: String
         name: complaintGroupId
         comment: ID of the group of complaints the complaint was included into
+        constraints:
+          - notblank:
+              error: sheriff-complaint.complaint-group-id.empty
+          - length:
+              max: 40
+              error: sheriff-complaint.complaint-group-id.wrong-size
+        log: true
   - type: SHERIFF_ORDER_FOR_COMMENT_ADDED
-    description: The sending node got a sheriff's order related to the receiver's comment
+    ordinal: 29
+    description: The sending node got a sheriff's order related to the receiver's comment.
     fields:
       - type: String
         name: remoteNodeName
         comment: name of the node the order was sent to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-node-name.wrong-size
+        log: true
       - type: String
         name: remoteFeedName
         comment: name of the feed the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-feed-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: posting owner's node name
+        constraints:
+          - notblank:
+              error: sheriff-order.posting-owner-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: posting owner's full name
+        constraints:
+          - length:
+              max: 96
+              error: sheriff-order.posting-owner-full-name.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-order.posting-heading.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.posting-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.posting-id.wrong-size
+        log: true
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-order.comment-heading.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.comment-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.comment-id.wrong-size
+        log: true
       - type: String
         name: orderId
         comment: ID of the order
+        constraints:
+          - notblank:
+              error: sheriff-order.order-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.order-id.wrong-size
+        log: true
   - type: SHERIFF_ORDER_FOR_COMMENT_DELETED
-    description: The sending node got a cancellation of a sheriff's order related to the receiver's comment
+    ordinal: 30
+    description: The sending node got a cancellation of a sheriff's order related to the receiver's comment.
     fields:
       - type: String
         name: remoteNodeName
         comment: name of the node the order was sent to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-node-name.wrong-size
+        log: true
       - type: String
         name: remoteFeedName
         comment: name of the feed the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-feed-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerName
         comment: posting owner's node name
+        constraints:
+          - notblank:
+              error: sheriff-order.posting-owner-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.posting-owner-name.wrong-size
+        log: true
       - type: String
         name: postingOwnerFullName
         comment: posting owner's full name
+        constraints:
+          - length:
+              max: 96
+              error: sheriff-order.posting-owner-full-name.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-order.posting-heading.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.posting-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.posting-id.wrong-size
+        log: true
       - type: String
         name: commentHeading
         comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-order.comment-heading.wrong-size
+        log: true
       - type: String
         name: commentId
         comment: ID of the comment the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.comment-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.comment-id.wrong-size
+        log: true
       - type: String
         name: orderId
         comment: ID of the order
+        constraints:
+          - notblank:
+              error: sheriff-order.order-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.order-id.wrong-size
+        log: true
   - type: SHERIFF_ORDER_FOR_POSTING_ADDED
-    description: The sending node got a sheriff's order related to the receiver's posting
+    ordinal: 27
+    description: The sending node got a sheriff's order related to the receiver's posting.
     fields:
       - type: String
         name: remoteNodeName
         comment: name of the node the order was sent to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-node-name.wrong-size
+        log: true
       - type: String
         name: remoteFeedName
         comment: name of the feed the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-feed-name.wrong-size
+        log: true
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-order.posting-heading.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.posting-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.posting-id.wrong-size
+        log: true
       - type: String
         name: orderId
         comment: ID of the order
+        constraints:
+          - notblank:
+              error: sheriff-order.order-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.order-id.wrong-size
+        log: true
   - type: SHERIFF_ORDER_FOR_POSTING_DELETED
-    description: The sending node got a cancellation of a sheriff's order related to the receiver's posting
+    ordinal: 28
+    description: The sending node got a cancellation of a sheriff's order related to the receiver's posting.
     fields:
       - type: String
         name: remoteNodeName
         comment: name of the node the order was sent to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-node-name.wrong-size
+        log: true
       - type: String
         name: remoteFeedName
         comment: name of the feed the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-feed-name.wrong-size
+        log: true
       - type: String
         name: postingHeading
         comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: sheriff-order.posting-heading.wrong-size
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.posting-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.posting-id.wrong-size
+        log: true
       - type: String
         name: orderId
         comment: ID of the order
+        constraints:
+          - notblank:
+              error: sheriff-order.order-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.order-id.wrong-size
+        log: true
   - type: STORY_ADDED
+    ordinal: 2
     description: A new story has been added to a feed the receiver is subscribed to.
     fields:
       - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
+      - type: String
         name: storyId
         comment: ID of the story on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: story.story-id.wrong-size
+        log: true
       - type: String
         name: feedName
         comment: name of the feed on the sending node
+        constraints:
+          - length:
+              max: 63
+              error: story.feed-name.wrong-size
+        log: true
       - enum: StoryType
         name: storyType
         comment: type of the story
+        log: true
       - type: String
         name: postingId
         comment: ID of the posting on the sending node, if the story is related to a posting
+        constraints:
+          - length:
+              max: 40
+              error: story.posting-id.wrong-size
+        log: true
   - type: USER_LIST_ITEM_ADDED
-    description: A node was added to a user list the receiver is subscribed to
+    ordinal: 32
+    description: A node was added to a user list the receiver is subscribed to.
     fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: listName
         comment: name of the user list
+        constraints:
+          - length:
+              max: 63
+              error: user-list.list-name.wrong-size
+        log: true
       - type: String
         name: nodeName
         comment: name of the node
-  - type: USER_LIST_ITEM_DELETE
-    description: A node was deleted from a user list the receiver is subscribed to
+        constraints:
+          - length:
+              max: 63
+              error: user-list.node-name.wrong-size
+        log: true
+  - type: USER_LIST_ITEM_DELETED
+    ordinal: 33
+    description: A node was deleted from a user list the receiver is subscribed to.
     fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
       - type: String
         name: listName
         comment: name of the user list
+        constraints:
+          - length:
+              max: 63
+              error: user-list.list-name.wrong-size
+        log: true
       - type: String
         name: nodeName
         comment: name of the node
+        constraints:
+          - length:
+              max: 63
+              error: user-list.node-name.wrong-size
+        log: true

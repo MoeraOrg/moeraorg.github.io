@@ -103,7 +103,7 @@ enums:
   - description: no permissions
     name: none
     value: '0x00000000'
-  - description: allow to identify under the corresponding node name
+  - description: allow identifying under the corresponding node name
     name: identify
     value: '0x00000000'
   - description: other permissions
@@ -178,7 +178,7 @@ enums:
   - description: modify the node settings
     name: update-settings
     value: '0x00800000'
-  - description: subscribe and unsubscribe to feeds
+  - description: subscribe and unsubscribe to the feeds
     name: subscribe
     value: '0x01000000'
   - description: manage authentication tokens
@@ -260,130 +260,190 @@ enums:
   values:
   - description: violation of a law
     name: unlawful
+    ordinal: 1
   - description: defamatory content
     name: defamatory
+    ordinal: 2
   - description: contains a threat against a person
     name: threat
+    ordinal: 3
   - description: spam
     name: spam
+    ordinal: 4
   - description: fraudulent content
     name: scam
-  - description: distribution of a malware
+    ordinal: 5
+  - description: distribution of malware
     name: malware
+    ordinal: 6
   - description: copyright infringement
     name: copyright
+    ordinal: 7
   - description: the author pretends to be someone else
     name: impersonating
+    ordinal: 8
   - description: violation of someone's privacy
     name: privacy
+    ordinal: 9
   - description: any other reason
     name: other
+    ordinal: 0
 - name: SourceFormat
   values:
   - description: plain text with newlines and paragraphs delimited by empty line
     name: plain-text
+    ordinal: 0
   - description: HTML-formatted text, the node may allow only limited set of tags
     name: html
+    ordinal: 1
   - description: text in Markdown format
     name: markdown
+    ordinal: 2
   - description: HTML-formatted text, WYSIWYG editor
     name: html/visual
+    ordinal: 4
   - description: application-specific format
     name: application
+    ordinal: 3
 - name: StoryType
   values:
   - description: a remote node asked to add it to friends
     name: asked-to-friend
+    ordinal: 30
   - description: a remote node asked to subscribe to it
     name: asked-to-subscribe
+    ordinal: 29
   - description: a remote node has blocked the user globally
     name: blocked-user
+    ordinal: 31
   - description: a remote node has blocked the user in a posting
     name: blocked-user-in-posting
+    ordinal: 33
   - description: a comment was added under the user's posting
     name: comment-added
+    ordinal: 6
   - description: a positive reaction was added to a media attached to a comment
     name: comment-media-reaction-added-negative
+    ordinal: 20
   - description: a positive reaction was added to a media attached to a comment
     name: comment-media-reaction-added-positive
+    ordinal: 19
   - description: a failed attempt to add a reaction to a media attached to a comment
     name: comment-media-reaction-failed
+    ordinal: 22
   - description: a failed attempt to post a comment
     name: comment-post-task-failed
+    ordinal: 12
   - description: a negative reaction was added to the user's comment
     name: comment-reaction-added-negative
+    ordinal: 10
   - description: a positive reaction was added to the user's comment
     name: comment-reaction-added-positive
+    ordinal: 9
   - description: a failed attempt to post a reaction to a comment
     name: comment-reaction-task-failed
+    ordinal: 25
   - description: a failed attempt to update a comment
     name: comment-update-task-failed
+    ordinal: 13
   - description: the node's owner has connected to it after long inactivity and the
       node is leaving the frozen state
     name: defrosting
+    ordinal: 39
   - description: a remote node has added the user to friends
     name: friend-added
+    ordinal: 26
   - description: a remote node has removed the user from friends
     name: friend-deleted
+    ordinal: 27
   - description: a remote group of friends, the user was a member of, has been deleted
     name: friend-group-deleted
+    ordinal: 28
   - description: the user was mentioned in a comment
     name: mention-comment
+    ordinal: 7
   - description: the user was mentioned in a posting on another node
     name: mention-posting
-  - description: a posting was added; **stories of this type are used for feeds containing
-      postings**
+    ordinal: 3
+  - description: a posting was added; <b>stories of this type are used for feeds containing
+      postings</b>
     name: posting-added
+    ordinal: 0
   - description: a negative reaction was added to a media attached to a posting
     name: posting-media-reaction-added-negative
+    ordinal: 18
   - description: a positive reaction was added to a media attached to a posting
     name: posting-media-reaction-added-positive
+    ordinal: 17
   - description: a failed attempt to add a reaction to a media attached to a posting
     name: posting-media-reaction-failed
+    ordinal: 21
   - description: a failed attempt to create a posting
     name: posting-post-task-failed
+    ordinal: 15
   - description: a failed attempt to post a reaction to a posting
     name: posting-reaction-task-failed
+    ordinal: 24
   - description: a failed attempt to subscribe to a posting
     name: posting-subscribe-task-failed
+    ordinal: 23
   - description: a failed attempt to update a posting
     name: posting-update-task-failed
+    ordinal: 16
   - description: a posting was updated
     name: posting-updated
+    ordinal: 14
   - description: a negative reaction was added to the user's posting
     name: reaction-added-negative
+    ordinal: 2
   - description: a positive reaction was added to the user's posting
     name: reaction-added-positive
+    ordinal: 1
   - description: reminder for the user to set an avatar
     name: reminder-avatar
+    ordinal: 42
   - description: reminder for the user to set an email
     name: reminder-email
+    ordinal: 43
   - description: reminder for the user to set a full name
     name: reminder-full-name
+    ordinal: 41
   - description: reminder for the user to allow access for Google Play sheriff
     name: reminder-sheriff-allow
+    ordinal: 44
   - description: a comment was added under a posting the user is subscribed to
     name: remote-comment-added
+    ordinal: 11
   - description: a reply was added to the user's comment
     name: reply-comment
+    ordinal: 8
   - description: visits from search engines report
     name: search-report
+    ordinal: 40
   - description: a new complaint was received
     name: sheriff-complaint-added
+    ordinal: 37
   - description: a decision was made on the user's complaint
     name: sheriff-complaint-decided
+    ordinal: 38
   - description: user's entry was marked by a sheriff
     name: sheriff-marked
+    ordinal: 35
   - description: user's entry was unmarked by a sheriff
     name: sheriff-unmarked
+    ordinal: 36
   - description: another node subscribed to user's feed
     name: subscriber-added
+    ordinal: 4
   - description: another node unsubscribed from user's feed
     name: subscriber-deleted
+    ordinal: 5
   - description: a remote node has unblocked the user globally
     name: unblocked-user
+    ordinal: 32
   - description: a remote node has unblocked the user in a posting
     name: unblocked-user-in-posting
+    ordinal: 34
 - name: SubscriptionReason
   values:
   - description: node owner asked to subscribe
@@ -1943,8 +2003,8 @@ objects:
   name: Media (private)
   requests:
   - auth: admin
-    description: 'Upload a new media file owned by the node admin. Content of the
-      file is passed in the request body.
+    description: 'Upload a new media file owned by the node admin. The content of
+      the file is passed in the request body.
 
       '
     errors:
@@ -1964,8 +2024,8 @@ objects:
       name: file_type
       type: str
   - auth: required
-    description: 'Upload a new media file owned by the given node. Content of the
-      file is passed in the request body.
+    description: 'Upload a new media file owned by the given node. The content of
+      the file is passed in the request body.
 
       '
     errors:
@@ -2156,7 +2216,7 @@ objects:
     errors:
     - code: naming.operation-pending
       description: another operation with the node name is pending currently
-    - code: registeredNameSecret.empty
+    - code: node-name.secret.empty
       description: the registered name secret or mnemonic are not provided
     - code: node-name.name-absent
       description: the node name is not provided and not known by the node
@@ -2503,7 +2563,7 @@ objects:
     description: 'Get a slice of the list of reactions to the given posting, optionally
       filtered by reaction type, delimited by <code>before</code> moment and the given
       <code>limit</code>. If <code>before</code> is not provided, the latest reactions
-      are returned. The node may decide to return less reactions than the given <code>limit</code>.
+      are returned. The node may decide to return fewer reactions than the given <code>limit</code>.
       The reactions are always sorted by moment, descending.
 
       '
@@ -3169,7 +3229,7 @@ objects:
       by status, delimited by the <code>before</code> or <code>after</code> moment
       and the given <code>limit</code>. If neither <code>before</code> nor <code>after</code>
       are provided, the latest groups are returned. The node may decide to return
-      less groups than the given <code>limit</code>. The groups are always sorted
+      fewer groups than the given <code>limit</code>. The groups are always sorted
       by moment, descending.
 
       '
@@ -5335,9 +5395,6 @@ structures:
     - other:
         description: is too large
         error: draft.body-src.wrong-size
-    - other:
-        description: has incorrect structure
-        error: draft.body-src.wrong-encoding
     description: the source text of the draft, a string representation of a JSON structure
     name: body_src
     optional: true
@@ -6593,9 +6650,6 @@ structures:
     - other:
         description: is too long
         error: posting.body-src.wrong-size
-    - other:
-        description: has incorrect structure
-        error: posting.body-src.wrong-encoding
     description: the source text of the posting, a string representation of a JSON
       structure
     name: body_src

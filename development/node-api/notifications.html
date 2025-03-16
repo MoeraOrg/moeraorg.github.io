@@ -61,5 +61,23 @@ subtitle: Notifications
                 {% endfor %}
             </tbody>
         </table>
+        {% capture constraints %}
+            {% include constraints.html fields=notification.fields %}
+        {% endcapture %}
+        {% assign constraints = constraints | strip %}
+        {% if constraints != '' %}
+            <b>Validation errors:</b>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-4">Code</th>
+                        <th class="col-8">Description</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {{ constraints }}
+                </tbody>
+            </table>
+        {% endif %}
     {% endif %}
 {% endfor %}

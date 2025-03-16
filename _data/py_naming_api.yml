@@ -20,8 +20,8 @@ calls:
       \ May be <code>None</code> \u2013 the current URI is preserved in this case.\n"
     name: node_uri
     type: str
-  - description: "the public key of the name owner. May be <code>None</code> \u2013\
-      \ the current key is preserved in this case.\n"
+  - description: "the public signing key of the name owner. May be <code>None</code>\
+      \ \u2013 the current key is preserved in this case.\n"
     name: signing_key
     type: bytes
   - description: 'the moment in time the owner''s key is valid from. May be <code>None</code>,
@@ -205,7 +205,7 @@ structures:
   - description: when the name was created
     name: created
     type: Timestamp
-  - description: the public key of the name owner. May be <code>None</code>.
+  - description: the public signing key of the name owner. May be <code>None</code>.
     name: signing_key
     type: bytes
   - description: 'the moment in time the owner''s key is valid from. May be absent,

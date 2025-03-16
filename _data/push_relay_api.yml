@@ -123,7 +123,7 @@ errors:
     description: <code>lang</code> is too long
   - code: 6
     name: node.no-clients
-    description: the node has node clients (the node should stop sending messages for them)
+    description: the node has no clients (the node should stop sending messages for them)
   - code: 7
     name: story.empty
     description: <code>story</code> is empty

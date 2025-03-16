@@ -23,7 +23,7 @@ calls:
       - type: byte[]
         name: signingKey
         description: >
-          the public key of the name owner. May be <code>null</code> – the current key is preserved in this case.
+          the public signing key of the name owner. May be <code>null</code> – the current key is preserved in this case.
       - type: timestamp
         name: validFrom
         description: >
@@ -202,7 +202,7 @@ structures:
         description: when the name was created
       - type: byte[]
         name: signingKey
-        description: the public key of the name owner. May be <code>null</code>.
+        description: the public signing key of the name owner. May be <code>null</code>.
       - type: timestamp
         name: validFrom
         description: >

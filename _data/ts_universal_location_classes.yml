@@ -57,7 +57,7 @@ classes:
 constants:
   - name: REDIRECTOR
     value: '"moera-page"'
-    description: Host used as redirector in universal URLs.
+    description: The host used as a redirector in universal URLs.
 
 functions:
   - name: parse(url)
