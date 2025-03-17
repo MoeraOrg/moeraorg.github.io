@@ -158,14 +158,13 @@ To parse a universal URL, pass it to `UniversalLocation` constructor.
 The constructed instance will contain the result of parsing.
 
 ```java
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.moera.lib.UniversalLocation;
 
 try {
     UniversalLocation uni = new UniversalLocation(
-        new URI("https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3")
+        "https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3"
     );
     System.out.println(uni.getNodeName(), uni.getAuthority(), uni.getPath(), uni);
 } catch (URISyntaxException e) {
