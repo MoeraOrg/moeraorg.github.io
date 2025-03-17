@@ -60,6 +60,16 @@
 - name: push-relay-api
   title: Push Relay API
 
+- name: java-moeralib/index
+  title: Java Library
+
+- type: sub
+
+- name: java-moeralib/javadoc/index
+  title: Javadoc
+
+- type: end
+
 - name: python-moeralib/index
   title: Python Library
 
