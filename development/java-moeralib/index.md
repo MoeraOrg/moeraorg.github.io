@@ -15,7 +15,14 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>org.moera</groupId>
     <artifactId>moeralib</artifactId>
+    <version>VERSION</version>
 </dependency>
+```
+
+Or to your `build.gradle`:
+
+```
+implementation 'org.moera:moeralib:VERSION'
 ```
 
 ## Naming API
@@ -239,5 +246,5 @@ srv.put(name, generation, null, newNodeUri, null, null, info.getDigest(), signat
 ```
 
 [1]: https://github.com/MoeraOrg/java-moeralib
-[2]: https://www.npmjs.com/package/moeralib
+[2]: https://central.sonatype.com/artifact/org.moera/moeralib
 [3]: /development/node-api/authentication.html
