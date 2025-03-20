@@ -26,7 +26,7 @@ The first one is used by default by `MoeraNaming`.
 import { MoeraNaming, DEV_NAMING_SERVER } from 'moeralib/naming';
 
 const naming = new MoeraNaming(DEV_NAMING_SERVER);
-const info = naming.getCurrent('balu-dev', 0);
+const info = await naming.getCurrent('balu-dev', 0);
 console.log(info.nodeUri);
 ```
 
@@ -35,7 +35,7 @@ A shortcut function `resolve()` simplifies resolving of names.
 ```typescript
 import { resolve, DEV_NAMING_SERVER } from 'moeralib/naming'; 
 
-console.log(resolve('balu-dev_0', DEV_NAMING_SERVER));
+console.log(await resolve('balu-dev_0', DEV_NAMING_SERVER));
 ```
 
 ## Node API
@@ -48,8 +48,8 @@ the node, and call the methods you need.
 import { resolve } from 'moeralib/naming';
 import { MoeraNode } from 'moeralib/node'; 
 
-const node = new MoeraNode(resolve('Alice'));
-console.log(node.whoAmI().fullName);
+const node = new MoeraNode(await resolve('Alice'));
+console.log((await node.whoAmI()).fullName);
 ```
 
 The library automatically parses JSON structures coming from the node and
@@ -79,10 +79,10 @@ the selected method, if needed. You can switch to a different method at any time
 import { resolve } from 'moeralib/naming';
 import { MoeraNode } from 'moeralib/node';
 
-const node = new MoeraNode(resolve('Alice'));
+const node = new MoeraNode(await resolve('Alice'));
 node.token('putthetokenhere');
 node.authAdmin();
-console.log(node.getProfile().email);
+console.log((await node.getProfile()).email);
 ```
 
 ## Managing cartes
@@ -95,14 +95,14 @@ new ones when old ones expire.
 import { resolve } from 'moeralib/naming';
 import { MoeraCarteSource, MoeraNode } from 'moeralib/node';
 
-const home = new MoeraNode(resolve('Alice'));
+const home = new MoeraNode(await resolve('Alice'));
 home.token('putthetokenhere');
 home.authAdmin();
 
-const node = new MoeraNode(resolve('Bob'));
+const node = new MoeraNode(await resolve('Bob'));
 node.carteSource(new MoeraCarteSource(home));
 node.auth();
-const slice = node.getFeedSlice('timeline');
+const slice = await node.getFeedSlice('timeline');
 for (const story of slice.stories) {
     if (story.posting != null) {
         console.log(story.posting.operations.view, story.posting.heading);
