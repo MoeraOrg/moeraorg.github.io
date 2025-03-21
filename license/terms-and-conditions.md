@@ -94,6 +94,7 @@ The Company is not responsible for the content of the Service's users. You expre
 You may not transmit any Content that is unlawful, offensive, upsetting, intended to disgust, threatening, libelous, defamatory, obscene or otherwise objectionable. Examples of such objectionable Content include, but are not limited to, the following:
 
 - Unlawful or promoting unlawful activity.
+- Child sexual abuse and exploitation, including but not limited to: inappropriate interaction targeted at a child, child grooming, sexualization of a minor, sextortion, trafficking of a child. 
 - Defamatory, discriminatory, or mean-spirited content, including references or commentary about religion, race, sexual orientation, gender, national/ethnic origin, or other targeted groups.
 - Spam, machine – or randomly – generated, constituting unauthorized or unsolicited advertising, chain letters, any other form of unauthorized solicitation, or any form of lottery or gambling.
 - Containing or installing any viruses, worms, malware, trojan horses, or other content that is designed or intended to disrupt, damage, or limit the functioning of any software, hardware or telecommunications equipment or to damage or obtain unauthorized access to any data or other information of a third person.
