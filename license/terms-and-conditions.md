@@ -5,7 +5,7 @@ title: Terms and Conditions
 
 # Terms and Conditions
 
-Last updated: October 25, 2022
+Last updated: March 21, 2025
 
 Please read these terms and conditions carefully before using Our Service.
 
