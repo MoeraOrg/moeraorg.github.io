@@ -8387,7 +8387,7 @@ enums:
         description: view all feeds and status of stories in them
         value: "0x00008000"
       - name: update-feeds
-        description: modify status of stories in feeds
+        description: add and modify stories in feeds
         value: "0x00010000"
       - name: name
         description: update the name of the node
