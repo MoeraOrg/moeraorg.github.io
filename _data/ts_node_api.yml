@@ -202,6 +202,22 @@ enums:
   - description: all permissions
     name: all
     value: '0x3fffffff'
+- name: SearchContentUpdateType
+  values:
+  - description: the node was blocked
+    name: block
+  - description: the node was added to the list of friends
+    name: friend
+  - description: the profile was updated
+    name: profile
+  - description: subscribed to the node
+    name: subscribe
+  - description: the node was unblocked
+    name: unblock
+  - description: the node was removed from the list of friends
+    name: unfriend
+  - description: unsubscribed from the node
+    name: unsubscribe
 - name: SearchEngine
   values:
   - description: Google
@@ -458,15 +474,24 @@ enums:
   values:
   - description: subscribe to new stories in the feed
     name: feed
+    ordinal: 0
   - description: subscribe to updates to the posting
     name: posting
+    ordinal: 1
   - description: subscribe to new comments to the posting
     name: posting-comments
+    ordinal: 2
   - description: subscribe to updates to the node profile
     name: profile
+    ordinal: 3
+  - description: subscribe to updates to all content that may be indexed by a search
+      engine
+    name: search
+    ordinal: 5
   - description: subscribe to updates to the user list (its name is passed in <code>feedName</code>
       field)
     name: user-list
+    ordinal: 4
 - name: VerificationStatus
   values:
   - description: the verification is pending
@@ -1309,8 +1334,9 @@ objects:
       of the contact''s node name or a beginning of any space-delimited word in the
       contact''s full name. The order of words is not significant. <br><br> The node
       may decide to return fewer contacts than the given <code>limit</code>. <br><br>
-      The contacts are sorted by their <i>closeness</i> to the node, which is calculated
-      from the number of reactions and comments and their age.
+      The contacts are sorted by <i>social distance</i> from the node, which depends
+      on their subscription and friendship status and the number of recent reactions
+      and comments.
 
       '
     errors:
@@ -3116,6 +3142,38 @@ objects:
     - description: ID of the order
       name: id
       type: string
+- description: 'Search API is implemented by nodes acting as search engines in the
+    Moera network.
+
+    '
+  name: Search
+  requests:
+  - auth: optional
+    description: 'Search for Moera nodes matching the search <code>query</code>. Every
+      space-delimited word in the query must match case-insensitively a beginning
+      of the node''s name or a beginning of any non-letter-delimited word in the node''s
+      full name. The order of words is not significant. <br><br> The search engine
+      may decide to return fewer nodes than the given <code>limit</code>. <br><br>
+      The returned nodes are sorted by their relevance. The exact definition of this
+      term is left to the search engine''s implementation.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: searchNodes(query=null, limit=null)
+    out:
+      array: true
+      struct: SearchNodeInfo
+    params:
+    - description: the search query
+      name: query
+      optional: true
+      type: string
+    - description: maximum number of nodes returned
+      name: limit
+      optional: true
+      type: number
 - description: 'Settings - the node and client settings. The node settings affect
     the node behavior. Only those settings are accepted that are known by the node,
     and their values are validated before saving. The node settings metadata can be
@@ -3420,6 +3478,8 @@ objects:
       description: there is no posting with the given ID
     - code: user-list.not-found
       description: there is no list of users with the given name
+    - code: subscriber.too-many
+      description: there are too many subscribers of this type
     function: createSubscriber(subscriber)
     out:
       struct: SubscriberInfo
@@ -5110,11 +5170,11 @@ structures:
   - name: avatar
     optional: true
     struct: AvatarImage
-  - description: 'closeness of the contact to the node, which is calculated from the
-      number of reactions and comments and their age
+  - description: 'social distance between the contact and the node, which depends
+      on subscription and friendship status and the number recent reactions and comments
 
       '
-    name: closeness
+    name: distance
     type: number
   - description: the contact is subscribed to at least one of the node's feeds
     name: hasFeedSubscriber
@@ -7442,6 +7502,25 @@ structures:
     type: string
   name: SheriffMark
 - fields:
+  - name: nodeName
+    type: string
+  - description: node owner's full name
+    name: fullName
+    optional: true
+    type: string
+  - description: node title
+    name: title
+    optional: true
+    type: string
+  - description: node owner's avatar
+    name: avatar
+    optional: true
+    struct: AvatarImage
+  - description: social distance between the node and the client
+    name: distance
+    type: number
+  name: SearchNodeInfo
+- fields:
   - description: name of the setting
     name: name
     type: string
@@ -8574,10 +8653,7 @@ structures:
     name: remotePostingId
     optional: true
     type: string
-  - constraints:
-    - notnull:
-        error: subscription.reason.missing
-    description: subscription reason
+  - description: subscription reason
     enum: SubscriptionReason
     name: reason
     optional: true

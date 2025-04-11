@@ -768,8 +768,8 @@ objects:
           <br><br>
           The node may decide to return fewer contacts than the given <code>limit</code>.
           <br><br>
-          The contacts are sorted by their <i>closeness</i> to the node, which is calculated from the number of
-          reactions and comments and their age.
+          The contacts are sorted by <i>social distance</i> from the node, which depends on their subscription and
+          friendship status and the number of recent reactions and comments.
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
@@ -2757,6 +2757,38 @@ objects:
             description: sheriff's order is not found
           - code: sheriff-order.wrong-node
             description: the sheriff's order is related to a different node
+  - name: Search
+    description: >
+      Search API is implemented by nodes acting as search engines in the Moera network.
+    requests:
+      - url: /search/nodes
+        type: GET
+        function: searchNodes
+        query:
+          - type: String
+            name: query
+            optional: true
+            description: the search query
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of nodes returned
+        out:
+          struct: SearchNodeInfo
+          array: true
+        auth: optional
+        description: >
+          Search for Moera nodes matching the search <code>query</code>. Every space-delimited word in the query must
+          match case-insensitively a beginning of the node's name or a beginning of any non-letter-delimited word in
+          the node's full name. The order of words is not significant.
+          <br><br>
+          The search engine may decide to return fewer nodes than the given <code>limit</code>.
+          <br><br>
+          The returned nodes are sorted by their relevance. The exact definition of this term is left to the search
+          engine's implementation.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
   - name: Settings
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
@@ -3081,6 +3113,8 @@ objects:
             description: there is no posting with the given ID
           - code: user-list.not-found
             description: there is no list of users with the given name
+          - code: subscriber.too-many
+            description: there are too many subscribers of this type
       - url: /people/subscribers/{id}
         type: GET
         function: getSubscriber
@@ -4489,10 +4523,10 @@ structures:
         name: avatar
         optional: true
       - type: float
-        name: closeness
+        name: distance
         description: >
-          closeness of the contact to the node, which is calculated from the number of reactions and comments and
-          their age
+          social distance between the contact and the node, which depends on subscription and friendship status and
+          the number recent reactions and comments
       - type: boolean
         name: hasFeedSubscriber
         optional: true
@@ -6690,6 +6724,25 @@ structures:
       - type: String
         name: sheriffName
         description: name of the sheriff that added the mark
+  - name: SearchNodeInfo
+    fields:
+      - type: String
+        name: nodeName
+      - type: String
+        name: fullName
+        optional: true
+        description: node owner's full name
+      - type: String
+        name: title
+        optional: true
+        description: node title
+      - struct: AvatarImage
+        name: avatar
+        optional: true
+        description: node owner's avatar
+      - type: float
+        name: distance
+        description: social distance between the node and the client
   - name: SettingInfo
     fields:
       - type: String
@@ -7776,9 +7829,6 @@ structures:
         name: reason
         optional: true
         description: subscription reason
-        constraints:
-          - notnull:
-              error: subscription.reason.missing
       - struct: SubscriptionOperations
         name: operations
         optional: true
@@ -8434,6 +8484,22 @@ enums:
       - name: all
         description: all permissions
         value: "0x3fffffff"
+  - name: SearchContentUpdateType
+    values:
+      - name: block
+        description: the node was blocked
+      - name: friend
+        description: the node was added to the list of friends
+      - name: profile
+        description: the profile was updated
+      - name: subscribe
+        description: subscribed to the node
+      - name: unblock
+        description: the node was unblocked
+      - name: unfriend
+        description: the node was removed from the list of friends
+      - name: unsubscribe
+        description: unsubscribed from the node
   - name: SearchEngine
     values:
       - name: google
@@ -8692,14 +8758,22 @@ enums:
     values:
       - name: feed
         description: subscribe to new stories in the feed
+        ordinal: 0
       - name: posting
         description: subscribe to updates to the posting
+        ordinal: 1
       - name: posting-comments
         description: subscribe to new comments to the posting
+        ordinal: 2
       - name: profile
         description: subscribe to updates to the node profile
+        ordinal: 3
+      - name: search
+        description: subscribe to updates to all content that may be indexed by a search engine
+        ordinal: 5
       - name: user-list
         description: subscribe to updates to the user list (its name is passed in <code>feedName</code> field)
+        ordinal: 4
   - name: VerificationStatus
     values:
       - name: running

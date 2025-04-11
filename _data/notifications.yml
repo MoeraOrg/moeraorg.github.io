@@ -1182,6 +1182,45 @@ notifications:
       - struct: AvatarImage
         name: commentOwnerAvatar
         comment: avatar of the comment owner
+  - type: SEARCH_CONTENT_UPDATED
+    ordinal: 36
+    description: >
+      Notification sent to a Moera search engine when some content on the node was updated and needs reindexing.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
+      - enum: SearchContentUpdateType
+        name: updateType
+        comment: type of the content that was updated
+        constraints:
+          - notnull:
+              error: search.update-type.missing
+        log: true
+      - type: String
+        name: nodeName
+        comment: name of the node; the concrete meaning depends on the update type
+        constraints:
+          - length:
+              max: 40
+              error: search.node-name.wrong-size
+        log: true
+      - type: String
+        name: feedName
+        comment: name of the feed; used by subscription/unsubscription updates
+        constraints:
+          - length:
+              max: 63
+              error: search.feed-name.wrong-size
+        log: true
+      - enum: BlockedOperation
+        name: blockedOperation
+        comment: the operation being blocked/unblocked; used by updates about blocking/unblocking
   - type: SEARCH_ENGINE_CLICKED
     ordinal: 35
     description: The receiver's posting/comment/media has been visited on the sending node from a search engine.
