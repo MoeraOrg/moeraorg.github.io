@@ -17,7 +17,8 @@ notifications:
               error: ask.friend-group-id.wrong-size
       - type: String
         name: message
-        comment: optional message to the node admin
+        optional: true
+        comment: message to the node admin
         constraints:
           - length:
               max: 70
@@ -1202,25 +1203,18 @@ notifications:
           - notnull:
               error: search.update-type.missing
         log: true
-      - type: String
-        name: nodeName
-        comment: name of the node; the concrete meaning depends on the update type
-        constraints:
-          - length:
-              max: 40
-              error: search.node-name.wrong-size
-        log: true
-      - type: String
-        name: feedName
-        comment: name of the feed; used by subscription/unsubscription updates
-        constraints:
-          - length:
-              max: 63
-              error: search.feed-name.wrong-size
-        log: true
-      - enum: BlockedOperation
-        name: blockedOperation
-        comment: the operation being blocked/unblocked; used by updates about blocking/unblocking
+      - struct: SearchBlockUpdate
+        name: blockUpdate
+        optional: true
+        comment: details about blocking/unblocking
+      - struct: SearchFriendUpdate
+        name: friendUpdate
+        optional: true
+        comment: details about the friendship
+      - struct: SearchSubscriptionUpdate
+        name: subscriptionUpdate
+        optional: true
+        comment: details about subscription/unsubscription
   - type: SEARCH_ENGINE_CLICKED
     ordinal: 35
     description: The receiver's posting/comment/media has been visited on the sending node from a search engine.

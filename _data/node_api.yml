@@ -6743,6 +6743,46 @@ structures:
       - type: float
         name: distance
         description: social distance between the node and the client
+  - name: SearchBlockUpdate
+    fields:
+      - type: String
+        name: nodeName
+        comment: name of the node being blocked/unblocked
+        constraints:
+          - length:
+              max: 40
+              error: search.node-name.wrong-size
+      - enum: BlockedOperation
+        name: blockedOperation
+        comment: the operation being blocked/unblocked
+        constraints:
+          - notnull:
+              error: search.blocked-operation.missing
+  - name: SearchFriendUpdate
+    fields:
+      - type: String
+        name: nodeName
+        comment: name of the node being added/removed from the list of friends
+        constraints:
+          - length:
+              max: 40
+              error: search.node-name.wrong-size
+  - name: SearchSubscriptionUpdate
+    fields:
+      - type: String
+        name: nodeName
+        comment: name of the node being subscribed to/unsubscribed from
+        constraints:
+          - length:
+              max: 40
+              error: search.node-name.wrong-size
+      - type: String
+        name: feedName
+        comment: name of the feed on the remote node being subscribed to/unsubscribed from
+        constraints:
+          - length:
+              max: 63
+              error: search.feed-name.wrong-size
   - name: SettingInfo
     fields:
       - type: String

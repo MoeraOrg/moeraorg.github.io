@@ -7524,6 +7524,47 @@ structures:
     type: float
   name: SearchNodeInfo
 - fields:
+  - comment: name of the node being blocked/unblocked
+    constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 40
+    name: node_name
+    type: str
+  - comment: the operation being blocked/unblocked
+    constraints:
+    - notnull:
+        error: search.blocked-operation.missing
+    enum: BlockedOperation
+    name: blocked_operation
+  name: SearchBlockUpdate
+- fields:
+  - comment: name of the node being added/removed from the list of friends
+    constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 40
+    name: node_name
+    type: str
+  name: SearchFriendUpdate
+- fields:
+  - comment: name of the node being subscribed to/unsubscribed from
+    constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 40
+    name: node_name
+    type: str
+  - comment: name of the feed on the remote node being subscribed to/unsubscribed
+      from
+    constraints:
+    - length:
+        error: search.feed-name.wrong-size
+        max: 63
+    name: feed_name
+    type: str
+  name: SearchSubscriptionUpdate
+- fields:
   - description: name of the setting
     name: name
     type: str
