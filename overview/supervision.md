@@ -54,8 +54,8 @@ banned from showing everywhere, without making a decision on each individual
 comment. Nodes that have approved the supervision check this list and place a
 sheriff's mark on the comments of all users included in the list.
 
-Thus, the requirements of Google Play will be met, but in the minimum necessary
-volume and at the discretion of the network participants. And there will always
+Thus, the requirements of Google Play will be met, but to the minimum necessary
+extent and at the discretion of the network participants. And there will always
 be alternatives: access through a browser, installation from an APK or from other
 stores where these restrictions will not exist.
 
