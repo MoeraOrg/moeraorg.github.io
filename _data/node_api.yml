@@ -13,6 +13,37 @@ objects:
           array: true
         auth: admin
         description: Get the list of all reactions performed by the node, filtered by some criteria.
+  - name: Activity Sheriff Orders
+    description: Sheriff's registry of all orders sent to any nodes.
+    requests:
+      - url: /activity/sheriff/orders
+        type: GET
+        function: getRemoteSheriffOrdersSlice
+        query:
+          - type: long
+            name: after
+            optional: true
+            description: filter orders posted strongly after this moment
+          - type: long
+            name: before
+            optional: true
+            description: filter orders posted at or before this moment
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of orders returned
+        out:
+          struct: SheriffOrdersSliceInfo
+        description: >
+          Get a slice of the list of all orders sent by the sheriff, delimited by the <code>before</code> or
+          <code>after</code> moment and the given <code>limit</code>. If neither <code>before</code> nor
+          <code>after</code> are provided, the latest orders are returned. The node may decide to return fewer orders
+          than the given <code>limit</code>. The orders are always sorted by moment, descending.
+        errors:
+          - code: sheriff-orders.before-after-exclusive
+            description: before and after parameters are mutually exclusive
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
   - name: Asynchronous Operations
     description: Asynchronous operations pending or just finished on the node.
     requests:
@@ -2789,6 +2820,42 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+      - url: /search/entries/by-hashtag
+        type: POST
+        function: searchEntriesByHashtag
+        in:
+          struct: SearchHashtagFilter
+          name: filter
+        out:
+          struct: SearchHashtagSliceInfo
+        auth: optional
+        description: >
+          Search for postings and comments containing the specified hashtag(s) and optionally filtered by other
+          criteria.
+          <br><br>
+          The search engine may decide to return fewer nodes than the given <code>limit</code>.
+          <br><br>
+          The returned entries are sorted by moment in descending order.
+        errors:
+          - code: search.before-after-exclusive
+            description: before and after parameters are mutually exclusive
+      - url: /search/entries/by-text
+        type: POST
+        function: searchEntriesByText
+        in:
+          struct: SearchTextFilter
+          name: filter
+        out:
+          struct: SearchTextPageInfo
+        auth: optional
+        description: >
+          Search for postings and comments containing the specified words or text fragment, and optionally filtered by
+          other criteria.
+          <br><br>
+          The search engine may decide to return fewer nodes than the given <code>limit</code>.
+          <br><br>
+          The returned entries are sorted by their relevance. The exact definition of this term is left to the search
+          engine's implementation.
   - name: Settings
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
@@ -3354,6 +3421,8 @@ objects:
         errors:
           - code: user-list-items.before-after-exclusive
             description: before and after parameters are mutually exclusive
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
       - url: /user-lists/{name}/items/{nodeName}
         type: GET
         function: getUserListItem
@@ -6724,6 +6793,189 @@ structures:
       - type: String
         name: sheriffName
         description: name of the sheriff that added the mark
+  - name: SearchBlockUpdate
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node being blocked/unblocked
+        constraints:
+          - length:
+              max: 63
+              error: search.node-name.wrong-size
+      - enum: BlockedOperation
+        name: blockedOperation
+        description: the operation being blocked/unblocked
+        constraints:
+          - notnull:
+              error: search.blocked-operation.missing
+  - name: SearchCommentUpdate
+    fields:
+      - type: String
+        name: postingId
+        description: ID of the posting the comment belongs to
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+      - type: String
+        name: commentId
+        description: ID of the comment
+        constraints:
+          - length:
+              max: 40
+              error: search.comment-id.wrong-size
+  - name: SearchEntryInfo
+    fields:
+      - type: String
+        name: nodeName
+        description: source node of the entry
+      - type: String
+        name: postingId
+        description: for posting, ID of the posting; for comment, ID of the posting the comment belongs to
+      - type: String
+        name: commentId
+        optional: true
+        description: ID of the comment
+      - type: String
+        name: ownerName
+        description: node name of the entry's owner
+      - type: String
+        name: ownerFullName
+        optional: true
+        description: full name of the entry's owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        optional: true
+        description: avatar of the entry's owner
+      - struct: Body
+        name: bodyPreview
+        description: preview of the entry's body, a string representation of a JSON structure
+      - type: String
+        name: heading
+        description: heading of the entry
+      - type: int
+        name: imageCount
+        optional: true
+        description: number of images the entry contains
+      - type: boolean
+        name: videoPresent
+        optional: true
+        description: if <code>true</code>, the entry contains a video
+      - struct: SearchRepliedTo
+        name: repliedTo
+        optional: true
+        description: information about the comment this comment is replying to
+      - type: timestamp
+        name: createdAt
+        description: entry creation timestamp - the real time when the entry was created
+      - struct: SearchEntryOperations
+        name: operations
+        optional: true
+        description: the supported operations and the corresponding principals
+      - type: long
+        name: moment
+        description: moment of the entry
+  - name: SearchFriendUpdate
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node being added/removed from the list of friends
+        constraints:
+          - length:
+              max: 63
+              error: search.node-name.wrong-size
+  - name: SearchHashtagFilter
+    fields:
+      - enum: SearchEntryType
+        name: entryType
+        optional: true
+        description: type of entries to be searched for; if omitted, all types of entries are returned
+      - type: String
+        array: true
+        name: hashtags
+        description: >
+          hashtags to be searched for; at least one of these hashtags should be present in the entry returned
+        constraints:
+          - notnull:
+              error: search.hashtags.missing
+          - items:
+              min: 1
+              error: search.hashtags.missing
+          - items:
+              max: 16
+              error: search.hashtags.too-many
+      - type: String
+        name: publisherName
+        optional: true
+        description: name of the node where the entries are published
+      - type: boolean
+        name: inNewsfeed
+        optional: true
+        description: >
+          if <code>true</code>, return the entries appearing in the Newsfeed of the <code>publisherName</code> node
+      - type: String
+        array: true
+        name: owners
+        optional: true
+        description: return only the entries owned (authored) by one of these nodes
+        constraints:
+          - items:
+              max: 16
+              error: search.owners.too-many
+      - type: int
+        name: minImageCount
+        optional: true
+        description: return only the entries containing at least the given number of images
+        constraints:
+          - value:
+              min: 0
+              error: search.min-image-count.invalid
+      - type: int
+        name: maxImageCount
+        optional: true
+        description: return only the entries containing not more than the given number of images
+        constraints:
+          - value:
+              min: 0
+              error: search.max-image-count.invalid
+      - type: boolean
+        name: videoPresent
+        optional: true
+        description: >
+          if <code>true</code>, return only the entries containing a video, if <code>false</code>, return only
+          the entries that do not contain a video
+      - type: String
+        name: sheriffName
+        optional: true
+        description: filter out entries prohibited by the given sheriff
+      - type: long
+        name: after
+        optional: true
+        description: return entries created strongly after this moment
+      - type: long
+        name: before
+        optional: true
+        description: return entries created at or before this moment
+      - type: int
+        name: limit
+        optional: true
+        description: maximum number of entries returned
+        constraints:
+          - value:
+              min: 0
+              error: limit.invalid
+  - name: SearchHashtagSliceInfo
+    fields:
+      - type: long
+        name: before
+        description: the slice contains all entries before this moment, inclusive. May be the far future.
+      - type: long
+        name: after
+        description: the slice contains all entries after this moment, exclusive. May be the far past.
+      - struct: SearchEntryInfo
+        array: true
+        name: entries
+        description: the entries
   - name: SearchNodeInfo
     fields:
       - type: String
@@ -6743,46 +6995,212 @@ structures:
       - type: float
         name: distance
         description: social distance between the node and the client
-  - name: SearchBlockUpdate
+  - name: SearchPostingUpdate
     fields:
-      - type: String
-        name: nodeName
-        comment: name of the node being blocked/unblocked
-        constraints:
-          - length:
-              max: 40
-              error: search.node-name.wrong-size
-      - enum: BlockedOperation
-        name: blockedOperation
-        comment: the operation being blocked/unblocked
-        constraints:
-          - notnull:
-              error: search.blocked-operation.missing
-  - name: SearchFriendUpdate
-    fields:
-      - type: String
-        name: nodeName
-        comment: name of the node being added/removed from the list of friends
-        constraints:
-          - length:
-              max: 40
-              error: search.node-name.wrong-size
-  - name: SearchSubscriptionUpdate
-    fields:
-      - type: String
-        name: nodeName
-        comment: name of the node being subscribed to/unsubscribed from
-        constraints:
-          - length:
-              max: 40
-              error: search.node-name.wrong-size
       - type: String
         name: feedName
-        comment: name of the feed on the remote node being subscribed to/unsubscribed from
+        description: name of the feed where the posting is published
         constraints:
           - length:
               max: 63
               error: search.feed-name.wrong-size
+      - type: String
+        name: storyId
+        description: ID of the story where the posting is published
+        constraints:
+          - length:
+              max: 40
+              error: search.story-id.wrong-size
+      - type: timestamp
+        name: publishedAt
+        description: story publication timestamp - the time the story is published under in the feed
+      - type: String
+        name: nodeName
+        description: name of the node where the posting is originated from
+        constraints:
+          - length:
+              max: 63
+              error: search.node-name.wrong-size
+      - type: String
+        name: postingId
+        description: ID of the posting on the original node
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+  - name: SearchReactionUpdate
+    fields:
+      - type: String
+        name: postingId
+        description: ID of the posting
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+      - type: String
+        name: commentId
+        description: ID of the comment
+        constraints:
+          - length:
+              max: 40
+              error: search.comment-id.wrong-size
+      - type: String
+        name: ownerName
+        description: reaction owner's name
+        constraints:
+          - length:
+              max: 63
+              error: search.owner-name.wrong-size
+  - name: SearchRepliedTo
+    fields:
+      - type: String
+        name: id
+        description: ID of the comment
+      - type: String
+        name: revisionId
+        optional: true
+        description: ID of the comment revision
+      - type: String
+        name: name
+        description: node name of the comment's owner
+      - type: String
+        name: fullName
+        optional: true
+        description: full name of the comment's owner
+      - struct: AvatarImage
+        name: avatar
+        optional: true
+        description: avatar of the comment's owner
+      - type: String
+        name: heading
+        optional: true
+        description: heading of the comment
+  - name: SearchSubscriptionUpdate
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node being subscribed to/unsubscribed from
+        constraints:
+          - length:
+              max: 63
+              error: search.node-name.wrong-size
+      - type: String
+        name: feedName
+        description: name of the feed on the remote node being subscribed to/unsubscribed from
+        constraints:
+          - length:
+              max: 63
+              error: search.feed-name.wrong-size
+  - name: SearchTextFilter
+    fields:
+      - enum: SearchEntryType
+        name: entryType
+        optional: true
+        description: type of entries to be searched for; if omitted, all types of entries are returned
+      - type: String
+        name: text
+        description: the text to be searched for
+        constraints:
+          - notblank:
+              error: search.text.blank
+      - type: String
+        array: true
+        name: hashtags
+        optional: true
+        description: at least one of these hashtags should be present in the entry returned
+        constraints:
+          - items:
+              max: 16
+              error: search.hashtags.too-many
+      - type: String
+        name: publisherName
+        optional: true
+        description: name of the node where the entries are published
+      - type: boolean
+        name: inNewsfeed
+        optional: true
+        description: >
+          if <code>true</code>, return the entries appearing in the Newsfeed of the <code>publisherName</code> node
+      - type: String
+        array: true
+        name: owners
+        optional: true
+        description: return only the entries owned (authored) by one of these nodes
+        constraints:
+          - items:
+              max: 16
+              error: search.owners.too-many
+      - type: String
+        array: true
+        name: repliedTo
+        optional: true
+        description: return only the comments that are replies to comments owned (authored) by one of these nodes
+        constraints:
+          - items:
+              max: 16
+              error: search.replied-to.too-many
+      - type: int
+        name: minImageCount
+        optional: true
+        description: return only the entries containing at least the given number of images
+        constraints:
+          - value:
+              min: 0
+              error: search.min-image-count.invalid
+      - type: int
+        name: maxImageCount
+        optional: true
+        description: return only the entries containing not more than the given number of images
+        constraints:
+          - value:
+              min: 0
+              error: search.max-image-count.invalid
+      - type: boolean
+        name: videoPresent
+        optional: true
+        description: >
+          if <code>true</code>, return only the entries containing a video, if <code>false</code>, return only
+          the entries that do not contain a video
+      - type: timestamp
+        name: createdAfter
+        optional: true
+        description: return entries created at or after this timestamp
+      - type: timestamp
+        name: createdBefore
+        optional: true
+        description: return entries created at or before this timestamp
+      - type: String
+        name: sheriffName
+        optional: true
+        description: filter out entries prohibited by the given sheriff
+      - type: int
+        name: page
+        optional: true
+        description: page number, 0 by default
+        constraints:
+          - value:
+              min: 0
+              error: page.invalid
+      - type: int
+        name: limit
+        optional: true
+        description: page size (maximum number of entries returned), the default is set by the search engine
+        constraints:
+          - value:
+              min: 0
+              error: limit.invalid
+  - name: SearchTextPageInfo
+    fields:
+      - type: int
+        name: page
+        description: number of the page
+      - type: int
+        name: total
+        description: total number of pages
+      - struct: SearchEntryInfo
+        array: true
+        name: entries
+        description: the entries
   - name: SettingInfo
     fields:
       - type: String
@@ -7410,6 +7828,9 @@ structures:
       - type: timestamp
         name: createdAt
         description: order creation timestamp - the real time when the order was created
+      - type: long
+        name: moment
+        description: moment of the order
       - type: byte[]
         name: signature
         description: >
@@ -7422,6 +7843,27 @@ structures:
         name: complaintGroupId
         optional: true
         description: ID of the groups of complaints that were the cause of the order
+  - name: SheriffOrdersSliceInfo
+    fields:
+      - type: long
+        name: before
+        description: the slice contains all orders before this moment, inclusive. May be the far future.
+      - type: long
+        name: after
+        description: the slice contains all orders after this moment, exclusive. May be the far past.
+      - struct: SheriffOrderInfo
+        array: true
+        name: orders
+        description: the orders
+      - type: int
+        name: total
+        description: total number of orders
+      - type: int
+        name: totalInPast
+        description: number of orders before this slice till the far past
+      - type: int
+        name: totalInFuture
+        description: number of orders after this slice till the far future
   - name: StoryAttributes
     fields:
       - type: String
@@ -8298,6 +8740,11 @@ operations:
       - name: delete
         default: private
         description: delete the reaction
+  - name: SearchEntryOperations
+    fields:
+      - name: view
+        default: public
+        description: view the entry
   - name: StoryOperations
     fields:
       - name: edit
@@ -8528,10 +8975,28 @@ enums:
     values:
       - name: block
         description: the node was blocked
+      - name: comment-add
+        description: a comment was added
+      - name: comment-update
+        description: a comment was updated
+      - name: comment-delete
+        description: a comment was deleted
       - name: friend
         description: the node was added to the list of friends
       - name: profile
         description: the profile was updated
+      - name: posting-add
+        description: a posting was added
+      - name: posting-update
+        description: a posting was updated; sent by the original node only
+      - name: posting-delete
+        description: a posting was deleted
+      - name: reaction-add
+        description: a reaction was added
+      - name: reaction-delete
+        description: a reaction was deleted
+      - name: reactions-delete-all
+        description: all reaction were deleted
       - name: subscribe
         description: subscribed to the node
       - name: unblock
@@ -8544,6 +9009,14 @@ enums:
     values:
       - name: google
         description: Google
+  - name: SearchEntryType
+    values:
+      - name: all
+        description: any type of an entry
+      - name: posting
+        description: only postings
+      - name: comment
+        description: only comments
   - name: SettingType
     values:
       - name: bool

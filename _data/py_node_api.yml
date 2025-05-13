@@ -206,10 +206,28 @@ enums:
   values:
   - description: the node was blocked
     name: block
+  - description: a comment was added
+    name: comment-add
+  - description: a comment was updated
+    name: comment-update
+  - description: a comment was deleted
+    name: comment-delete
   - description: the node was added to the list of friends
     name: friend
   - description: the profile was updated
     name: profile
+  - description: a posting was added
+    name: posting-add
+  - description: a posting was updated; sent by the original node only
+    name: posting-update
+  - description: a posting was deleted
+    name: posting-delete
+  - description: a reaction was added
+    name: reaction-add
+  - description: a reaction was deleted
+    name: reaction-delete
+  - description: all reaction were deleted
+    name: reactions-delete-all
   - description: subscribed to the node
     name: subscribe
   - description: the node was unblocked
@@ -222,6 +240,14 @@ enums:
   values:
   - description: Google
     name: google
+- name: SearchEntryType
+  values:
+  - description: any type of an entry
+    name: all
+  - description: only postings
+    name: posting
+  - description: only comments
+    name: comment
 - name: SettingType
   values:
   - description: boolean, may have value <code>true</code> or <code>false</code>
@@ -633,6 +659,37 @@ objects:
     params:
     - name: filter
       struct: ActivityReactionFilter
+- description: Sheriff's registry of all orders sent to any nodes.
+  name: Activity Sheriff Orders
+  requests:
+  - description: 'Get a slice of the list of all orders sent by the sheriff, delimited
+      by the <code>before</code> or <code>after</code> moment and the given <code>limit</code>.
+      If neither <code>before</code> nor <code>after</code> are provided, the latest
+      orders are returned. The node may decide to return fewer orders than the given
+      <code>limit</code>. The orders are always sorted by moment, descending.
+
+      '
+    errors:
+    - code: sheriff-orders.before-after-exclusive
+      description: before and after parameters are mutually exclusive
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: get_remote_sheriff_orders_slice(after=None, before=None, limit=None)
+    out:
+      struct: SheriffOrdersSliceInfo
+    params:
+    - description: filter orders posted strongly after this moment
+      name: after
+      optional: true
+      type: int
+    - description: filter orders posted at or before this moment
+      name: before
+      optional: true
+      type: int
+    - description: maximum number of orders returned
+      name: limit
+      optional: true
+      type: int
 - description: Asynchronous operations pending or just finished on the node.
   name: Asynchronous Operations
   requests:
@@ -3177,6 +3234,36 @@ objects:
       name: limit
       optional: true
       type: int
+  - auth: optional
+    description: 'Search for postings and comments containing the specified hashtag(s)
+      and optionally filtered by other criteria. <br><br> The search engine may decide
+      to return fewer nodes than the given <code>limit</code>. <br><br> The returned
+      entries are sorted by moment in descending order.
+
+      '
+    errors:
+    - code: search.before-after-exclusive
+      description: before and after parameters are mutually exclusive
+    function: search_entries_by_hashtag(filter)
+    out:
+      struct: SearchHashtagSliceInfo
+    params:
+    - name: filter
+      struct: SearchHashtagFilter
+  - auth: optional
+    description: 'Search for postings and comments containing the specified words
+      or text fragment, and optionally filtered by other criteria. <br><br> The search
+      engine may decide to return fewer nodes than the given <code>limit</code>. <br><br>
+      The returned entries are sorted by their relevance. The exact definition of
+      this term is left to the search engine''s implementation.
+
+      '
+    function: search_entries_by_text(filter)
+    out:
+      struct: SearchTextPageInfo
+    params:
+    - name: filter
+      struct: SearchTextFilter
 - description: 'Settings - the node and client settings. The node settings affect
     the node behavior. Only those settings are accepted that are known by the node,
     and their values are validated before saving. The node settings metadata can be
@@ -3690,6 +3777,8 @@ objects:
     errors:
     - code: user-list-items.before-after-exclusive
       description: before and after parameters are mutually exclusive
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
     function: get_user_list_slice(name, after=None, before=None, limit=None)
     out:
       struct: UserListSliceInfo
@@ -3947,6 +4036,11 @@ operations:
     description: delete the reaction
     name: delete
   name: ReactionOperations
+- fields:
+  - default: public
+    description: view the entry
+    name: view
+  name: SearchEntryOperations
 - fields:
   - default: admin
     description: update the story
@@ -7505,6 +7599,199 @@ structures:
     type: str
   name: SheriffMark
 - fields:
+  - constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 63
+    description: name of the node being blocked/unblocked
+    name: node_name
+    type: str
+  - constraints:
+    - notnull:
+        error: search.blocked-operation.missing
+    description: the operation being blocked/unblocked
+    enum: BlockedOperation
+    name: blocked_operation
+  name: SearchBlockUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting the comment belongs to
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.comment-id.wrong-size
+        max: 40
+    description: ID of the comment
+    name: comment_id
+    type: str
+  name: SearchCommentUpdate
+- fields:
+  - description: source node of the entry
+    name: node_name
+    type: str
+  - description: for posting, ID of the posting; for comment, ID of the posting the
+      comment belongs to
+    name: posting_id
+    type: str
+  - description: ID of the comment
+    name: comment_id
+    optional: true
+    type: str
+  - description: node name of the entry's owner
+    name: owner_name
+    type: str
+  - description: full name of the entry's owner
+    name: owner_full_name
+    optional: true
+    type: str
+  - description: avatar of the entry's owner
+    name: owner_avatar
+    optional: true
+    struct: AvatarImage
+  - description: preview of the entry's body, a string representation of a JSON structure
+    name: body_preview
+    struct: Body
+  - description: heading of the entry
+    name: heading
+    type: str
+  - description: number of images the entry contains
+    name: image_count
+    optional: true
+    type: int
+  - description: if <code>True</code>, the entry contains a video
+    name: video_present
+    optional: true
+    type: bool
+  - description: information about the comment this comment is replying to
+    name: replied_to
+    optional: true
+    struct: SearchRepliedTo
+  - description: entry creation timestamp - the real time when the entry was created
+    name: created_at
+    type: Timestamp
+  - description: the supported operations and the corresponding principals
+    name: operations
+    optional: true
+    struct: SearchEntryOperations
+  - description: moment of the entry
+    name: moment
+    type: int
+  name: SearchEntryInfo
+- fields:
+  - constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 63
+    description: name of the node being added/removed from the list of friends
+    name: node_name
+    type: str
+  name: SearchFriendUpdate
+- fields:
+  - description: type of entries to be searched for; if omitted, all types of entries
+      are returned
+    enum: SearchEntryType
+    name: entry_type
+    optional: true
+  - array: true
+    constraints:
+    - notnull:
+        error: search.hashtags.missing
+    - items:
+        error: search.hashtags.missing
+        min: 1
+    - items:
+        error: search.hashtags.too-many
+        max: 16
+    description: 'hashtags to be searched for; at least one of these hashtags should
+      be present in the entry returned
+
+      '
+    name: hashtags
+    type: str
+  - description: name of the node where the entries are published
+    name: publisher_name
+    optional: true
+    type: str
+  - description: 'if <code>True</code>, return the entries appearing in the Newsfeed
+      of the <code>publisherName</code> node
+
+      '
+    name: in_newsfeed
+    optional: true
+    type: bool
+  - array: true
+    constraints:
+    - items:
+        error: search.owners.too-many
+        max: 16
+    description: return only the entries owned (authored) by one of these nodes
+    name: owners
+    optional: true
+    type: str
+  - constraints:
+    - value:
+        error: search.min-image-count.invalid
+        min: 0
+    description: return only the entries containing at least the given number of images
+    name: min_image_count
+    optional: true
+    type: int
+  - constraints:
+    - value:
+        error: search.max-image-count.invalid
+        min: 0
+    description: return only the entries containing not more than the given number
+      of images
+    name: max_image_count
+    optional: true
+    type: int
+  - description: 'if <code>True</code>, return only the entries containing a video,
+      if <code>False</code>, return only the entries that do not contain a video
+
+      '
+    name: video_present
+    optional: true
+    type: bool
+  - description: filter out entries prohibited by the given sheriff
+    name: sheriff_name
+    optional: true
+    type: str
+  - description: return entries created strongly after this moment
+    name: after
+    optional: true
+    type: int
+  - description: return entries created at or before this moment
+    name: before
+    optional: true
+    type: int
+  - constraints:
+    - value:
+        error: limit.invalid
+        min: 0
+    description: maximum number of entries returned
+    name: limit
+    optional: true
+    type: int
+  name: SearchHashtagFilter
+- fields:
+  - description: the slice contains all entries before this moment, inclusive. May
+      be the far future.
+    name: before
+    type: int
+  - description: the slice contains all entries after this moment, exclusive. May
+      be the far past.
+    name: after
+    type: int
+  - array: true
+    description: the entries
+    name: entries
+    struct: SearchEntryInfo
+  name: SearchHashtagSliceInfo
+- fields:
   - name: node_name
     type: str
   - description: node owner's full name
@@ -7524,46 +7811,220 @@ structures:
     type: float
   name: SearchNodeInfo
 - fields:
-  - comment: name of the node being blocked/unblocked
-    constraints:
-    - length:
-        error: search.node-name.wrong-size
-        max: 40
-    name: node_name
-    type: str
-  - comment: the operation being blocked/unblocked
-    constraints:
-    - notnull:
-        error: search.blocked-operation.missing
-    enum: BlockedOperation
-    name: blocked_operation
-  name: SearchBlockUpdate
-- fields:
-  - comment: name of the node being added/removed from the list of friends
-    constraints:
-    - length:
-        error: search.node-name.wrong-size
-        max: 40
-    name: node_name
-    type: str
-  name: SearchFriendUpdate
-- fields:
-  - comment: name of the node being subscribed to/unsubscribed from
-    constraints:
-    - length:
-        error: search.node-name.wrong-size
-        max: 40
-    name: node_name
-    type: str
-  - comment: name of the feed on the remote node being subscribed to/unsubscribed
-      from
-    constraints:
+  - constraints:
     - length:
         error: search.feed-name.wrong-size
         max: 63
+    description: name of the feed where the posting is published
+    name: feed_name
+    type: str
+  - constraints:
+    - length:
+        error: search.story-id.wrong-size
+        max: 40
+    description: ID of the story where the posting is published
+    name: story_id
+    type: str
+  - description: story publication timestamp - the time the story is published under
+      in the feed
+    name: published_at
+    type: Timestamp
+  - constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 63
+    description: name of the node where the posting is originated from
+    name: node_name
+    type: str
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting on the original node
+    name: posting_id
+    type: str
+  name: SearchPostingUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.comment-id.wrong-size
+        max: 40
+    description: ID of the comment
+    name: comment_id
+    type: str
+  - constraints:
+    - length:
+        error: search.owner-name.wrong-size
+        max: 63
+    description: reaction owner's name
+    name: owner_name
+    type: str
+  name: SearchReactionUpdate
+- fields:
+  - description: ID of the comment
+    name: id
+    type: str
+  - description: ID of the comment revision
+    name: revision_id
+    optional: true
+    type: str
+  - description: node name of the comment's owner
+    name: name
+    type: str
+  - description: full name of the comment's owner
+    name: full_name
+    optional: true
+    type: str
+  - description: avatar of the comment's owner
+    name: avatar
+    optional: true
+    struct: AvatarImage
+  - description: heading of the comment
+    name: heading
+    optional: true
+    type: str
+  name: SearchRepliedTo
+- fields:
+  - constraints:
+    - length:
+        error: search.node-name.wrong-size
+        max: 63
+    description: name of the node being subscribed to/unsubscribed from
+    name: node_name
+    type: str
+  - constraints:
+    - length:
+        error: search.feed-name.wrong-size
+        max: 63
+    description: name of the feed on the remote node being subscribed to/unsubscribed
+      from
     name: feed_name
     type: str
   name: SearchSubscriptionUpdate
+- fields:
+  - description: type of entries to be searched for; if omitted, all types of entries
+      are returned
+    enum: SearchEntryType
+    name: entry_type
+    optional: true
+  - constraints:
+    - notblank:
+        error: search.text.blank
+    description: the text to be searched for
+    name: text
+    type: str
+  - array: true
+    constraints:
+    - items:
+        error: search.hashtags.too-many
+        max: 16
+    description: at least one of these hashtags should be present in the entry returned
+    name: hashtags
+    optional: true
+    type: str
+  - description: name of the node where the entries are published
+    name: publisher_name
+    optional: true
+    type: str
+  - description: 'if <code>True</code>, return the entries appearing in the Newsfeed
+      of the <code>publisherName</code> node
+
+      '
+    name: in_newsfeed
+    optional: true
+    type: bool
+  - array: true
+    constraints:
+    - items:
+        error: search.owners.too-many
+        max: 16
+    description: return only the entries owned (authored) by one of these nodes
+    name: owners
+    optional: true
+    type: str
+  - array: true
+    constraints:
+    - items:
+        error: search.replied-to.too-many
+        max: 16
+    description: return only the comments that are replies to comments owned (authored)
+      by one of these nodes
+    name: replied_to
+    optional: true
+    type: str
+  - constraints:
+    - value:
+        error: search.min-image-count.invalid
+        min: 0
+    description: return only the entries containing at least the given number of images
+    name: min_image_count
+    optional: true
+    type: int
+  - constraints:
+    - value:
+        error: search.max-image-count.invalid
+        min: 0
+    description: return only the entries containing not more than the given number
+      of images
+    name: max_image_count
+    optional: true
+    type: int
+  - description: 'if <code>True</code>, return only the entries containing a video,
+      if <code>False</code>, return only the entries that do not contain a video
+
+      '
+    name: video_present
+    optional: true
+    type: bool
+  - description: return entries created at or after this timestamp
+    name: created_after
+    optional: true
+    type: Timestamp
+  - description: return entries created at or before this timestamp
+    name: created_before
+    optional: true
+    type: Timestamp
+  - description: filter out entries prohibited by the given sheriff
+    name: sheriff_name
+    optional: true
+    type: str
+  - constraints:
+    - value:
+        error: page.invalid
+        min: 0
+    description: page number, 0 by default
+    name: page
+    optional: true
+    type: int
+  - constraints:
+    - value:
+        error: limit.invalid
+        min: 0
+    description: page size (maximum number of entries returned), the default is set
+      by the search engine
+    name: limit
+    optional: true
+    type: int
+  name: SearchTextFilter
+- fields:
+  - description: number of the page
+    name: page
+    type: int
+  - description: total number of pages
+    name: total
+    type: int
+  - array: true
+    description: the entries
+    name: entries
+    struct: SearchEntryInfo
+  name: SearchTextPageInfo
 - fields:
   - description: name of the setting
     name: name
@@ -8220,6 +8681,9 @@ structures:
   - description: order creation timestamp - the real time when the order was created
     name: created_at
     type: Timestamp
+  - description: moment of the order
+    name: moment
+    type: int
   - description: 'the sheriff''s signature (use <code><a href="fingerprints.html#SheriffOrder">SheriffOrder</a></code>
       fingerprint)
 
@@ -8234,6 +8698,29 @@ structures:
     optional: true
     type: str
   name: SheriffOrderInfo
+- fields:
+  - description: the slice contains all orders before this moment, inclusive. May
+      be the far future.
+    name: before
+    type: int
+  - description: the slice contains all orders after this moment, exclusive. May be
+      the far past.
+    name: after
+    type: int
+  - array: true
+    description: the orders
+    name: orders
+    struct: SheriffOrderInfo
+  - description: total number of orders
+    name: total
+    type: int
+  - description: number of orders before this slice till the far past
+    name: total_in_past
+    type: int
+  - description: number of orders after this slice till the far future
+    name: total_in_future
+    type: int
+  name: SheriffOrdersSliceInfo
 - fields:
   - description: name of the feed
     name: feed_name

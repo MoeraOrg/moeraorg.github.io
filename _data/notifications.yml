@@ -1207,10 +1207,22 @@ notifications:
         name: blockUpdate
         optional: true
         comment: details about blocking/unblocking
+      - struct: SearchCommentUpdate
+        name: commentUpdate
+        optional: true
+        comment: details about the comment
       - struct: SearchFriendUpdate
         name: friendUpdate
         optional: true
         comment: details about the friendship
+      - struct: SearchPostingUpdate
+        name: postingUpdate
+        optional: true
+        comment: details about the posting
+      - struct: SearchReactionUpdate
+        name: reactionUpdate
+        optional: true
+        comment: details about the reaction
       - struct: SearchSubscriptionUpdate
         name: subscriptionUpdate
         optional: true
@@ -1255,7 +1267,7 @@ notifications:
         comment: heading of the posting/comment/media
         constraints:
           - notblank:
-              error: search.heading.empty
+              error: search.heading.blank
           - length:
               max: 255
               error: search.heading.wrong-size
@@ -1525,6 +1537,75 @@ notifications:
           - length:
               max: 40
               error: sheriff-order.comment-id.wrong-size
+        log: true
+      - type: String
+        name: orderId
+        comment: ID of the order
+        constraints:
+          - notblank:
+              error: sheriff-order.order-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.order-id.wrong-size
+        log: true
+  - type: SHERIFF_ORDER_FOR_FEED_ADDED
+    ordinal: 37
+    description: The sending node got a sheriff's order related to all postings in the receiver's feed.
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: name of the node the order was sent to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-node-name.wrong-size
+        log: true
+      - type: String
+        name: remoteFeedName
+        comment: name of the feed the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-feed-name.wrong-size
+        log: true
+      - type: String
+        name: orderId
+        comment: ID of the order
+        constraints:
+          - notblank:
+              error: sheriff-order.order-id.empty
+          - length:
+              max: 40
+              error: sheriff-order.order-id.wrong-size
+        log: true
+  - type: SHERIFF_ORDER_FOR_FEED_DELETED
+    ordinal: 38
+    description: >
+      The sending node got a cancellation of a sheriff's order related to all postings in the receiver's feed.
+    fields:
+      - type: String
+        name: remoteNodeName
+        comment: name of the node the order was sent to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-node-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-node-name.wrong-size
+        log: true
+      - type: String
+        name: remoteFeedName
+        comment: name of the feed the order is related to
+        constraints:
+          - notblank:
+              error: sheriff-order.remote-feed-name.empty
+          - length:
+              max: 63
+              error: sheriff-order.remote-feed-name.wrong-size
         log: true
       - type: String
         name: orderId
