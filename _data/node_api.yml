@@ -2793,13 +2793,35 @@ objects:
       Search API is implemented by nodes acting as search engines in the Moera network.
     requests:
       - url: /search/nodes
-        type: GET
+        type: POST
         function: searchNodes
+        in:
+          struct: SearchNodeFilter
+          name: filter
+        out:
+          struct: SearchNodePageInfo
+        auth: optional
+        description: >
+          Search for Moera nodes matching the search <code>query</code>. Every space-delimited word in the query must
+          match case-insensitively a beginning of the node's name or a beginning of any non-letter-delimited word in
+          the node's full name. The order of words is not significant.
+          <br><br>
+          The search engine may decide to return fewer nodes than the given <code>limit</code>.
+          <br><br>
+          The returned nodes are sorted by their relevance. The exact definition of this term is left to the search
+          engine's implementation.
+      - url: /search/nodes/suggestions
+        type: GET
+        function: searchNodeSuggestions
         query:
           - type: String
             name: query
             optional: true
             description: the search query
+          - type: String
+            name: sheriff
+            optional: true
+            description: filter out entries prohibited by the given sheriff
           - type: int
             name: limit
             optional: true
@@ -2809,9 +2831,10 @@ objects:
           array: true
         auth: optional
         description: >
-          Search for Moera nodes matching the search <code>query</code>. Every space-delimited word in the query must
-          match case-insensitively a beginning of the node's name or a beginning of any non-letter-delimited word in
-          the node's full name. The order of words is not significant.
+          Search for Moera nodes matching the search <code>query</code> and return a short list of "smart suggestions"
+          for the user. Every space-delimited word in the query must match case-insensitively a beginning of the node's
+          name or a beginning of any non-letter-delimited word in the node's full name. The order of words is
+          not significant.
           <br><br>
           The search engine may decide to return fewer nodes than the given <code>limit</code>.
           <br><br>
@@ -6850,6 +6873,10 @@ structures:
       - struct: Body
         name: bodyPreview
         description: preview of the entry's body, a string representation of a JSON structure
+      - enum: BodyFormat
+        name: bodyFormat
+        optional: true
+        description: format of the entry's body, may have any value meaningful for the client
       - type: String
         name: heading
         description: heading of the entry
@@ -6976,6 +7003,31 @@ structures:
         array: true
         name: entries
         description: the entries
+  - name: SearchNodeFilter
+    fields:
+      - type: String
+        name: query
+        description: the search query
+      - type: String
+        name: sheriffName
+        optional: true
+        description: filter out nodes prohibited by the given sheriff
+      - type: int
+        name: page
+        optional: true
+        description: page number, 0 by default
+        constraints:
+          - value:
+              min: 0
+              error: page.invalid
+      - type: int
+        name: limit
+        optional: true
+        description: page size (maximum number of entries returned), the default is set by the search engine
+        constraints:
+          - value:
+              min: 0
+              error: limit.invalid
   - name: SearchNodeInfo
     fields:
       - type: String
@@ -6995,6 +7047,18 @@ structures:
       - type: float
         name: distance
         description: social distance between the node and the client
+  - name: SearchNodePageInfo
+    fields:
+      - type: int
+        name: page
+        description: number of the page
+      - type: int
+        name: total
+        description: total number of nodes found (this number may be approximate)
+      - struct: SearchNodeInfo
+        array: true
+        name: nodes
+        description: the nodes
   - name: SearchPostingUpdate
     fields:
       - type: String
@@ -7196,7 +7260,7 @@ structures:
         description: number of the page
       - type: int
         name: total
-        description: total number of pages
+        description: total number of entries found
       - struct: SearchEntryInfo
         array: true
         name: entries

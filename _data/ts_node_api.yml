@@ -3215,16 +3215,37 @@ objects:
       term is left to the search engine''s implementation.
 
       '
+    function: searchNodes(filter)
+    out:
+      struct: SearchNodePageInfo
+    params:
+    - name: filter
+      struct: SearchNodeFilter
+  - auth: optional
+    description: 'Search for Moera nodes matching the search <code>query</code> and
+      return a short list of "smart suggestions" for the user. Every space-delimited
+      word in the query must match case-insensitively a beginning of the node''s name
+      or a beginning of any non-letter-delimited word in the node''s full name. The
+      order of words is not significant. <br><br> The search engine may decide to
+      return fewer nodes than the given <code>limit</code>. <br><br> The returned
+      nodes are sorted by their relevance. The exact definition of this term is left
+      to the search engine''s implementation.
+
+      '
     errors:
     - code: limit.invalid
       description: <code>limit</code> parameter has an invalid value
-    function: searchNodes(query=null, limit=null)
+    function: searchNodeSuggestions(query=null, sheriff=null, limit=null)
     out:
       array: true
       struct: SearchNodeInfo
     params:
     - description: the search query
       name: query
+      optional: true
+      type: string
+    - description: filter out entries prohibited by the given sheriff
+      name: sheriff
       optional: true
       type: string
     - description: maximum number of nodes returned
@@ -7652,6 +7673,11 @@ structures:
   - description: preview of the entry's body, a string representation of a JSON structure
     name: bodyPreview
     struct: Body
+  - description: format of the entry's body, may have any value meaningful for the
+      client
+    enum: BodyFormat
+    name: bodyFormat
+    optional: true
   - description: heading of the entry
     name: heading
     type: string
@@ -7789,6 +7815,32 @@ structures:
     struct: SearchEntryInfo
   name: SearchHashtagSliceInfo
 - fields:
+  - description: the search query
+    name: query
+    type: string
+  - description: filter out nodes prohibited by the given sheriff
+    name: sheriffName
+    optional: true
+    type: string
+  - constraints:
+    - value:
+        error: page.invalid
+        min: 0
+    description: page number, 0 by default
+    name: page
+    optional: true
+    type: number
+  - constraints:
+    - value:
+        error: limit.invalid
+        min: 0
+    description: page size (maximum number of entries returned), the default is set
+      by the search engine
+    name: limit
+    optional: true
+    type: number
+  name: SearchNodeFilter
+- fields:
   - name: nodeName
     type: string
   - description: node owner's full name
@@ -7807,6 +7859,18 @@ structures:
     name: distance
     type: number
   name: SearchNodeInfo
+- fields:
+  - description: number of the page
+    name: page
+    type: number
+  - description: total number of nodes found (this number may be approximate)
+    name: total
+    type: number
+  - array: true
+    description: the nodes
+    name: nodes
+    struct: SearchNodeInfo
+  name: SearchNodePageInfo
 - fields:
   - constraints:
     - length:
@@ -8014,7 +8078,7 @@ structures:
   - description: number of the page
     name: page
     type: number
-  - description: total number of pages
+  - description: total number of entries found
     name: total
     type: number
   - array: true
