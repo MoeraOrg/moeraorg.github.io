@@ -6350,17 +6350,14 @@ structures:
       - type: int
         name: width
         optional: true
-        js-default: "0"
         description: width of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: int
         name: height
         optional: true
-        js-default: "0"
         description: height of the media in pixels (<code>null</code>, if the media file is not an image or video)
       - type: short
         name: orientation
         optional: true
-        js-default: "1"
         description: >
           media orientation, the value should be interpreted like
           <a href="https://jdhao.github.io/2019/07/31/image_rotation_exif_info/">the orientation value present in JPEG
@@ -6888,6 +6885,14 @@ structures:
         name: videoPresent
         optional: true
         description: if <code>true</code>, the entry contains a video
+      - struct: PublicMediaFileInfo
+        name: mediaPreview
+        optional: true
+        description: preview of the media attached to the entry, if any
+      - type: String
+        name: mediaPreviewId
+        optional: true
+        description: ID of the media attached to the entry that was chosen for the preview
       - struct: SearchRepliedTo
         name: repliedTo
         optional: true

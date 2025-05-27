@@ -7126,13 +7126,11 @@ structures:
     type: string
   - description: width of the media in pixels (<code>null</code>, if the media file
       is not an image or video)
-    js-default: '0'
     name: width
     optional: true
     type: number
   - description: height of the media in pixels (<code>null</code>, if the media file
       is not an image or video)
-    js-default: '0'
     name: height
     optional: true
     type: number
@@ -7141,7 +7139,6 @@ structures:
       file is not an image or video)
 
       '
-    js-default: '1'
     name: orientation
     optional: true
     type: number
@@ -7689,6 +7686,14 @@ structures:
     name: videoPresent
     optional: true
     type: boolean
+  - description: preview of the media attached to the entry, if any
+    name: mediaPreview
+    optional: true
+    struct: PublicMediaFileInfo
+  - description: ID of the media attached to the entry that was chosen for the preview
+    name: mediaPreviewId
+    optional: true
+    type: string
   - description: information about the comment this comment is replying to
     name: repliedTo
     optional: true
