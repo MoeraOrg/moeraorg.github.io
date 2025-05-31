@@ -129,11 +129,16 @@ View of the media with the given ID attached to the given comment to the given p
 <h4 class="identifier">/profile</h4>
 
 Profile — the detailed information about the node's owner, node's
-purpose etc.
+purpose, etc.
 
 <h4 class="identifier">/profile?edit=true</h4>
 
 Profile in editing mode.
+
+<h4 class="identifier">/search?query={query}</h4>
+
+Search page. This page may receive additional parameters for various search
+filters.
 
 <h4 class="identifier">/settings</h4>
 
