@@ -3094,6 +3094,8 @@ objects:
         errors:
           - code: sheriff-order.wrong-feed
             description: the posting is not included into the designated feed
+          - code: sheriff-order.not-sheriff
+            description: sheriff governance is not permitted for the feed
           - code: posting.not-found
             description: posting is not found
           - code: posting.not-signed
