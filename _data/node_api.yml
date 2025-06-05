@@ -13,6 +13,56 @@ objects:
           array: true
         auth: admin
         description: Get the list of all reactions performed by the node, filtered by some criteria.
+  - name: Activity Search
+    description: Local registry of historical search queries.
+    requests:
+      - url: /activity/search
+        type: GET
+        function: getSearchHistory
+        query:
+          - type: String
+            name: prefix
+            optional: true
+            description: find queries with the specified prefix (case-insensitive)
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of queries returned
+        out:
+          struct: SearchHistoryInfo
+          array: true
+        auth: admin
+        description: >
+          Get a list of previously executed search queries, optionally filtered by the given <code>prefix</code> and
+          limited by the given <code>limit</code>. The node may decide to return fewer queries than the given
+          <code>limit</code>. The queries are always sorted by creation timestamp, descending.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /activity/search
+        type: POST
+        function: saveToSearchHistory
+        in:
+          struct: SearchHistoryText
+          name: historyText
+        out:
+          struct: SearchHistoryInfo
+        auth: admin
+        description: Save a search query in the registry.
+      - url: /activity/search
+        type: DELETE
+        function: deleteFromSearchHistory
+        query:
+          - type: String
+            name: query
+            description: the query to be deleted
+        out:
+          struct: Result
+        auth: admin
+        description: Delete a search query from the registry.
+        errors:
+          - code: search-history.query.blank
+            description: the query is empty
   - name: Activity Sheriff Orders
     description: Sheriff's registry of all orders sent to any nodes.
     requests:
@@ -7010,6 +7060,25 @@ structures:
         array: true
         name: entries
         description: the entries
+  - name: SearchHistoryInfo
+    fields:
+      - type: String
+        name: query
+        description: the search query
+      - type: timestamp
+        name: createdAt
+        description: creation timestamp of the record in the search history
+  - name: SearchHistoryText
+    fields:
+      - type: String
+        name: query
+        description: the search query
+        constraints:
+          - notblank:
+              error: search-history.query.blank
+          - length:
+              max: 1024
+              error: search-history.query.wrong-size
   - name: SearchNodeFilter
     fields:
       - type: String

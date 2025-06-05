@@ -658,6 +658,52 @@ objects:
     params:
     - name: filter
       struct: ActivityReactionFilter
+- description: Local registry of historical search queries.
+  name: Activity Search
+  requests:
+  - auth: admin
+    description: 'Get a list of previously executed search queries, optionally filtered
+      by the given <code>prefix</code> and limited by the given <code>limit</code>.
+      The node may decide to return fewer queries than the given <code>limit</code>.
+      The queries are always sorted by creation timestamp, descending.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: getSearchHistory(prefix=null, limit=null)
+    out:
+      array: true
+      struct: SearchHistoryInfo
+    params:
+    - description: find queries with the specified prefix (case-insensitive)
+      name: prefix
+      optional: true
+      type: string
+    - description: maximum number of queries returned
+      name: limit
+      optional: true
+      type: number
+  - auth: admin
+    description: Save a search query in the registry.
+    function: saveToSearchHistory(historyText)
+    out:
+      struct: SearchHistoryInfo
+    params:
+    - name: historyText
+      struct: SearchHistoryText
+  - auth: admin
+    description: Delete a search query from the registry.
+    errors:
+    - code: search-history.query.blank
+      description: the query is empty
+    function: deleteFromSearchHistory(query)
+    out:
+      struct: Result
+    params:
+    - description: the query to be deleted
+      name: query
+      type: string
 - description: Sheriff's registry of all orders sent to any nodes.
   name: Activity Sheriff Orders
   requests:
@@ -3483,6 +3529,8 @@ objects:
     errors:
     - code: sheriff-order.wrong-feed
       description: the posting is not included into the designated feed
+    - code: sheriff-order.not-sheriff
+      description: sheriff governance is not permitted for the feed
     - code: posting.not-found
       description: posting is not found
     - code: posting.not-signed
@@ -7819,6 +7867,25 @@ structures:
     name: entries
     struct: SearchEntryInfo
   name: SearchHashtagSliceInfo
+- fields:
+  - description: the search query
+    name: query
+    type: string
+  - description: creation timestamp of the record in the search history
+    name: createdAt
+    type: number
+  name: SearchHistoryInfo
+- fields:
+  - constraints:
+    - notblank:
+        error: search-history.query.blank
+    - length:
+        error: search-history.query.wrong-size
+        max: 1024
+    description: the search query
+    name: query
+    type: string
+  name: SearchHistoryText
 - fields:
   - description: the search query
     name: query
