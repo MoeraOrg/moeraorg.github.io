@@ -673,6 +673,52 @@ notifications:
               max: 40
               error: posting.posting-id.wrong-size
         log: true
+  - type: POSTING_HEADING_UPDATED
+    ordinal: 39
+    java-interfaces:
+      - PostingSubscriberNotification
+    description: Heading of a posting the receiver is subscribed to has been updated.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+        log: true
+      - type: String
+        name: revisionId
+        comment: ID of the posting revision on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.revision-id.wrong-size
+        log: true
+      - type: String
+        name: heading
+        comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: posting.heading.wrong-size
+        log: true
+      - type: String
+        name: description
+        comment: description of the posting
+        constraints:
+          - length:
+              max: 255
+              error: posting.description.wrong-size
+        log: true
   - type: POSTING_IMPORTANT_UPDATE
     ordinal: 17
     java-interfaces:
@@ -736,6 +782,44 @@ notifications:
           - length:
               max: 255
               error: posting.description.wrong-size
+        log: true
+  - type: POSTING_MEDIA_TEXT_UPDATED
+    ordinal: 40
+    java-interfaces:
+      - PostingSubscriberNotification
+    description: Text content of a media attached to a posting the receiver is subscribed to has been updated.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+        log: true
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+        log: true
+      - type: String
+        name: mediaId
+        comment: ID of the media on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: media.media-id.wrong-size
+        log: true
+      - type: String
+        name: textContent
+        comment: text content of the media
+        constraints:
+          - length:
+              max: 16384
+              error: media.text-content.wrong-size
         log: true
   - type: POSTING_REACTION_ADDED
     ordinal: 18
@@ -1207,6 +1291,14 @@ notifications:
         name: blockUpdate
         optional: true
         comment: details about blocking/unblocking
+      - struct: SearchCommentHeadingUpdate
+        name: commentHeadingUpdate
+        optional: true
+        comment: details about the comment's heading
+      - struct: SearchCommentMediaTextUpdate
+        name: commentMediaTextUpdate
+        optional: true
+        comment: details about the comment's media attachment's text content
       - struct: SearchCommentUpdate
         name: commentUpdate
         optional: true
@@ -1215,6 +1307,14 @@ notifications:
         name: friendUpdate
         optional: true
         comment: details about the friendship
+      - struct: SearchPostingHeadingUpdate
+        name: postingHeadingUpdate
+        optional: true
+        comment: details about the posting's heading
+      - struct: SearchPostingMediaTextUpdate
+        name: postingMediaTextUpdate
+        optional: true
+        comment: details about the posting's media attachment's text content
       - struct: SearchPostingUpdate
         name: postingUpdate
         optional: true

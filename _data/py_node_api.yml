@@ -210,6 +210,10 @@ enums:
     name: comment-add
   - description: a comment was updated
     name: comment-update
+  - description: a comment's heading was updated
+    name: comment-update-heading
+  - description: text content of a media attached to a comment was updated
+    name: comment-update-media-text
   - description: a comment was deleted
     name: comment-delete
   - description: the node was added to the list of friends
@@ -220,6 +224,11 @@ enums:
     name: posting-add
   - description: a posting was updated; sent by the original node only
     name: posting-update
+  - description: a posting's heading was updated; sent by the original node only
+    name: posting-update-heading
+  - description: text content of a media attached to a posting was updated; sent by
+      the original node only
+    name: posting-update-media-text
   - description: a posting was deleted
     name: posting-delete
   - description: a reaction was added
@@ -4909,6 +4918,13 @@ structures:
   - description: heading of the comment
     name: heading
     type: str
+  - description: 'in addition to <code>heading</code>, gives a more detailed description
+      of the comment that can be used for search engines and link previews
+
+      '
+    name: description
+    optional: true
+    type: str
   - description: information about the comment this comment is replying to
     name: replied_to
     optional: true
@@ -5048,6 +5064,13 @@ structures:
     optional: true
   - description: heading of the revision
     name: heading
+    type: str
+  - description: 'in addition to <code>heading</code>, gives a more detailed description
+      of the revision that can be used for search engines and link previews
+
+      '
+    name: description
+    optional: true
     type: str
   - description: revision creation timestamp - the real time when the revision was
       created
@@ -6506,6 +6529,13 @@ structures:
   - description: heading of the posting
     name: heading
     type: str
+  - description: 'in addition to <code>heading</code>, gives a more detailed description
+      of the posting that can be used for search engines and link previews
+
+      '
+    name: description
+    optional: true
+    type: str
   - description: description of the latest update
     name: update_info
     optional: true
@@ -6690,6 +6720,13 @@ structures:
     struct: MediaAttachment
   - description: heading of the revision
     name: heading
+    type: str
+  - description: 'in addition to <code>heading</code>, gives a more detailed description
+      of the revision that can be used for search engines and link previews
+
+      '
+    name: description
+    optional: true
     type: str
   - description: description of the latest update
     name: update_info
@@ -7035,6 +7072,10 @@ structures:
   - description: size of the media file in bytes
     name: size
     type: int
+  - description: the text contained in the image, if any
+    name: text_content
+    optional: true
+    type: str
   - description: ID of the posting linked to the media
     name: posting_id
     optional: true
@@ -7684,6 +7725,55 @@ structures:
     - length:
         error: search.posting-id.wrong-size
         max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.comment-id.wrong-size
+        max: 40
+    description: ID of the comment
+    name: comment_id
+    type: str
+  - constraints:
+    - length:
+        error: search.heading.wrong-size
+        max: 255
+    description: heading of the posting
+    name: heading
+    type: str
+  name: SearchCommentHeadingUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.comment-id.wrong-size
+        max: 40
+    description: ID of the comment
+    name: comment_id
+    type: str
+  - constraints:
+    - length:
+        error: search.media-id.wrong-size
+        max: 40
+    description: ID of the media
+    name: media_id
+    type: str
+  - description: text content of the media
+    name: text_content
+    type: str
+  name: SearchCommentMediaTextUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
     description: ID of the posting the comment belongs to
     name: posting_id
     type: str
@@ -7946,6 +8036,41 @@ structures:
     name: nodes
     struct: SearchNodeInfo
   name: SearchNodePageInfo
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.heading.wrong-size
+        max: 255
+    description: heading of the posting
+    name: heading
+    type: str
+  name: SearchPostingHeadingUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.media-id.wrong-size
+        max: 40
+    description: ID of the media
+    name: media_id
+    type: str
+  - description: text content of the media
+    name: text_content
+    type: str
+  name: SearchPostingMediaTextUpdate
 - fields:
   - constraints:
     - length:

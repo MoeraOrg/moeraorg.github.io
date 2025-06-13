@@ -4272,6 +4272,12 @@ structures:
       - type: String
         name: heading
         description: heading of the comment
+      - type: String
+        name: description
+        optional: true
+        description: >
+          in addition to <code>heading</code>, gives a more detailed description of the comment that can be used for
+          search engines and link previews
       - struct: RepliedTo
         name: repliedTo
         optional: true
@@ -4396,6 +4402,12 @@ structures:
       - type: String
         name: heading
         description: heading of the revision
+      - type: String
+        name: description
+        optional: true
+        description: >
+          in addition to <code>heading</code>, gives a more detailed description of the revision that can be used for
+          search engines and link previews
       - type: timestamp
         name: createdAt
         description: revision creation timestamp - the real time when the revision was created
@@ -5781,6 +5793,12 @@ structures:
       - type: String
         name: heading
         description: heading of the posting
+      - type: String
+        name: description
+        optional: true
+        description: >
+          in addition to <code>heading</code>, gives a more detailed description of the posting that can be used for
+          search engines and link previews
       - struct: UpdateInfo
         name: updateInfo
         optional: true
@@ -5946,6 +5964,12 @@ structures:
       - type: String
         name: heading
         description: heading of the revision
+      - type: String
+        name: description
+        optional: true
+        description: >
+          in addition to <code>heading</code>, gives a more detailed description of the revision that can be used for
+          search engines and link previews
       - struct: UpdateInfo
         name: updateInfo
         optional: true
@@ -6263,6 +6287,10 @@ structures:
       - type: long
         name: size
         description: size of the media file in bytes
+      - type: String
+        name: textContent
+        optional: true
+        description: the text contained in the image, if any
       - type: String
         name: postingId
         optional: true
@@ -6880,6 +6908,55 @@ structures:
         constraints:
           - notnull:
               error: search.blocked-operation.missing
+  - name: SearchCommentHeadingUpdate
+    fields:
+      - type: String
+        name: postingId
+        description: ID of the posting
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+      - type: String
+        name: commentId
+        description: ID of the comment
+        constraints:
+          - length:
+              max: 40
+              error: search.comment-id.wrong-size
+      - type: String
+        name: heading
+        description: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: search.heading.wrong-size
+  - name: SearchCommentMediaTextUpdate
+    fields:
+      - type: String
+        name: postingId
+        description: ID of the posting
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+      - type: String
+        name: commentId
+        description: ID of the comment
+        constraints:
+          - length:
+              max: 40
+              error: search.comment-id.wrong-size
+      - type: String
+        name: mediaId
+        description: ID of the media
+        constraints:
+          - length:
+              max: 40
+              error: search.media-id.wrong-size
+      - type: String
+        name: textContent
+        description: text content of the media
   - name: SearchCommentUpdate
     fields:
       - type: String
@@ -7135,6 +7212,41 @@ structures:
         array: true
         name: nodes
         description: the nodes
+  - name: SearchPostingHeadingUpdate
+    fields:
+      - type: String
+        name: postingId
+        description: ID of the posting
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+      - type: String
+        name: heading
+        description: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: search.heading.wrong-size
+  - name: SearchPostingMediaTextUpdate
+    fields:
+      - type: String
+        name: postingId
+        description: ID of the posting
+        constraints:
+          - length:
+              max: 40
+              error: search.posting-id.wrong-size
+      - type: String
+        name: mediaId
+        description: ID of the media
+        constraints:
+          - length:
+              max: 40
+              error: search.media-id.wrong-size
+      - type: String
+        name: textContent
+        description: text content of the media
   - name: SearchPostingUpdate
     fields:
       - type: String
@@ -9119,6 +9231,10 @@ enums:
         description: a comment was added
       - name: comment-update
         description: a comment was updated
+      - name: comment-update-heading
+        description: a comment's heading was updated
+      - name: comment-update-media-text
+        description: text content of a media attached to a comment was updated
       - name: comment-delete
         description: a comment was deleted
       - name: friend
@@ -9129,6 +9245,10 @@ enums:
         description: a posting was added
       - name: posting-update
         description: a posting was updated; sent by the original node only
+      - name: posting-update-heading
+        description: a posting's heading was updated; sent by the original node only
+      - name: posting-update-media-text
+        description: text content of a media attached to a posting was updated; sent by the original node only
       - name: posting-delete
         description: a posting was deleted
       - name: reaction-add
