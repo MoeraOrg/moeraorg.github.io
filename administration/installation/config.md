@@ -365,7 +365,7 @@ node.pools.naming: 16
 The pool used to resolve node names with Moera naming service.
 
 ```yaml
-node.pools.notification-sender: 64
+node.pools.notification-sender: 32
 ```
 
 The pool used to send notifications to other nodes.
@@ -377,7 +377,7 @@ node.pools.picker: 12
 The pool used to fetch posts from other nodes.
 
 ```yaml
-node.pools.push: 64
+node.pools.push: 4
 ```
 
 The pool used to push notifications to clients.
