@@ -2519,6 +2519,146 @@ objects:
         errors:
           - code: push-relay.error
             description: push relay service returned an error
+  - name: Recommendations
+    description: >
+      Recommendations API is implemented by nodes providing recommendation services for other nodes in the network.
+    requests:
+      - url: /recommendations/postings
+        type: GET
+        function: getRecommendedPostings
+        query:
+          - type: String
+            name: sheriff
+            optional: true
+            description: filter out entries prohibited by the given sheriff
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of recommendations returned
+        out:
+          struct: RecommendedPostingInfo
+          array: true
+        auth: optional
+        description: >
+          Find postings known to the recommendation service and may be of interest to the client. If the client is
+          authenticated, the service may tune the recommendations for them.
+          <br><br>
+          The service may decide to return fewer recommendations than the given <code>limit</code>.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /recommendations/postings/reading
+        type: GET
+        function: getRecommendedPostingsForReading
+        query:
+          - type: String
+            name: sheriff
+            optional: true
+            description: filter out entries prohibited by the given sheriff
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of recommendations returned
+        out:
+          struct: RecommendedPostingInfo
+          array: true
+        auth: optional
+        description: >
+          Find postings known to the recommendation service and may be of interest to the client to read them.
+          If the client is authenticated, the service may tune the recommendations for them.
+          <br><br>
+          The service may decide to return fewer recommendations than the given <code>limit</code>.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /recommendations/postings/commenting
+        type: GET
+        function: getRecommendedPostingsForCommenting
+        query:
+          - type: String
+            name: sheriff
+            optional: true
+            description: filter out entries prohibited by the given sheriff
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of recommendations returned
+        out:
+          struct: RecommendedPostingInfo
+          array: true
+        auth: optional
+        description: >
+          Find postings known to the recommendation service and may be of interest to the client to take part in
+          the discussion. If the client is authenticated, the service may tune the recommendations for them.
+          <br><br>
+          The service may decide to return fewer recommendations than the given <code>limit</code>.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /recommendations/postings/accepted/{nodeName}/{postingId}
+        type: POST
+        function: acceptRecommendedPosting
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+        out:
+          struct: Result
+        auth: required
+        description: Inform the recommendation service that the recommended posting was accepted by the client.
+        errors:
+          - code: not-found
+            description: the posting is not found
+      - url: /recommendations/postings/rejected/{nodeName}/{postingId}
+        type: POST
+        function: rejectRecommendedPosting
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: postingId
+            description: ID of the posting on the remote node
+        out:
+          struct: Result
+        auth: required
+        description: Inform the recommendation service that the recommended posting was rejected by the client.
+        errors:
+          - code: not-found
+            description: the posting is not found
+      - url: /recommendations/nodes/excluded/{nodeName}
+        type: POST
+        function: excludeNodeFromRecommendations
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+        out:
+          struct: Result
+        auth: required
+        description: >
+          Ask the recommendation service to exclude all content from the given node from future recommendations.
+        errors:
+          - code: not-found
+            description: the node is not found
+      - url: /recommendations/nodes/excluded/{nodeName}
+        type: DELETE
+        function: allowNodeInRecommendations
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+        out:
+          struct: Result
+        auth: required
+        description: >
+          Allow the recommendation service to include the content from the given node to future recommendations.
+        errors:
+          - code: not-found
+            description: the node is not found
   - name: Remote Ask
     description: >
       The node may send requests to other nodes asking to subscribe to it, to add it to friends etc.
@@ -5928,6 +6068,12 @@ structures:
         name: totalComments
         optional: true
         description: total number of comments to the posting
+      - type: boolean
+        name: recommended
+        optional: true
+        description: >
+          <code>true</code>, if the posting was recommended by a recommendation service (for cached copies of remote
+          postings only), <code>false</code> otherwise
   - name: PostingRevisionInfo
     fields:
       - type: String
@@ -6726,6 +6872,40 @@ structures:
           - other:
               error: reaction.major-operations.wrong-principal
               description: contain an incorrect principal
+  - name: RecommendedPostingInfo
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the node
+      - type: String
+        name: postingId
+        description: ID of the posting on the node
+      - type: String
+        name: ownerName
+        description: node name of the posting's owner
+      - type: String
+        name: ownerFullName
+        optional: true
+        description: full name of the posting's owner
+      - struct: AvatarImage
+        name: ownerAvatar
+        optional: true
+        description: avatar of the posting's owner
+      - type: String
+        name: heading
+        description: heading of the posting
+      - type: int
+        name: totalPositiveReactions
+        description: total number of positive reactions to the posting
+      - type: int
+        name: lastDayPositiveReactions
+        description: number of positive reactions added to the posting in the previous 24 hours
+      - type: int
+        name: totalComments
+        description: total number of comments to the posting
+      - type: int
+        name: lastDayComments
+        description: number of comments added to the posting in the previous 24 hours
   - name: RegisteredNameSecret
     fields:
       - type: String

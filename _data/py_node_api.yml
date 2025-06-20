@@ -2968,6 +2968,143 @@ objects:
     params:
     - name: attributes
       struct: PushRelayClientAttributes
+- description: 'Recommendations API is implemented by nodes providing recommendation
+    services for other nodes in the network.
+
+    '
+  name: Recommendations
+  requests:
+  - auth: optional
+    description: 'Find postings known to the recommendation service and may be of
+      interest to the client. If the client is authenticated, the service may tune
+      the recommendations for them. <br><br> The service may decide to return fewer
+      recommendations than the given <code>limit</code>.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: get_recommended_postings(sheriff=None, limit=None)
+    out:
+      array: true
+      struct: RecommendedPostingInfo
+    params:
+    - description: filter out entries prohibited by the given sheriff
+      name: sheriff
+      optional: true
+      type: str
+    - description: maximum number of recommendations returned
+      name: limit
+      optional: true
+      type: int
+  - auth: optional
+    description: 'Find postings known to the recommendation service and may be of
+      interest to the client to read them. If the client is authenticated, the service
+      may tune the recommendations for them. <br><br> The service may decide to return
+      fewer recommendations than the given <code>limit</code>.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: get_recommended_postings_for_reading(sheriff=None, limit=None)
+    out:
+      array: true
+      struct: RecommendedPostingInfo
+    params:
+    - description: filter out entries prohibited by the given sheriff
+      name: sheriff
+      optional: true
+      type: str
+    - description: maximum number of recommendations returned
+      name: limit
+      optional: true
+      type: int
+  - auth: optional
+    description: 'Find postings known to the recommendation service and may be of
+      interest to the client to take part in the discussion. If the client is authenticated,
+      the service may tune the recommendations for them. <br><br> The service may
+      decide to return fewer recommendations than the given <code>limit</code>.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: get_recommended_postings_for_commenting(sheriff=None, limit=None)
+    out:
+      array: true
+      struct: RecommendedPostingInfo
+    params:
+    - description: filter out entries prohibited by the given sheriff
+      name: sheriff
+      optional: true
+      type: str
+    - description: maximum number of recommendations returned
+      name: limit
+      optional: true
+      type: int
+  - auth: required
+    description: Inform the recommendation service that the recommended posting was
+      accepted by the client.
+    errors:
+    - code: not-found
+      description: the posting is not found
+    function: accept_recommended_posting(node_name, posting_id)
+    out:
+      struct: Result
+    params:
+    - description: name of the remote node
+      name: node_name
+      type: str
+    - description: ID of the posting on the remote node
+      name: posting_id
+      type: str
+  - auth: required
+    description: Inform the recommendation service that the recommended posting was
+      rejected by the client.
+    errors:
+    - code: not-found
+      description: the posting is not found
+    function: reject_recommended_posting(node_name, posting_id)
+    out:
+      struct: Result
+    params:
+    - description: name of the remote node
+      name: node_name
+      type: str
+    - description: ID of the posting on the remote node
+      name: posting_id
+      type: str
+  - auth: required
+    description: 'Ask the recommendation service to exclude all content from the given
+      node from future recommendations.
+
+      '
+    errors:
+    - code: not-found
+      description: the node is not found
+    function: exclude_node_from_recommendations(node_name)
+    out:
+      struct: Result
+    params:
+    - description: name of the remote node
+      name: node_name
+      type: str
+  - auth: required
+    description: 'Allow the recommendation service to include the content from the
+      given node to future recommendations.
+
+      '
+    errors:
+    - code: not-found
+      description: the node is not found
+    function: allow_node_in_recommendations(node_name)
+    out:
+      struct: Result
+    params:
+    - description: name of the remote node
+      name: node_name
+      type: str
 - description: 'The node may send requests to other nodes asking to subscribe to it,
     to add it to friends etc.
 
@@ -6680,6 +6817,13 @@ structures:
     name: total_comments
     optional: true
     type: int
+  - description: '<code>True</code>, if the posting was recommended by a recommendation
+      service (for cached copies of remote postings only), <code>False</code> otherwise
+
+      '
+    name: recommended
+    optional: true
+    type: bool
   java-interfaces:
   - MediaInfo
   name: PostingInfo
@@ -7537,6 +7681,41 @@ structures:
     optional: true
     struct: ReactionOperations
   name: ReactionOverride
+- fields:
+  - description: name of the node
+    name: node_name
+    type: str
+  - description: ID of the posting on the node
+    name: posting_id
+    type: str
+  - description: node name of the posting's owner
+    name: owner_name
+    type: str
+  - description: full name of the posting's owner
+    name: owner_full_name
+    optional: true
+    type: str
+  - description: avatar of the posting's owner
+    name: owner_avatar
+    optional: true
+    struct: AvatarImage
+  - description: heading of the posting
+    name: heading
+    type: str
+  - description: total number of positive reactions to the posting
+    name: total_positive_reactions
+    type: int
+  - description: number of positive reactions added to the posting in the previous
+      24 hours
+    name: last_day_positive_reactions
+    type: int
+  - description: total number of comments to the posting
+    name: total_comments
+    type: int
+  - description: number of comments added to the posting in the previous 24 hours
+    name: last_day_comments
+    type: int
+  name: RecommendedPostingInfo
 - fields:
   - name: name
     type: str
