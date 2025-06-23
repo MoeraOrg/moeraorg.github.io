@@ -1364,6 +1364,33 @@ objects:
             description: <code>before</code> and <code>after</code> parameters are not allowed together
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+      - url: /feeds/{feedName}/stories
+        type: DELETE
+        function: deleteFeedStories
+        params:
+          - type: String
+            name: feedName
+            description: name of the feed
+        query:
+          - enum: StoryType
+            name: type
+            optional: true
+            description: delete only the stories of the given type
+          - type: String
+            name: receiver
+            optional: true
+            description: delete only the stories about postings located at the given node
+          - type: boolean
+            name: recommended
+            optional: true
+            description: delete only the stories about recommended postings
+        out:
+          struct: Result
+        auth: admin
+        description: Delete all stories from the feed with optional filtering.
+        errors:
+          - code: feed.not-found
+            description: there is no accessible feed with this name
   - name: Friend Groups
     description: >
       A friend may be member of one or more groups of friends. Each group as an ID and title. The group with a title
@@ -2547,6 +2574,8 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /recommendations/postings/reading
         type: GET
         function: getRecommendedPostingsForReading
@@ -2571,6 +2600,8 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /recommendations/postings/commenting
         type: GET
         function: getRecommendedPostingsForCommenting
@@ -2595,6 +2626,8 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /recommendations/postings/accepted/{nodeName}/{postingId}
         type: POST
         function: acceptRecommendedPosting
@@ -3000,6 +3033,9 @@ objects:
           <br><br>
           The returned nodes are sorted by their relevance. The exact definition of this term is left to the search
           engine's implementation.
+        errors:
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /search/nodes/suggestions
         type: GET
         function: searchNodeSuggestions
@@ -3033,6 +3069,8 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /search/entries/by-hashtag
         type: POST
         function: searchEntriesByHashtag
@@ -3052,6 +3090,8 @@ objects:
         errors:
           - code: search.before-after-exclusive
             description: before and after parameters are mutually exclusive
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /search/entries/by-text
         type: POST
         function: searchEntriesByText
@@ -3069,6 +3109,9 @@ objects:
           <br><br>
           The returned entries are sorted by their relevance. The exact definition of this term is left to the search
           engine's implementation.
+        errors:
+          - code: sheriff.not-found
+            description: sheriff node is not registered
   - name: Settings
     description: >
       Settings - the node and client settings. The node settings affect the node behavior. Only those settings are
@@ -7723,9 +7766,10 @@ structures:
         optional: true
         description: >
           preferred format of displaying the value<br>
-          (<code>int</code>)
+          (<code>int</code>, <code>string</code>)
           <ul>
-            <li><code>size</code> - data size in bytes/kilobytes/megabytes etc.</li>
+            <li><code>size</code> - data size in bytes/kilobytes/megabytes etc.;</li>
+            <li><code>select</code> - selection of a value from the provided list.</li>
           </ul>
       - type: String
         name: min
@@ -7747,11 +7791,24 @@ structures:
         name: always
         optional: true
         description: (<code>Duration</code>) <code>true</code>, if value <code>always</code> is allowed
+      - struct: SettingValueChoice
+        array: true
+        name: items
+        optional: true
+        description: (<code>string</code>) list of selection items
       - enum: PrincipalFlag
         array: true
         name: principals
         optional: true
         description: (<code>Principal</code>) list of allowed principals
+  - name: SettingValueChoice
+    fields:
+      - type: String
+        name: title
+        description: human-friendly description of the value
+      - type: String
+        name: value
+        description: the value
   - name: SheriffComplaintDecisionText
     fields:
       - type: boolean

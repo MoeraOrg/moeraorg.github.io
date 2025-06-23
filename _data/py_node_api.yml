@@ -1954,6 +1954,30 @@ objects:
       name: limit
       optional: true
       type: int
+  - auth: admin
+    description: Delete all stories from the feed with optional filtering.
+    errors:
+    - code: feed.not-found
+      description: there is no accessible feed with this name
+    function: delete_feed_stories(feed_name, type=None, receiver=None, recommended=None)
+    out:
+      struct: Result
+    params:
+    - description: name of the feed
+      name: feed_name
+      type: str
+    - description: delete only the stories of the given type
+      enum: StoryType
+      name: type
+      optional: true
+    - description: delete only the stories about postings located at the given node
+      name: receiver
+      optional: true
+      type: str
+    - description: delete only the stories about recommended postings
+      name: recommended
+      optional: true
+      type: bool
 - description: 'A friend may be member of one or more groups of friends. Each group
     as an ID and title. The group with a title <code>t:friends</code> is a standard
     group "Friends" that is created automatically for every node.
@@ -2984,6 +3008,8 @@ objects:
     errors:
     - code: limit.invalid
       description: <code>limit</code> parameter has an invalid value
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: get_recommended_postings(sheriff=None, limit=None)
     out:
       array: true
@@ -3007,6 +3033,8 @@ objects:
     errors:
     - code: limit.invalid
       description: <code>limit</code> parameter has an invalid value
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: get_recommended_postings_for_reading(sheriff=None, limit=None)
     out:
       array: true
@@ -3030,6 +3058,8 @@ objects:
     errors:
     - code: limit.invalid
       description: <code>limit</code> parameter has an invalid value
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: get_recommended_postings_for_commenting(sheriff=None, limit=None)
     out:
       array: true
@@ -3410,6 +3440,9 @@ objects:
       term is left to the search engine''s implementation.
 
       '
+    errors:
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: search_nodes(filter)
     out:
       struct: SearchNodePageInfo
@@ -3430,6 +3463,8 @@ objects:
     errors:
     - code: limit.invalid
       description: <code>limit</code> parameter has an invalid value
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: search_node_suggestions(query=None, sheriff=None, limit=None)
     out:
       array: true
@@ -3457,6 +3492,8 @@ objects:
     errors:
     - code: search.before-after-exclusive
       description: before and after parameters are mutually exclusive
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: search_entries_by_hashtag(filter)
     out:
       struct: SearchHashtagSliceInfo
@@ -3471,6 +3508,9 @@ objects:
       this term is left to the search engine''s implementation.
 
       '
+    errors:
+    - code: sheriff.not-found
+      description: sheriff node is not registered
     function: search_entries_by_text(filter)
     out:
       struct: SearchTextPageInfo
@@ -8557,9 +8597,10 @@ structures:
     struct: SettingTypeModifiers
   name: SettingMetaInfo
 - fields:
-  - description: "preferred format of displaying the value<br> (<code>int</code>)\
-      \ <ul>\n  <li><code>size</code> - data size in bytes/kilobytes/megabytes etc.</li>\n\
-      </ul>\n"
+  - description: "preferred format of displaying the value<br> (<code>int</code>,\
+      \ <code>string</code>) <ul>\n  <li><code>size</code> - data size in bytes/kilobytes/megabytes\
+      \ etc.;</li>\n  <li><code>select</code> - selection of a value from the provided\
+      \ list.</li>\n</ul>\n"
     name: format
     optional: true
     type: str
@@ -8587,11 +8628,24 @@ structures:
     optional: true
     type: bool
   - array: true
+    description: (<code>string</code>) list of selection items
+    name: items
+    optional: true
+    struct: SettingValueChoice
+  - array: true
     description: (<code>Principal</code>) list of allowed principals
     enum: PrincipalFlag
     name: principals
     optional: true
   name: SettingTypeModifiers
+- fields:
+  - description: human-friendly description of the value
+    name: title
+    type: str
+  - description: the value
+    name: value
+    type: str
+  name: SettingValueChoice
 - fields:
   - description: <code>True</code>, if the complaints in the group are to be rejected,
       <code>False</code> otherwise
