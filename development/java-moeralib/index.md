@@ -27,7 +27,7 @@ implementation 'org.moera:moeralib:VERSION'
 
 ## Naming API
 
-<code><a href="javadoc/org/moera/lib/naming/package-summary.html">org.moera.lib.naming</a></code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/naming/package-summary.html" target="_blank">org.moera.lib.naming</a></code>
 package contains classes for interacting with Moera naming service. To access a naming server,
 create `MoeraNaming` class and pass the naming server URL in the parameters. There are
 constants for two well-known servers: `MoeraNaming.MAIN_NAMING_SERVER` and
@@ -52,7 +52,7 @@ System.out.println(MoeraNaming.resolve("balu-dev_0", MoeraNaming.DEV_NAMING_SERV
 
 ## Node API
 
-<code><a href="javadoc/org/moera/lib/node/package-summary.html">org.moera.lib.node</a></code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/package-summary.html" target="_blank">org.moera.lib.node</a></code>
 package contains classes for accessing Moera nodes. Just create `MoeraNode` class with the URL of
 the node, and call the methods you need.
 
@@ -98,7 +98,7 @@ System.out.println(node.getProfile().getEmail());
 
 ## Managing cartes
 
-<code><a href="javadoc/org/moera/lib/node/carte/MoeraCarteSource.html">MoeraCarteSource</a></code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/carte/MoeraCarteSource.html" target="_blank">MoeraCarteSource</a></code>
 class simplifies managing authentication cartes. It obtains cartes from a home node,
 caches them, supplies valid cartes for authentication, and requests new ones
 when old ones expire.
@@ -127,7 +127,7 @@ for (StoryInfo story : slice.getStories()) {
 
 ## Generating cartes
 
-<code><a href="javadoc/org/moera/lib/node/carte/Carte.html">Carte</a>.generate()</code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/carte/Carte.html" target="_blank">Carte</a>.generate()</code>
 static method generates a carte with the given parameters and signs it with
 the provided private signing key.
 
@@ -158,7 +158,7 @@ String carte = Carte.generate(
 
 ## Universal URLs
 
-<code><a href="javadoc/org/moera/lib/UniversalLocation.html">org.moera.lib.UniversalLocation</a></code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/UniversalLocation.html" target="_blank">org.moera.lib.UniversalLocation</a></code>
 class represents a Moera universal URL.
 
 To parse a universal URL, pass it to `UniversalLocation` constructor.
@@ -207,15 +207,15 @@ System.out.println(UniversalLocation.redirectTo(
 
 ## Cryptography
 
-<code><a href="javadoc/org/moera/lib/crypto/CryptoUtil.html">org.moera.lib.crypto.CryptoUtil</a></code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/crypto/CryptoUtil.html" target="_blank">org.moera.lib.crypto.CryptoUtil</a></code>
 is a utility class for generation of cryptographic keys, signing
 <a href="../cryptography/fingerprint.html">fingerprints</a> and validating
 signatures. The class uses the <a href="../cryptography/algorithms.html">algorithms</a>
 defined in the Moera protocol.
 
 Static methods for building fingerprints for various objects are defined in
-<code><a href="javadoc/org/moera/lib/naming/Fingerprints.html">org.moera.lib.naming.Fingerprints</a></code>
-and <code><a href="javadoc/org/moera/lib/node/Fingerprints.html">org.moera.lib.node.Fingerprints</a></code>
+<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/naming/Fingerprints.html" target="_blank">org.moera.lib.naming.Fingerprints</a></code>
+and <code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/Fingerprints.html" target="_blank">org.moera.lib.node.Fingerprints</a></code>
 classes. (The methods may have several versions for different versions of
 the fingerprint.)
 

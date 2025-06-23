@@ -11,8 +11,14 @@
             {% else %}
                 {% capture page_url %}{{ page.url }}index.html{% endcapture %}
             {% endif %}
-            {% capture url %}/development/{{ link.name }}.html{% endcapture %}
-            <a class="{% if page_url == url %}active{% endif %}" href="{{ url }}">{{ link.title }}</a>
+            {% if link.link %}
+                <a href="{{ link.link }}" target="_blank">
+                    {{ link.title }} <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                </a>
+            {% else %}
+                {% capture url %}/development/{{ link.name }}.html{% endcapture %}
+                <a class="{% if page_url == url %}active{% endif %}" href="{{ url }}">{{ link.title }}</a>
+            {% endif %}
         {% endif %}
     {% endfor %}
 </div>

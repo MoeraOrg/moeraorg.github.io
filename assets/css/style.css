@@ -110,6 +110,10 @@ HEADER .branding .logo-text {
     color: var(--bs-gray-600);
 }
 
+.sidebar A:hover {
+    text-decoration: underline;
+}
+
 .sidebar A.active {
     color: var(--page-color);
 }

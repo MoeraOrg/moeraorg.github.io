@@ -65,7 +65,7 @@
 
 - type: sub
 
-- name: java-moeralib/javadoc/index
+- link: https://javadoc.io/doc/org.moera/moeralib
   title: Javadoc
 
 - type: end
