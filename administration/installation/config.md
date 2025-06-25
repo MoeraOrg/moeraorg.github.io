@@ -333,8 +333,9 @@ The API key of the service.
 node.link-preview.domains: []
 ```
 
-The list of domains. Previews of the links in these domains will be constructed
-with the third-party service instead of the built-in one.
+The list of regular expression patterns matching domains. Previews of the links
+in these domains will be constructed with the third-party service instead of
+the built-in one.
 
 ## Settings
 
