@@ -7,17 +7,10 @@ subtitle: Running
 
 # Running
 
-The WAR file is self-executable, so you do not need to install Tomcat or a similar
-Java servlet server to run it. Just give the file executable permissions:
+The JAR file is executable and contains Tomcat in it. Just run it with `java`:
 
 ```bash
-$ chmod +x moera-node-0.14.0.war
-```
-
-And run it:
-
-```bash
-$ SPRING_APPLICATION_JSON={"spring.profiles.active":"prod"} ./moera-node-0.14.0.war
+$ SPRING_APPLICATION_JSON={"spring.profiles.active":"prod"} java -jar ./moera-node-0.17.0.jar
 ```
 
 The value of `spring.profiles.active` setting (that is set above through
@@ -50,7 +43,7 @@ WorkingDirectory=/srv/moera-node
 Environment=LANG=en_US.UTF-8 \
             'SPRING_APPLICATION_JSON={"spring.profiles.active":"prod"}' \
             JAVA_OPTS="-Xmx2G -XX:+UseG1GC -XX:+UseStringDeduplication"
-ExecStart=/srv/moera-node/moera-node-0.14.0.war
+ExecStart=/usr/bin/java -jar /srv/moera-node/moera-node-0.17.0.jar
 SuccessExitStatus=143
 StandardOutput=syslog
 StandardError=inherit
@@ -61,7 +54,7 @@ WantedBy=multi-user.target
 ```
 
 `User=` and `Group=` define the user and the group that will be used by
-the `moera-node` process. Do not forget to create the user and the group in your
+the `moera-node` process. Remember to create the user and the group in your
 system.
 
 The WAR file is located in `/srv/moera-node` directory in the example above. If
