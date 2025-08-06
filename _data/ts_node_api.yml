@@ -4319,33 +4319,6 @@ operations:
   name: SubscriptionOperations
 structures:
 - fields:
-  - constraints:
-    - length:
-        error: accepted-reactions.positive.wrong-size
-        max: 255
-    - emojilist:
-        error: accepted-reactions.positive.invalid
-    description: 'comma-separated list of codes of the positive reactions that are
-      accepted; a code may be prefixed by <code>0x</code> to designate hexadecimal
-      number and <code>+</code> to designate a recommended reaction
-
-      '
-    name: positive
-    type: string
-  - constraints:
-    - length:
-        error: accepted-reactions.negative.wrong-size
-        max: 255
-    - emojilist:
-        error: accepted-reactions.negative.invalid
-    description: 'comma-separated list of codes of the negative reactions that are
-      accepted (the format is the same as above)
-
-      '
-    name: negative
-    type: string
-  name: AcceptedReactions
-- fields:
   - array: true
     description: include only reactions to remote postings from this list
     name: postings
@@ -5173,10 +5146,20 @@ structures:
     name: sheriffMarks
     optional: true
     struct: SheriffMark
-  - description: types of reactions that the comment accepts
-    name: acceptedReactions
+  - description: types of reactions that the comment rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: types of reactions that the comment rejects, as defined by the comments'
+      owner
+    name: ownerRejectedReactions
+    optional: true
+    struct: RejectedReactions
+  - description: types of reactions that the comment rejects, as defined by the posting's
+      owner ("senior")
+    name: seniorRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - description: details of the existing reaction (if any) of the client's owner
     name: clientReaction
     optional: true
@@ -5205,6 +5188,11 @@ structures:
     name: seniorOperations
     optional: true
     struct: CommentOperations
+  - description: types of reactions that the comment rejects, as defined by the posting's
+      owner ("senior")
+    name: seniorRejectedReactions
+    optional: true
+    struct: RejectedReactions
   name: CommentMassAttributes
 - fields:
   - name: id
@@ -5339,10 +5327,17 @@ structures:
     name: media
     optional: true
     struct: MediaWithDigest
-  - description: types of reactions that the comment accepts
-    name: acceptedReactions
+  - description: types of reactions that the comment rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: 'types of reactions that the comment rejects, as defined by the posting''s
+      owner ("senior"); only the senior may set this
+
+      '
+    name: seniorRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - description: ID of the comment this comment is replying to
     name: repliedToId
     optional: true
@@ -5464,10 +5459,17 @@ structures:
     name: createdAt
     optional: true
     type: number
-  - description: types of reactions that the comment accepts
-    name: acceptedReactions
+  - description: types of reactions that the comment rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: 'types of reactions that the comment rejects, as defined by the posting''s
+      owner ("senior"); only the senior may set this
+
+      '
+    name: seniorRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - constraints:
     - other:
         description: is not found
@@ -5701,10 +5703,15 @@ structures:
     name: ownerAvatar
     optional: true
     struct: AvatarImage
-  - description: types of reactions that the posting accepts
-    name: acceptedReactions
+  - description: types of reactions that the posting rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: types of reactions that the comment should reject, set for posting
+      drafts, if needed
+    name: commentRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - description: the source text of the draft, a string representation of a JSON structure
     name: bodySrc
     optional: true
@@ -5807,10 +5814,14 @@ structures:
     name: ownerAvatar
     optional: true
     struct: AvatarDescription
-  - description: types of reactions that the posting accepts
-    name: acceptedReactions
+  - description: types of reactions that the posting rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: types of reactions that the posting's comments should reject
+    name: commentRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - constraints:
     - other:
         description: is too large
@@ -6832,10 +6843,14 @@ structures:
     name: sheriffMarks
     optional: true
     struct: SheriffMark
-  - description: types of reactions that the posting accepts
-    name: acceptedReactions
+  - description: types of reactions that the posting rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: types of reactions that the posting's comments should reject
+    name: commentRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - description: details of the existing reaction (if any) of the client's owner
     name: clientReaction
     optional: true
@@ -7008,10 +7023,14 @@ structures:
     name: media
     optional: true
     struct: MediaWithDigest
-  - description: types of reactions that the posting accepts
-    name: acceptedReactions
+  - description: types of reactions that the posting rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: types of reactions that the posting's comments should rejects
+    name: commentRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - constraints:
     - other:
         description: contain an incorrect principal
@@ -7138,10 +7157,14 @@ structures:
     name: createdAt
     optional: true
     type: number
-  - description: types of reactions that the posting accepts
-    name: acceptedReactions
+  - description: types of reactions that the posting rejects
+    name: rejectedReactions
     optional: true
-    struct: AcceptedReactions
+    struct: RejectedReactions
+  - description: types of reactions that the posting's comments should reject
+    name: commentRejectedReactions
+    optional: true
+    struct: RejectedReactions
   - array: true
     constraints:
     - other:
@@ -7770,6 +7793,35 @@ structures:
     optional: true
     type: string
   name: RegisteredNameSecret
+- fields:
+  - constraints:
+    - length:
+        error: rejected-reactions.positive.wrong-size
+        max: 255
+    - emojilist:
+        error: rejected-reactions.positive.invalid
+    description: 'space-separated list of hexadecimal codes of the positive reactions
+      that are rejected; a special code <code>*</code> means rejection of any non-standard
+      reaction
+
+      '
+    name: positive
+    optional: true
+    type: string
+  - constraints:
+    - length:
+        error: rejected-reactions.negative.wrong-size
+        max: 255
+    - emojilist:
+        error: rejected-reactions.negative.invalid
+    description: 'space-separated list of hexadecimal codes of the negative reactions
+      that are rejected (the format is the same as above)
+
+      '
+    name: negative
+    optional: true
+    type: string
+  name: RejectedReactions
 - fields:
   - description: name of the node
     name: nodeName
