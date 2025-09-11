@@ -131,10 +131,6 @@ View of the media with the given ID attached to the given comment to the given p
 Profile — the detailed information about the node's owner, node's
 purpose, etc.
 
-<h4 class="identifier">/profile?edit=true</h4>
-
-Profile in editing mode.
-
 <h4 class="identifier">/search?query={query}</h4>
 
 Search page. This page may receive additional parameters for various search
@@ -146,7 +142,7 @@ Settings page.
 
 <h4 class="identifier">/settings/{tab}</h4>
 
-Settings page with the given tab open (one of `node` or `client`).
+Settings page with the given tab open (one of `profile`, `node` or `client`).
 
 <h4 class="identifier">/timeline</h4>
 

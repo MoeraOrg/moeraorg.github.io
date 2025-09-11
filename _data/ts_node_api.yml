@@ -1467,6 +1467,16 @@ objects:
       name: limit
       optional: true
       type: number
+  - auth: admin
+    description: Fetch the detailed information, including relationships, about the
+      contacts matching the filter.
+    function: fetchContacts(filter)
+    out:
+      array: true
+      struct: ContactWithRelationships
+    params:
+    - name: filter
+      struct: ContactFilter
 - description: Credentials used to authenticate the administrator of the node.
   name: Credentials
   requests:
@@ -1869,7 +1879,8 @@ objects:
     \ the standard feeds that have special meaning: <ul>\n  <li><code>timeline</code>\
     \ - the main feed of publications;</li>\n  <li><code>instant</code> - the feed\
     \ of instant notifications;</li>\n  <li><code>news</code> - the main feed of publications\
-    \ gathered from other nodes.</li>\n</ul>\n"
+    \ gathered from other nodes;</li>\n  <li><code>explore</code> - the feed of recommended\
+    \ publications from around the network.</li>\n</ul>\n"
   name: Feeds
   requests:
   - auth: admin or none
@@ -3007,11 +3018,18 @@ objects:
       description: <code>limit</code> parameter has an invalid value
     - code: sheriff.not-found
       description: sheriff node is not registered
-    function: getRecommendedPostings(sheriff=null, limit=null)
+    function: getRecommendedPostings(feed=null, sheriff=null, limit=null)
     out:
       array: true
       struct: RecommendedPostingInfo
     params:
+    - description: 'name of the feed to get recommendations for ("news" by default);
+        recommendations for every feed are tracked separately
+
+        '
+      name: feed
+      optional: true
+      type: string
     - description: filter out entries prohibited by the given sheriff
       name: sheriff
       optional: true
@@ -3076,7 +3094,7 @@ objects:
     errors:
     - code: not-found
       description: the posting is not found
-    function: acceptRecommendedPosting(nodeName, postingId)
+    function: acceptRecommendedPosting(nodeName, postingId, feed=null)
     out:
       struct: Result
     params:
@@ -3085,6 +3103,13 @@ objects:
       type: string
     - description: ID of the posting on the remote node
       name: postingId
+      type: string
+    - description: 'name of the feed the recommendation is accepted to ("news" by
+        default); recommendations for every feed are tracked separately
+
+        '
+      name: feed
+      optional: true
       type: string
   - auth: required
     description: Inform the recommendation service that the recommended posting was
@@ -3092,7 +3117,7 @@ objects:
     errors:
     - code: not-found
       description: the posting is not found
-    function: rejectRecommendedPosting(nodeName, postingId)
+    function: rejectRecommendedPosting(nodeName, postingId, feed=null)
     out:
       struct: Result
     params:
@@ -3101,6 +3126,13 @@ objects:
       type: string
     - description: ID of the posting on the remote node
       name: postingId
+      type: string
+    - description: 'name of the feed the recommendation is rejected for ("news" by
+        default); recommendations for every feed are tracked separately
+
+        '
+      name: feed
+      optional: true
       type: string
   - auth: required
     description: 'Ask the recommendation service to exclude all content from the given
@@ -5524,6 +5556,12 @@ structures:
     type: number
   name: CommentTotalInfo
 - fields:
+  - array: true
+    description: list of node names to fetch
+    name: nodeNames
+    type: string
+  name: ContactFilter
+- fields:
   - name: nodeName
     type: string
   - name: fullName
@@ -5580,6 +5618,37 @@ structures:
     optional: true
     struct: ContactOperations
   name: ContactInfo
+- fields:
+  - description: contact's details
+    name: contact
+    struct: ContactInfo
+  - description: information about the contact's subscription to the node's feeds
+    name: subscriber
+    optional: true
+    struct: SubscriberInfo
+  - description: information about the nodes's subscription to the contact's feeds
+    name: subscription
+    optional: true
+    struct: SubscriptionInfo
+  - description: information about the node's friendship with the contact
+    name: friend
+    optional: true
+    struct: FriendInfo
+  - description: information about the contact's friendship with the node
+    name: friendOf
+    optional: true
+    struct: FriendOfInfo
+  - array: true
+    description: information about blocking the contact by the node
+    name: blocked
+    optional: true
+    struct: BlockedUserInfo
+  - array: true
+    description: information about blocking the node by the contact
+    name: blockedBy
+    optional: true
+    struct: BlockedByUserInfo
+  name: ContactWithRelationships
 - fields:
   - constraints:
     - notblank:

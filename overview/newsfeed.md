@@ -10,13 +10,13 @@ next_title: Browsing
 The user's newsfeed is built by his home node in the background. The
 user instructs the home node to subscribe to the nodes he wants to read.
 The home node in the background fetches the content from these nodes,
-receives notifications about updates and other information it needs and
+receives notifications about updates and other information it needs, and
 builds the newsfeed. The user may read it at any moment using a Moera
 client.
 
 There are many possible algorithms of newsfeed composition. From the
 simplest - all posts in the reverse chronological order — to very
-complex, with grouping, filtering, statistical analysis and AI. The
+complex, with grouping, filtering, statistical analysis, and AI. The
 newsfeed content is not limited to posts — any other news, events, and
 important pieces of information may be added to the feed. The newsfeed
 composer may be integrated into the node software, or a node owner may

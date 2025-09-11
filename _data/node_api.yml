@@ -854,6 +854,17 @@ objects:
         errors:
           - code: limit.invalid
             description: <code>limit</code> parameter has an invalid value
+      - url: /people/contacts/fetch
+        type: POST
+        function: fetchContacts
+        in:
+          struct: ContactFilter
+          name: filter
+        out:
+          struct: ContactWithRelationships
+          array: true
+        auth: admin
+        description: Fetch the detailed information, including relationships, about the contacts matching the filter.
   - name: Credentials
     description: Credentials used to authenticate the administrator of the node.
     requests:
@@ -1273,7 +1284,8 @@ objects:
       <ul>
         <li><code>timeline</code> - the main feed of publications;</li>
         <li><code>instant</code> - the feed of instant notifications;</li>
-        <li><code>news</code> - the main feed of publications gathered from other nodes.</li>
+        <li><code>news</code> - the main feed of publications gathered from other nodes;</li>
+        <li><code>explore</code> - the feed of recommended publications from around the network.</li>
       </ul>
     requests:
       - url: /feeds
@@ -2555,6 +2567,12 @@ objects:
         function: getRecommendedPostings
         query:
           - type: String
+            name: feed
+            optional: true
+            description: >
+              name of the feed to get recommendations for ("news" by default); recommendations for every feed are
+              tracked separately
+          - type: String
             name: sheriff
             optional: true
             description: filter out entries prohibited by the given sheriff
@@ -2638,6 +2656,13 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting on the remote node
+        query:
+          - type: String
+            name: feed
+            optional: true
+            description: >
+              name of the feed the recommendation is accepted to ("news" by default); recommendations for every feed are
+              tracked separately
         out:
           struct: Result
         auth: required
@@ -2655,6 +2680,13 @@ objects:
           - type: String
             name: postingId
             description: ID of the posting on the remote node
+        query:
+          - type: String
+            name: feed
+            optional: true
+            description: >
+              name of the feed the recommendation is rejected for ("news" by default); recommendations for every feed
+              are tracked separately
         out:
           struct: Result
         auth: required
@@ -4849,6 +4881,12 @@ structures:
       - type: int
         name: total
         description: total number of comments in the posting after the operation
+  - name: ContactFilter
+    fields:
+      - type: String
+        array: true
+        name: nodeNames
+        description: list of node names to fetch
   - name: ContactInfo
     fields:
       - type: String
@@ -4903,6 +4941,37 @@ structures:
         name: adminOperations
         optional: true
         description: the operations and the corresponding principals that are overridden by the node administrator
+  - name: ContactWithRelationships
+    fields:
+      - struct: ContactInfo
+        name: contact
+        description: contact's details
+      - struct: SubscriberInfo
+        name: subscriber
+        optional: true
+        description: information about the contact's subscription to the node's feeds
+      - struct: SubscriptionInfo
+        name: subscription
+        optional: true
+        description: information about the nodes's subscription to the contact's feeds
+      - struct: FriendInfo
+        name: friend
+        optional: true
+        description: information about the node's friendship with the contact
+      - struct: FriendOfInfo
+        name: friendOf
+        optional: true
+        description: information about the contact's friendship with the node
+      - struct: BlockedUserInfo
+        array: true
+        name: blocked
+        optional: true
+        description: information about blocking the contact by the node
+      - struct: BlockedByUserInfo
+        array: true
+        name: blockedBy
+        optional: true
+        description: information about blocking the node by the contact
   - name: Credentials
     fields:
       - type: String
