@@ -3134,6 +3134,29 @@ objects:
       name: feed
       optional: true
       type: string
+  - description: 'Find the most active nodes known to the recommendation service.
+      <br><br> The service may decide to return fewer recommendations than the given
+      <code>limit</code>.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    - code: sheriff.not-found
+      description: sheriff node is not registered
+    function: getRecommendedNodesByActivity(sheriff=null, limit=null)
+    out:
+      array: true
+      struct: RecommendedNodeInfo
+    params:
+    - description: filter out nodes prohibited by the given sheriff
+      name: sheriff
+      optional: true
+      type: string
+    - description: maximum number of recommendations returned
+      name: limit
+      optional: true
+      type: number
   - auth: required
     description: 'Ask the recommendation service to exclude all content from the given
       node from future recommendations.
@@ -7891,6 +7914,22 @@ structures:
     optional: true
     type: string
   name: RejectedReactions
+- fields:
+  - name: nodeName
+    type: string
+  - description: node owner's full name
+    name: fullName
+    optional: true
+    type: string
+  - description: node title
+    name: title
+    optional: true
+    type: string
+  - description: node owner's avatar
+    name: avatar
+    optional: true
+    struct: AvatarImage
+  name: RecommendedNodeInfo
 - fields:
   - description: name of the node
     name: nodeName

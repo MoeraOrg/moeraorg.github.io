@@ -2694,6 +2694,30 @@ objects:
         errors:
           - code: not-found
             description: the posting is not found
+      - url: /recommendations/nodes/active
+        type: GET
+        function: getRecommendedNodesByActivity
+        query:
+          - type: String
+            name: sheriff
+            optional: true
+            description: filter out nodes prohibited by the given sheriff
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of recommendations returned
+        out:
+          struct: RecommendedNodeInfo
+          array: true
+        description: >
+          Find the most active nodes known to the recommendation service.
+          <br><br>
+          The service may decide to return fewer recommendations than the given <code>limit</code>.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+          - code: sheriff.not-found
+            description: sheriff node is not registered
       - url: /recommendations/nodes/excluded/{nodeName}
         type: POST
         function: excludeNodeFromRecommendations
@@ -7082,6 +7106,22 @@ structures:
               error: rejected-reactions.negative.wrong-size
           - emojilist:
               error: rejected-reactions.negative.invalid
+  - name: RecommendedNodeInfo
+    fields:
+      - type: String
+        name: nodeName
+      - type: String
+        name: fullName
+        optional: true
+        description: node owner's full name
+      - type: String
+        name: title
+        optional: true
+        description: node title
+      - struct: AvatarImage
+        name: avatar
+        optional: true
+        description: node owner's avatar
   - name: RemoteFeed
     fields:
       - type: String
