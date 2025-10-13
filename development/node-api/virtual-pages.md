@@ -7,8 +7,10 @@ subtitle: Virtual Pages
 
 # Virtual Pages
 
-These are standard virtual pages supported by Moera nodes.
-[Read more][1] about virtual pages in the Architecture Overview section.
+These are virtual pages supported by the current implementation of Moera node.
+Some of them are going to become standard virtual pages to be supported by all
+Moera nodes. [Read more][1] about virtual pages in the Architecture Overview
+section.
 
 Virtual pages are located under `/moera` subdirectory of the *Moera
 root* of the website (matches the website root by default, may be
@@ -42,11 +44,24 @@ the given ID.
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
 
+<h4 class="identifier">/explore?before={moment}</h4>
+
+The feed of recommended publications from around the network. Positioned at
+about the given [moment][3].
+
+<h4 class="identifier">/explore/people</h4>
+
+The list of nodes recommended for subscription.
+
 <h4 class="identifier">
     /grant?client_id={name}&client_secret={carte}&scope={scope}&redirect_uri={uri}
 </h4>
 
 [OAuth2][4] authorization page.
+
+<h4 class="identifier">/instants</h4>
+
+The feed of instant notifications.
 
 <h4 class="identifier">
     /media/private/{id}.{extension}?width={number}&download={true or false}
@@ -61,7 +76,9 @@ of the media, according to the width provided.
 If the `download` parameter is present and set to `true`, the node will add
 `Content-Disposition: attachment` header to the output.
 
-<h4 class="identifier">/media/public/{id}.{extension}?width={number}&download={true or false}</h4>
+<h4 class="identifier">
+    /media/public/{id}.{extension}?width={number}&download={true or false}
+</h4>
 
 Public media file. The `<extension>` does not affect the result.
 
