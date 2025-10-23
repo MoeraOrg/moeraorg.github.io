@@ -1,5 +1,7 @@
 ---
 layout: license
+group: sheriff-policy
+lang: ru
 title: Sheriff Policy
 ---
 

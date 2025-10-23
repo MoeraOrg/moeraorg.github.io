@@ -1,5 +1,6 @@
 ---
 layout: license
+group: index
 title: License
 ---
 

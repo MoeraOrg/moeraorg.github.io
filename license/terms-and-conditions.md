@@ -1,5 +1,6 @@
 ---
 layout: license
+group: terms-and-conditions
 title: Terms and Conditions
 ---
 

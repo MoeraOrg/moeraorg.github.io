@@ -1,5 +1,6 @@
 ---
 layout: license
+group: privacy-policy
 title: Privacy Policy
 ---
 

@@ -28,6 +28,20 @@ layout: page
             </div>
         </div>
         <div class="col-md-9 col-12">
+            {% for link in site.data.license_nav %}
+                {% if link.name == page.group and link.langs %}
+                    <div class="mb-3">
+                        {% for lang in link.langs %}
+                            {% unless forloop.first %}&nbsp;|&nbsp;{% endunless %}
+                            {% if page.lang == lang %}
+                                <b>{{ lang | upcase }}</b>
+                            {% else %}
+                                <a href="{{ page.group }}-{{ lang }}.html">{{ lang | upcase }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
             {{ content }}
         </div>
     </div>

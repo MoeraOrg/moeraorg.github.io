@@ -6,3 +6,10 @@
 
 - name: terms-and-conditions
   title: Terms and Conditions
+
+- name: sheriff-policy
+  title: Sheriff Policy
+  langs:
+    - en
+    - ru
+    - uk

@@ -1,7 +1,11 @@
 <div class="sidebar">
     <div class="sidebar-title">License</div>
     {% for link in site.data.license_nav %}
-        {% capture file_name %}{{ link.name }}.md{% endcapture %}
-        <a class="{% if page.name == file_name %}active{% endif %}" href="{{ link.name }}.html">{{ link.title }}</a>
+        {% unless link.langs %}
+            {% capture href %}{{ link.name }}.html{% endcapture %}
+        {% else %}
+            {% capture href %}{{ link.name }}-en.html{% endcapture %}
+        {% endunless %}
+        <a class="{% if page.group == link.name %}active{% endif %}" href="{{ href }}">{{ link.title }}</a>
     {% endfor %}
 </div>
