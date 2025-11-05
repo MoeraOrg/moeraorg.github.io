@@ -44,6 +44,14 @@ enums:
     name: new-comment
   - description: draft of an update to a comment
     name: comment-update
+- name: NodeType
+  values:
+  - description: general purpose node
+    name: regular
+  - description: a search engine node
+    name: search
+  - description: an application node
+    name: application
 - name: OperationStatus
   values:
   - description: the operation is waiting to be sent to the naming server
@@ -1538,6 +1546,16 @@ objects:
     out:
       struct: EmailHint
     params: []
+  - description: 'Verify the credentials reset token. If the token is valid, it may
+      be used later to change the credentials without knowing the password.
+
+      '
+    function: verify_credentials_reset_token(reset_token)
+    out:
+      struct: VerificationInfo
+    params:
+    - name: reset_token
+      struct: CredentialsResetToken
 - description: 'All deleted postings, that are not purged from the database yet.
 
     '
@@ -5714,6 +5732,13 @@ structures:
     type: bool
   name: CredentialsCreated
 - fields:
+  - constraints:
+    - notblank:
+        error: credentials-reset-token.token.blank
+    name: token
+    type: str
+  name: CredentialsResetToken
+- fields:
   - description: <code>True</code> if the request is sent, <code>False</code> otherwise
     name: requested
     type: bool
@@ -7932,6 +7957,12 @@ structures:
     name: avatar
     optional: true
     struct: AvatarImage
+  - description: total number of subscribers of the node
+    name: subscribers_total
+    type: int
+  - description: total number of public postings published by the node
+    name: postings_total
+    type: int
   name: RecommendedNodeInfo
 - fields:
   - description: name of the node
@@ -10068,6 +10099,20 @@ structures:
     type: int
   name: UserListSliceInfo
 - fields:
+  - description: <code>True</code> if the verified object is correct, <code>False</code>
+      otherwise
+    name: correct
+    type: bool
+  - description: error code
+    name: error_code
+    optional: true
+    type: str
+  - description: human-readable error message
+    name: error_message
+    optional: true
+    type: str
+  name: VerificationInfo
+- fields:
   - name: node_name
     optional: true
     type: str
@@ -10098,4 +10143,8 @@ structures:
     name: frozen
     optional: true
     type: bool
+  - description: type of the node, <code>regular</code> by default
+    enum: NodeType
+    name: type
+    optional: true
   name: WhoAmI

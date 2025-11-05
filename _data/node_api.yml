@@ -927,6 +927,17 @@ objects:
         errors:
           - code: credentials.email-not-set
             description: E-mail address is not set for the node
+      - url: /credentials/reset/verify
+        type: POST
+        function: verifyCredentialsResetToken
+        in:
+          struct: CredentialsResetToken
+          name: resetToken
+        out:
+          struct: VerificationInfo
+        description: >
+          Verify the credentials reset token. If the token is valid, it may be used later to change the credentials
+          without knowing the password.
   - name: Deleted Postings
     description: >
       All deleted postings, that are not purged from the database yet.
@@ -5033,6 +5044,13 @@ structures:
       - type: boolean
         name: created
         description: <code>true</code> if the credentials are initialized already, <code>false</code> otherwise
+  - name: CredentialsResetToken
+    fields:
+      - type: String
+        name: token
+        constraints:
+          - notblank:
+              error: credentials-reset-token.token.blank
   - name: DeleteNodeStatus
     fields:
       - type: boolean
@@ -7122,6 +7140,12 @@ structures:
         name: avatar
         optional: true
         description: node owner's avatar
+      - type: int
+        name: subscribersTotal
+        description: total number of subscribers of the node
+      - type: int
+        name: postingsTotal
+        description: total number of public postings published by the node
   - name: RemoteFeed
     fields:
       - type: String
@@ -9172,6 +9196,20 @@ structures:
       - type: int
         name: totalInFuture
         description: number of items after this slice till the far future
+  - name: VerificationInfo
+    fields:
+      - type: boolean
+        name: correct
+        description: <code>true</code> if the verified object is correct, <code>false</code> otherwise
+      - type: String
+        name: errorCode
+        optional: true
+        description: error code
+      - type: String
+        name: errorMessage
+        optional: true
+        description: human-readable error message
+
   - name: WhoAmI
     fields:
       - type: String
@@ -9202,6 +9240,10 @@ structures:
         optional: true
         description: >
           <code>true</code> if the node is frozen due to inactivity, <code>false</code> (the default) otherwise
+      - enum: NodeType
+        name: type
+        optional: true
+        description: type of the node, <code>regular</code> by default
 
 operations:
   - name: CommentOperations
@@ -9458,6 +9500,14 @@ enums:
         description: draft of a new comment
       - name: comment-update
         description: draft of an update to a comment
+  - name: NodeType
+    values:
+      - name: regular
+        description: general purpose node
+      - name: search
+        description: a search engine node
+      - name: application
+        description: an application node
   - name: OperationStatus
     values:
       - name: waiting
