@@ -30,7 +30,7 @@ _(for sheriffs only)_ Complaints management interface.
 
 <h4 class="identifier">/complaints/{id}</h4>
 
-_(for sheriffs only)_ Management interface for a particular group of complaints,
+_(for sheriffs only)_ Management interface for a particular group of complaints 
 related to the same posting or comment.
 
 <h4 class="identifier">/compose?id={id}</h4>
@@ -43,6 +43,11 @@ the given ID.
 
 Post composer opened for creating a new post, with a draft loaded. ID of
 the draft is passed in the `draft` parameter.
+
+<h4 class="identifier">/connect?back={url}</h4>
+
+Sign-in page, opened for connecting to an existing node. The `back`parameter is
+the URL to return to after successful or canceled sign-in.
 
 <h4 class="identifier">/explore?before={moment}</h4>
 
@@ -88,6 +93,11 @@ of the media, according to the width provided.
 
 If the `download` parameter is present and set to `true`, the node will add
 `Content-Disposition: attachment` header to the output.
+
+<h4 class="identifier">/mnemonic</h4>
+
+The page displaying the [mnemonic][5] (24 secret words) used to update
+the registered name properties.
 
 <h4 class="identifier">/news</h4>
 
@@ -161,6 +171,15 @@ Settings page.
 
 Settings page with the given tab open (one of `profile`, `node` or `client`).
 
+<h4 class="identifier">/signup?back={url}</h4>
+
+Sign-up page, opened for creating a new node. The `back` parameter is the URL
+to return to after successful or canceled sign-up.
+
+<h4 class="identifier">/start-reading</h4>
+
+The list of popular nodes to subscribe to. Displayed once after sign-up.
+
 <h4 class="identifier">/timeline</h4>
 
 Timeline - all publications in reverse chronological order.
@@ -176,3 +195,5 @@ Timeline, positioned at about the given [moment][3].
 [3]: moment.html
 <!-- @IGNORE PREVIOUS: link -->
 [4]: oauth2.html
+<!-- @IGNORE PREVIOUS: link -->
+[5]: /overview/naming.html
