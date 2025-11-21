@@ -38,6 +38,9 @@ An error may occur on different stages of request processing.
 
 * If the request URL is unknown, `not-found` error is returned.
 * If the request Content-Type is unknown, `invalid-content-type` error is returned.
+* If there were too many requests done in a short period of time, `too-many-requests`
+  error is returned. In addition, [`Retry-After`][6] and [`RateLimit-Policy`][7]
+  headers are set.
 * If incorrect JSON is provided, `invalid-syntax` error is returned.
 * If the request is correct, but the operation is not supported by the node,
   `not-supported` error is returned.
@@ -98,3 +101,5 @@ the description of its purpose.
 [3]: authentication.html#carte
 [4]: authentication.html
 [5]: events.html
+[6]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
+[7]: https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
