@@ -160,7 +160,7 @@ secret words that are needed to control the name.
 `name assign NAME`
 
 : Assign an existing name `NAME` to the node. The 24 secret words are to be passed
-to the standard input, one per line. It is allowed to pass them exactly how they
+to the standard input, one per line. It is allowed to pass them exactly as they
 are printed by `name register`, where each word is prepended with its number.
 These numbers are ignored.
 
