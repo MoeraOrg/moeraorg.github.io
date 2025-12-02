@@ -337,6 +337,29 @@ The list of regular expression patterns matching domains. Previews of the links
 in these domains will be constructed with the third-party service instead of
 the built-in one.
 
+## IndexNow service
+
+IndexNow is an easy way for websites to instantly inform search engines
+(like Bing, for example) about the latest content changes. In its simplest form,
+IndexNow is a simple ping so that search engines know that URL and its content
+have been added, updated, or deleted, allowing search engines to quickly reflect
+this change in their search results.
+
+```yaml
+node.index-now.endpoint: https://api.indexnow.org/indexnow
+```
+
+Endpoint to be used for submitting URLs to IndexNow. All IndexNow endpoints are
+created equal, so it is unlikely that you will need to change the default.
+
+```yaml
+node.index-now.key: <service key>
+```
+
+The API key is needed to match the ownership of the domain with submitted URLs.
+You can get it on [Bing website][10] or from any other IndexNow-enabled search
+engine.
+
 ## Settings
 
 It is possible to use the configuration file to override the built-in default values
@@ -429,3 +452,4 @@ more time to execute, it is logged as a slow one (see above).
 [7]: https://moera.org/development/push-relay-api.html
 [8]: https://www.linkpreview.net/
 [9]: https://ocr.space/
+[10]: https://www.bing.com/indexnow/getstarted#implementation
