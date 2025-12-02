@@ -12,24 +12,24 @@ The file should be placed in the `moera-node` working directory and named
 `application-prod.yml` for the production server or `application-dev.yml` for
 the development server.
 
-Configuration options have names like `node.registrar.domain`. In the configuration
-file they may be set in two forms:
+Configuration options have names like `node.mail.root-address`.
+In the configuration file they may be set in two forms:
 
 ```yaml
-node.registrar.domain: moera.blog
+node.mail.root-address: admin@moera.blog
 ```
 
 Or
 
 ```yaml
 node:
-  registrar:
-    domain: moera.blog
+  mail:
+    root-address: admin@moera.blog
 ```
 
 #### Minimal configuration
 
-Here is a minimal configuration file you may use as a basis for your configuration:
+This is a minimal configuration file you may use as a basis for your configuration:
 
 ```yaml
 server:
@@ -47,6 +47,7 @@ spring:
 
 node:
   root-secret: <secret>
+  domain: <domain name>
   mail:
     reply-to-address: <mailrobot e-mail address>
     root-address: <admin e-mail address>
@@ -202,11 +203,12 @@ node.multi: none
 ```
 
 Activates the multi-node mode. The possible values are:
-* `none` — single node mode (you also need to set `node.domain`);
-* `private` — multi-node mode, only the server administrator may create new nodes
-  (you also need to set `node.registrar.domain`);
-* `public` — multi-node mode, any user may create a node (you also need to set
-  `node.registrar.host` and `node.registrar.domain`).
+* `none` — single node mode;
+* `private` — multi-node mode, only the server administrator may create new 
+  nodes;
+* `public` — multi-node mode, any user may create a node.
+
+Regardless of the value of this option, you also need to set `node.domain`.
 
 ```yaml
 node.domain: <domain name>
@@ -214,21 +216,8 @@ node.domain: <domain name>
 
 If `node.multi` is set to `none`, this option defines domain name of the single node.
 
-```yaml
-node.registrar.host: <host name>
-```
-
-If `node.multi` is set to `public`, this option defines the host name of the built-in
-web interface for creating nodes. If a user opens a subdomain that has no node
-defined for it, they are redirected automatically to the web interface for creating
-the node. 
-
-```yaml
-node.registrar.domain: <domain name>
-```
-
 If `node.multi` is set to `private` or `public`, this option defines the name of
-the domain where subdomains are created for the new nodes. Note that `moera-node`
+the domain where subdomains are created for new nodes. Note that `moera-node`
 cannot register subdomains in DNS by itself, so you need to have a wildcard
 subdomain defined on the DNS server. Or you can add subdomains manually for every
 node.
