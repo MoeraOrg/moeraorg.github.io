@@ -89,4 +89,4 @@ These Sheriff Rules (hereinafter, the “Rules”) govern the moderation of user
 - are familiar with the mandatory procedure for nodes to execute the Sheriff’s orders when displaying Content in the Google Play Application;
 - understand that in the absence of oversight approval, the non‑public Content of their node is not displayed in the Google Play Application, while public Content is displayed subject to these Rules;
 - accept that placement of a Sheriff’s Mark on a node as a whole results in a prohibition on displaying **all** Content of that node in the Google Play Application;
-- recognize that the Sheriff’s measures do not result in the removal of Content from the Moera network and relate solely to the procedure for its display in the Google Play Application.
+- recognize that the Sheriff’s measures **do not result in the removal of Content from the Moera network** and relate solely to the procedure for its display in the Google Play Application.
