@@ -2428,6 +2428,17 @@ objects:
         errors:
           - code: avatar.not-found
             description: there is no avatar with the given ID
+      - url: /profile/email/verify
+        type: POST
+        function: verifyEmail
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Repeat verification process (resend the confirmation mail) for the current e-mail address set in the profile.
+        errors:
+          - code: profile.email-not-set
+            description: E-mail address is not set for the node
   - name: Provider
     description: Communication with the provider (owner of the server).
     requests:
@@ -6706,6 +6717,10 @@ structures:
         name: email
         optional: true
         description: node owner's E-mail address
+      - type: boolean
+        name: emailVerified
+        optional: true
+        description: <code>true</code>, if the node owner's E-mail address is verified, <code>false</code> otherwise
       - type: String
         name: title
         optional: true
@@ -9712,6 +9727,8 @@ enums:
     values:
       - name: google
         description: Google
+      - name: bing
+        description: Bing
   - name: SearchEntryType
     values:
       - name: all

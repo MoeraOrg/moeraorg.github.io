@@ -24,6 +24,11 @@ Node API specification in OpenAPI format.
 
 Web interface for executing node API requests.
 
+<h4 class="identifier">/change-password?back={url}</h4>
+
+A form for changing the password. The `back` parameter is the URL to return to
+after successful or canceled change of the password.
+
 <h4 class="identifier">/complaints</h4>
 
 _(for sheriffs only)_ Complaints management interface.
@@ -157,6 +162,19 @@ View of the media with the given ID attached to the given comment to the given p
 
 Profile — the detailed information about the node's owner, node's
 purpose, etc.
+
+<h4 class="identifier">/profile/email-verified</h4>
+
+View the result of confirmation of the e-mail address in the profile.
+
+<h4 class="identifier">/profile/verify-email</h4>
+
+Display the explanation of the confirmation process of the e-mail address
+in the profile.
+
+<h4 class="identifier">/profile/verify-email?token={token}</h4>
+
+Confirm the e-mail address in the profile with the given confirmation token.
 
 <h4 class="identifier">/search?query={query}</h4>
 

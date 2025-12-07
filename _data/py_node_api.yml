@@ -257,6 +257,8 @@ enums:
   values:
   - description: Google
     name: google
+  - description: Bing
+    name: bing
 - name: SearchEntryType
   values:
   - description: any type of an entry
@@ -2922,6 +2924,18 @@ objects:
     params:
     - name: profile
       struct: ProfileAttributes
+  - auth: admin
+    description: 'Repeat verification process (resend the confirmation mail) for the
+      current e-mail address set in the profile.
+
+      '
+    errors:
+    - code: profile.email-not-set
+      description: E-mail address is not set for the node
+    function: verify_email()
+    out:
+      struct: Result
+    params: []
 - description: Communication with the provider (owner of the server).
   name: Provider
   requests:
@@ -7495,6 +7509,11 @@ structures:
     name: email
     optional: true
     type: str
+  - description: <code>True</code>, if the node owner's E-mail address is verified,
+      <code>False</code> otherwise
+    name: email_verified
+    optional: true
+    type: bool
   - description: node title
     name: title
     optional: true
