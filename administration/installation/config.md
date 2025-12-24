@@ -372,6 +372,12 @@ various purposes. A larger number increases memory usage and the peak load on
 the server but allows running more tasks in parallel.
 
 ```yaml
+node.pools.event: 4
+```
+
+The pool used to deliver events via WebSocket to clients.
+
+```yaml
 node.pools.naming: 16
 ```
 
@@ -382,6 +388,12 @@ node.pools.notification-sender: 32
 ```
 
 The pool used to send notifications to other nodes.
+
+```yaml
+node.pools.other: 4
+```
+
+The pool used for all other background tasks.
 
 ```yaml
 node.pools.picker: 12
@@ -399,7 +411,7 @@ The pool used to push notifications to clients.
 node.pools.remote-task: 16
 ```
 
-The pool used for unspecified background tasks.
+The pool used to send miscellaneous data to remote nodes in the background.
 
 ## Logging
 
