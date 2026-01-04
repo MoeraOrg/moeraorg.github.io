@@ -27,20 +27,38 @@ If you install several components on the same host, note to choose
 different port numbers for them. By default, they are 8080, 8081 and
 3000 for naming, node and client respectively.
 
-#### Note about HTTPS
+#### Secure context (HTTPS)
 
-If a page is served over HTTPS, modern browsers do not allow it to fetch
-unencrypted content by HTTP (see [mixed active content][8]). Since we
-strongly recommend Moera nodes to serve all content over HTTPS, the
-client code must also be served over HTTPS; otherwise the browser will not
-allow it to be injected into the page. It is also not possible to access
-a naming server by HTTP and to connect the home node by HTTP.
+Some browser APIs require a secure context (HTTPS). For example, those working
+with the clipboard. For this purpose, you may configure your local development
+environment to serve the client over HTTPS as described below.
 
-You need to take this into account when building a development
-environment. If you run a development server that serves
-[moera-client-react][5] over HTTP, you will not be able to open HTTPS
-nodes with it. Using a local HTTP node for development will solve the
-problem.
+If the client is served over HTTPS, modern browsers do not allow fetching
+unencrypted content by HTTP (see [mixed active content][8]). It means that
+Moera nodes must also be served over HTTPS; otherwise the browser will not
+allow the client to access nodes. It also will not be possible to access
+a naming server by HTTP.
+
+The simplest way to serve the client over HTTPS is to use a self-signed
+certificate. `mkcert`[11] is a great tool for this purpose. If you did not use
+it before, install it and run `mkcert -install` to create the root certificate
+authority (CA) in your system trust store. After that, run `mkcert localhost` to
+create a certificate for `localhost`, or use any other domain name you want.
+
+To enable HTTPS in the client, create `.ssl/` directory in the client root and
+copy the certificate and key files to it. `run` script will detect this
+directory automatically and enable the HTTPS configuration.
+
+For the node, you will need to add the following settings to
+`application-dev.yml`:
+
+```yaml
+server:
+  ssl:
+     enabled: true
+     certificate: "file:.ssl/localhost.pem"
+     certificate-private-key: "file:.ssl/localhost-key.pem"
+```
 
 [1]: https://github.com/MoeraOrg/moera-naming
 [2]: https://github.com/MoeraOrg/moera-naming/blob/master/README.md
@@ -52,3 +70,4 @@ problem.
 [8]: https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content
 [9]: https://moera.blog
 [10]: https://web.moera.org
+[11]: https://github.com/FiloSottile/mkcert
