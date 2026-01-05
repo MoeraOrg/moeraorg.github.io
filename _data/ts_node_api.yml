@@ -2585,6 +2585,16 @@ objects:
     params:
     - name: posting
       struct: PostingText
+  - auth: admin
+    description: Get all postings coming from the given external source.
+    function: getPostingsByExternalSource(external)
+    out:
+      array: true
+      struct: PostingInfo
+    params:
+    - description: URI of the external source of the posting
+      name: external
+      type: string
   - auth: required or signature
     description: 'Update the posting, creating a new revision of it. The text is processed
       just like in the <code>POST</code> request.
@@ -7007,6 +7017,14 @@ structures:
     name: recommended
     optional: true
     type: boolean
+  - description: 'URI of the external source the posting was received from; used by
+      software that automatically forwards postings from other social networks (for
+      admin only)
+
+      '
+    name: externalSourceUri
+    optional: true
+    type: string
   java-interfaces:
   - MediaInfo
   name: PostingInfo
@@ -7132,7 +7150,8 @@ structures:
     optional: true
     struct: AvatarDescription
   - constraints:
-    - notnull:
+    - other:
+        description: is empty
         error: posting.body-src.blank
     - length:
         error: posting.body-src.wrong-size
@@ -7358,6 +7377,18 @@ structures:
     name: commentReactionOperations
     optional: true
     struct: ReactionOperations
+  - constraints:
+    - length:
+        error: posting.external-source-uri.wrong-size
+        max: 1024
+    description: 'URI of the external source the posting was received from; used by
+      software that automatically forwards postings from other social networks (for
+      admin only)
+
+      '
+    name: externalSourceUri
+    optional: true
+    type: string
   name: PostingText
 - fields:
   - description: ID of the media file

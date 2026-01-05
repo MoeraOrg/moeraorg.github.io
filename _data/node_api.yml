@@ -2066,6 +2066,18 @@ objects:
             description: >
               media attachment is not compressed as the node requires, the parameters of the desired compression are
               returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
+      - url: /postings
+        type: GET
+        function: getPostingsByExternalSource
+        query:
+          - type: String
+            name: external
+            description: URI of the external source of the posting
+        out:
+          struct: PostingInfo
+          array: true
+        auth: admin
+        description: Get all postings coming from the given external source.
       - url: /postings/{id}
         type: PUT
         function: updatePosting
@@ -6252,6 +6264,12 @@ structures:
         description: >
           <code>true</code>, if the posting was recommended by a recommendation service (for cached copies of remote
           postings only), <code>false</code> otherwise
+      - type: String
+        name: externalSourceUri
+        optional: true
+        description: >
+          URI of the external source the posting was received from; used by software that automatically forwards
+          postings from other social networks (for admin only)
   - name: PostingRevisionInfo
     fields:
       - type: String
@@ -6370,8 +6388,9 @@ structures:
         optional: true
         description: the source text of the posting, a string representation of a JSON structure
         constraints:
-          - notnull:
+          - other:
               error: posting.body-src.blank
+              description: is empty
           - length:
               max: 65535
               error: posting.body-src.wrong-size
@@ -6576,6 +6595,16 @@ structures:
           - other:
               error: posting.comment-reaction-operations.wrong-principal
               description: contain an incorrect principal
+      - type: String
+        name: externalSourceUri
+        optional: true
+        description: >
+          URI of the external source the posting was received from; used by software that automatically forwards
+          postings from other social networks (for admin only)
+        constraints:
+          - length:
+              max: 1024
+              error: posting.external-source-uri.wrong-size
   - name: PrivateMediaFileInfo
     fields:
       - type: String
