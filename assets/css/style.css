@@ -375,6 +375,8 @@ DD {
     }
 }
 
+/* Landing page */
+
 #welcome-content {
     max-width: 1440px;
     margin-left: auto;
@@ -383,6 +385,31 @@ DD {
 
 #welcome-content .section-one {
     padding: 0 5rem 4rem;
+}
+
+#welcome-content .section-two {
+    padding: 6rem 5rem 0;
+}
+
+#welcome-content .section-title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 3.5rem;
+    line-height: 129%;
+    color: #22282b;
+    margin-bottom: 1rem;
+}
+
+#welcome-content .section-title B {
+    font-weight: 800;
+}
+
+#welcome-content .section-subtitle {
+    font-weight: 400;
+    font-size: 1.31rem;
+    line-height: 133%;
+    color: var(--bs-gray-600);
+    max-width: 48rem;
 }
 
 .main-menu {
@@ -490,7 +517,7 @@ A.github-link svg {
     font-weight: 400;
     font-size: 1.31rem;
     line-height: 133%;
-    color: var(--bs-gray-500);
+    color: var(--bs-gray-600);
 }
 
 .intro .get-started {
@@ -619,6 +646,48 @@ A.github-link svg {
 .vision > DIV.green .icon {
     background-color: #7ed4a8;
 }
+
+.strong-points {
+    margin-top: 3.375rem;
+    border-collapse: collapse;
+}
+
+.strong-points TD {
+    border-top: 1px solid var(--bs-gray-300);
+    padding: 2rem 0;
+    vertical-align: top;
+}
+
+.strong-points TD.icon {
+    padding-right: 1.5rem;
+}
+
+.strong-points TD.icon svg {
+    border-radius: 3rem;
+    padding: 1rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: #0b898f;
+    fill: white;
+}
+
+.strong-points TD.title {
+    font-weight: 500;
+    font-size: 1.69rem;
+    line-height: 148%;
+    color: var(--bs-gray-900);
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+    text-wrap: nowrap;
+}
+
+.strong-points TD.description {
+    font-weight: 400;
+    font-size: 1.13rem;
+    line-height: 133%;
+    color: var(--bs-gray-600);
+}
+
 
 /* Old welcome page */
 .top-line {
