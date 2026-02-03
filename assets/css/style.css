@@ -6,6 +6,20 @@
     --bs-blue-700: #084298;
 }
 
+@font-face {
+    font-family: Montserrat;
+    src: url("Montserrat-Medium.woff") format("woff2"),
+    url("Montserrat-Medium.woff") format('woff');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url("Montserrat-ExtraBold.woff2") format("woff2"),
+    url("Montserrat-ExtraBold.woff") format('woff');
+    font-weight: 800;
+}
+
 BODY {
     padding-bottom: 2rem;
 }
@@ -362,9 +376,13 @@ DD {
 }
 
 #welcome-content {
-    max-width: 1280px;
+    max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#welcome-content .section-one {
+    padding: 0 5rem 4rem;
 }
 
 .main-menu {
@@ -438,6 +456,100 @@ A.github-link svg {
     --bs-gradient: none;
 }
 
+.intro {
+    margin-top: 4rem;
+    display: grid;
+    grid-template: "slogan  browser" min-content
+                   "mission browser" min-content
+                   "buttons browser" min-content
+                 / 1fr      1fr;
+    gap: 1.5rem;
+}
+
+.intro .slogan {
+    grid-area: slogan;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 4rem;
+    line-height: 125%;
+    color: #22282b;
+    background: url("../images/stroke.svg") 0 4.5rem no-repeat;
+}
+
+.intro .slogan B {
+    font-weight: 800;
+}
+
+.intro .mission {
+    grid-area: mission;
+    font-weight: 400;
+    font-size: 1.31rem;
+    line-height: 133%;
+    color: var(--bs-gray-500);
+}
+
+.intro .get-started {
+    grid-area: buttons;
+    align-self: end;
+    padding-top: 3.5rem;
+}
+
+.intro .get-started .btn {
+    margin-right: 1.5rem;
+
+    --bs-btn-font-size: 1.13rem;
+    --bs-btn-padding-y: .875rem;
+    --bs-btn-padding-x: 2.875rem;
+}
+
+.intro .get-started .google-play IMG {
+    display: inline-block;
+    height: 5.5rem;
+}
+
+.intro .browser {
+    grid-area: browser;
+    align-self: center;
+}
+
+.intro .browser .mockup {
+    border-radius: .75rem;
+    overflow: hidden;
+    box-shadow: 0 1px 15px 0 rgb(0 0 0 / 25%);
+}
+
+.intro .browser .mockup .bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #22282b;
+}
+
+.intro .browser .mockup .bar .dot {
+    width: .5rem;
+    height: .5rem;
+    border-radius: 50%;
+}
+
+.intro .browser .mockup .bar .red {
+    background: #ff5f57;
+}
+
+.intro .browser .mockup .bar .yellow {
+    background: #febc2e;
+}
+
+.intro .browser .mockup .bar .green {
+    background: #28c840;
+}
+
+.intro .browser .mockup IMG {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.7;
+}
+
 /* Old welcome page */
 .top-line {
     position: absolute;
@@ -507,16 +619,13 @@ A:hover.github-link {
     }
 }
 
+/*
 .google-play {
     position: relative;
     top: .5rem;
 }
 
-.google-play IMG {
-    display: inline-block;
-    height: 4.5rem;
-}
-
+*/
 .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
