@@ -456,8 +456,13 @@ A.github-link svg {
     --bs-gradient: none;
 }
 
+.bsd {
+    font-family: 'Suez One', serif;
+    font-size: 1.3rem;
+}
+
 .intro {
-    margin-top: 4rem;
+    margin-top: 3.5rem;
     display: grid;
     grid-template: "slogan  browser" min-content
                    "mission browser" min-content
@@ -550,6 +555,71 @@ A.github-link svg {
     aspect-ratio: 1.7;
 }
 
+.vision {
+    margin-top: 4.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem
+}
+
+.vision > DIV {
+    border-radius: .75rem;
+    padding: 2rem 2.5rem 2.5rem;
+}
+
+.vision > DIV .icon {
+    border-radius: 3rem;
+    padding: .75rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.vision > DIV .icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.vision > DIV .title {
+    font-weight: 500;
+    font-size: 1.31rem;
+    line-height: 152%;
+    color: var(--bs-gray-900);
+}
+
+.vision > DIV .description {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 150%;
+    color: #3d3d3d;
+}
+
+.vision > DIV.magenta {
+    background-color: #cdc3ff;
+}
+
+.vision > DIV.magenta .icon {
+    background-color: #b6acf3;
+}
+
+.vision > DIV.blue {
+    background-color: #aac9ff;
+}
+
+.vision > DIV.blue .icon {
+    background-color: #93b3e9;
+}
+
+.vision > DIV.green {
+    background-color: #92e3b8;
+}
+
+.vision > DIV.green .icon {
+    background-color: #7ed4a8;
+}
+
 /* Old welcome page */
 .top-line {
     position: absolute;
@@ -593,12 +663,6 @@ A:hover.github-link {
     text-decoration: underline;
 }
 */
-
-.bsd {
-    font-family: 'Suez One', serif;
-    font-size: 1.3rem;
-    margin-inline-end: .5rem;
-}
 
 .welcome {
     background-image: url("../images/messages.jpg");
