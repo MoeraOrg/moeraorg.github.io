@@ -375,20 +375,12 @@ DD {
     }
 }
 
-/* Landing page */
+/** Landing page **/
 
 #welcome-content {
     max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
-}
-
-#welcome-content .section-one {
-    padding: 0 5rem 4rem;
-}
-
-#welcome-content .section-two {
-    padding: 6rem 5rem 0;
 }
 
 #welcome-content .section-title {
@@ -409,7 +401,12 @@ DD {
     font-size: 1.31rem;
     line-height: 133%;
     color: var(--bs-gray-600);
-    max-width: 48rem;
+}
+
+/* Welcome */
+
+.section-welcome {
+    padding: 0 5rem 4rem;
 }
 
 .main-menu {
@@ -647,6 +644,16 @@ A.github-link svg {
     background-color: #7ed4a8;
 }
 
+/* Strong points */
+
+.section-strong-points {
+    padding: 6rem 5rem 0;
+}
+
+.section-strong-points .section-subtitle {
+    max-width: 48rem;
+}
+
 .strong-points {
     margin-top: 3.375rem;
     border-collapse: collapse;
@@ -678,7 +685,12 @@ A.github-link svg {
     color: var(--bs-gray-900);
     padding-left: 3.5rem;
     padding-right: 3.5rem;
-    text-wrap: nowrap;
+}
+
+@media (min-width: 1170px) {
+    .strong-points TD.title {
+        text-wrap: nowrap;
+    }
 }
 
 .strong-points TD.description {
@@ -688,6 +700,81 @@ A.github-link svg {
     color: var(--bs-gray-600);
 }
 
+/* About */
+
+.section-about {
+    margin-top: 1.5rem;
+    padding: 6rem 5rem 4rem;
+    background: #f0f3f9;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.section-about .section-subtitle {
+    padding-right: 1rem;
+}
+
+.section-about .links A {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 2rem;
+    gap: 2rem;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    background: white;
+    text-decoration: none;
+}
+
+.section-about .links A + A {
+    margin-top: 2rem;
+}
+
+.section-about .links A .icon {
+    padding-top: .5rem;
+}
+
+.section-about .links A .icon svg {
+    border-radius: 3rem;
+    padding: .75rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    fill: white;
+}
+
+.section-about .links A.architecture .icon svg {
+    background-color: #0fb6bf;
+}
+
+.section-about .links A.administration .icon svg {
+    background-color: #487fde;
+}
+
+.section-about .links A.development .icon svg {
+    background-color: #6b57cd;
+}
+
+.section-about .links A.license .icon svg {
+    background-color: #ff7c04;
+}
+
+.section-about .links A .title {
+    font-weight: 500;
+    font-size: 1.69rem;
+    line-height: 148%;
+    color: var(--bs-gray-900);
+}
+
+.section-about .links A .description {
+    font-size: 1.13rem;
+    line-height: 133%;
+    color: var(--bs-gray-600);
+}
+
+.section-about .links A .arrow svg {
+    padding-top: .5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
 
 /* Old welcome page */
 .top-line {
