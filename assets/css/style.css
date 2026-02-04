@@ -438,7 +438,7 @@ DD {
 
 A.github-link {
     text-decoration: none;
-    color: black;
+    color: var(--bs-gray-900);
 }
 
 A.github-link svg {
@@ -933,6 +933,72 @@ A.github-link svg {
     text-decoration: underline;
 }
 
+/* Footer */
+FOOTER {
+    padding: 3rem 5rem 1.75rem;
+}
+
+FOOTER .upper {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--bs-gray-300);
+    display: grid;
+    grid-template-columns: 11rem 1fr 11rem;
+    gap: 2rem;
+}
+
+FOOTER .upper A.privacy-policy {
+    justify-self: center;
+    font-weight: 500;
+    color: var(--bs-gray-900);
+    text-decoration: none;
+}
+
+FOOTER .upper A.privacy-policy:hover {
+    text-decoration: underline;
+}
+
+FOOTER .upper .israel-support {
+    justify-self: end;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 150%;
+    color: var(--bs-gray-900);
+}
+
+FOOTER .lower {
+    padding-top: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+FOOTER .lower .copyright {
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -.02em;
+    color: #909da2;
+}
+
+FOOTER .lower .links {
+    justify-self: end;
+}
+
+FOOTER .lower .links A.github-link SPAN {
+    margin-inline-start: .75rem;
+    padding-inline-end: 1.5rem;
+}
+
+FOOTER .lower .links A.github-link:hover SPAN {
+    text-decoration: underline;
+}
+
+FOOTER .lower .links .google-play IMG {
+    display: inline-block;
+    height: 5rem;
+    margin-top: -.75rem;
+    margin-bottom: -.75rem;
+}
+
 /* Old welcome page */
 .top-line {
     position: absolute;
@@ -942,15 +1008,6 @@ A.github-link svg {
 
 MAIN.welcome-page {
     margin-top: 2rem;
-}
-
-.israel-support {
-    font-weight: 700;
-    color: var(--bs-blue-700);
-    margin-inline-start: .5rem;
-    margin-inline-end: 4rem;
-    position: relative;
-    top: -.1em;
 }
 
 @media (max-width: 767px) {
