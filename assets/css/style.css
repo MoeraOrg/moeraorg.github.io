@@ -450,14 +450,18 @@ A.github-link svg {
     --bs-btn-color: #fff;
     --bs-btn-bg: #0fb6bf;
     --bs-btn-border-color: #0fb6bf;
+
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #33c1c9;
     --bs-btn-hover-border-color: #27bdc5;
+
     --bs-btn-focus-shadow-rgb: 13,155,162;
+
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: #3fc5cc;
     --bs-btn-active-border-color: #27bdc5;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+
     --bs-btn-disabled-color: #f8f9fa;
     --bs-btn-disabled-bg: #0fb6bf;
     --bs-btn-disabled-border-color: #0fb6bf;
@@ -466,18 +470,50 @@ A.github-link svg {
 .btn-outline-brand {
     --bs-btn-color: #0fb6bf;
     --bs-btn-border-color: #0fb6bf;
+
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #0fb6bf;
     --bs-btn-hover-border-color: #0fb6bf;
+
     --bs-btn-focus-shadow-rgb: 15,182,191;
+
     --bs-btn-active-color: #000;
     --bs-btn-active-bg: #0fb6bf;
     --bs-btn-active-border-color: #0fb6bf;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+
     --bs-btn-disabled-color: #0fb6bf;
     --bs-btn-disabled-bg: #0000;
     --bs-btn-disabled-border-color: #0fb6bf;
+
     --bs-gradient: none;
+}
+
+.btn-dark {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #0b898f;
+    --bs-btn-border-color: #0b898f;
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #1aa0a6;
+    --bs-btn-hover-border-color: #14979d;
+
+    --bs-btn-focus-shadow-rgb: 11,137,143;
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #28aab0;
+    --bs-btn-active-border-color: #14979d;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+
+    --bs-btn-disabled-color: #e6f4f5;
+    --bs-btn-disabled-bg: #0b898f;
+    --bs-btn-disabled-border-color: #0b898f;
+}
+
+.btn-mg {
+    --bs-btn-font-size: 1.13rem;
+    --bs-btn-padding-y: .875rem;
+    --bs-btn-padding-x: 2.875rem;
 }
 
 .bsd {
@@ -525,10 +561,6 @@ A.github-link svg {
 
 .intro .get-started .btn {
     margin-right: 1.5rem;
-
-    --bs-btn-font-size: 1.13rem;
-    --bs-btn-padding-y: .875rem;
-    --bs-btn-padding-x: 2.875rem;
 }
 
 .intro .get-started .google-play IMG {
@@ -817,6 +849,88 @@ A.github-link svg {
     padding-top: .5rem;
     width: 1.5rem;
     height: 1.5rem;
+}
+
+/* Feedback */
+
+.section-feedback {
+    padding: 6rem 5rem 3rem;
+    display: grid;
+    grid-template: "title    form" 1fr
+                   "contacts form" 1fr
+                  / 1fr      1fr;
+    gap: 1.5rem;
+}
+
+.section-feedback .section-title {
+    grid-area: title;
+}
+
+.section-feedback .contacts {
+    grid-area: contacts;
+    align-self: end;
+}
+
+.section-feedback .contacts A.email {
+    font-weight: 600;
+    font-size: 1.69rem;
+    line-height: 148%;
+    color: var(--bs-gray-900);
+    text-decoration: none;
+}
+
+.section-feedback .contacts A.email:hover {
+    text-decoration: underline;
+}
+
+.section-feedback .contacts .social {
+    font-size: 1.13rem;
+    line-height: 133%;
+    color: var(--bs-gray-600);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.section-feedback .contacts .icon svg {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.section-feedback FORM {
+    grid-area: form;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    background: #f0f3f9;
+}
+
+.section-feedback FORM .form-control {
+    margin-bottom: 1.25rem;
+    padding: 1.13rem 1.56rem;
+}
+
+.section-feedback FORM TEXTAREA {
+    min-height: 8.25rem;
+}
+
+.section-feedback FORM .bottom {
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: 1.5rem;
+}
+
+.section-feedback FORM .privacy-policy {
+    line-height: 150%;
+    color: var(--bs-gray-900);
+}
+
+.section-feedback FORM .privacy-policy A {
+    font-weight: 500;
+    color: var(--bs-gray-900);
+    text-decoration: none;
+}
+
+.section-feedback FORM .privacy-policy A:hover {
+    text-decoration: underline;
 }
 
 /* Old welcome page */
