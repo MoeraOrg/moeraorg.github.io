@@ -2,75 +2,284 @@
 layout: page
 ---
 
-<main class="welcome-page">
-    <div class="welcome">
-        <div class="container">
-            <img src="assets/images/logo-welcome.png" srcset="assets/images/logo-welcome.png 361w"
-                 sizes="(max-width: 600px) 180px, 361px">
-            <div class="tagline">
-                {{ site.tagline }}
+<div id="welcome-content">
+    <section class="section-welcome">
+        <div class="main-menu">
+            <img src="assets/images/logo.svg" alt="Moera" width="78" height="42">
+            <div class="menu text-center">
+                <a href="/overview/index.html">How it works?</a>
+                <a href="/administration/index.html">Administrator's Guide</a>
+                <a href="/development/index.html">Developer's Guide</a>
+                <a href="/license/index.html">License</a>
             </div>
-            <a class="btn btn-success btn-lg mt-3" href="https://web.moera.org">Get Started</a>
-            <a class="google-play"
-               href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
-                <img alt="Get it on Google Play"
-                     src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+            <div>
+                <a href="https://github.com/MoeraOrg" class="github-link" target="_blank">
+                    {% include svg/github-brands-solid.svg %}
+                </a>
+                <a href="https://web.moera.org/@/~/connect" class="btn btn-outline-brand">
+                    Log In
+                </a>
+                <a href="https://web.moera.org/@/~/signup" class="btn btn-brand">
+                    Sign Up
+                </a>
+            </div>
+        </div>
+        <div class="text-end" data-nosnippet>
+            <span class="bsd">בס"ד</span>
+        </div>
+        <div class="intro">
+            <div class="slogan">
+                The Best<br>
+                <b>Decentralized</b><br>
+                Social Network
+            </div>
+            <div class="mission">
+                Moera empowers people with real freedom online — through a simple, powerful interface, rich features,
+                and open, decentralized protocols. You stay in control of your content, your connections,
+                and your digital space.
+            </div>
+            <div class="browser">
+                <div class="mockup">
+                    <div class="bar">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <img src="assets/images/screenshot.jpg" alt="Moera Browser Screenshot">
+                </div>
+            </div>
+            <div class="get-started">
+                <a class="btn btn-brand btn-mg" href="https://web.moera.org">Get Started</a>
+                <a class="google-play"
+                   href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
+                    <img alt="Get it on Google Play"
+                         src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+                </a>
+            </div>
+        </div>
+        <div class="vision">
+            <div class="magenta">
+                <div class="icon">
+                    {% include svg/tune.svg %}
+                </div>
+                <div class="title">Your Online Life, On Your Terms</div>
+                <div class="description">
+                    Moera is built so you decide what your space is, how it looks, and how it works — not a platform’s
+                    business model. Host it with a provider or run it on your own server.
+                </div>
+            </div>
+            <div class="blue">
+                <div class="icon">
+                    {% include svg/alt_route.svg %}
+                </div>
+                <div class="title">Real Choice, Not One Gatekeeper</div>
+                <div class="description">
+                    Choose your provider, your client, your rules, your communities — and the tools you use.
+                    Moera doesn’t lock you into one “official app” or forbid third-party automation and AI helpers.
+                </div>
+            </div>
+            <div class="green">
+                <div class="icon">
+                    {% include svg/hide_source.svg %}
+                </div>
+                <div class="title">Network For People, Not Ads</div>
+                <div class="description">
+                    Moera aims for a calmer, cleaner experience where the product is the user’s freedom and comfort —
+                    not attention, outrage, or endless engagement.
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-strong-points">
+        <div class="section-title">
+            Why use <b>Moera</b>?
+        </div>
+        <div class="section-subtitle">
+            Moera is more than just another social network — it’s a return to the original principles of the Web,
+            empowering users with full control over their content.
+        </div>
+        <table class="strong-points">
+            <tr>
+                <td class="icon">
+                    {% include svg/campaign.svg %}
+                </td>
+                <td class="title">
+                    Freedom to Speak and Create
+                </td>
+                <td class="description">
+                    No single authority deciding what’s acceptable for everyone — you set the boundaries of your own
+                    space.
+                </td>
+            </tr>
+            <tr>
+                <td class="icon">
+                    {% include svg/self_improvement.svg %}
+                </td>
+                <td class="title">
+                    Control Without Complexity
+                </td>
+                <td class="description">
+                    Decentralization shouldn’t feel like a hobby. Moera’s goal is powerful control with a simple,
+                    everyday experience.
+                </td>
+            </tr>
+            <tr>
+                <td class="icon">
+                    {% include svg/storage.svg %}
+                </td>
+                <td class="title">
+                    Your Data, Your Infrastructure
+                </td>
+                <td class="description">
+                    Run Moera wherever you want — including your own server — and keep your online presence independent
+                    of any single company.
+                </td>
+            </tr>
+            <tr>
+                <td class="icon">
+                    {% include svg/handyman.svg %}
+                </td>
+                <td class="title">
+                    Tools Without Permission
+                </td>
+                <td class="description">
+                    Use any client, script, automation, or AI tool you like. No arbitrary API restrictions, no “approved
+                    integrations only.”
+                </td>
+            </tr>
+            <tr>
+                <td class="icon">
+                    {% include svg/dynamic_feed.svg %}
+                </td>
+                <td class="title">
+                    Your Feed, Built Your Way
+                </td>
+                <td class="description">
+                    You decide what to read and how it’s organized — chronological, curated, filtered, or fully custom.
+                    The feed should be yours, not an opaque algorithm’s.
+                </td>
+            </tr>
+        </table>
+    </section>
+    <section class="section-about">
+        <div>
+            <div class="section-title">
+                About <b>Moera</b>
+            </div>
+            <div class="section-subtitle">
+                By prioritizing decentralization, data ownership, and privacy, Moera puts choice and control back in
+                users’ hands.
+            </div>
+        </div>
+        <div class="links">
+            <a href="/overview/index.html" class="architecture">
+                <div class="icon">{% include svg/network_node.svg %}</div>
+                <div>
+                    <div class="title">Architecture Overview</div>
+                    <div class="description">How it works? Why?</div>
+                </div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+            <a href="/administration/index.html" class="administration">
+                <div class="icon">{% include svg/extension.svg %}</div>
+                <div>
+                    <div class="title">Administrator's Guide</div>
+                    <div class="description">Install your own node or become a provider</div>
+                </div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+            <a href="/development/index.html" class="development">
+                <div class="icon">{% include svg/developer_guide.svg %}</div>
+                <div>
+                    <div class="title">Developer's Guide</div>
+                    <div class="description">Protocols, libraries, and how to contribute</div>
+                </div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+            <a href="/license/index.html" class="license">
+                <div class="icon">{% include svg/workspace_premium.svg %}</div>
+                <div>
+                    <div class="title">License</div>
+                    <div class="description">Everything is open source</div>
+                </div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
             </a>
         </div>
-    </div>
-
-    <div class="cards container">
-        <a class="card overview" href="/overview/index.html">
-            <div class="icon"><i class="fa-solid fa-paper-plane"></i></div>
-            <div class="title">Architecture Overview</div>
-            <div class="description">How it works? Why?</div>
-        </a>
-        <a class="card administration" href="/administration/index.html">
-            <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-            <div class="title">Administrator's Guide</div>
-            <div class="description">Install your own node or become a provider</div>
-        </a>
-        <a class="card development" href="/development/index.html">
-            <div class="icon"><i class="fa-solid fa-puzzle-piece"></i></div>
-            <div class="title">Developer's Guide</div>
-            <div class="description">Protocols, libraries and contribution</div>
-        </a>
-        <a class="card license" href="/license/index.html">
-            <div class="icon"><i class="fa-solid fa-gift"></i></div>
-            <div class="title">License</div>
-            <div class="description">Everything is Open Source</div>
-        </a>
-    </div>
-
-    <div class="cards-center container">
-        <div class="card">
-            <div class="icon"><i class="fa-solid fa-link"></i></div>
-            <div class="title">Follow the development</div>
-            <div class="description">
-                <ul>
-                    <li>
-                        <a href="https://github.com/MoeraOrg">GitHub</a>
-                    </li>
-                    <li>
-                        <a href="https://blog.moera.org">News</a> on Moera
-                    </li>
-                    <li>
-                        <a href="https://t.me/moeranews">News channel</a> on Telegram
-                    </li>
-                    <li>
-                        <a href="https://t.me/moeradevelopment">Developers' group</a> on Telegram
-                    </li>
-                </ul>
+    </section>
+    <section class="section-development">
+        <div class="section-title">
+            Follow the <b>Development</b>
+        </div>
+        <div class="links">
+            <a href="https://github.com/MoeraOrg">
+                <div class="icon">{% include svg/github-brands-solid.svg %}</div>
+                <div class="title">GitHub</div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+            <a href="https://moera.page/@moera-blog/blog.moera.org/">
+                <div class="icon">{% include svg/moera-brands-solid.svg %}</div>
+                <div class="title">News on Moera</div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+            <a href="https://t.me/moeranews">
+                <div class="icon">{% include svg/telegram-brands-solid.svg %}</div>
+                <div class="title">News channel on Telegram</div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+            <a href="https://t.me/moeradevelopment">
+                <div class="icon">{% include svg/telegram-brands-solid.svg %}</div>
+                <div class="title">Developers' group on Telegram</div>
+                <div class="arrow">{% include svg/north_east.svg %}</div>
+            </a>
+        </div>
+    </section>
+    <section class="section-feedback">
+        <div class="section-title">
+            Do you have any<br><b>Feedback</b>?
+        </div>
+        <div class="contacts">
+            <a href="mailto:helpdesk@moera.org" class="email">helpdesk@moera.org</a>
+            <div class="social">
+                Social
+            </div>
+            <a href="https://t.me/moeradevelopment" class="icon">{% include svg/telegram-contact.svg %}</a>
+        </div>
+        <form>
+            <input type="text" class="form-control" name="name" placeholder="Your Name">
+            <input type="email" class="form-control" name="email" placeholder="Email Address">
+            <textarea class="form-control" name="message" placeholder="Your Message"></textarea>
+            <div class="bottom">
+                <button type="submit" class="btn btn-dark btn-mg">Contact Us</button>
+                <div class="privacy-policy">
+                    By submitting this form, you agree to our
+                    <a href="/license/privacy-policy.html">Privacy Policy</a>
+                </div>
+            </div>
+        </form>
+    </section>
+    <footer>
+        <div class="upper">
+            <img src="assets/images/logo.svg" alt="Moera" width="78" height="42">
+            <a href="/license/privacy-policy.html" class="privacy-policy">Privacy Policy</a>
+            <span class="israel-support">
+                We support Israel&nbsp;&nbsp;<img alt="Flag of Israel" src="assets/images/israel-flag.png" width="28">
+            </span>
+        </div>
+        <div class="lower">
+            <div class="copyright">
+                © 2018-2026 Moera Engineering. All rights reserved.
+            </div>
+            <div class="links">
+                <a href="https://github.com/MoeraOrg" class="github-link" target="_blank">
+                    {% include svg/github-brands-solid.svg %}
+                    <span>GitHub</span>
+                </a>
+                <a class="google-play"
+                   href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
+                    <img alt="Get it on Google Play"
+                         src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+                </a>
             </div>
         </div>
-    </div>
-</main>
-
-<div class="top-line text-end" data-nosnippet>
-    <span class="israel-support">
-        We support Israel&nbsp;&nbsp;<img alt="Flag of Israel" src="assets/images/israel-flag.png">
-    </span>
-    <a class="github-link" href="https://github.com/MoeraOrg">
-        <i class="fa-brands fa-github"></i> GitHub</a>
-    <span class="bsd">בס"ד</span>
+    </footer>
 </div>
