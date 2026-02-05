@@ -788,6 +788,12 @@ A.github-link svg {
     padding: 6rem 5rem 0;
 }
 
+@media (max-width: 1089px) {
+    .section-strong-points {
+        padding: 6rem 1rem 0;
+    }
+}
+
 .section-strong-points .section-subtitle {
     max-width: 48rem;
 }
@@ -797,17 +803,33 @@ A.github-link svg {
     border-collapse: collapse;
 }
 
+@media (max-width: 1089px) {
+    .strong-points {
+        margin-top: 2rem;
+    }
+}
+
 .strong-points TD {
     border-top: 1px solid var(--bs-gray-300);
     padding: 2rem 0;
     vertical-align: top;
 }
 
-.strong-points TD.icon {
+@media (max-width: 1089px) {
+    .strong-points .item {
+        border-top: 1px solid var(--bs-gray-300);
+        padding: 1.5rem 0;
+        display: grid;
+        grid-template-columns: 4.5rem 1fr;
+        align-items: center;
+    }
+}
+
+.strong-points .icon {
     padding-right: 1.5rem;
 }
 
-.strong-points TD.icon svg {
+.strong-points .icon svg {
     border-radius: 3rem;
     padding: 1rem;
     width: 4rem;
@@ -816,7 +838,15 @@ A.github-link svg {
     fill: white;
 }
 
-.strong-points TD.title {
+@media (max-width: 1089px) {
+    .strong-points .icon svg {
+        padding: .5rem;
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
+.strong-points .title {
     font-weight: 500;
     font-size: 1.69rem;
     line-height: 148%;
@@ -826,16 +856,31 @@ A.github-link svg {
 }
 
 @media (min-width: 1170px) {
-    .strong-points TD.title {
+    .strong-points .title {
         text-wrap: nowrap;
     }
 }
 
-.strong-points TD.description {
+@media (max-width: 1089px) {
+    .strong-points .title {
+        font-size: 1.5rem;
+        line-height: 133%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.strong-points .description {
     font-weight: 400;
     font-size: 1.13rem;
     line-height: 133%;
     color: var(--bs-gray-600);
+}
+
+@media (max-width: 1089px) {
+    .strong-points .description {
+        margin-bottom: 2rem;
+    }
 }
 
 /* About */
