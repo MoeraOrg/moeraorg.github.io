@@ -492,6 +492,41 @@ A.github-link svg {
     height: 2rem;
 }
 
+.main-menu .menu-button {
+    background: none;
+    border: none;
+    padding: .63rem .5rem;
+    width: 3rem;
+    height: 3rem;
+}
+
+.main-menu .menu-button svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #6c757d;
+}
+
+#sandwich-menu {
+    max-width: 265px;
+}
+
+#sandwich-menu .offcanvas-body A {
+    display: grid;
+    place-items: center;
+    height: 2.5rem;
+}
+
+#sandwich-menu .offcanvas-body A.btn {
+    margin-bottom: 2rem;
+}
+
+#sandwich-menu .offcanvas-body A:not(.btn) {
+    margin-bottom: 1rem;
+    text-decoration: none;
+    line-height: 150%;
+    color: var(--bs-gray-900);
+}
+
 .btn-brand {
     --bs-btn-color: #fff;
     --bs-btn-bg: #0b898f;

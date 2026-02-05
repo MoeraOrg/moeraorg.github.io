@@ -22,6 +22,24 @@ layout: page
                 <a href="https://web.moera.org/@/~/signup" class="btn btn-brand">
                     Sign Up
                 </a>
+                <button type="button" class="menu-button d-mobile" data-bs-toggle="offcanvas"
+                        data-bs-target="#sandwich-menu">
+                    {% include svg/menu.svg %}
+                </button>
+            </div>
+        </div>
+        <div class="offcanvas offcanvas-end d-mobile" tabindex="-1" id="sandwich-menu">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <a href="https://web.moera.org/@/~/connect" class="btn btn-outline-brand">
+                    Log In
+                </a>
+                <a href="/overview/index.html">How it works?</a>
+                <a href="/administration/index.html">Administrator's Guide</a>
+                <a href="/development/index.html">Developer's Guide</a>
+                <a href="/license/index.html">License</a>
             </div>
         </div>
         <div class="text-end" data-nosnippet>
