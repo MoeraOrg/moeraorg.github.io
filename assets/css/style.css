@@ -1100,6 +1100,16 @@ A.github-link svg {
     gap: 1.5rem;
 }
 
+@media (max-width: 1089px) {
+    .section-feedback {
+        padding: 3rem 1rem;
+        grid-template: "title" min-content
+                       "form" min-content
+                       "contacts" min-content
+                      / 1fr;
+    }
+}
+
 .section-feedback .section-title {
     grid-area: title;
 }
@@ -1109,12 +1119,26 @@ A.github-link svg {
     align-self: end;
 }
 
+@media (max-width: 1089px) {
+    .section-feedback .contacts {
+        margin-top: 2rem;
+        text-align: center;
+    }
+}
+
 .section-feedback .contacts A.email {
     font-weight: 600;
     font-size: 1.69rem;
     line-height: 148%;
     color: var(--bs-gray-900);
     text-decoration: none;
+}
+
+@media (max-width: 1089px) {
+    .section-feedback .contacts A.email {
+        font-size: 1.31rem;
+        line-height: 152%;
+    }
 }
 
 .section-feedback .contacts A.email:hover {
@@ -1129,6 +1153,12 @@ A.github-link svg {
     margin-bottom: 1rem;
 }
 
+@media (max-width: 1089px) {
+    .section-feedback .contacts .social {
+        margin-top: 1.5rem;
+    }
+}
+
 .section-feedback .contacts .icon svg {
     width: 3.5rem;
     height: 3.5rem;
@@ -1139,6 +1169,12 @@ A.github-link svg {
     border-radius: 1.5rem;
     padding: 2.5rem;
     background: #f0f3f9;
+}
+
+@media (max-width: 1089px) {
+    .section-feedback FORM {
+        padding: 1rem;
+    }
 }
 
 .section-feedback FORM .form-control {
@@ -1154,6 +1190,14 @@ A.github-link svg {
     display: grid;
     grid-template-columns: max-content auto;
     gap: 1.5rem;
+}
+
+@media (max-width: 1089px) {
+    .section-feedback FORM .bottom {
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content min-content;
+        gap: 1rem;
+    }
 }
 
 .section-feedback FORM .privacy-policy {
