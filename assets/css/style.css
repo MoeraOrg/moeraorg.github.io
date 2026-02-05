@@ -894,8 +894,25 @@ A.github-link svg {
     gap: 1.5rem;
 }
 
-.section-about .section-subtitle {
-    padding-right: 1rem;
+@media (max-width: 1089px) {
+    .section-about {
+        margin-top: 4.5rem;
+        padding: 3rem 1rem;
+        grid-template-columns: 1fr;
+        display: block;
+    }
+}
+
+@media (min-width: 1090px) {
+    .section-about .section-subtitle {
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 1089px) {
+    .section-about .links {
+        margin-top: 2rem;
+    }
 }
 
 .section-about .links A {
@@ -908,12 +925,31 @@ A.github-link svg {
     text-decoration: none;
 }
 
+@media (max-width: 1089px) {
+    .section-about .links A {
+        padding: 1.25rem;
+    }
+}
+
 .section-about .links A + A {
     margin-top: 2rem;
 }
 
+@media (max-width: 1089px) {
+    .section-about .links A + A {
+        margin-top: 1rem;
+    }
+}
+
 .section-about .links A .icon {
     padding-top: .5rem;
+}
+
+@media (max-width: 1089px) {
+    .section-about .links A .icon {
+        padding-top: 0;
+        align-self: center;
+    }
 }
 
 .section-about .links A .icon svg {
@@ -947,10 +983,25 @@ A.github-link svg {
     color: var(--bs-gray-900);
 }
 
+@media (max-width: 1089px) {
+    .section-about .links A .title {
+        font-size: 1.5rem;
+        line-height: 133%;
+        margin-bottom: .5rem;
+    }
+}
+
 .section-about .links A .description {
     font-size: 1.13rem;
     line-height: 133%;
     color: var(--bs-gray-600);
+}
+
+@media (max-width: 1089px) {
+    .section-about .links A .description {
+        font-size: 1rem;
+        line-height: 150%;
+    }
 }
 
 .section-about .links A .arrow svg {
