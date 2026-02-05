@@ -6,17 +6,17 @@ layout: page
     <section class="section-welcome">
         <div class="main-menu">
             <img src="assets/images/logo.svg" alt="Moera" width="78" height="42">
-            <div class="menu text-center">
+            <div class="menu text-center d-desktop">
                 <a href="/overview/index.html">How it works?</a>
                 <a href="/administration/index.html">Administrator's Guide</a>
                 <a href="/development/index.html">Developer's Guide</a>
                 <a href="/license/index.html">License</a>
             </div>
-            <div>
+            <div class="buttons">
                 <a href="https://github.com/MoeraOrg" class="github-link" target="_blank">
                     {% include svg/github-brands-solid.svg %}
                 </a>
-                <a href="https://web.moera.org/@/~/connect" class="btn btn-outline-brand">
+                <a href="https://web.moera.org/@/~/connect" class="btn btn-outline-brand d-desktop">
                     Log In
                 </a>
                 <a href="https://web.moera.org/@/~/signup" class="btn btn-brand">
@@ -52,8 +52,7 @@ layout: page
                 <a class="btn btn-brand btn-mg" href="https://web.moera.org">Get Started</a>
                 <a class="google-play"
                    href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
-                    <img alt="Get it on Google Play"
-                         src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+                    {% include svg/get_it_on_google_play.svg %}
                 </a>
             </div>
         </div>

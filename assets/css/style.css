@@ -399,8 +399,11 @@ DD {
     margin-bottom: 1rem;
 }
 
-#welcome-content .section-title B {
-    font-weight: 800;
+@media (max-width: 1089px) {
+    #welcome-content .section-title {
+        font-size: 2.75rem;
+        line-height: 127%;
+    }
 }
 
 #welcome-content .section-subtitle {
@@ -410,10 +413,28 @@ DD {
     color: var(--bs-gray-600);
 }
 
+@media (max-width: 1089px) {
+    .d-desktop {
+        display: none;
+    }
+}
+
+@media (min-width: 1090px) {
+    .d-mobile {
+        display: none;
+    }
+}
+
 /* Welcome */
 
 .section-welcome {
     padding: 0 5rem 4rem;
+}
+
+@media (max-width: 1089px) {
+    .section-welcome {
+        padding: 0 1rem;
+    }
 }
 
 .main-menu {
@@ -422,6 +443,14 @@ DD {
     grid-template: "logo menu buttons" 1fr
                  / 80px  auto max-content;
     align-items: center;
+}
+
+@media (max-width: 1089px) {
+    .main-menu {
+        padding: .875rem 0;
+        grid-template: "logo buttons" 1fr
+                      / 80px 1fr;
+    }
 }
 
 .main-menu .menu A {
@@ -437,10 +466,20 @@ DD {
     text-decoration: underline;
 }
 
+.main-menu .buttons {
+    justify-self: end;
+}
+
 .main-menu .btn {
     width: 6rem;
     height: 2.5rem;
     margin-left: 1rem;
+}
+
+@media (max-width: 1089px) {
+    .main-menu .btn {
+        width: 5.5rem;
+    }
 }
 
 A.github-link {
@@ -502,19 +541,35 @@ A.github-link svg {
     --bs-btn-padding-x: 2.875rem;
 }
 
+@media (max-width: 1089px) {
+    .btn-mg {
+        --bs-btn-padding-x: .75rem;
+    }
+}
+
 .bsd {
     font-family: 'Suez One', serif;
     font-size: 1.3rem;
 }
 
 .intro {
-    margin-top: 3.5rem;
+    margin-top: 2.5rem;
     display: grid;
     grid-template: "slogan  browser" min-content
                    "mission browser" min-content
                    "buttons browser" min-content
                  / 1fr      1fr;
     gap: 1.5rem;
+}
+
+@media (max-width: 1089px) {
+    .intro {
+        grid-template: "slogan" min-content
+                       "mission" min-content
+                       "buttons" min-content
+                       "browser" min-content
+                     / 1fr;
+    }
 }
 
 .intro .slogan {
@@ -525,6 +580,13 @@ A.github-link svg {
     line-height: 125%;
     color: #22282b;
     background: url("../images/stroke.svg") 0 4.5rem no-repeat;
+}
+
+@media (max-width: 1089px) {
+    .intro .slogan {
+        font-size: 2.75rem;
+        background: none;
+    }
 }
 
 .intro .slogan B {
@@ -539,19 +601,57 @@ A.github-link svg {
     color: var(--bs-gray-600);
 }
 
+@media (max-width: 1089px) {
+    .intro .mission {
+        font-size: 1.13rem;
+    }
+}
+
 .intro .get-started {
     grid-area: buttons;
     align-self: end;
     padding-top: 3.5rem;
 }
 
+@media (max-width: 1089px) {
+    .intro .get-started {
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }
+}
+
 .intro .get-started .btn {
     margin-right: 1.5rem;
 }
 
-.intro .get-started .google-play IMG {
+@media (max-width: 1089px) {
+    .intro .get-started .btn {
+        display: block;
+        margin-right: 0;
+    }
+}
+
+.intro .get-started .google-play {
     display: inline-block;
-    height: 5.5rem;
+    border: 1.26px solid var(--bs-gray-300);
+    border-radius: .375rem;
+    padding: .44rem 1.44rem;
+    width: 11.75rem;
+    height: 3.5rem;
+    text-align: center;
+}
+
+@media (max-width: 1089px) {
+    .intro .get-started .google-play {
+        display: block;
+        width: unset;
+        margin-top: 1rem;
+    }
+
+    .intro .get-started .google-play svg {
+        width: 8.84rem;
+        height: 2.62rem;
+    }
 }
 
 .intro .browser {
@@ -604,9 +704,23 @@ A.github-link svg {
     gap: 1.5rem
 }
 
+@media (max-width: 1089px) {
+    .vision {
+        margin-top: 3rem;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+    }
+}
+
 .vision > DIV {
     border-radius: .75rem;
     padding: 2rem 2.5rem 2.5rem;
+}
+
+@media (max-width: 1089px) {
+    .vision > DIV {
+        padding: 1.5rem;
+    }
 }
 
 .vision > DIV .icon {
@@ -622,6 +736,12 @@ A.github-link svg {
 .vision > DIV .icon svg {
     width: 2rem;
     height: 2rem;
+}
+
+@media (max-width: 1089px) {
+    .vision > DIV .icon {
+        margin-bottom: 1rem;
+    }
 }
 
 .vision > DIV .title {
