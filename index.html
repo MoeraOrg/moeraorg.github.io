@@ -321,11 +321,12 @@ layout: page
     <footer>
         <div class="upper">
             <img src="assets/images/logo.svg" alt="Moera" width="78" height="42">
-            <a href="/license/privacy-policy.html" class="privacy-policy">Privacy Policy</a>
+            <a href="/license/privacy-policy.html" class="privacy-policy d-desktop">Privacy Policy</a>
             <span class="israel-support">
                 We support Israel&nbsp;&nbsp;<img alt="Flag of Israel" src="assets/images/israel-flag.png" width="28">
             </span>
         </div>
+        <a href="/license/privacy-policy.html" class="privacy-policy d-mobile">Privacy Policy</a>
         <div class="lower">
             <div class="copyright">
                 © 2018-2026 Moera Engineering. All rights reserved.
@@ -337,8 +338,7 @@ layout: page
                 </a>
                 <a class="google-play"
                    href="https://play.google.com/store/apps/details?id=org.moera.web.twa&pcampaignid=moeraorg">
-                    <img alt="Get it on Google Play"
-                         src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>
+                    {% include svg/get_it_on_google_play.svg %}
                 </a>
             </div>
         </div>

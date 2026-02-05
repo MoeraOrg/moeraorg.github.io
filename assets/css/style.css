@@ -927,6 +927,7 @@ A.github-link svg {
 
 @media (max-width: 1089px) {
     .section-about .links A {
+        gap: 1.25rem;
         padding: 1.25rem;
     }
 }
@@ -985,7 +986,7 @@ A.github-link svg {
 
 @media (max-width: 1089px) {
     .section-about .links A .title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         line-height: 133%;
         margin-bottom: .5rem;
     }
@@ -1056,9 +1057,7 @@ A.github-link svg {
     .section-development .links A + A {
         margin-top: 2rem;
     }
-}
 
-@media (max-width: 1089px) {
     .section-development .links A .icon {
         align-self: center;
     }
@@ -1220,12 +1219,27 @@ FOOTER {
     padding: 3rem 5rem 1.75rem;
 }
 
+@media (max-width: 1089px) {
+    FOOTER {
+        padding: 1.5rem 1rem;
+    }
+}
+
 FOOTER .upper {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--bs-gray-300);
     display: grid;
     grid-template-columns: 11rem 1fr 11rem;
     gap: 2rem;
+}
+
+@media (max-width: 1089px) {
+    FOOTER .upper {
+        padding-bottom: 1rem;
+        grid-template-columns: 1fr 11rem;
+        gap: 1rem;
+        align-items: center;
+    }
 }
 
 FOOTER .upper A.privacy-policy {
@@ -1242,19 +1256,46 @@ FOOTER .upper A.privacy-policy:hover {
 FOOTER .upper .israel-support {
     justify-self: end;
     font-weight: 500;
-    font-size: 1rem;
     line-height: 150%;
     color: var(--bs-gray-900);
+}
+
+@media (max-width: 1089px) {
+    FOOTER > A.privacy-policy {
+        display: block;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--bs-gray-300);
+        font-weight: 500;
+        color: var(--bs-gray-900);
+        text-decoration: none;
+        text-align: center;
+    }
+
+    FOOTER > A.privacy-policy:hover {
+        text-decoration: underline;
+    }
 }
 
 FOOTER .lower {
     padding-top: 1.5rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template: "copyright links" min-content
+                  / 1fr       1fr;
     gap: 2rem;
 }
 
+@media (max-width: 1089px) {
+    FOOTER .lower {
+        padding-top: 1rem;
+        grid-template: "links" 3rem
+                       "copyright" min-content
+                     / 1fr;
+        gap: 2rem;
+    }
+}
+
 FOOTER .lower .copyright {
+    grid-area: copyright;
     font-weight: 500;
     line-height: 150%;
     letter-spacing: -.02em;
@@ -1262,7 +1303,30 @@ FOOTER .lower .copyright {
 }
 
 FOOTER .lower .links {
+    grid-area: links;
     justify-self: end;
+    display: flex;
+    align-items: start;
+}
+
+@media (max-width: 1089px) {
+    FOOTER .lower .links {
+        justify-self: unset;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+FOOTER .lower .links A.github-link {
+    display: inline-flex;
+    align-items: center;
+    height: 3rem;
+}
+
+@media (max-width: 1089px) {
+    FOOTER .lower .links A.github-link {
+        display: flex;
+    }
 }
 
 FOOTER .lower .links A.github-link SPAN {
@@ -1274,9 +1338,23 @@ FOOTER .lower .links A.github-link:hover SPAN {
     text-decoration: underline;
 }
 
-FOOTER .lower .links .google-play IMG {
+FOOTER .lower .links .google-play {
     display: inline-block;
-    height: 5rem;
-    margin-top: -.75rem;
-    margin-bottom: -.75rem;
+    border: 1.26px solid var(--bs-gray-300);
+    border-radius: .375rem;
+    padding: .44rem 1.44rem;
+    width: 11rem;
+    height: 3rem;
+    text-align: center;
+}
+
+FOOTER .lower .links .google-play svg {
+    width: 7.15rem;
+    height: 2.12rem;
+}
+
+@media (max-width: 1089px) {
+    FOOTER .lower .links .google-play {
+        display: block;
+    }
 }
