@@ -1016,12 +1016,25 @@ A.github-link svg {
     padding: 6rem 5rem 3rem;
 }
 
+@media (max-width: 1089px) {
+    .section-development {
+        padding: 3rem 1rem;
+    }
+}
+
 .section-development .links {
     margin-top: 4rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: min-content;
     gap: 2rem;
+}
+
+@media (max-width: 1089px) {
+    .section-development .links {
+        margin-top: 2rem;
+        display: block;
+    }
 }
 
 .section-development .links A {
@@ -1032,6 +1045,23 @@ A.github-link svg {
     border-radius: 1rem;
     padding: 2.5rem;
     text-decoration: none;
+}
+
+@media (max-width: 1089px) {
+    .section-development .links A {
+        gap: 1.25rem;
+        padding: 1.25rem;
+    }
+
+    .section-development .links A + A {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 1089px) {
+    .section-development .links A .icon {
+        align-self: center;
+    }
 }
 
 .section-development .links A .icon svg {
@@ -1045,6 +1075,12 @@ A.github-link svg {
     line-height: 133%;
     color: var(--bs-gray-900);
     padding-right: 1.25rem;
+}
+
+@media (max-width: 1089px) {
+    .section-development .links A .title {
+        padding-right: .25rem;
+    }
 }
 
 .section-development .links A .arrow svg {
