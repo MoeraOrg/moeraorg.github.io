@@ -24,3 +24,9 @@
 
 <!-- Global CSS -->
 <link id="theme-style" rel="stylesheet" href="{{ '/assets/css/style.css' | prepend: site.baseurl }}">
+{% if page.add_style %}
+    <link rel="stylesheet" href="{{ page.add_style | prepend: site.baseurl }}">
+{% endif %}
+{% if page.add_script %}
+    <script src="{{ page.add_script | prepend: site.baseurl }}"></script>
+{% endif %}
