@@ -330,7 +330,13 @@ add_script: /assets/js/welcome.js
             <input type="email" class="form-control" name="email" placeholder="Email Address">
             <textarea class="form-control" name="message" placeholder="Your Message"></textarea>
             <div class="bottom">
-                <button type="submit" class="btn btn-brand btn-mg">Contact Us</button>
+                <button
+                    type="submit"
+                    class="btn btn-brand btn-mg g-recaptcha"
+                    data-sitekey="6Lf8K2QsAAAAAF4IRzZghTvl8SfUoW4hGCYMz9Kg"
+                    data-callback="onFeedbackSubmit"
+                    data-action="submit"
+                >Contact Us</button>
                 <div class="privacy-policy">
                     By submitting this form, you agree to our
                     <a href="/license/privacy-policy.html">Privacy Policy</a>
