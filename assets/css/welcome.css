@@ -863,6 +863,7 @@ A.github-link svg {
     display: grid;
     grid-template: "captcha     captcha" min-content
                    "submit      policy" min-content
+                   "google      google" min-content
                   / max-content auto;
     column-gap: 1.5rem;
 }
@@ -873,6 +874,7 @@ A.github-link svg {
         grid-template: "captcha" min-content
                        "submit" min-content
                        "policy" min-content
+                       "google" min-content
                      / 1fr;
         row-gap: 1rem;
     }
@@ -895,6 +897,22 @@ A.github-link svg {
 }
 
 .section-feedback FORM .privacy-policy A:hover {
+    text-decoration: underline;
+}
+
+.section-feedback FORM .google-policy {
+    grid-area: google;
+    line-height: 150%;
+    color: var(--bs-gray-400);
+}
+
+.section-feedback FORM .google-policy A {
+    font-weight: 500;
+    color: var(--bs-gray-400);
+    text-decoration: none;
+}
+
+.section-feedback FORM .google-policy A:hover {
     text-decoration: underline;
 }
 
@@ -1041,4 +1059,8 @@ FOOTER .lower .links .google-play svg {
     FOOTER .lower .links .google-play {
         display: block;
     }
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
 }
