@@ -19,6 +19,10 @@
     font-weight: 400;
 }
 
+:root {
+    --gray-dark: #22282b;
+}
+
 #welcome-content {
     max-width: 1440px;
     margin-left: auto;
@@ -30,7 +34,7 @@
     font-weight: 500;
     font-size: 3.5rem;
     line-height: 129%;
-    color: #22282b;
+    color: var(--gray-dark);
     margin-bottom: 1rem;
 }
 
@@ -138,7 +142,7 @@ A.github-link svg {
 .main-menu .menu-button svg {
     width: 1.5rem;
     height: 1.5rem;
-    fill: #6c757d;
+    fill: var(--bs-gray-600);
 }
 
 #sandwich-menu {
@@ -248,7 +252,7 @@ A.github-link svg {
     font-weight: 500;
     font-size: 4rem;
     line-height: 125%;
-    color: #22282b;
+    color: var(--gray-dark);
     background: url("../images/stroke.svg") 0 4.5rem no-repeat;
 }
 
@@ -340,7 +344,7 @@ A.github-link svg {
     align-items: center;
     gap: 8px;
     padding: 10px 14px;
-    background: #22282b;
+    background: var(--gray-dark);
 }
 
 .intro .browser .mockup .bar .dot {
