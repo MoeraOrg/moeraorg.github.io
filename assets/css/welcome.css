@@ -857,19 +857,29 @@ A.github-link svg {
 
 .section-feedback FORM .bottom {
     display: grid;
-    grid-template-columns: max-content auto;
-    gap: 1.5rem;
+    grid-template: "captcha     captcha" min-content
+                   "submit      policy" min-content
+                  / max-content auto;
+    column-gap: 1.5rem;
 }
 
 @media (max-width: 1089px) {
     .section-feedback FORM .bottom {
-        grid-template-columns: 1fr;
-        grid-template-rows: min-content min-content;
-        gap: 1rem;
+        margin-top: -1rem;
+        grid-template: "captcha" min-content
+                       "submit" min-content
+                       "policy" min-content
+                     / 1fr;
+        row-gap: 1rem;
     }
 }
 
+.section-feedback FORM BUTTON {
+    grid-area: submit;
+}
+
 .section-feedback FORM .privacy-policy {
+    grid-area: policy;
     line-height: 150%;
     color: var(--bs-gray-900);
 }
