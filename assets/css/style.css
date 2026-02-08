@@ -1,4 +1,6 @@
 :root {
+    scroll-behavior: auto;
+
     --overview-color: #75b798;
     --administration-color: #6ea8fe;
     --development-color: #e685b5;
