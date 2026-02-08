@@ -861,10 +861,10 @@ A.github-link svg {
 
 .section-feedback FORM .bottom {
     display: grid;
-    grid-template: "captcha     captcha" min-content
-                   "submit      policy" min-content
-                   "google      google" min-content
-                  / max-content auto;
+    grid-template: "captcha captcha" min-content
+                   "submit  policy" min-content
+                   "google  google" min-content
+                  / auto    auto;
     column-gap: 1.5rem;
 }
 
@@ -902,8 +902,15 @@ A.github-link svg {
 
 .section-feedback FORM .google-policy {
     grid-area: google;
-    line-height: 150%;
+    font-size: .875rem;
+    line-height: 133%;
     color: var(--bs-gray-400);
+}
+
+@media (min-width: 1090px) {
+    .section-feedback FORM .google-policy {
+        padding-top: 1rem;
+    }
 }
 
 .section-feedback FORM .google-policy A {
