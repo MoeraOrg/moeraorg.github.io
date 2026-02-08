@@ -1,6 +1,7 @@
 ---
 layout: page
 add_style: /assets/css/welcome.css
+add_script: /assets/js/welcome.js
 ---
 
 <div id="welcome-content">
@@ -324,7 +325,7 @@ add_style: /assets/css/welcome.css
             </div>
             <a href="https://t.me/moeradevelopment" class="icon">{% include svg/telegram-contact.svg %}</a>
         </div>
-        <form>
+        <form id="feedback-form">
             <input type="text" class="form-control" name="name" placeholder="Your Name">
             <input type="email" class="form-control" name="email" placeholder="Email Address">
             <textarea class="form-control" name="message" placeholder="Your Message"></textarea>
