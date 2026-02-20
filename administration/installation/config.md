@@ -291,6 +291,16 @@ node.mail.root-address: myblog-admin@gmail.com
 
 E-mail address of the server's administrator.
 
+## Webmaster contacts
+
+```yaml
+node.webmaster.name: "Harold Finch"
+node.webmaster.email: h.finch@protonmail.com
+```
+
+Name and e-mail address of the webmaster. Shown on error pages and in metadata
+of RSS feeds.
+
 ## FCM relay
 
 ```yaml

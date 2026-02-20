@@ -9758,6 +9758,8 @@ enums:
         description: Google
       - name: bing
         description: Bing
+      - name: yandex
+        description: Yandex
   - name: SearchEntryType
     values:
       - name: all

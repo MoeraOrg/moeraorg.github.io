@@ -259,6 +259,8 @@ enums:
     name: google
   - description: Bing
     name: bing
+  - description: Yandex
+    name: yandex
 - name: SearchEntryType
   values:
   - description: any type of an entry
