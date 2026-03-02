@@ -17,6 +17,45 @@ objects:
       type: string
     - field: ownerName
       type: string
+    - comment: IP addresses of the client
+      field: addresses
+      type: string[]
+    - comment: timestamp of the beginning of the carte's life
+      field: beginning
+      type: number
+    - comment: timestamp of the end of the carte's life
+      field: deadline
+      type: number
+    - comment: if set, the carte is valid for authentication on the specified node
+        only
+      field: nodeName
+      type: string
+    - comment: 'A bit mask describing which permissions should be granted to the carte.
+        If not set, all permissions of the carte''s owner are granted. Meaning of
+        particular bits can be seen in the description of <a href="requests.html#Scope">Scope</a>
+        enum
+
+        '
+      field: clientScope
+      type: number
+    - comment: 'A bit mask describing which additional administrative permissions
+        (of those granted to the carte''s owner by the target node) should be granted
+        to the carte. Meaning of particular bits can be seen in the description of
+        <a href="requests.html#Scope">Scope</a> enum
+
+        '
+      field: adminScope
+      type: number
+    - comment: 8 random bytes
+      field: salt
+      type: Buffer
+    version: 3
+  - fingerprint:
+    - comment: <code>CARTE</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
     - comment: IP address of the client
       field: address
       type: string
@@ -113,6 +152,38 @@ objects:
     - field: postingFingerprint
       type: Buffer
     - field: repliedToFingerprint
+      type: Buffer
+    - comment: hash of <code>bodySrc</code> field
+      field: bodySrcHash
+      type: Buffer
+    - field: bodySrcFormat
+      type: string
+    - field: body
+      type: string
+    - field: bodyFormat
+      type: string
+    - comment: of the current revision
+      field: createdAt
+      type: number
+    - comment: 0 <i>(reserved for future use)</i>
+      field: permissions
+      type: number
+    - field: attachments
+      type: Buffer[]
+    version: 1
+  - fingerprint:
+    - comment: <code>COMMENT</code>
+      field: objectType
+      type: string
+    - field: ownerName
+      type: string
+    - field: postingFingerprint
+      type: Buffer
+    - comment: 'bug: if <code>repliedTo</code> is <code>null</code>, this field should
+        be set to digest of a fingerprint containing single <code>null</code> value
+
+        '
+      field: repliedToFingerprint
       type: Buffer
     - comment: hash of <code>bodySrc</code> field
       field: bodySrcHash
