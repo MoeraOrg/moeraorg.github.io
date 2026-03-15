@@ -30,7 +30,7 @@ server {
 
     location / {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera";
+            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera, client-id";
             add_header Access-Control-Expose-Headers "x-moera, retry-after, ratelimit-policy";
             add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE";
             add_header Access-Control-Allow-Origin "*";
@@ -184,7 +184,7 @@ server {
 
 	location / {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera";
+            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera, client-id";
             add_header Access-Control-Expose-Headers "x-moera, retry-after, ratelimit-policy";
             add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE";
             add_header Access-Control-Allow-Origin "*";

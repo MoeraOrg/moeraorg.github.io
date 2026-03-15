@@ -4568,6 +4568,12 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
+      - type: boolean
+        name: premoderating
+        optional: true
+        description: >
+          <code>true</code>, if the comment is being be checked by the post's author before publication,
+          <code>false</code> (default) otherwise
       - struct: CommentOperations
         name: operations
         optional: true
@@ -4908,6 +4914,12 @@ structures:
         name: signatureVersion
         optional: true
         description: signature version (i.e. fingerprint version)
+      - type: boolean
+        name: premoderating
+        optional: true
+        description: >
+          <code>true</code>, if the comment is being be checked by the post's author before publication,
+          <code>false</code> (default) otherwise; only the senior may set this
       - struct: CommentOperations
         name: operations
         optional: true
@@ -9417,6 +9429,9 @@ operations:
       - name: addComment
         default: signed
         description: add a comment to the posting
+      - name: trustComment
+        default: signed
+        description: publish a comment to the posting without premoderation
       - name: overrideComment
         default: owner
         description: override the permissions of the posting's comments
@@ -9897,6 +9912,9 @@ enums:
       - name: comment-media-reaction-failed
         description: a failed attempt to add a reaction to a media attached to a comment
         ordinal: 22
+      - name: comment-needs-approval
+        description: a comment is waiting for moderator's approval
+        ordinal: 45
       - name: comment-post-task-failed
         description: a failed attempt to post a comment
         ordinal: 12
@@ -9957,6 +9975,12 @@ enums:
       - name: posting-updated
         description: a posting was updated
         ordinal: 14
+      - name: premoderated-comment-accepted
+        description: the user's comment was accepted after premoderation
+        ordinal: 46
+      - name: premoderated-comment-rejected
+        description: the user's comment was rejected after premoderation
+        ordinal: 47
       - name: reaction-added-negative
         description: a negative reaction was added to the user's posting
         ordinal: 2

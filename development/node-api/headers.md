@@ -13,10 +13,17 @@ Architecture Overview section.
 ## Clients
 
 <h4 class="identifier">
+    Client-ID: {id}
+</h4>
+
+This header may be sent by the client in any HTTP request. See [Events][3] page
+for the description of its purpose.
+
+<h4 class="identifier">
     X-Moera: [root={root}] [page={page}] [name={name}]
 </h4>
 
-This header is sent by a website in HTTP response. It signals that the
+This header is sent by a website in the HTTP response. It signals that the
 website supports Moera REST API and the current page corresponds to the
 Moera [virtual page][2] `{page}`. If `page` is not set, the current page
 itself is considered to be a virtual page.
@@ -39,7 +46,7 @@ it is URL-encoded.
     X-Accept-Moera: {version}
 </h4>
 
-This header is sent by the client in HTTP request. It signals that the
+This header is sent by the client in the HTTP request. It signals that the
 client supports Moera REST API of the given version. Currently only
 version `1.0` is defined.
 
@@ -76,3 +83,4 @@ It contains the full URL of the user request.
 
 [1]: /overview/browsing.html
 [2]: virtual-pages.html
+[3]: events.html

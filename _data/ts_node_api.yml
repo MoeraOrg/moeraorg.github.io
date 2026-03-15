@@ -394,6 +394,9 @@ enums:
   - description: a failed attempt to add a reaction to a media attached to a comment
     name: comment-media-reaction-failed
     ordinal: 22
+  - description: a comment is waiting for moderator's approval
+    name: comment-needs-approval
+    ordinal: 45
   - description: a failed attempt to post a comment
     name: comment-post-task-failed
     ordinal: 12
@@ -456,6 +459,12 @@ enums:
   - description: a posting was updated
     name: posting-updated
     ordinal: 14
+  - description: the user's comment was accepted after premoderation
+    name: premoderated-comment-accepted
+    ordinal: 46
+  - description: the user's comment was rejected after premoderation
+    name: premoderated-comment-rejected
+    ordinal: 47
   - description: a negative reaction was added to the user's posting
     name: reaction-added-negative
     ordinal: 2
@@ -4331,6 +4340,9 @@ operations:
   - default: signed
     description: add a comment to the posting
     name: addComment
+  - default: signed
+    description: publish a comment to the posting without premoderation
+    name: trustComment
   - default: owner
     description: override the permissions of the posting's comments
     name: overrideComment
@@ -5214,6 +5226,13 @@ structures:
     name: signatureVersion
     optional: true
     type: number
+  - description: '<code>true</code>, if the comment is being be checked by the post''s
+      author before publication, <code>false</code> (default) otherwise
+
+      '
+    name: premoderating
+    optional: true
+    type: boolean
   - description: the supported operations and the corresponding principals
     name: operations
     optional: true
@@ -5588,6 +5607,14 @@ structures:
     name: signatureVersion
     optional: true
     type: number
+  - description: '<code>true</code>, if the comment is being be checked by the post''s
+      author before publication, <code>false</code> (default) otherwise; only the
+      senior may set this
+
+      '
+    name: premoderating
+    optional: true
+    type: boolean
   - constraints:
     - other:
         description: contain an incorrect principal

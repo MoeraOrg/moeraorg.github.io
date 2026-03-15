@@ -79,9 +79,10 @@ subtitle: Events
                 <td><code>cid</code></td>
                 <td>
                     The client ID. If the event was created as a result of processing a REST API request of some client,
-                    this field will contain a copy of <code>cid</code> parameter passed with the request. This mechanism
-                    allows the client to know that the event is a result of processing its own request. Usually such
-                    events are ignored, because they contain information already known to the client.
+                    this field will contain a copy of the content of <code>Client-ID</code> header passed with
+                    the request. This mechanism allows the client to know that the event is a result of processing its
+                    own request. Usually such events are ignored because they contain information already known to
+                    the client.
                 </td>
             </tr>
             <tr>
@@ -98,7 +99,7 @@ subtitle: Events
     additional fields, containing more detailed information. See their description below.
 </p>
 <p>
-    Events typically contain minimal amount of information. Since many events are not relevant to the client and are
+    Events typically contain a minimal amount of information. Since many events are not relevant to the client and are
     ignored, including too much information would be a waste of traffic. The client may make a REST API request, if
     needed.
 </p>

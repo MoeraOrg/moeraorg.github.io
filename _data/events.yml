@@ -603,6 +603,10 @@ events:
         name: postingId
         optional: true
         description: ID of the posting this story is about
+      - type: String
+        name: commentId
+        optional: true
+        description: ID of the comment this story is about
       - type: boolean
         name: viewed
         optional: true
@@ -678,6 +682,10 @@ events:
         name: postingId
         optional: true
         description: ID of the posting this story is about
+      - type: String
+        name: commentId
+        optional: true
+        description: ID of the comment this story is about
   - type: STORY_UPDATED
     description: A story was updated.
     fields:
@@ -703,6 +711,10 @@ events:
         name: postingId
         optional: true
         description: ID of the posting this story is about
+      - type: String
+        name: commentId
+        optional: true
+        description: ID of the comment this story is about
       - type: boolean
         name: viewed
         optional: true

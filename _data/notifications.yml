@@ -1089,6 +1089,77 @@ notifications:
               max: 40
               error: posting.posting-id.wrong-size
         log: true
+  - type: PREMODERATED_COMMENT_DECIDED
+    ordinal: 41
+    description: The comment authored by the receiver has been accepted or rejected after premoderation.
+    fields:
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.posting-id.wrong-size
+        log: true
+      - type: String
+        name: commentId
+        comment: ID of the comment on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: comment.comment-id.wrong-size
+        log: true
+      - type: String
+        name: postingOwnerName
+        comment: name of the posting's owner
+        constraints:
+          - length:
+              max: 63
+              error: comment.posting-owner-name.wrong-size
+        log: true
+      - type: String
+        name: postingOwnerFullName
+        comment: full name of the posting's owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.posting-owner-full-name.wrong-size
+      - type: String
+        name: postingOwnerGender
+        comment: gender of the posting's owner
+        constraints:
+          - length:
+              max: 31
+              error: comment.posting-owner-gender.wrong-size
+      - struct: AvatarImage
+        name: postingOwnerAvatar
+        comment: avatar of the posting's owner
+      - type: String
+        name: postingHeading
+        comment: heading of the posting
+        constraints:
+          - length:
+              max: 255
+              error: comment.posting-heading.wrong-size
+        log: true
+      - type: String[]
+        name: postingSheriffs
+        comment: list of sheriffs supervising the posting
+      - struct: SheriffMark
+        array: true
+        name: postingSheriffMarks
+        comment: list of sheriff marks on the posting
+      - type: String
+        name: commentHeading
+        comment: heading of the comment
+        constraints:
+          - length:
+              max: 255
+              error: comment.comment-heading.wrong-size
+        log: true
+      - type: boolean
+        name: accepted
+        comment: <code>true</code>, if the comment was accepted and published, <code>false</code> otherwise
   - type: PROFILE_UPDATED
     ordinal: 16
     description: Sender's profile the receiver is subscribed to has been updated.

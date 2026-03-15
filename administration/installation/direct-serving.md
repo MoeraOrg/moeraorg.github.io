@@ -42,7 +42,7 @@ configuration:
 server {
     location /moera/media/public/ {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera";
+            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera, client-id";
             add_header Access-Control-Expose-Headers "x-moera";
             add_header Access-Control-Allow-Methods "GET";
             add_header Access-Control-Allow-Origin "*";
@@ -59,7 +59,7 @@ server {
 
     location ~ ^/moera/media/private/([^/]+_[^/]+)$ {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera";
+            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera, client-id";
             add_header Access-Control-Expose-Headers "x-moera";
             add_header Access-Control-Allow-Methods "GET";
             add_header Access-Control-Allow-Origin "*";
