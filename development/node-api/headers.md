@@ -16,8 +16,8 @@ Architecture Overview section.
     Client-ID: {id}
 </h4>
 
-This header may be sent by the client in any HTTP request. See [Events][3] page
-for the description of its purpose.
+This header may be sent by the client in any HTTP request. See [Client ID][3]
+page for the description of its purpose.
 
 <h4 class="identifier">
     X-Moera: [root={root}] [page={page}] [name={name}]
@@ -83,4 +83,4 @@ It contains the full URL of the user request.
 
 [1]: /overview/browsing.html
 [2]: virtual-pages.html
-[3]: events.html
+[3]: client-id.html

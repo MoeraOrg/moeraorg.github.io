@@ -55,6 +55,9 @@
 - name: node-api/oauth2
   title: OAuth2
 
+- name: node-api/client-id
+  title: Client ID
+
 - type: end
 
 - name: push-relay-api
