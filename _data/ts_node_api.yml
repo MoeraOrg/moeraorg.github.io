@@ -4569,6 +4569,22 @@ structures:
       '
     name: path
     type: string
+  - description: 'location of the media file, relative to the <code>/media</code>;
+      points to a static image served directly from a filesystem or CDN
+
+      '
+    name: directPath
+    optional: true
+    type: string
+  - description: direct path expiration timestamp - the real time when the direct
+      path will not be valid anymore
+    name: directPathExpiresAt
+    optional: true
+    type: number
+  - description: MIME type of the media
+    name: mimeType
+    optional: true
+    type: string
   - description: width of the media in pixels (<code>null</code>, if the media file
       is not an image/video)
     name: width
@@ -4596,6 +4612,22 @@ structures:
 
       '
     name: path
+    type: string
+  - description: 'location of the media file, relative to the <code>/media</code>;
+      points to a static image served directly from a filesystem or CDN
+
+      '
+    name: directPath
+    optional: true
+    type: string
+  - description: direct path expiration timestamp - the real time when the direct
+      path will not be valid anymore
+    name: directPathExpiresAt
+    optional: true
+    type: number
+  - description: MIME type of the media
+    name: mimeType
+    optional: true
     type: string
   - description: width of the media in pixels (<code>null</code>, if the media file
       is not an image/video)
@@ -6450,13 +6482,23 @@ structures:
   - description: the width the preview was prepared for viewing at
     name: targetWidth
     type: number
-  - description: 'location of the media file, relative to the <code>/media</code>;
-      points to a static image served directly from a filesystem; static images do
-      not accept any query parameters including authentication parameters
+  - description: SHA-1 hash of the preview
+    name: hash
+    type: string
+  - description: 'location of the preview, relative to the <code>/media</code>; points
+      to a static image served directly from a filesystem or CDN
 
       '
     name: directPath
     optional: true
+    type: string
+  - description: direct path expiration timestamp - the real time when the direct
+      path will not be valid anymore
+    name: directPathExpiresAt
+    optional: true
+    type: number
+  - description: MIME type of the preview
+    name: mimeType
     type: string
   - description: actual width of the preview in pixels
     name: width
@@ -7433,13 +7475,17 @@ structures:
     name: path
     type: string
   - description: 'location of the media file, relative to the <code>/media</code>;
-      points to a static image served directly from a filesystem; static images do
-      not accept any query parameters including authentication parameters
+      points to a static image served directly from a filesystem or CDN
 
       '
     name: directPath
     optional: true
     type: string
+  - description: direct path expiration timestamp - the real time when the direct
+      path will not be valid anymore
+    name: directPathExpiresAt
+    optional: true
+    type: number
   - description: MIME type of the media
     name: mimeType
     type: string
@@ -7615,6 +7661,22 @@ structures:
 
       '
     name: path
+    type: string
+  - description: 'location of the media file, relative to the <code>/media</code>;
+      points to a static image served directly from a filesystem or CDN
+
+      '
+    name: directPath
+    optional: true
+    type: string
+  - description: direct path expiration timestamp - the real time when the direct
+      path will not be valid anymore
+    name: directPathExpiresAt
+    optional: true
+    type: number
+  - description: MIME type of the media
+    name: mimeType
+    optional: true
     type: string
   - description: width of the media in pixels (<code>null</code>, if the media file
       is not an image or video)

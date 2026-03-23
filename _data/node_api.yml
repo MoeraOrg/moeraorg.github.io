@@ -3967,6 +3967,20 @@ structures:
         description: >
           virtual location of the media file, relative to the <code>/media</code>
           <a href="virtual-pages.html">virtual page</a>
+      - type: String
+        name: directPath
+        optional: true
+        description: >
+          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
+          a filesystem or CDN
+      - type: timestamp
+        name: directPathExpiresAt
+        optional: true
+        description: direct path expiration timestamp - the real time when the direct path will not be valid anymore
+      - type: String
+        name: mimeType
+        optional: true
+        description: MIME type of the media
       - type: int
         name: width
         optional: true
@@ -3992,6 +4006,20 @@ structures:
         description: >
           virtual location of the media file, relative to the <code>/media</code>
           <a href="virtual-pages.html">virtual page</a>
+      - type: String
+        name: directPath
+        optional: true
+        description: >
+          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
+          a filesystem or CDN
+      - type: timestamp
+        name: directPathExpiresAt
+        optional: true
+        description: direct path expiration timestamp - the real time when the direct path will not be valid anymore
+      - type: String
+        name: mimeType
+        optional: true
+        description: MIME type of the media
       - type: int
         name: width
         optional: true
@@ -5727,11 +5755,21 @@ structures:
         name: targetWidth
         description: the width the preview was prepared for viewing at
       - type: String
+        name: hash
+        description: SHA-1 hash of the preview
+      - type: String
         name: directPath
         optional: true
         description: >
-          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem; static images do not accept any query parameters including authentication parameters
+          location of the preview, relative to the <code>/media</code>; points to a static image served directly from
+          a filesystem or CDN
+      - type: timestamp
+        name: directPathExpiresAt
+        optional: true
+        description: direct path expiration timestamp - the real time when the direct path will not be valid anymore
+      - type: String
+        name: mimeType
+        description: MIME type of the preview
       - type: int
         name: width
         description: actual width of the preview in pixels
@@ -6635,7 +6673,11 @@ structures:
         optional: true
         description: >
           location of the media file, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem; static images do not accept any query parameters including authentication parameters
+          a filesystem or CDN
+      - type: timestamp
+        name: directPathExpiresAt
+        optional: true
+        description: direct path expiration timestamp - the real time when the direct path will not be valid anymore
       - type: String
         name: mimeType
         description: MIME type of the media
@@ -6804,6 +6846,20 @@ structures:
         description: >
           virtual location of the media file, relative to the <code>/media</code>
           <a href="virtual-pages.html">virtual page</a>
+      - type: String
+        name: directPath
+        optional: true
+        description: >
+          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
+          a filesystem or CDN
+      - type: timestamp
+        name: directPathExpiresAt
+        optional: true
+        description: direct path expiration timestamp - the real time when the direct path will not be valid anymore
+      - type: String
+        name: mimeType
+        optional: true
+        description: MIME type of the media
       - type: int
         name: width
         optional: true
