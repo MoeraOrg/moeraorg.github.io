@@ -63,9 +63,9 @@ in the sequence.
 
 ## Signature
 
-If the client wants to post a content (comment, reaction etc.) to a node, carte
+If the client wants to post a content (comment, reaction, etc.) to a node, carte
 authentication is not enough because the content needs its own signature.
-To provide better user experience, the client may use carte to post a temporary
+To provide a better user experience, the client may use carte to post a temporary
 content without a signature and then ask the home node to post its signed version.
 If during a short period of time the signed content does not arrive, the node
 erases the temporary version.
@@ -96,7 +96,7 @@ https://mynode.org/moera/<request URL>?auth=token:<admin token>
 https://mynode.org/moera/<request URL>?auth=carte:<carte>
 ```
 
-To authenticate [the event stream][6] the client should pass the token
+To authenticate [the event stream][6], the client should pass the token
 in the `token:` header of `CONNECTED` STOMP frame. For example:
 
 ```
