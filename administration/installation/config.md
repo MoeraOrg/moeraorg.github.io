@@ -149,8 +149,8 @@ readable and writable by `moera-node` process. The path is relative to
 node.media.serve: stream
 ```
 
-This option defines how media files are served to the client. The possible values
-are:
+This option defines how REST API calls serve media files to the client.
+The possible values are:
 * `stream` — the file is streamed to the client directly;
 * `sendfile` — the file's location is passed back to the proxying web server in
   `X-Sendfile` header (used by Apache);
@@ -166,10 +166,21 @@ the names of media files. This prefix is then used in NGINX configuration to
 configure serving media files from the media files directory. 
 
 ```yaml
-node.media.direct-serve: false
+node.media.direct-serve.source: none
 ```
 
-If `true`, enables [serving media files directly][6] from the filesystem.
+If set to any value other than `none`, this option enables
+[serving media files directly][6] from the filesystem or CDN.
+The possible values are:
+* `none` — direct serving is not available, REST API calls should be used;
+* `filesystem` — the media files are served directly from the filesystem.
+
+```yaml
+node.media.direct-serve.secret: <secret>
+```
+
+Defines the secret key. This secret key is used to sign URLs that are used
+to access media files directly from the filesystem or CDN.
 
 ## OCR service
 
