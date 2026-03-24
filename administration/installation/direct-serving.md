@@ -82,7 +82,7 @@ server {
             return 410;
         }
 
-        alias /srv/moera.blog/media/$1.$2;
+        alias /srv/blog.moera.org/media/$1.$2;
         add_header Access-Control-Allow-Origin "*";
         if ($arg_download) {
             add_header Content-Disposition "attachment; filename=$1.$2";
