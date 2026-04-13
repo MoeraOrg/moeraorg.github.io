@@ -1668,6 +1668,12 @@ objects:
             optional: true
             description: >
               if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
+          - type: boolean
+            name: ignoremalware
+            optional: true
+            description: >
+              if <code>true</code>, the node will ignore malware detection and return the media file; only admin may use
+              this option
         out:
           type: blob
         auth: optional
@@ -1676,6 +1682,8 @@ objects:
         errors:
           - code: media.not-found
             description: media file is not found
+          - code: media.malware
+            description: media file is identified as malware
       - url: /media/private/{id}/info
         type: GET
         function: getPrivateMediaInfo
@@ -1688,6 +1696,24 @@ objects:
         auth: optional
         description: >
           Get media file details.
+        errors:
+          - code: media.not-found
+            description: media file is not found
+      - url: /media/private/{id}/info
+        type: PUT
+        function: updatePrivateMediaInfo
+        params:
+          - type: String
+            name: id
+            description: media file ID
+        in:
+          struct: PrivateMediaFileAttributes
+          name: attributes
+        out:
+          struct: PrivateMediaFileInfo
+        auth: required
+        description: >
+          Update media file details.
         errors:
           - code: media.not-found
             description: media file is not found
@@ -2934,6 +2960,34 @@ objects:
           struct: AsyncOperationCreated
         auth: admin
         description: Verify the signature of the reaction of the given owner to the comment on the remote node.
+  - name: Remote Media (private)
+    description: Private media files located on other nodes.
+    requests:
+      - url: /nodes/{nodeName}/media/private/{id}/download
+        type: POST
+        function: downloadRemoteMedia
+        params:
+          - type: String
+            name: nodeName
+            description: name of the remote node
+          - type: String
+            name: id
+            description: id of the media file
+        out:
+          struct: PrivateMediaFileInfo
+        auth: admin
+        description: Download the private media file from the remote node and store it at the home node.
+        errors:
+          - code: media.digest-incorrect
+            description: the digest of the media file does not match the value reported by the remote node
+          - code: media.download-failed
+            description: failed to download the media file from the remote node
+          - code: media.malware
+            description: media file was identified as malware by the remote node, the download is cancelled
+          - code: media.storage-error
+            description: failed to store the media file on the home node
+          - code: media.download-pending
+            description: the download of the media file from the remote node is in progress, come back later
   - name: Remote Postings
     description: Postings located on other nodes.
     requests:
@@ -6655,6 +6709,16 @@ structures:
           - length:
               max: 1024
               error: posting.external-source-uri.wrong-size
+  - name: PrivateMediaFileAttributes
+    fields:
+      - type: String
+        name: title
+        optional: true
+        description: title of the media file, may be used as an alternative to the file name
+        constraints:
+          - length:
+              max: 255
+              error: media.title.wrong-size
   - name: PrivateMediaFileInfo
     fields:
       - type: String
@@ -6703,6 +6767,10 @@ structures:
         name: size
         description: size of the media file in bytes
       - type: String
+        name: title
+        optional: true
+        description: title of the media file, may be used as an alternative to the file name
+      - type: String
         name: textContent
         optional: true
         description: the text contained in the image, if any
@@ -6715,6 +6783,17 @@ structures:
         name: previews
         optional: true
         description: list of media previews - downscaled versions of the media
+      - type: boolean
+        name: attachment
+        optional: true
+        description: >
+          <code>true</code> if the media cannot be displayed as an image or video and should be displayed as
+          an attachment instead, <code>false</code> (default) otherwise
+      - type: boolean
+        name: malware
+        optional: true
+        description: >
+          <code>true</code> if the media file is considered to be malware, <code>false</code> (default) otherwise
       - struct: PrivateMediaFileOperations
         name: operations
         optional: true
@@ -7280,6 +7359,15 @@ structures:
         name: digest
         optional: true
         description: cryptographic digest of the media file
+      - type: String
+        name: mimeType
+        description: MIME type of the media
+      - type: boolean
+        name: attachment
+        optional: true
+        description: >
+          <code>true</code> if the media cannot be displayed as an image or video and should be displayed as
+          an attachment instead, <code>false</code> (default) otherwise
   - name: RemoteMediaInfo
     fields:
       - type: String
@@ -7293,6 +7381,16 @@ structures:
         name: digest
         optional: true
         description: cryptographic digest of the media file
+      - type: String
+        name: mimeType
+        optional: true
+        description: MIME type of the media
+      - type: boolean
+        name: attachment
+        optional: true
+        description: >
+          <code>true</code> if the media cannot be displayed as an image or video and should be displayed as
+          an attachment instead, <code>false</code> (default) otherwise
   - name: RemotePosting
     fields:
       - type: String
@@ -7470,8 +7568,21 @@ structures:
               max: 40
               error: search.media-id.wrong-size
       - type: String
+        name: title
+        optional: true
+        description: title of the media file, may be used as an alternative to the file name
+        constraints:
+          - length:
+              max: 255
+              error: search.title.wrong-size
+      - type: String
         name: textContent
+        optional: true
         description: text content of the media
+        constraints:
+          - length:
+              max: 16384
+              error: search.text-content.wrong-size
   - name: SearchCommentUpdate
     fields:
       - type: String
@@ -7529,6 +7640,10 @@ structures:
         name: videoPresent
         optional: true
         description: if <code>true</code>, the entry contains a video
+      - type: int
+        name: attachmentCount
+        optional: true
+        description: number of file attachments the entry contains
       - struct: PublicMediaFileInfo
         name: mediaPreview
         optional: true
@@ -7620,6 +7735,12 @@ structures:
         description: >
           if <code>true</code>, return only the entries containing a video, if <code>false</code>, return only
           the entries that do not contain a video
+      - type: boolean
+        name: attachmentPresent
+        optional: true
+        description: >
+          if <code>true</code>, return only the entries containing a file attachment, if <code>false</code>, return only
+          the entries that do not contain a file attachment
       - type: String
         name: sheriffName
         optional: true
@@ -7760,8 +7881,21 @@ structures:
               max: 40
               error: search.media-id.wrong-size
       - type: String
+        name: title
+        optional: true
+        description: title of the media file, may be used as an alternative to the file name
+        constraints:
+          - length:
+              max: 255
+              error: search.title.wrong-size
+      - type: String
         name: textContent
+        optional: true
         description: text content of the media
+        constraints:
+          - length:
+              max: 16384
+              error: search.text-content.wrong-size
   - name: SearchPostingUpdate
     fields:
       - type: String
@@ -7928,6 +8062,12 @@ structures:
         description: >
           if <code>true</code>, return only the entries containing a video, if <code>false</code>, return only
           the entries that do not contain a video
+      - type: boolean
+        name: attachmentPresent
+        optional: true
+        description: >
+          if <code>true</code>, return only the entries containing a file attachment, if <code>false</code>, return only
+          the entries that do not contain a file attachment
       - type: timestamp
         name: createdAfter
         optional: true
@@ -9526,6 +9666,9 @@ operations:
       - name: view
         default: public
         description: view the media file
+      - name: edit
+        default: owner
+        description: edit the media file attributes
   - name: ProfileOperations
     fields:
       - name: edit

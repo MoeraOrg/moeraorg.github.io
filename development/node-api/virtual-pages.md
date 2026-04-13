@@ -74,7 +74,7 @@ The list of nodes recommended for subscription.
 The feed of instant notifications.
 
 <h4 class="identifier">
-    /media/private/{id}.{extension}?width={number}&download={true or false}
+    /media/private/{id}.{extension}?width={number}&download={true or false}&ignoremalware={true or false}
 </h4>
 
 Private media file. The `{extension}` does not affect the result.
@@ -85,6 +85,9 @@ of the media, according to the width provided.
 
 If the `download` parameter is present and set to `true`, the node will add
 `Content-Disposition: attachment` header to the output.
+
+If the `ignoremalware` parameter is present and set to `true`, the node will ignore malware detection and return
+the media file. Only admin may use this option.
 
 <h4 class="identifier">
     /media/public/{id}.{extension}?width={number}&download={true or false}

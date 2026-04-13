@@ -814,7 +814,16 @@ notifications:
               error: media.media-id.wrong-size
         log: true
       - type: String
+        name: title
+        optional: true
+        comment: title of the media file, may be used as an alternative to the file name
+        constraints:
+          - length:
+              max: 255
+              error: media.title.wrong-size
+      - type: String
         name: textContent
+        optional: true
         comment: text content of the media
         constraints:
           - length:

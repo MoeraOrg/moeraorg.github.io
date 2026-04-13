@@ -374,11 +374,38 @@ events:
         name: correct
         description: verification result
   - type: REMOTE_FRIENDSHIP_UPDATED
-    description: Friendship status of the user on a remote node was updated
+    description: Friendship status of the user on a remote node was updated.
     fields:
       - struct: FriendOfInfo
         name: friendOf
         description: remote node friendship information
+  - type: REMOTE_MEDIA_DOWNLOAD_FAILED
+    description: Downloading of a remote media file failed.
+    fields:
+      - type: String
+        name: nodeName
+        description: the remote node name
+      - type: String
+        name: mediaId
+        description: the media ID
+      - type: String
+        name: errorCode
+        description: error code
+      - type: String
+        name: errorMessage
+        description: error message
+  - type: REMOTE_MEDIA_DOWNLOADED
+    description: Remote media file was successfully downloaded.
+    fields:
+      - type: String
+        name: nodeName
+        description: the remote node name
+      - type: String
+        name: mediaId
+        description: the media ID
+      - struct: PrivateMediaFileInfo
+        name: media
+        description: the media file information
   - type: REMOTE_NODE_AVATAR_CHANGED
     description: Avatar of a remote node was changed.
     fields:

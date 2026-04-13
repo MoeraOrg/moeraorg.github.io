@@ -2257,7 +2257,9 @@ objects:
     errors:
     - code: media.not-found
       description: media file is not found
-    function: getPrivateMedia(id, width=null, download=null)
+    - code: media.malware
+      description: media file is identified as malware
+    function: getPrivateMedia(id, width=null, download=null, ignoremalware=null)
     out:
       type: blob
     params:
@@ -2279,6 +2281,13 @@ objects:
       name: download
       optional: true
       type: boolean
+    - description: 'if <code>true</code>, the node will ignore malware detection and
+        return the media file; only admin may use this option
+
+        '
+      name: ignoremalware
+      optional: true
+      type: boolean
   - auth: optional
     description: 'Get media file details.
 
@@ -2293,6 +2302,22 @@ objects:
     - description: media file ID
       name: id
       type: string
+  - auth: required
+    description: 'Update media file details.
+
+      '
+    errors:
+    - code: media.not-found
+      description: media file is not found
+    function: updatePrivateMediaInfo(id, attributes)
+    out:
+      struct: PrivateMediaFileInfo
+    params:
+    - description: media file ID
+      name: id
+      type: string
+    - name: attributes
+      struct: PrivateMediaFileAttributes
   - auth: optional
     description: 'Get the list of all postings and comments the media file is attached
       to.
@@ -3379,6 +3404,36 @@ objects:
     - description: reaction owner node name
       name: ownerName
       type: string
+- description: Private media files located on other nodes.
+  name: Remote Media (private)
+  requests:
+  - auth: admin
+    description: Download the private media file from the remote node and store it
+      at the home node.
+    errors:
+    - code: media.digest-incorrect
+      description: the digest of the media file does not match the value reported
+        by the remote node
+    - code: media.download-failed
+      description: failed to download the media file from the remote node
+    - code: media.malware
+      description: media file was identified as malware by the remote node, the download
+        is cancelled
+    - code: media.storage-error
+      description: failed to store the media file on the home node
+    - code: media.download-pending
+      description: the download of the media file from the remote node is in progress,
+        come back later
+    function: downloadRemoteMedia(nodeName, id)
+    out:
+      struct: PrivateMediaFileInfo
+    params:
+    - description: name of the remote node
+      name: nodeName
+      type: string
+    - description: id of the media file
+      name: id
+      type: string
 - description: Postings located on other nodes.
   name: Remote Postings
   requests:
@@ -4382,6 +4437,9 @@ operations:
   - default: public
     description: view the media file
     name: view
+  - default: owner
+    description: edit the media file attributes
+    name: edit
   name: PrivateMediaFileOperations
 - fields:
   - default: admin
@@ -7462,6 +7520,17 @@ structures:
     type: string
   name: PostingText
 - fields:
+  - constraints:
+    - length:
+        error: media.title.wrong-size
+        max: 255
+    description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: string
+  name: PrivateMediaFileAttributes
+- fields:
   - description: ID of the media file
     name: id
     type: string
@@ -7513,6 +7582,11 @@ structures:
   - description: size of the media file in bytes
     name: size
     type: number
+  - description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: string
   - description: the text contained in the image, if any
     name: textContent
     optional: true
@@ -7526,6 +7600,21 @@ structures:
     name: previews
     optional: true
     struct: MediaFilePreviewInfo
+  - description: '<code>true</code> if the media cannot be displayed as an image or
+      video and should be displayed as an attachment instead, <code>false</code> (default)
+      otherwise
+
+      '
+    name: attachment
+    optional: true
+    type: boolean
+  - description: '<code>true</code> if the media file is considered to be malware,
+      <code>false</code> (default) otherwise
+
+      '
+    name: malware
+    optional: true
+    type: boolean
   - description: the supported operations and the corresponding principals
     name: operations
     optional: true
@@ -8123,6 +8212,17 @@ structures:
     name: digest
     optional: true
     type: string
+  - description: MIME type of the media
+    name: mimeType
+    type: string
+  - description: '<code>true</code> if the media cannot be displayed as an image or
+      video and should be displayed as an attachment instead, <code>false</code> (default)
+      otherwise
+
+      '
+    name: attachment
+    optional: true
+    type: boolean
   name: RemoteMedia
 - fields:
   - description: ID of the media file
@@ -8136,6 +8236,18 @@ structures:
     name: digest
     optional: true
     type: string
+  - description: MIME type of the media
+    name: mimeType
+    optional: true
+    type: string
+  - description: '<code>true</code> if the media cannot be displayed as an image or
+      video and should be displayed as an attachment instead, <code>false</code> (default)
+      otherwise
+
+      '
+    name: attachment
+    optional: true
+    type: boolean
   name: RemoteMediaInfo
 - fields:
   - description: name of the node
@@ -8313,8 +8425,22 @@ structures:
     description: ID of the media
     name: mediaId
     type: string
-  - description: text content of the media
+  - constraints:
+    - length:
+        error: search.title.wrong-size
+        max: 255
+    description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: string
+  - constraints:
+    - length:
+        error: search.text-content.wrong-size
+        max: 16384
+    description: text content of the media
     name: textContent
+    optional: true
     type: string
   name: SearchCommentMediaTextUpdate
 - fields:
@@ -8375,6 +8501,10 @@ structures:
     name: videoPresent
     optional: true
     type: boolean
+  - description: number of file attachments the entry contains
+    name: attachmentCount
+    optional: true
+    type: number
   - description: preview of the media attached to the entry, if any
     name: mediaPreview
     optional: true
@@ -8471,6 +8601,14 @@ structures:
 
       '
     name: videoPresent
+    optional: true
+    type: boolean
+  - description: 'if <code>true</code>, return only the entries containing a file
+      attachment, if <code>false</code>, return only the entries that do not contain
+      a file attachment
+
+      '
+    name: attachmentPresent
     optional: true
     type: boolean
   - description: filter out entries prohibited by the given sheriff
@@ -8615,8 +8753,22 @@ structures:
     description: ID of the media
     name: mediaId
     type: string
-  - description: text content of the media
+  - constraints:
+    - length:
+        error: search.title.wrong-size
+        max: 255
+    description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: string
+  - constraints:
+    - length:
+        error: search.text-content.wrong-size
+        max: 16384
+    description: text content of the media
     name: textContent
+    optional: true
     type: string
   name: SearchPostingMediaTextUpdate
 - fields:
@@ -8790,6 +8942,14 @@ structures:
 
       '
     name: videoPresent
+    optional: true
+    type: boolean
+  - description: 'if <code>true</code>, return only the entries containing a file
+      attachment, if <code>false</code>, return only the entries that do not contain
+      a file attachment
+
+      '
+    name: attachmentPresent
     optional: true
     type: boolean
   - description: return entries created at or after this timestamp
