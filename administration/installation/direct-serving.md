@@ -58,10 +58,15 @@ The final step, to serve the files from the filesystem, add the following
 snippet to your NGINX configuration:
 
 ```
+map $arg_fn $media_filename {
+        ""      "$1.$2";
+        default $arg_fn;
+}
+
 server {
     location ~ ^/moera/media/([^/]+)\.([^/]+)$ {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, x-accept-moera, client-id";
+            add_header Access-Control-Allow-Headers "authorization, content-type, content-disposition, x-accept-moera, client-id";
             add_header Access-Control-Expose-Headers "x-moera";
             add_header Access-Control-Allow-Methods "GET";
             add_header Access-Control-Allow-Origin "*";
@@ -85,7 +90,7 @@ server {
         alias /srv/blog.moera.org/media/$1.$2;
         add_header Access-Control-Allow-Origin "*";
         if ($arg_download) {
-            add_header Content-Disposition "attachment; filename=$1.$2";
+            add_header Content-Disposition "attachment; filename=\"$media_filename\"";
         }
         expires max;
     }
