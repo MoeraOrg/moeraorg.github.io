@@ -3782,6 +3782,9 @@ objects:
       to receive notifications about changes. The lists may be used, for example, to fight spam or to create
       decentralized communities. The sheriff uses such a list to inform all nodes that some specific user violates
       the rules too often, and because of that all his comments should be marked by the sheriff's mark automatically.
+      
+      User lists may keep any set of unique strings, not just node names. Security guards use user lists to keep hashes
+      of malicious files. Other nodes check these hashes and block download of known malware.
     requests:
       - url: /user-lists/{name}
         type: GET

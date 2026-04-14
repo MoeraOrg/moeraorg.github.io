@@ -89,30 +89,5 @@ pretend to be?
 You can choose which organizations or persons you trust to verify
 the identity of others.
 
-## Spam
-
-If you allow anybody to comment, some heuristics can help you to avoid
-spam comments: for example, you may not allow users without registered
-names or with names registered not so long ago to comment or to put
-links in comments. Or you can use spam lists.
-
-Spam list is a service located on a separate host. It works as
-following:
-
-1. You connect your home node to the service.
-2. When you see somebody posting a spam, you press a "Spam" button.
-3. The name of the user and his signed comment are sent to the service.
-4. If several people complain about the same user, he is added to the
-   spam list. He is sent notification about this.
-5. Your node subscribes to the spam list updates and blocks all users in
-   the list from posting anything on your node.
-6. The user may appeal to the service to be excluded from the list. The
-   signed copies of his comments are used as a proof.
-7. The nodes that sent false spam complaints too many times may be banned
-   from using the service.
-
-There may be many different services that use various definitions of
-"unwanted behavior." You may choose which of them to trust.
-
 [1]: /overview/newsfeed.html
 [2]: https://en.m.wikipedia.org/wiki/Blind_signature
