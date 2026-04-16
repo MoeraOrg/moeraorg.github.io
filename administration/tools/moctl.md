@@ -9,7 +9,7 @@ subtitle: moctl
 
 ## Name
 
-`moctl` — manage domains, credentials, malware hashes, and settings
+`moctl` — administer Moera nodes
 
 ## Synopsis
 
@@ -97,6 +97,11 @@ forms.
   * `option (op)` — change settings
 
 : The commands are described in the following sections.
+
+Most commands that modify node state require authentication. Depending on the
+operation, use either a root admin secret (`-S`) or an admin token (`-T`).
+`token create` is the main exception: it authenticates with the current admin
+password passed as a positional argument.
 
 ## Manage domains
 
@@ -198,21 +203,25 @@ in the list as `node_name`.
 ## Manage authentication tokens
 
 These commands manage tokens that are used to authenticate as administrator on
-the node. The token itself is displayed only once — when created. All further
-operations on the token use token ID to identify the particular token.
+the node. The token ID is used to identify the particular token in later
+commands.
 
 `token list`
 
-: List all tokens available on the node.
+: List all tokens available on the node. Each line contains the token ID and
+  either the token name or, for unnamed tokens, the token value itself. If the
+  token belongs to a plugin, the plugin name is shown in a third column.
 
 `token show ID`
 
-: Show the detailed information about the token with the given `ID`.
+: Show the detailed information about the token with the given `ID`, including
+  the token value, permissions, timestamps, and last-use information when
+  available.
 
 `token create [-n NAME] [-p PERMISSIONS] PASSWORD`
 
-: Create a new token. This operation requires additional authentication with
-  `PASSWORD`.
+: Create a new token using the current admin `PASSWORD`. This command
+  authenticates with the password directly and does not require `-T` or `-S`.
 
 : `-n NAME, --token-name NAME`
 
@@ -224,7 +233,7 @@ operations on the token use token ID to identify the particular token.
 
 `token update [-n NAME] [-p PERMISSIONS] ID`
 
-: Change the token's name or permissions.
+: Change the token's name or permissions and print the updated token details.
 
 : `-n NAME, --token-name NAME`
 
@@ -234,7 +243,7 @@ operations on the token use token ID to identify the particular token.
 
   : Comma-separated list of permissions to be assigned to the token.
 
-`token delete [-h] ID`
+`token delete ID`
 
 : Delete the token.
 

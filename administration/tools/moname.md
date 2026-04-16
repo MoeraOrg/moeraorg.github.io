@@ -187,7 +187,9 @@ networks. If the generation is missing, generation `0` is used by default.
 `-a, --add <name> <uri>`
 
 : Add a new name to the naming server and set its node URI to `<uri>`.
-The updating and signing keys are generated automatically.
+The updating and signing keys are generated automatically. Save both outputs:
+the 24 secret words are required for future updates, and the signing key is
+needed by the node that will use the name.
 
   ```
   $ moname -da moname-sample https://moname.moera.social/moera
@@ -231,14 +233,21 @@ secret words should be passed to the standard input. It is allowed to pass them
 exactly how they are printed, with each word prepended with its number. These
 numbers are ignored.
 
+: The command always reads the current 24 secret words from standard input,
+  even if you only change the URI or rotate keys.
+
 `-U, --uri URI`
 
 : Set a new node URI.
 
 `-g, --signing-key`
 
-: Generate a new signing key.
+: Generate a new signing key and print it after the update completes.
 
 `-G, --updating-key`
 
-: Generate a new updating key.
+: Generate a new updating key and print the new 24 secret words after the
+  update completes.
+
+: `-g` and `-G` may be used together. In that case the command prints both the
+  new secret words and the new signing key.
