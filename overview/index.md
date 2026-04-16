@@ -8,7 +8,7 @@ next_title: Node
 # Centralized vs. Decentralized
 
 The World Wide Web was designed with decentralization in mind. One of
-the core ideas was that every user, organization, project should have
+the core ideas was that every user, organization, and project should have
 their own site or page located anywhere on the Internet and linked with
 other pages using hyperlinks. The term *home page* came to us from these
 ancient times. But the period when users created their own home pages
@@ -20,15 +20,15 @@ platforms have many advantages.
 #### Advantages
 
 **Ease of use.** No more tricky HTML/CSS formatting and server
-programming. You enter the text — and it becomes published, in a second.
+programming. You enter the text — and it is published in a second.
 You can concentrate on the content and leave programming to programmers.
 
-**Uniform design.** No more wild colors, non-readable text and confusing
-navigation. Simple and straightforward, the design allows to quickly
+**Uniform design.** No more wild colors, hard-to-read text, and confusing
+navigation. Simple and straightforward, the design makes it easy to quickly
 reach the information you need.
 
 **Free of charge.** You don't need to pay for the service. Just register
-and start using it. The platform makes profit from selling advertising
+and start using it. The platform makes a profit from selling advertising
 and optional services.
 
 **Feedback.** Comments, likes, reposts, polls, private messages etc.
@@ -63,15 +63,15 @@ to centralized systems.
 
 **Censorship.** Even if the platform wants to preserve the freedom of
 speech, it is vulnerable to pressure from governments, organized groups
-of users (that threaten to leave the platform), advertisers and its own
-employees. The platforms begin to provide rules of conduct and
-censorship that seems reasonable at the beginning, but quickly goes out
-of control. Theoretical ability to filter the content becomes
+of users (that threaten to leave the platform), advertisers, and its own
+employees. The platform begins to impose rules of conduct and
+censorship that seem reasonable at the beginning, but quickly go out
+of control. The theoretical ability to filter the content becomes a
 responsibility and refusal is punished. The worst is that it is
 practically impossible to censor tens of millions of active users. It
-requires hiring of the large number of human censors or uses the
+requires hiring a large number of human censors or using
 "intellectual" software with a lot of false positives. This leads to
-banning innocent people, fade of humour and sarcasm, manifestation of
+banning innocent people, the loss of humour and sarcasm, the manifestation of
 political bias and mob rule. The platform becomes boring and
 frustrating.
 
@@ -85,10 +85,10 @@ payment.
 platform, if it does not fit your needs, even if alternatives are
 available.
 
-**Limited access.** Your data is a profitable resource for the platform,
+**Limited access.** Your data is a profitable resource for the platform;
 it does not want to share it with anybody else. Display of your data in
-other websites and applications is explicitly prohibited by platform's
-rules meaning you cannot create an alternative viewer that better suits
+other websites and applications is explicitly prohibited by the platform's
+rules, meaning you cannot create an alternative viewer that better suits
 your needs. Automated access to your data via APIs is very limited. You
 cannot get a link to an image from your gallery and insert it into your
 blog — these links are temporary. Your public content is not indexed by
@@ -98,40 +98,40 @@ within the platform (i.e. by implementing some API) — you need to copy
 all your data to the platform and synchronize all updates. You cannot
 merge comments at the platform with comments outside it.
 
-**Lack of features.** Why big centralized platforms lack many useful
-features, updates are rare and mostly cosmetic? In centralized systems
+**Lack of features.** Why do big centralized platforms lack many useful
+features, and why are updates rare and mostly cosmetic? In centralized systems
 all innovations happen in the center. To be implemented, the feature
 must be scalable to millions of users, must be understood and acceptable
-by any audience, must have potential to increase profits. Every change
+by any audience, and must have the potential to increase profits. Every change
 in a large-scale system takes thousands of man-hours of programmers,
-testers and designers. A feature that is needed only by several hundreds
+testers and designers. A feature that is needed only by several hundred
 of thousands of users has zero chances to be implemented.
 
-**Annoying ads.** If the platform makes profit from advertising, you
+**Annoying ads.** If the platform makes a profit from advertising, you
 will see ads and sponsored posts everywhere. It will exploit any chance
 to grab your attention and will block any measures to filter ads out.
 Your attention is what they sell.
 
 **No control what to read.** Your friends usually write more posts than
 you can read. So "smart friend feed" with filtering, grouping and even
-AI-driven feed composition is a good thing. But without possibility to
-tune the composition algorithm manually the user gets the feed filled
+AI-driven feed composition is a good thing. But without the possibility of
+tuning the composition algorithm manually, the user gets a feed filled
 with the posts from the few most popular friends, children and cat photos
-and endless political flamewars; that always get a lot of likes and
+and endless political flamewars that always get a lot of likes and
 comments. More than that, the platform administrators may tweak the
-algorithm in the way they prefer - to show more ads, to punish posts of
+algorithm in the way they prefer — to show more ads, to punish posts of
 competitors and posts with links that bring users out of the platform,
-to rise attention to a particular topic or political opinion. Somebody,
-not you decide what you should read.
+to raise attention to a particular topic or political opinion. Somebody,
+not you, decides what you should read.
 
 **No control how to read.** The platform, its web UI and mobile
 application are coupled together. You cannot create an application with
-simplified or richer interface, or presenting the same data in a
-different way. Why you need to repost you Instagram photos to Facebook,
-why not just create an application that presents your Facebook albums in
-Instagram way? Why cannot you use the same account as Dropbox-like file
+simplified or richer interface, or that presents the same data in a
+different way. Why do you need to repost your Instagram photos to Facebook?
+Why not just create an application that presents your Facebook albums in
+an Instagram-style way? Why can't you use the same account as Dropbox-like file
 storage? Why are you forced to update and use a new redesigned
-application if you like the old one more? 
+application if you like the old one more?
 
 **No privacy.** Social networks try to collect a maximum amount of data
 on you, even if you didn't plan to share it with anyone. Your contact
@@ -140,7 +140,7 @@ stored for selling them to advertisers or to... who knows. You are
 forced to use your real name for the account and cannot use more than
 one account. You cannot be anonymous and cannot even read someone's
 public posts anonymously. Your virtual life must be intertwined with
-your real life, even if you don't want to. If you regret about your
+your real life, even if you don't want it to be. If you regret your
 online behavior after a decade, you will not be able to throw everything
 away and to start with a clean slate.
 

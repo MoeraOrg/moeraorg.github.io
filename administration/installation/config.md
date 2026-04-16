@@ -202,7 +202,7 @@ The API key of the service.
 
 ## Multiple domains
 
-`moera-node` allows to run several nodes on a single server instance. Each node
+`moera-node` allows you to run several nodes on a single server instance. Each node
 should have a separate domain name. Depending on the configuration, nodes may be
 created only by the server administrator, or by any user.
 

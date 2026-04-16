@@ -7,13 +7,13 @@ next_title: Permissions
 
 # Browsing
 
-A user of a centralized social network sees it as one big website. He
-opens this site in a web browser and uses the site's UI to surf through
+A user of a centralized social network sees it as one big website. They
+open this site in a web browser and use the site's UI to surf through
 the social network.
 
-As we [said above][1], Moera is not a single website, it is a web of
+As we [said above][1], Moera is not a single website; it is a web of
 sites. The best way to surf through it is with an "upgraded" browser.
-The browser should handle some sort of URIs designating a post, feed or profile
+The browser should handle some kind of URI designating a post, feed, or profile
 in Moera, like
 ```
 moera:<node name>/<location>
@@ -30,7 +30,7 @@ For example:
 ```
 https://moera.page/@lamed/lamed.moera.blog/post/99d6af7f
 ```
-Let's analyze what the URL is built of.
+Let's analyze what the URL is made of.
 
 ### Redirector
 
@@ -44,11 +44,11 @@ the cookies when doing the redirection.
 ### Node Name and Node Host
 
 The web client uses the [node name][1] and the node host in the URL to open
-a correct node. Each of them is optional, but the corresponding element in the
+the correct node. Each of them is optional, but the corresponding element in the
 URL should be present. If the node name is not known, it should be written
 as `/@/`. If the node host is not known, it should be written as `/~/`.
 
-Essentially, there is enough to know the node name to locate the node. The
+Essentially, it is enough to know the node name to locate the node. The
 client just needs to resolve the name through the Moera naming service. But the
 presence of the host in the URL makes the process faster. If the node host is
 known, the client tries to open it first. Later, if the hostname returned by the
@@ -60,20 +60,20 @@ If the node does not have a registered name, or it is not known, the node host
 in the URL becomes the only way to locate the node. If the node host is not set
 as well, the user's home node is used if it is known to the client.
 
-If the node uses a protocol other than HTTPS or a different port, they should
+If the node uses a protocol other than HTTPS or a different port, these should
 be specified with the host name, like `http:localhost:8000`.
 
 ### Virtual Page
 
-The location part of the URL is called a *virtual page*. 
+The location part of the URL is called a *virtual page*.
 
 As we said before, Moera REST API may be implemented by any site and
 sites may have different structures. For example, on one site the
-"Contacts" page may have location `/contact-us.html` and on another
+"Contacts" page may have the location `/contact-us.html` and on another
 site — `/info/contacts.php`, but both correspond to the same Moera
 virtual page `/profile`.
 
-All virtual pages have standard names, this simplifies interactions between a
+All virtual pages have standard names; this simplifies interactions between a
 client and node. For example, if user `Arthur` is mentioned in a comment
 somewhere, and we know that his node hostname is `arthur.earth.org`, we can link
 his name to `https://moera.page/@Arthur/arthur.earth.org/profile` and be sure
@@ -106,7 +106,7 @@ The redirector must be highly-available, secure and handle a lot of traffic.
 It also puts decentralization in danger.
 
 To mitigate this problem, the Moera URL handling and redirection should happen
-in the browser itself, without actually sending requests to `moera.page` host.
+in the browser itself, without actually sending requests to the `moera.page` host.
 A browser extension may be used for this task.
 
 [1]: /overview/naming.html

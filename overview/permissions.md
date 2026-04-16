@@ -8,7 +8,7 @@ next_title: Supervision
 # Permissions
 
 The node decides by itself whether to permit a particular user to view,
-edit, delete, comment etc. the content that is posted on the node. That
+edit, delete, comment on, etc. the content that is posted on the node. That
 includes the comments — if you commented a post on someone's node, the
 owner of the node decides from that moment whether to allow you or
 somebody else to edit or delete it. But your signature cannot be forged,
@@ -19,19 +19,19 @@ visible to everyone.
 
 Access controls may be implemented in many ways, but all these internal
 implementation details are not visible to the client (except the owner).
-Node simply does not return the content that the user is not allowed to
-view or returns error in the answer to the editing request if the user
+The node simply does not return the content that the user is not allowed to
+view or returns an error in response to the editing request if the user
 is not allowed to edit — without any explanation. However, the node may
-return hints that help user to know in advance what operations he may be
+return hints that help the user know in advance what operations they may be
 allowed to perform. But they do not guarantee that the operation will be
 allowed, they are just hints. They may be used to hide or gray out some
 buttons or menu items.
 
-For each post, comment etc. the node returns a list of operations that
-may be performed on it, and for each operation - a list of groups of
+For each post, comment, etc., the node returns a list of operations that
+may be performed on it, and for each operation, a list of groups of
 users that are allowed to perform the operation. There are only names of
 the groups, without any details. Some names are standard — "admin",
-"owner", "moderator". Other are meaningless strings or numbers — this is
+"owner", "moderator". Others are meaningless strings or numbers — this is
 recommended for privacy, to keep the real purpose of the groups in
 secret.
 
@@ -39,7 +39,7 @@ Every user may ask the node about himself (and only himself) — what
 groups he is included in. With this information, he can predict what
 operations he may be allowed to perform.
 
-Public operations (like viewing public posts) are allowed to any user
+Public operations (like viewing public posts) are allowed for any user
 without authentication. There is no way to deny a public operation for
 anybody.
 
@@ -91,20 +91,20 @@ of them:
 * Deny access to your public posts and comments — not possible in Moera.
 * Deny access to your non-public content — remove him from all groups
   granting special access rights.
-* Deny from commenting — if you, for example, allow comments from any
+* Deny commenting — if you, for example, allow comments from any
   authenticated user, you still can reject comments from some of them,
   without any explanation.
-* Deny from commenting under your posts in groups — if the group node
+* Deny commenting under your posts in groups — if the group node
   agrees (see below).
 * Delete all comments — you can do this at any moment.
-* Hide in any discussion - your client gets the list of banned users
+* Hide in any discussion — your client gets the list of banned users
   from your node and hides their comments from you. The newsfeed builder
   can do the same.
-* Hide from [search][4] and [recommendations][4] - your client can
+* Hide from [search][4] and [recommendations][4] — your client can
   filter the search results and recommendations before showing them to
   you.
 
-Besides of bans, nobody can stop you from implementing any system of
+Besides bans, nobody can stop you from implementing any system of
 warnings, temporary bans, karma — anything you've seen on forums, in
 FIDO or invented by yourself.
 
@@ -115,9 +115,9 @@ somebody's post, you do not control your publication. The node where
 the publication is located controls everything — who can view it, edit
 or delete. But you can ask the node to obey some of your personal
 restrictions (for example, to stop somebody from commenting under your
-post), and the node can make you a favor. Specifically, the node may do a
+post), and the node can do you a favor. Specifically, the node may send a
 request to your home node to check whether, for example, you allow the
-given user to comment under your post. 
+given user to comment under your post.
 
 [1]: /overview/authentication.html
 [2]: https://en.wikipedia.org/wiki/Replay_attack

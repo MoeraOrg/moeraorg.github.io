@@ -238,7 +238,7 @@ events:
       - type: String
         name: gender
         optional: true
-        description: the new node owners's gender
+        description: the new node owner's gender
       - type: String
         name: title
         optional: true

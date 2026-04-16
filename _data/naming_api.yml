@@ -280,7 +280,7 @@ errors:
     description: <code>signature</code> check failed
   - code: 13
     name: crypto.failure
-    description: crypto configuration exception occured
+    description: crypto configuration exception occurred
   - code: 14
     name: previous-digest.wrong-length
     description: <code>previousDigest</code> has wrong length

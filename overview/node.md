@@ -13,18 +13,18 @@ group, organization or project has his own website. We will call it
 install one package, run one script or deploy one container, and your
 node is up and running.
 
-Node provides to the outer world two interfaces: Web UI and REST API.
+The node provides the outside world with two interfaces: Web UI and REST API.
 
 ##### Web UI
 
 The Web UI is a simple non-interactive website that displays the public
 content of the node. For example, if the node is used as a blog, the Web
-UI will contain public part of the user's profile, all public posts,
+UI will contain the public part of the user's profile, all public posts,
 public comments, photos in public albums, etc.
 
 The first goal of the Web UI is to allow regular Internet users to
-browse the node's content without a need to install any special software
-or registering anywhere. This also solves a chicken-and-egg problem of
+browse the node's content without the need to install any special software
+or register anywhere. This also solves a chicken-and-egg problem of
 social networks — even if there are not so many users that have Moera
 software installed, you always have readers from the outside.
 
@@ -37,23 +37,23 @@ be utilized.
 The REST API is the gateway to all features of the node. It allows 
 authenticating, reading and posting public and private content, changing
 settings, getting notifications, and so on. The REST API must be open,
-standardized and well-documented, anybody must be able to use and implement it
+standardized and well-documented; anybody must be able to use and implement it
 in any software.
 
 Web clients and mobile clients use REST API for all operations.
 Automated operations, like backups, reposts from other social networks,
-data migration, specialized Moera search engines, etc. also use it.
-REST API is also used for internode communication - receiving
-[notifications][1], fetching new posts for the [newsfeed][2] etc.
+data migration, specialized Moera search engines, etc., also use it.
+REST API is also used for internode communication — receiving
+[notifications][1], fetching new posts for the [newsfeed][2], etc.
 
 Node REST API may be implemented (fully or partially) by any existing
 website, making its content available for reading and commenting with
-Moera client, for reposting to other nodes in Moera network, for adding
-to the newsfeed etc. The site becomes part of the social network without
+a Moera client, for reposting to other nodes in the Moera network, for adding
+to the newsfeed, etc. The site becomes part of the social network without
 the need to copy every post, to have comments in different places and to
 hire a separate person to maintain this. It is possible to distribute a
 Moera REST API implementation as a plugin for popular content management
-systems (WordPress, Joomla etc.), so any site using a CMS may be
+systems (WordPress, Joomla, etc.), so any site using a CMS may be
 converted to Moera node in one click.
 
 ##### \* \* \*
@@ -71,7 +71,7 @@ data in a structured form that the client knows to display.
 
 But, for backward compatibility, if a user connects with a Moera-capable
 browser to a site that does not provide Moera API, it will show the
-regular HTML interface. And another way around, if a user connects with a
+regular HTML interface. Conversely, if a user connects with a
 regular web browser to a Moera-capable site, it will show the fallback
 Web UI described above.
 

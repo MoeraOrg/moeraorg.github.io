@@ -7,15 +7,15 @@ next_title: Commercialization
 
 # Other Features
 
-Shortly about other popular features of social networks and how they may
-be implemented in Moera.
+Here are some other popular social-network features and how they may be
+implemented in Moera.
 
 ## User search
 
 Web search engines index all public data, including the public part of
 user profiles. So it is possible to use Google, Bing, DuckDuckGo, etc.
-to find a Moera user or a public post. But sometimes it is easier
-to have a simple search that allows to quickly find a user by his name
+to find a Moera user or a public post. But sometimes it is useful
+to have a simple search that quickly finds a user by name
 right from the Moera client interface.
 
 This search may be implemented as a separate service located on its own
@@ -67,8 +67,8 @@ cryptographic algorithms that may be useful for this. For example,
 
 ## Recommendations
 
-It is possible to create a service that will recommend you people that
-may be your friends or posts that you may like. But to make it working,
+It is possible to create a service that will recommend people to you who
+may be your friends or posts that you may like. But to make it work,
 you will need to compromise your privacy and allow this service to see
 your list of friends and the list of posts you've liked. Do this at your
 own risk.
@@ -80,7 +80,7 @@ pretend to be?
 
 1. If a user wants their identity to be verified, they turn to an
    authoritative organization (or person).
-2. The authoritative organization verifies that user's ID.
+2. The authoritative organization verifies that user's identity.
 3. The authoritative organization signs the user's registered name and
    real name.
 4. Your Moera client sees the signature, validates it and marks the user

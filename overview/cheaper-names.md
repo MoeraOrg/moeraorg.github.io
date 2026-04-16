@@ -30,13 +30,13 @@ cases.
 
 Since naming servers are independent of the underlying storage, it is
 possible to use different storage types for different naming servers.
-The names may have prefix designating the storage. For example,
+The names may have a prefix designating the storage. For example,
 `b.bettan` designates the name `bettan` registered in the blockchain,
 and `m.bosse` is a cheaper name stored in a centralized database. A node
 may ask different naming servers to resolve different types of names.
 
 Another approach is to organize naming servers into a hierarchy similar
-to DNS hierarchy. That is, `test.moera.org` domain is resolved by
+to the DNS hierarchy. That is, the `test.moera.org` domain is resolved by
 requesting one of root nameservers for the list of nameservers for `org`
 domain, then asking one of them for the address of the nameserver for
 `moera` subdomain and asking one of them for the address of `test`
@@ -73,7 +73,7 @@ top-level name owner.)
 ## Subordinate names
 
 If you create a local group for your friends or a small event like an
-Independence day barbecue, it has no sense to install a separate node
+Independence Day barbecue, it makes no sense to install a separate node
 for it and register a name in the blockchain. You may use the same node
 and a subordinate name instead.
 
@@ -103,7 +103,7 @@ Every user has a public signing key, which is long and nearly random.
 Hash of this key in an encoded form (for example, [bech32][1]-encoded)
 may be used as a *surrogate name* (looks like `0c5xw7kv`). In practice,
 it will be enough to display the first 8 characters of the encoded key to
-the user — it will give about 1 trillion variants and probability of
+the user — it will give about 1 trillion variants, and the probability of
 collision will be low enough. Internally though, the whole hash should be
 used.
 
@@ -125,8 +125,8 @@ algorithm of publishing and usage of such names is as follows:
    server repeats the steps 3-4.
 6. The node must refresh the surrogate name periodically. If not
    refreshed for more than 1 day, the record is deleted. This prevents
-   unused names to point to URLs where the node was located in the past,
-   but now there is a some unrelated site located. When the surrogate
+   unused names from pointing to URLs where the node was located in the past,
+   but where there is now some unrelated site. When the surrogate
    name is refreshed, the node URL may be changed.
 7. When the surrogate name is used, nodes and clients query any naming
    server for the information related to it, as they usually do with any

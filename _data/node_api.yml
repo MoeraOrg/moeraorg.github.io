@@ -5108,7 +5108,7 @@ structures:
       - struct: SubscriptionInfo
         name: subscription
         optional: true
-        description: information about the nodes's subscription to the contact's feeds
+        description: information about the node's subscription to the contact's feeds
       - struct: FriendInfo
         name: friend
         optional: true
