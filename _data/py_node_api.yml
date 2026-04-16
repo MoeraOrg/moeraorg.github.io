@@ -569,6 +569,14 @@ objects:
     - name: url
       type: str
   - auth: irrelevant
+    description: Enable or disable SSL certificate verification.
+    function: verify_ssl(verify_ssl)
+    params:
+    - description: <code>True</code> to verify SSL certificates, <code>False</code>
+        otherwise
+      name: verify_ssl
+      type: bool
+  - auth: irrelevant
     description: Generic method for making node API requests.
     function: 'call(name, location, params=None, method=''GET'', body=None, body_file=None,
       body_file_type=None, auth=True, schema=None, bodies=False, src_bodies=False)
@@ -4174,6 +4182,10 @@ objects:
     the rules too often, and because of that all his comments should be marked by
     the sheriff''s mark automatically.
 
+    User lists may keep any set of unique strings, not just node names. Security guards
+    use user lists to keep hashes of malicious files. Other nodes check these hashes
+    and block download of known malware.
+
     '
   name: User Lists
   requests:
@@ -5813,7 +5825,7 @@ structures:
     name: subscriber
     optional: true
     struct: SubscriberInfo
-  - description: information about the nodes's subscription to the contact's feeds
+  - description: information about the node's subscription to the contact's feeds
     name: subscription
     optional: true
     struct: SubscriptionInfo

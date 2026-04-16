@@ -4171,6 +4171,10 @@ objects:
     the rules too often, and because of that all his comments should be marked by
     the sheriff''s mark automatically.
 
+    User lists may keep any set of unique strings, not just node names. Security guards
+    use user lists to keep hashes of malicious files. Other nodes check these hashes
+    and block download of known malware.
+
     '
   name: User Lists
   requests:
@@ -5810,7 +5814,7 @@ structures:
     name: subscriber
     optional: true
     struct: SubscriberInfo
-  - description: information about the nodes's subscription to the contact's feeds
+  - description: information about the node's subscription to the contact's feeds
     name: subscription
     optional: true
     struct: SubscriptionInfo
