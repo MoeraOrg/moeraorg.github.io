@@ -57,6 +57,15 @@ constants:
   - name: DEV_NAMING_SERVER
     value: '"https://naming-dev.moera.org/moera-naming"'
     description: Moera developers' naming server.
+  - name: ANONYMOUS_NODE_NAME
+    value: '"unk_0"'
+    description: Node name used to represent anonymous content author.
+  - name: ANONYMOUS_NODE_PUBLIC_KEY
+    value: "(Buffer)"
+    description: Public key used to verify signatures of anonymous content.
+  - name: ANONYMOUS_NODE_PRIVATE_KEY
+    value: "(Buffer)"
+    description: Private key used to sign anonymous content.
 
 functions:
   - name: parseNodeName(nodeName)

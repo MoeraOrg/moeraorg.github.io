@@ -8,9 +8,9 @@ classes:
         optional: true
         description: length of the carte's life, in seconds (10 minutes by default)
       - name: address
-        type: string | null
+        type: string | string[] | null
         optional: true
-        description: if set, the carte is valid for authentication from the given IP address only
+        description: if set, the carte is valid for authentication from the given IP address(-es) only
       - name: nodeName
         type: string | null
         optional: true
