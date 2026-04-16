@@ -17,7 +17,7 @@ pip install moera-tools
 
 The package includes:
 * [moname][3] — get information about names from the Moera naming service.
-* [moctl][4] — manage domains, credentials, and settings.
+* [moctl][4] — manage domains, credentials, malware hashes, and settings.
 
 All tools use a common [configuration file][5].
 

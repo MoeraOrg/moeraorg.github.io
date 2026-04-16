@@ -9,7 +9,7 @@ subtitle: moctl
 
 ## Name
 
-`moctl` — manage domains, credentials, and settings
+`moctl` — manage domains, credentials, malware hashes, and settings
 
 ## Synopsis
 
@@ -84,6 +84,7 @@ forms.
   * `domain (dom)` — manage domains (nodes located on the same server)
   * `credentials (cr)` — manage credentials
   * `name (nm)` — manage node name
+  * `malware (mal)` — manage malware hashes
   * `token (t)` — manage authentication tokens
   * `option (op)` — change settings
 
@@ -167,6 +168,24 @@ These numbers are ignored.
 `name delete`
 
 : Remove name information from the node. 
+
+## Manage malware hashes
+
+These commands manage the `malware` user list on the node. Each hash is stored
+in the list as `node_name`.
+
+`malware add HASH`
+
+: Add `HASH` to the malware list.
+
+`malware delete HASH`
+
+: Delete `HASH` from the malware list.
+
+`malware show HASH`
+
+: Show `HASH` and its creation timestamp, separated by a tab. If `HASH` is not
+  found, print nothing.
 
 ## Manage authentication tokens
 
