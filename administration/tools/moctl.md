@@ -14,7 +14,7 @@ subtitle: moctl
 ## Synopsis
 
 ```
-moctl [-h] [-d] [-H URL | -N NAME]
+moctl [-h] [-d] [-H URL | -N NAME] [-k]
       [-s URL] [-S SECRET]
       [-P PROVIDER] [-T TOKEN]
       [-V] OBJECT COMMAND ...
@@ -24,7 +24,7 @@ moctl [-h] [-d] [-H URL | -N NAME]
 
 `-h, --help`
 
-: Get the list of all available options, their meaning and their short and long
+: Get the list of all available options, their meaning, and their short and long
 forms.
 
 `-V, --version`
@@ -49,13 +49,21 @@ forms.
   creation/deletion commands. For domain creation/deletion commands, these options
   define the node for sending API requests to.
 
+`-k, --insecure`
+
+: Disable SSL certificate verification for HTTPS connections to the naming server
+  and the node.
+
+: Use this option only when connecting to a trusted server with a self-signed or
+  otherwise untrusted certificate.
+
 `-S SECRET, --root-secret SECRET`
 
 : Define root admin secret used for authentication.
 
 `-T TOKEN, --token TOKEN`
 
-: Define admin token used for authentication.
+: Define the admin token used for authentication.
 
 `-P PROVIDER, --provider PROVIDER`
 
@@ -216,7 +224,7 @@ operations on the token use token ID to identify the particular token.
 
 `token update [-n NAME] [-p PERMISSIONS] ID`
 
-: Change token's name or permissions.
+: Change the token's name or permissions.
 
 : `-n NAME, --token-name NAME`
 
@@ -234,7 +242,7 @@ operations on the token use token ID to identify the particular token.
 
 These commands are used to display or change node settings (options). The node admin
 may change regular settings, while changing privileged settings or default values
-require root admin authentication.
+requires root admin authentication.
 
 `option show [-d] [--defaults] [-m] [--prefix PREFIX] [-t]`
 
