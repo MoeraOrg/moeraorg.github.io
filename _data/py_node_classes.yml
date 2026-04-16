@@ -99,12 +99,16 @@ classes:
         type: str
         description: API endpoint URL of the node.
     functions:
-      - name: MoeraNode(node_url=None)
+      - name: MoeraNode(node_url=None, verify_ssl=True)
         params:
           - name: node_url
             type: str
             optional: true
             description: node URL
+          - name: verify_ssl
+            type: bool
+            optional: true
+            description: <code>True</code> to verify SSL certificates, <code>False</code> otherwise
 
 objects:
   - name: General
@@ -116,6 +120,13 @@ objects:
             type: str
         auth: irrelevant
         description: Set node URL.
+      - function: verify_ssl(verify_ssl)
+        params:
+          - name: verify_ssl
+            type: bool
+            description: <code>True</code> to verify SSL certificates, <code>False</code> otherwise
+        auth: irrelevant
+        description: Enable or disable SSL certificate verification.
       - function: >
           call(name, location, params=None, method='GET', body=None, body_file=None, body_file_type=None, auth=True,
           schema=None, bodies=False, src_bodies=False)
@@ -233,9 +244,9 @@ functions:
         optional: true
         description: length of the carte's life, in seconds (10 minutes by default)
       - name: address
-        type: str
+        type: str | list[str]
         optional: true
-        description: if set, the carte is valid for authentication from the given IP address only
+        description: if set, the carte is valid for authentication from the given IP address(-es) only
       - name: node_name
         type: str
         optional: true

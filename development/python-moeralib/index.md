@@ -30,6 +30,17 @@ info = naming.get_current('balu-dev', 0)
 print(info.node_uri)
 ```
 
+A custom SSL certificate policy may be selected using the optional
+`verify_ssl` parameter. Set it to `False` only for development or testing
+against naming servers with self-signed certificates.
+
+```python
+from moeralib.naming import MoeraNaming
+
+naming = MoeraNaming('https://localhost.localdomain:8081/moera-naming', verify_ssl=False)
+info = naming.get_current('balu-dev', 0)
+```
+
 A shortcut function `resolve()` simplifies resolving of names.
 
 ```python
@@ -49,6 +60,19 @@ from moeralib.naming import resolve
 from moeralib.node import MoeraNode
 
 node = MoeraNode(resolve('Alice'))
+print(node.who_am_i().full_name)
+```
+
+`MoeraNode` also accepts the optional `verify_ssl` parameter. Set it to
+`False` only for development or testing against nodes with self-signed
+certificates.
+
+```python
+from moeralib.naming import resolve
+from moeralib.node import MoeraNode
+
+node_url = resolve('alice-dev_0', naming_server='https://localhost.localdomain:8081/moera-naming', verify_ssl=False)
+node = MoeraNode(node_url, verify_ssl=False)
 print(node.who_am_i().full_name)
 ```
 

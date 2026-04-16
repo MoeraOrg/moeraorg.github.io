@@ -43,12 +43,16 @@ classes:
     category: class
     description: Naming API interface.
     functions:
-      - name: MoeraNaming(server=MAIN_SERVER)
+      - name: MoeraNaming(server=MAIN_SERVER, verify_ssl=True)
         params:
           - name: server
             type: str
             optional: true
             description: the naming server URL
+          - name: verify_ssl
+            type: bool
+            optional: true
+            description: <code>True</code> to verify SSL certificates, <code>False</code> otherwise
       - name: call(method, params, schema=None)
         params:
           - name: method
@@ -73,6 +77,15 @@ constants:
   - name: DEV_SERVER
     value: '"https://naming-dev.moera.org/moera-naming"'
     description: Moera developers' naming server.
+  - name: ANONYMOUS_NODE_NAME
+    value: '"unk_0"'
+    description: Node name used to represent anonymous content author.
+  - name: ANONYMOUS_NODE_PUBLIC_KEY
+    value: '(bytes)'
+    description: Public key used to verify signatures of anonymous content.
+  - name: ANONYMOUS_NODE_PRIVATE_KEY
+    value: '(bytes)'
+    description: Private key used to sign anonymous content.
 
 functions:
   - name: node_name_parse(node_name)
@@ -109,7 +122,7 @@ functions:
       description: the node name in the full form
     description: Converts the node name to the full form, containing generation.
 
-  - name: resolve(name, naming_server=MAIN_SERVER)
+  - name: resolve(name, naming_server=MAIN_SERVER, verify_ssl=True)
     params:
       - name: name
         type: str
@@ -118,6 +131,10 @@ functions:
         type: str
         optional: true
         description: a naming server to be used
+      - name: verify_ssl
+        type: bool
+        optional: true
+        description: <code>True</code> to verify SSL certificates, <code>False</code> otherwise
     out:
       type: str | None
       description: the node URI, or <code>None</code> if the name does not exist
