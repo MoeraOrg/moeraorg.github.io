@@ -5815,6 +5815,11 @@ structures:
         name: hash
         description: SHA-1 hash of the preview
       - type: String
+        name: path
+        description: >
+          virtual location of the preview, relative to the <code>/media</code>
+          <a href="virtual-pages.html">virtual page</a>
+      - type: String
         name: directPath
         optional: true
         description: >

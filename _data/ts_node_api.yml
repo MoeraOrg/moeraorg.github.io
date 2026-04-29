@@ -6547,6 +6547,12 @@ structures:
   - description: SHA-1 hash of the preview
     name: hash
     type: string
+  - description: 'virtual location of the preview, relative to the <code>/media</code>
+      <a href="virtual-pages.html">virtual page</a>
+
+      '
+    name: path
+    type: string
   - description: 'location of the preview, relative to the <code>/media</code>; points
       to a static image served directly from a filesystem or CDN
 
