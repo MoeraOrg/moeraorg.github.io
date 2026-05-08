@@ -1668,6 +1668,10 @@ objects:
             optional: true
             description: >
               if <code>true</code>, the node will add <code>Content-Disposition: attachment</code> header to the output
+          - type: String
+            name: grant
+            optional: true
+            description: media grant allowing access to the media file
           - type: boolean
             name: ignoremalware
             optional: true
@@ -1682,6 +1686,32 @@ objects:
         errors:
           - code: media.not-found
             description: media file is not found
+          - code: media-grant.posting-id.missing
+            description: media grant posting ID is missing
+          - code: media-grant.posting-id.invalid
+            description: media grant posting ID is invalid
+          - code: media-grant.comment-id.invalid
+            description: media grant comment ID is invalid
+          - code: media-grant.expires.missing
+            description: media grant expiration timestamp is missing
+          - code: media-grant.invalid
+            description: media grant is invalid
+          - code: media-grant.unknown-fingerprint
+            description: media grant fingerprint is unknown
+          - code: media-grant.expired
+            description: media grant is expired
+          - code: media-grant.wrong-media
+            description: media grant is designated for a different media file
+          - code: media-grant.posting-not-found
+            description: media grant posting is not found
+          - code: media-grant.comment-not-found
+            description: media grant comment is not found
+          - code: media-grant.wrong-posting
+            description: media grant comment is located under a different posting
+          - code: media-grant.unknown-signing-key
+            description: media grant signing key is unknown
+          - code: media-grant.invalid-signature
+            description: media grant signature is invalid
           - code: media.malware
             description: media file is identified as malware
       - url: /media/private/{id}/info
@@ -1691,6 +1721,11 @@ objects:
           - type: String
             name: id
             description: media file ID
+        query:
+          - type: String
+            name: grant
+            optional: true
+            description: media grant allowing access to the media file
         out:
           struct: PrivateMediaFileInfo
         auth: optional
@@ -1699,6 +1734,32 @@ objects:
         errors:
           - code: media.not-found
             description: media file is not found
+          - code: media-grant.posting-id.missing
+            description: media grant posting ID is missing
+          - code: media-grant.posting-id.invalid
+            description: media grant posting ID is invalid
+          - code: media-grant.comment-id.invalid
+            description: media grant comment ID is invalid
+          - code: media-grant.expires.missing
+            description: media grant expiration timestamp is missing
+          - code: media-grant.invalid
+            description: media grant is invalid
+          - code: media-grant.unknown-fingerprint
+            description: media grant fingerprint is unknown
+          - code: media-grant.expired
+            description: media grant is expired
+          - code: media-grant.wrong-media
+            description: media grant is designated for a different media file
+          - code: media-grant.posting-not-found
+            description: media grant posting is not found
+          - code: media-grant.comment-not-found
+            description: media grant comment is not found
+          - code: media-grant.wrong-posting
+            description: media grant comment is located under a different posting
+          - code: media-grant.unknown-signing-key
+            description: media grant signing key is unknown
+          - code: media-grant.invalid-signature
+            description: media grant signature is invalid
       - url: /media/private/{id}/info
         type: PUT
         function: updatePrivateMediaInfo
@@ -1724,12 +1785,46 @@ objects:
           - type: String
             name: id
             description: media file ID
+        query:
+          - type: String
+            name: grant
+            optional: true
+            description: media grant allowing access to the media file
         out:
           struct: EntryInfo
           array: true
         auth: optional
         description: >
           Get the list of all postings and comments the media file is attached to.
+        errors:
+          - code: media.not-found
+            description: media file is not found
+          - code: media-grant.posting-id.missing
+            description: media grant posting ID is missing
+          - code: media-grant.posting-id.invalid
+            description: media grant posting ID is invalid
+          - code: media-grant.comment-id.invalid
+            description: media grant comment ID is invalid
+          - code: media-grant.expires.missing
+            description: media grant expiration timestamp is missing
+          - code: media-grant.invalid
+            description: media grant is invalid
+          - code: media-grant.unknown-fingerprint
+            description: media grant fingerprint is unknown
+          - code: media-grant.expired
+            description: media grant is expired
+          - code: media-grant.wrong-media
+            description: media grant is designated for a different media file
+          - code: media-grant.posting-not-found
+            description: media grant posting is not found
+          - code: media-grant.comment-not-found
+            description: media grant comment is not found
+          - code: media-grant.wrong-posting
+            description: media grant comment is located under a different posting
+          - code: media-grant.unknown-signing-key
+            description: media grant signing key is unknown
+          - code: media-grant.invalid-signature
+            description: media grant signature is invalid
   - name: Media (public)
     description: >
       Media files that should be accessible to any client. ID of a public media file is SHA-1 hash of its content.
@@ -2973,6 +3068,9 @@ objects:
           - type: String
             name: id
             description: id of the media file
+        in:
+          struct: MediaDownloadAttributes
+          name: attributes
         out:
           struct: PrivateMediaFileInfo
         auth: admin
@@ -4752,6 +4850,11 @@ structures:
         name: bodyFormat
         optional: true
         description: format of the body of the revision, may have any value meaningful for the client
+      - struct: MediaAttachment
+        array: true
+        name: media
+        optional: true
+        description: list of the media attached to the revision
       - type: String
         name: heading
         description: heading of the revision
@@ -5286,6 +5389,11 @@ structures:
         name: media
         optional: true
         description: list of the media attached to the draft
+      - struct: MediaCaption
+        array: true
+        name: mediaCaptions
+        optional: true
+        description: captions of the media attached to the draft
       - type: String
         name: heading
         description: heading of the draft
@@ -5390,6 +5498,11 @@ structures:
         name: media
         optional: true
         description: list of the media attached to the draft, the media may be located on another node
+      - struct: MediaCaptionText
+        array: true
+        name: mediaCaptions
+        optional: true
+        description: captions of the media attached to the draft
       - type: timestamp
         name: publishAt
         optional: true
@@ -5770,6 +5883,10 @@ structures:
         name: imageHash
         optional: true
         description: hash of the image presenting the page
+      - type: timestamp
+        name: publishedAt
+        optional: true
+        description: timestamp of the page publication time
   - name: LinkPreviewInfo
     fields:
       - type: String
@@ -5792,6 +5909,10 @@ structures:
         name: imageUrl
         optional: true
         description: URL of the image presenting the page
+      - type: timestamp
+        name: publishedAt
+        optional: true
+        description: timestamp of the page publication time
   - name: MediaAttachment
     fields:
       - struct: PrivateMediaFileInfo
@@ -5802,10 +5923,45 @@ structures:
         name: remoteMedia
         optional: true
         description: details of the media, if it is located on another node
+      - type: String
+        name: postingId
+        optional: true
+        description: ID of the child posting linked to the attachment, if any
       - type: boolean
         name: embedded
         description: >
             <code>true</code> if the media is used in the body of the posting/comment, <code>false</code> otherwise
+  - name: MediaCaption
+    fields:
+      - type: String
+        name: mediaId
+        description: ID of the media file the caption belongs to
+      - struct: Body
+        name: captionSrc
+        optional: true
+        description: caption source text, a string representation of a JSON structure
+      - enum: SourceFormat
+        name: captionSrcFormat
+        optional: true
+        description: format of the caption source text
+  - name: MediaCaptionText
+    fields:
+      - type: String
+        name: mediaId
+        description: ID of the media file the caption belongs to
+      - struct: Body
+        name: captionSrc
+        optional: true
+        description: caption source text, a string representation of a JSON structure
+      - enum: SourceFormat
+        name: captionSrcFormat
+        optional: true
+        description: format of the caption source text
+  - name: MediaDownloadAttributes
+    fields:
+      - type: String
+        name: grant
+        description: media grant allowing access to the media
   - name: MediaFilePreviewInfo
     fields:
       - type: int
@@ -6183,6 +6339,10 @@ structures:
         name: parentMediaId
         optional: true
         description: ID of the media the posting is linked to, if any
+      - type: String
+        name: parentMediaEntryId
+        optional: true
+        description: ID of the entry that owns the attachment the posting is linked to, if any
       - type: String
         name: ownerName
         description: node name of the posting's owner
@@ -6782,10 +6942,6 @@ structures:
         name: textContent
         optional: true
         description: the text contained in the image, if any
-      - type: String
-        name: postingId
-        optional: true
-        description: ID of the posting linked to the media
       - struct: MediaFilePreviewInfo
         array: true
         name: previews
@@ -6802,6 +6958,10 @@ structures:
         optional: true
         description: >
           <code>true</code> if the media file is considered to be malware, <code>false</code> (default) otherwise
+      - type: String
+        name: grant
+        optional: true
+        description: media grant allowing access to the media
       - struct: PrivateMediaFileOperations
         name: operations
         optional: true
