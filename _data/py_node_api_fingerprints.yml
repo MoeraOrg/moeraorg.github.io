@@ -189,6 +189,27 @@ objects:
         target node itself
       field: node_name
       type: str
+    - comment: ID of the accessed media on the target node
+      field: media_id
+      type: str
+    - comment: timestamp when the grant expires
+      field: expires
+      type: Timestamp
+    - comment: whether the media should be downloaded
+      field: download
+      type: bool
+    - comment: the preferred name of the media file when it is downloaded
+      field: file_name
+      type: str
+    - comment: 8 random bytes
+      field: salt
+      type: bytes
+    version: 1
+  - fingerprint:
+    - comment: name of the node that grants media access, <code>null</code> for the
+        target node itself
+      field: node_name
+      type: str
     - comment: ID of the posting that grants media access
       field: posting_id
       type: str

@@ -213,6 +213,30 @@ objects:
         target node itself
       field: nodeName
       type: string
+    - comment: ID of the accessed media on the target node
+      field: mediaId
+      type: string
+    - comment: timestamp when the grant expires
+      field: expires
+      type: number
+    - comment: whether the media should be downloaded
+      field: download
+      type: boolean
+    - comment: the preferred name of the media file when it is downloaded
+      field: fileName
+      type: string
+    - comment: 8 random bytes
+      field: salt
+      type: Buffer
+    version: 1
+  - fingerprint:
+    - comment: <code>MEDIA_GRANT</code>
+      field: objectType
+      type: string
+    - comment: name of the node that grants media access, <code>null</code> for the
+        target node itself
+      field: nodeName
+      type: string
     - comment: ID of the posting that grants media access
       field: postingId
       type: string

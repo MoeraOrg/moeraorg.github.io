@@ -198,6 +198,29 @@ objects:
             field: attachments
   - name: MediaGrant
     versions:
+      - version: 1
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>MEDIA_GRANT</code>
+          - type: String
+            field: nodeName
+            comment: name of the node that grants media access, <code>null</code> for the target node itself
+          - type: String
+            field: mediaId
+            comment: ID of the accessed media on the target node
+          - type: timestamp
+            field: expires
+            comment: timestamp when the grant expires
+          - type: boolean
+            field: download
+            comment: whether the media should be downloaded
+          - type: String
+            field: fileName
+            comment: the preferred name of the media file when it is downloaded
+          - type: byte[]
+            field: salt
+            comment: 8 random bytes
       - version: 0
         fingerprint:
           - type: String
