@@ -19,6 +19,9 @@
 - name: newsfeed
   title: Newsfeed
 
+- name: media-files
+  title: Media Files
+
 - name: browsing
   title: Browsing
 

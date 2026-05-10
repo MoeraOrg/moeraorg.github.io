@@ -1,8 +1,8 @@
 ---
 layout: overview
 title: Newsfeed
-next: browsing
-next_title: Browsing
+next: media-files
+next_title: Media Files
 ---
 
 # Newsfeed
