@@ -104,7 +104,7 @@ notifications:
         comment: name of the reaction owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: reaction.owner-name.wrong-size
         log: true
       - type: String
@@ -137,7 +137,7 @@ notifications:
         comment: posting owner's node name
         constraints:
           - length:
-              max: 63
+              max: 135
               error: reaction.posting-node-name.wrong-size
         log: true
       - type: String
@@ -196,7 +196,7 @@ notifications:
         comment: name of the reaction owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: reaction.owner-name.wrong-size
         log: true
       - type: String
@@ -301,7 +301,7 @@ notifications:
         comment: name of the posting's owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: mention.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -341,7 +341,7 @@ notifications:
         comment: name of the comment's owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: mention.comment-owner-name.wrong-size
         log: true
       - type: String
@@ -410,7 +410,7 @@ notifications:
         comment: name of the posting's owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: mention.owner-name.wrong-size
         log: true
       - type: String
@@ -484,7 +484,7 @@ notifications:
         comment: name of the posting owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -532,7 +532,7 @@ notifications:
         comment: name of the comment owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.comment-owner-name.wrong-size
         log: true
       - type: String
@@ -606,7 +606,7 @@ notifications:
         comment: name of the comment owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.comment-owner-name.wrong-size
         log: true
       - type: String
@@ -747,7 +747,7 @@ notifications:
         comment: name of the posting owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: posting.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -877,7 +877,7 @@ notifications:
         comment: name of the reaction owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: reaction.owner-name.wrong-size
         log: true
       - type: String
@@ -908,7 +908,7 @@ notifications:
         comment: parent's owner node name (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
         constraints:
           - length:
-              max: 63
+              max: 135
               error: reaction.parent-posting-node-name.wrong-size
         log: true
       - type: String
@@ -991,7 +991,7 @@ notifications:
         comment: name of the reaction owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: reaction.owner-name.wrong-size
         log: true
       - type: String
@@ -1123,7 +1123,7 @@ notifications:
         comment: name of the posting's owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -1214,7 +1214,7 @@ notifications:
         comment: name of the posting owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -1254,7 +1254,7 @@ notifications:
         comment: name of the comment owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.comment-owner-name.wrong-size
         log: true
       - type: String
@@ -1327,7 +1327,7 @@ notifications:
         comment: name of the comment owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.comment-owner-name.wrong-size
         log: true
       - type: String
@@ -1469,7 +1469,7 @@ notifications:
           - notblank:
               error: sheriff-complaint.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-complaint.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1487,7 +1487,7 @@ notifications:
         comment: posting owner's node name
         constraints:
           - length:
-              max: 63
+              max: 135
               error: sheriff-complaint.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -1518,7 +1518,7 @@ notifications:
         comment: comment owner's node name
         constraints:
           - length:
-              max: 63
+              max: 135
               error: sheriff-complaint.comment-owner-name.wrong-size
         log: true
       - type: String
@@ -1565,7 +1565,7 @@ notifications:
           - notblank:
               error: sheriff-order.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1585,7 +1585,7 @@ notifications:
           - notblank:
               error: sheriff-order.posting-owner-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -1652,7 +1652,7 @@ notifications:
           - notblank:
               error: sheriff-order.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1672,7 +1672,7 @@ notifications:
           - notblank:
               error: sheriff-order.posting-owner-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.posting-owner-name.wrong-size
         log: true
       - type: String
@@ -1739,7 +1739,7 @@ notifications:
           - notblank:
               error: sheriff-order.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1774,7 +1774,7 @@ notifications:
           - notblank:
               error: sheriff-order.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1808,7 +1808,7 @@ notifications:
           - notblank:
               error: sheriff-order.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1860,7 +1860,7 @@ notifications:
           - notblank:
               error: sheriff-order.remote-node-name.empty
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.remote-node-name.wrong-size
         log: true
       - type: String
@@ -1966,7 +1966,7 @@ notifications:
         comment: name of the node
         constraints:
           - length:
-              max: 63
+              max: 135
               error: user-list.node-name.wrong-size
         log: true
   - type: USER_LIST_ITEM_DELETED
@@ -1994,6 +1994,6 @@ notifications:
         comment: name of the node
         constraints:
           - length:
-              max: 63
+              max: 135
               error: user-list.node-name.wrong-size
         log: true

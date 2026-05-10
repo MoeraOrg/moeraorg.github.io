@@ -4997,7 +4997,7 @@ structures:
         description: node name of the comment's owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: comment.owner-name.wrong-size
       - type: String
         name: ownerFullName
@@ -5427,7 +5427,7 @@ structures:
           - notblank:
               error: draft.receiver-name.blank
           - length:
-              max: 63
+              max: 135
               error: draft.receiver-name.wrong-size
       - type: String
         name: receiverPostingId
@@ -5705,7 +5705,7 @@ structures:
           - notblank:
               error: friend.node-name.blank
           - length:
-              max: 63
+              max: 135
               error: friend.node-name.wrong-size
       - struct: FriendGroupAssignment
         array: true
@@ -6029,7 +6029,7 @@ structures:
           - notblank:
               error: notification.node-name.blank
           - length:
-              max: 63
+              max: 135
               error: notification.node-name.wrong-size
       - type: String
         name: fullName
@@ -6726,7 +6726,7 @@ structures:
         description: node name of the posting's owner
         constraints:
           - length:
-              max: 63
+              max: 135
               error: posting.owner-name.wrong-size
       - type: String
         name: ownerFullName
@@ -7681,7 +7681,7 @@ structures:
         description: name of the node being blocked/unblocked
         constraints:
           - length:
-              max: 63
+              max: 135
               error: search.node-name.wrong-size
       - enum: BlockedOperation
         name: blockedOperation
@@ -7841,7 +7841,7 @@ structures:
         description: name of the node being added/removed from the list of friends
         constraints:
           - length:
-              max: 63
+              max: 135
               error: search.node-name.wrong-size
   - name: SearchHashtagFilter
     fields:
@@ -8088,7 +8088,7 @@ structures:
         description: name of the node where the posting is originated from
         constraints:
           - length:
-              max: 63
+              max: 135
               error: search.node-name.wrong-size
       - type: String
         name: postingId
@@ -8118,7 +8118,7 @@ structures:
         description: reaction owner's name
         constraints:
           - length:
-              max: 63
+              max: 135
               error: search.owner-name.wrong-size
   - name: SearchRepliedTo
     fields:
@@ -8151,7 +8151,7 @@ structures:
         description: name of the node being subscribed to/unsubscribed from
         constraints:
           - length:
-              max: 63
+              max: 135
               error: search.node-name.wrong-size
       - type: String
         name: feedName
@@ -8603,7 +8603,7 @@ structures:
           - notblank:
               error: sheriff-complaint.node-name.blank
           - length:
-              max: 63
+              max: 135
               error: sheriff-complaint.node-name.wrong-size
       - type: String
         name: fullName
@@ -8636,7 +8636,7 @@ structures:
         description: posting owner's node name
         constraints:
          - length:
-             max: 63
+             max: 135
              error: sheriff-complaint.posting-owner-name.wrong-size
       - type: String
         name: postingOwnerFullName
@@ -8676,7 +8676,7 @@ structures:
         description: comment owner's node name
         constraints:
           - length:
-              max: 63
+              max: 135
               error: sheriff-complaint.comment-owner-name.wrong-size
       - type: String
         name: commentOwnerFullName
@@ -8780,7 +8780,7 @@ structures:
           - notblank:
               error: sheriff-order.sheriff-name.blank
           - length:
-              max: 63
+              max: 135
               error: sheriff-order.sheriff-name.wrong-size
       - struct: AvatarDescription
         name: sheriffAvatar
@@ -9378,7 +9378,7 @@ structures:
           - notblank:
               error: subscription.remote-node-name.blank
           - length:
-              max: 63
+              max: 135
               error: subscription.remote-node-name.wrong-size
       - type: String
         name: remoteFeedName
@@ -9579,7 +9579,7 @@ structures:
           - notblank:
               error: user-list-item.node-name.blank
           - length:
-              max: 63
+              max: 135
               error: user-list-item.node-name.wrong-size
   - name: UserListItemInfo
     fields:

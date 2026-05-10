@@ -5687,7 +5687,7 @@ structures:
   - constraints:
     - length:
         error: comment.owner-name.wrong-size
-        max: 63
+        max: 135
     description: node name of the comment's owner
     name: ownerName
     optional: true
@@ -6137,7 +6137,7 @@ structures:
         error: draft.receiver-name.blank
     - length:
         error: draft.receiver-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node the draft is related to
     name: receiverName
     type: string
@@ -6429,7 +6429,7 @@ structures:
         error: friend.node-name.blank
     - length:
         error: friend.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node
     name: nodeName
     type: string
@@ -6762,7 +6762,7 @@ structures:
         error: notification.node-name.blank
     - length:
         error: notification.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the sending node
     name: nodeName
     type: string
@@ -7520,7 +7520,7 @@ structures:
   - constraints:
     - length:
         error: posting.owner-name.wrong-size
-        max: 63
+        max: 135
     description: node name of the posting's owner
     name: ownerName
     optional: true
@@ -8537,7 +8537,7 @@ structures:
   - constraints:
     - length:
         error: search.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node being blocked/unblocked
     name: nodeName
     type: string
@@ -8700,7 +8700,7 @@ structures:
   - constraints:
     - length:
         error: search.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node being added/removed from the list of friends
     name: nodeName
     type: string
@@ -8961,7 +8961,7 @@ structures:
   - constraints:
     - length:
         error: search.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node where the posting is originated from
     name: nodeName
     type: string
@@ -8991,7 +8991,7 @@ structures:
   - constraints:
     - length:
         error: search.owner-name.wrong-size
-        max: 63
+        max: 135
     description: reaction owner's name
     name: ownerName
     type: string
@@ -9024,7 +9024,7 @@ structures:
   - constraints:
     - length:
         error: search.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node being subscribed to/unsubscribed from
     name: nodeName
     type: string
@@ -9506,7 +9506,7 @@ structures:
         error: sheriff-complaint.node-name.blank
     - length:
         error: sheriff-complaint.node-name.wrong-size
-        max: 63
+        max: 135
     description: name of the node the complaint is related to
     name: nodeName
     type: string
@@ -9538,7 +9538,7 @@ structures:
   - constraints:
     - length:
         error: sheriff-complaint.posting-owner-name.wrong-size
-        max: 63
+        max: 135
     description: posting owner's node name
     name: postingOwnerName
     optional: true
@@ -9578,7 +9578,7 @@ structures:
   - constraints:
     - length:
         error: sheriff-complaint.comment-owner-name.wrong-size
-        max: 63
+        max: 135
     description: comment owner's node name
     name: commentOwnerName
     optional: true
@@ -9690,7 +9690,7 @@ structures:
         error: sheriff-order.sheriff-name.blank
     - length:
         error: sheriff-order.sheriff-name.wrong-size
-        max: 63
+        max: 135
     description: node name of the sheriff
     name: sheriffName
     type: string
@@ -10313,7 +10313,7 @@ structures:
         error: subscription.remote-node-name.blank
     - length:
         error: subscription.remote-node-name.wrong-size
-        max: 63
+        max: 135
     description: the name of the node this node is subscribed to
     name: remoteNodeName
     type: string
@@ -10521,7 +10521,7 @@ structures:
         error: user-list-item.node-name.blank
     - length:
         error: user-list-item.node-name.wrong-size
-        max: 63
+        max: 135
     description: the name of the node
     name: nodeName
     type: string
