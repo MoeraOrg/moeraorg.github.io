@@ -294,6 +294,15 @@ events:
       - type: String
         name: id
         description: the posting ID
+  - type: POSTING_VIEWED
+    description: A posting was viewed.
+    fields:
+      - type: String
+        name: id
+        description: the posting ID
+      - type: int
+        name: viewCount
+        description: the current number of posting views
   - type: PROFILE_UPDATED
     description: Profile was updated.
   - type: REGISTERED_NAME_OPERATION_STATUS

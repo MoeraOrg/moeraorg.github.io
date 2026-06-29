@@ -276,6 +276,34 @@ notifications:
         array: true
         name: scope
         comment: the updated set of permissions
+  - type: LEASED_MEDIA_TITLE_UPDATED
+    ordinal: 42
+    description: Title of a media file leased by the receiver has been updated.
+    fields:
+      - type: String
+        name: mediaId
+        comment: ID of the media on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: media.media-id.wrong-size
+        log: true
+      - type: String
+        name: leaseId
+        comment: ID of the lease on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: media-lease.lease-id.wrong-size
+        log: true
+      - type: String
+        name: title
+        optional: true
+        comment: title of the media file, may be used as an alternative to the file name
+        constraints:
+          - length:
+              max: 255
+              error: media.title.wrong-size
   - type: MENTION_COMMENT_ADDED
     ordinal: 6
     description: A mention of the receiver in a comment on the sending node added.
@@ -1375,6 +1403,10 @@ notifications:
         name: commentHeadingUpdate
         optional: true
         comment: details about the comment's heading
+      - struct: SearchCommentMediaUpdate
+        name: commentMediaUpdate
+        optional: true
+        comment: details about the comment's media attachment
       - struct: SearchCommentMediaTextUpdate
         name: commentMediaTextUpdate
         optional: true
@@ -1391,6 +1423,10 @@ notifications:
         name: postingHeadingUpdate
         optional: true
         comment: details about the posting's heading
+      - struct: SearchPostingMediaUpdate
+        name: postingMediaUpdate
+        optional: true
+        comment: details about the posting's media attachment
       - struct: SearchPostingMediaTextUpdate
         name: postingMediaTextUpdate
         optional: true

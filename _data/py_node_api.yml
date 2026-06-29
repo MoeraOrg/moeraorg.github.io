@@ -117,10 +117,7 @@ enums:
   - description: other permissions
     name: other
     value: '0x00000001'
-  - description: view any media file
-    name: view-media
-    value: '0x00000002'
-  - description: view any content (posts, comments, reactions), except media files
+  - description: view any content (posts, comments, reactions, media files)
     name: view-content
     value: '0x00000004'
   - description: create posts owned by the node
@@ -204,12 +201,15 @@ enums:
   - description: upload a private media file
     name: upload-private-media
     value: '0x20000000'
+  - description: lease and release media
+    name: lease-media
+    value: '0x40000000'
   - description: all view-only permissions
     name: view-all
-    value: '0x00088406'
+    value: '0x00088404'
   - description: all permissions
     name: all
-    value: '0x3fffffff'
+    value: '0x7ffffffd'
 - name: SearchContentUpdateType
   values:
   - description: the node was blocked
@@ -220,6 +220,8 @@ enums:
     name: comment-update
   - description: a comment's heading was updated
     name: comment-update-heading
+  - description: location of a media attached to a comment was updated
+    name: comment-update-media
   - description: text content of a media attached to a comment was updated
     name: comment-update-media-text
   - description: a comment was deleted
@@ -234,6 +236,8 @@ enums:
     name: posting-update
   - description: a posting's heading was updated; sent by the original node only
     name: posting-update-heading
+  - description: location of a media attached to a posting was updated
+    name: posting-update-media
   - description: text content of a media attached to a posting was updated; sent by
       the original node only
     name: posting-update-media-text
@@ -1109,11 +1113,6 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
-    - code: media.not-compressed
-      description: 'media attachment is not compressed as the node requires, the parameters
-        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
-
-        '
     function: create_comment(posting_id, comment)
     out:
       struct: CommentCreated
@@ -1178,11 +1177,6 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
-    - code: media.not-compressed
-      description: 'media attachment is not compressed as the node requires, the parameters
-        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
-
-        '
     function: update_comment(posting_id, comment_id, comment)
     out:
       struct: CommentInfo
@@ -2204,19 +2198,19 @@ objects:
     - description: name of the node
       name: node_name
       type: str
-- description: 'Media files that are bound to a particular uploader and may be inaccessible
-    to other clients. Private media files cannot be retrieved by their hash, only
-    by their ID. The ID is unique to the client that uploaded the file and the node
-    the file was uploaded to. A private media file may have a linked posting - it
-    is used to store the media file description, reactions and comments. The linked
-    posting is accessed as any other posting.
+- description: 'Media files that are kept private by the node. Private media files
+    cannot be retrieved by their hash, only by their ID. To retrieve the file, the
+    client should have administrative permissions or get an access grant from the
+    node. A private media file may have a linked posting - it is used to store the
+    media file description, reactions and comments. The linked posting is accessed
+    just like any other posting.
 
     '
   name: Media (private)
   requests:
   - auth: admin
-    description: 'Upload a new media file owned by the node admin. The content of
-      the file is passed in the request body.
+    description: 'Upload a new private media file. The content of the file is passed
+      in the request body.
 
       '
     errors:
@@ -2226,34 +2220,10 @@ objects:
       description: media file is too large
     - code: media.storage-error
       description: media file cannot be stored
-    function: upload_admin_media(file, file_type)
+    function: upload_private_media(file, file_type)
     out:
       struct: PrivateMediaFileInfo
     params:
-    - name: file
-      type: IO
-    - description: content-type of <code>file</code>
-      name: file_type
-      type: str
-  - auth: required
-    description: 'Upload a new media file owned by the given node. The content of
-      the file is passed in the request body.
-
-      '
-    errors:
-    - code: media.image-invalid
-      description: media file is not a readable image
-    - code: media.wrong-size
-      description: media file is too large
-    - code: media.storage-error
-      description: media file cannot be stored
-    function: upload_private_media(client_name, file, file_type)
-    out:
-      struct: PrivateMediaFileInfo
-    params:
-    - description: name of the node owning the media file
-      name: client_name
-      type: str
     - name: file
       type: IO
     - description: content-type of <code>file</code>
@@ -2292,6 +2262,8 @@ objects:
       description: media grant signing key is unknown
     - code: media-grant.invalid-signature
       description: media grant signature is invalid
+    - code: media-grant.not-leased
+      description: the media has not been leased to the grant issuer
     - code: media.malware
       description: media file is identified as malware
     function: get_private_media(id, width=None, download=None, grant=None, ignoremalware=None)
@@ -2360,6 +2332,8 @@ objects:
       description: media grant signing key is unknown
     - code: media-grant.invalid-signature
       description: media grant signature is invalid
+    - code: media-grant.not-leased
+      description: the media has not been leased to the grant issuer
     function: get_private_media_info(id, grant=None)
     out:
       struct: PrivateMediaFileInfo
@@ -2371,7 +2345,7 @@ objects:
       name: grant
       optional: true
       type: str
-  - auth: required
+  - auth: admin
     description: 'Update media file details.
 
       '
@@ -2387,52 +2361,6 @@ objects:
       type: str
     - name: attributes
       struct: PrivateMediaFileAttributes
-  - auth: optional
-    description: 'Get the list of all postings and comments the media file is attached
-      to.
-
-      '
-    errors:
-    - code: media.not-found
-      description: media file is not found
-    - code: media-grant.posting-id.missing
-      description: media grant posting ID is missing
-    - code: media-grant.posting-id.invalid
-      description: media grant posting ID is invalid
-    - code: media-grant.comment-id.invalid
-      description: media grant comment ID is invalid
-    - code: media-grant.expires.missing
-      description: media grant expiration timestamp is missing
-    - code: media-grant.invalid
-      description: media grant is invalid
-    - code: media-grant.unknown-fingerprint
-      description: media grant fingerprint is unknown
-    - code: media-grant.expired
-      description: media grant is expired
-    - code: media-grant.wrong-media
-      description: media grant is designated for a different media file
-    - code: media-grant.posting-not-found
-      description: media grant posting is not found
-    - code: media-grant.comment-not-found
-      description: media grant comment is not found
-    - code: media-grant.wrong-posting
-      description: media grant comment is located under a different posting
-    - code: media-grant.unknown-signing-key
-      description: media grant signing key is unknown
-    - code: media-grant.invalid-signature
-      description: media grant signature is invalid
-    function: get_private_media_parent_entry(id, grant=None)
-    out:
-      array: true
-      struct: EntryInfo
-    params:
-    - description: media file ID
-      name: id
-      type: str
-    - description: media grant allowing access to the media file
-      name: grant
-      optional: true
-      type: str
 - description: 'Media files that should be accessible to any client. ID of a public
     media file is SHA-1 hash of its content.
 
@@ -2499,6 +2427,46 @@ objects:
       struct: PublicMediaFileInfo
     params:
     - description: media file ID
+      name: id
+      type: str
+- description: 'Leases for media files stored on the node and made available to other
+    nodes.
+
+    '
+  name: Media leases
+  requests:
+  - auth: required
+    description: 'Create a lease for a media file stored on the node.
+
+      '
+    errors:
+    - code: posting.not-found
+      description: there is no posting with the given ID
+    - code: comment.not-found
+      description: there is no comment with the given ID
+    - code: comment.wrong-posting
+      description: the comment is not related to the given posting
+    - code: media.not-found
+      description: there is no media with the given ID or it is not attached to the
+        given posting or comment
+    function: create_media_lease(attributes)
+    out:
+      struct: MediaLeaseInfo
+    params:
+    - name: attributes
+      struct: MediaLeaseAttributes
+  - auth: required
+    description: 'Delete the lease.
+
+      '
+    errors:
+    - code: media-lease.not-found
+      description: there is no lease with the given ID
+    function: delete_media_lease(id)
+    out:
+      struct: Result
+    params:
+    - description: ID of the lease
       name: id
       type: str
 - description: 'The name of the node. <a href="/overview/naming.html">Read more</a>
@@ -2712,11 +2680,6 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
-    - code: media.not-compressed
-      description: 'media attachment is not compressed as the node requires, the parameters
-        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
-
-        '
     function: create_posting(posting)
     out:
       struct: PostingInfo
@@ -2747,11 +2710,6 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
-    - code: media.not-compressed
-      description: 'media attachment is not compressed as the node requires, the parameters
-        of the desired compression are returned in <code><a href="#PostingFeatures">PostingFeatures</a></code>
-
-        '
     function: update_posting(id, posting)
     out:
       struct: PostingInfo
@@ -4366,6 +4324,17 @@ objects:
     - description: the node name to delete
       name: node_name
       type: str
+- description: Visits to postings, comments and media.
+  name: Visits
+  requests:
+  - auth: optional
+    description: Record a visit to a posting, comment or media.
+    function: record_visit(visit)
+    out:
+      struct: Result
+    params:
+    - name: visit
+      struct: VisitDetails
 - description: Brief information about the node.
   name: Who Am I
   requests:
@@ -5646,10 +5615,15 @@ structures:
     name: body_src_format
     optional: true
   - array: true
-    description: array of IDs and digests of private media to be attached to the comment
+    description: array of media to be attached to the comment
     name: media
     optional: true
-    struct: MediaWithDigest
+    struct: MediaToAttach
+  - array: true
+    description: captions of the media to be attached to the comment
+    name: media_captions
+    optional: true
+    struct: MediaCaptionText
   - description: types of reactions that the comment rejects
     name: rejected_reactions
     optional: true
@@ -5767,10 +5741,11 @@ structures:
     enum: BodyFormat
     name: body_format
     optional: true
-  - description: array of IDs of private media to be attached to the comment
+  - array: true
+    description: array of IDs of private media to be attached to the comment
     name: media
     optional: true
-    type: List[str]
+    struct: MediaToAttach
   - constraints:
     - other:
         description: is missing
@@ -6218,11 +6193,10 @@ structures:
     name: body_src_format
     optional: true
   - array: true
-    description: list of the media attached to the draft, the media may be located
-      on another node
+    description: list of the media attached to the draft
     name: media
     optional: true
-    struct: RemoteMedia
+    struct: MediaToAttach
   - array: true
     description: captions of the media attached to the draft
     name: media_captions
@@ -6257,16 +6231,6 @@ structures:
     name: email_hint
     type: str
   name: EmailHint
-- fields:
-  - description: posting details, set if the entry is a posting
-    name: posting
-    optional: true
-    struct: PostingInfo
-  - description: comment details, set if the entry is a comment
-    name: comment
-    optional: true
-    struct: CommentInfo
-  name: EntryInfo
 - fields:
   - description: features of a posting
     name: posting
@@ -6658,6 +6622,10 @@ structures:
     name: media
     optional: true
     struct: PrivateMediaFileInfo
+  - description: (drafts only) ID of the lease of the local media to the target node
+    name: media_lease_id
+    optional: true
+    type: str
   - description: details of the media, if it is located on another node
     name: remote_media
     optional: true
@@ -6745,14 +6713,52 @@ structures:
     type: bool
   name: MediaFilePreviewInfo
 - fields:
-  - description: ID of the media file
-    name: id
+  - constraints:
+    - notblank:
+        error: media-lease.node-name.blank
+    - length:
+        error: media-lease.node-name.wrong-size
+        max: 135
+    description: name of the node that receives the lease
+    name: node_name
     type: str
-  - description: cryptographic digest of the media file
-    name: digest
+  - constraints:
+    - notblank:
+        error: media-lease.media-id.blank
+    description: ID of the media file
+    name: media_id
+    type: str
+  - description: ID of the posting used to verify access to the media file
+    name: posting_id
     optional: true
     type: str
-  name: MediaWithDigest
+  - description: ID of the comment used to verify access to the media file
+    name: comment_id
+    optional: true
+    type: str
+  name: MediaLeaseAttributes
+- fields:
+  - description: ID of the lease
+    name: id
+    type: str
+  - description: details of the media
+    name: media
+    struct: PrivateMediaFileInfo
+  name: MediaLeaseInfo
+- fields:
+  - description: ID of the local media to attach
+    name: local_media_id
+    optional: true
+    type: str
+  - description: (drafts only) ID of the lease of the local media to the target node
+    name: local_media_lease_id
+    optional: true
+    type: str
+  - description: remote media to attach
+    name: remote_media
+    optional: true
+    struct: RemoteMedia
+  name: MediaToAttach
 - fields:
   - constraints:
     - notblank:
@@ -6868,6 +6874,35 @@ structures:
     optional: true
     struct: NodeNameOperations
   name: NodeNameInfo
+- fields:
+  - description: 'name of the node containing the media the posting is linked to;
+      if <code>None</code>, the media is located on the same node as the posting
+
+      '
+    name: node_name
+    optional: true
+    type: str
+  - description: 'ID of the media the posting is linked to; the media is located on
+      the <code>nodeName</code> node
+
+      '
+    name: media_id
+    type: str
+  - description: 'ID of the posting that owns the attachment the posting is linked
+      to; the posting is located at the same node as the posting
+
+      '
+    name: posting_id
+    type: str
+  - description: 'ID of the comment that owns the attachment the posting is linked
+      to; if set, <code>postingId</code> contains ID of the parent posting of the
+      comment; the comment is located at the same node as the posting
+
+      '
+    name: comment_id
+    optional: true
+    type: str
+  name: ParentMediaInfo
 - fields:
   - description: total number of subscribers of the node
     name: feed_subscribers_total
@@ -7049,9 +7084,6 @@ structures:
     description: list of source text formats the node understands
     enum: SourceFormat
     name: source_formats
-  - description: maximal size of a media attachment in a post
-    name: media_max_size
-    type: int
   - description: maximal size of a compressed image in a post
     name: image_recommended_size
     type: int
@@ -7101,15 +7133,12 @@ structures:
     name: receiver_posting_id
     optional: true
     type: str
-  - description: ID of the media the posting is linked to, if any
-    name: parent_media_id
+  - description: 'information about the media the posting is linked to, if any
+
+      '
+    name: parent_media
     optional: true
-    type: str
-  - description: ID of the entry that owns the attachment the posting is linked to,
-      if any
-    name: parent_media_entry_id
-    optional: true
-    type: str
+    struct: ParentMediaInfo
   - description: node name of the posting's owner
     name: owner_name
     type: str
@@ -7318,6 +7347,10 @@ structures:
     name: total_comments
     optional: true
     type: int
+  - description: number of posting views (for admin only)
+    name: view_count
+    optional: true
+    type: int
   - description: '<code>True</code>, if the posting was recommended by a recommendation
       service (for cached copies of remote postings only), <code>False</code> otherwise
 
@@ -7477,10 +7510,15 @@ structures:
     name: body_src_format
     optional: true
   - array: true
-    description: array of IDs and digests of private media to be attached to the posting
+    description: array of media to be attached to the posting
     name: media
     optional: true
-    struct: MediaWithDigest
+    struct: MediaToAttach
+  - array: true
+    description: captions of the media to be attached to the posting
+    name: media_captions
+    optional: true
+    struct: MediaCaptionText
   - description: types of reactions that the posting rejects
     name: rejected_reactions
     optional: true
@@ -7600,10 +7638,11 @@ structures:
     enum: BodyFormat
     name: body_format
     optional: true
-  - description: array of IDs of private media to be attached to the posting
+  - array: true
+    description: array of media to be attached to the posting
     name: media
     optional: true
-    type: List[str]
+    struct: MediaToAttach
   - constraints:
     - other:
         description: is missing
@@ -7716,6 +7755,9 @@ structures:
   - description: SHA-1 hash of the media file
     name: hash
     type: str
+  - description: cryptographic digest of the media file
+    name: digest
+    type: str
   - description: 'virtual location of the media file, relative to the <code>/media</code>
       <a href="virtual-pages.html">virtual page</a>
 
@@ -7794,6 +7836,11 @@ structures:
     name: grant
     optional: true
     type: str
+  - description: grant expiration timestamp - the real time when the grant will not
+      be valid anymore
+    name: grant_expires_at
+    optional: true
+    type: Timestamp
   - description: the supported operations and the corresponding principals
     name: operations
     optional: true
@@ -8380,19 +8427,38 @@ structures:
   java-equals: true
   name: RemoteFeed
 - fields:
+  - description: name of the node the media file is located on
+    name: node_name
+    type: str
   - description: ID of the media file
-    name: id
+    name: media_id
     type: str
   - description: SHA-1 hash of the media file
     name: hash
-    optional: true
     type: str
   - description: cryptographic digest of the media file
     name: digest
-    optional: true
     type: str
   - description: MIME type of the media
     name: mime_type
+    type: str
+  - description: width of the media in pixels (<code>None</code>, if the media file
+      is not an image or video)
+    name: width
+    optional: true
+    type: int
+  - description: height of the media in pixels (<code>None</code>, if the media file
+      is not an image or video)
+    name: height
+    optional: true
+    type: int
+  - description: size of the media file in bytes
+    name: size
+    type: int
+  - description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
     type: str
   - description: '<code>True</code> if the media cannot be displayed as an image or
       video and should be displayed as an attachment instead, <code>False</code> (default)
@@ -8402,10 +8468,20 @@ structures:
     name: attachment
     optional: true
     type: bool
+  - description: ID of the lease
+    name: lease_id
+    optional: true
+    type: str
   name: RemoteMedia
 - fields:
-  - description: ID of the media file
+  - description: ID of the remote media file object
     name: id
+    type: str
+  - description: name of the node the media file is located on
+    name: node_name
+    type: str
+  - description: ID of the media file on the node it is located on
+    name: media_id
     type: str
   - description: SHA-1 hash of the media file
     name: hash
@@ -8419,6 +8495,25 @@ structures:
     name: mime_type
     optional: true
     type: str
+  - description: width of the media in pixels (<code>None</code>, if the media file
+      is not an image or video)
+    name: width
+    optional: true
+    type: int
+  - description: height of the media in pixels (<code>None</code>, if the media file
+      is not an image or video)
+    name: height
+    optional: true
+    type: int
+  - description: size of the media file in bytes
+    name: size
+    optional: true
+    type: int
+  - description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: str
   - description: '<code>True</code> if the media cannot be displayed as an image or
       video and should be displayed as an attachment instead, <code>False</code> (default)
       otherwise
@@ -8427,6 +8522,10 @@ structures:
     name: attachment
     optional: true
     type: bool
+  - description: media grant allowing access to the media
+    name: grant
+    optional: true
+    type: str
   name: RemoteMediaInfo
 - fields:
   - description: name of the node
@@ -8606,6 +8705,60 @@ structures:
     type: str
   - constraints:
     - length:
+        error: search.remote-media-node-name.wrong-size
+        max: 135
+    description: name of the node where the media is originated from
+    name: remote_media_node_name
+    type: str
+  - constraints:
+    - length:
+        error: search.remote-media-id.wrong-size
+        max: 40
+    description: ID of the media on the original node
+    name: remote_media_id
+    type: str
+  - constraints:
+    - length:
+        error: search.title.wrong-size
+        max: 255
+    description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: search.text-content.wrong-size
+        max: 16384
+    description: text content of the media
+    name: text_content
+    optional: true
+    type: str
+  name: SearchCommentMediaUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.comment-id.wrong-size
+        max: 40
+    description: ID of the comment
+    name: comment_id
+    type: str
+  - constraints:
+    - length:
+        error: search.media-id.wrong-size
+        max: 40
+    description: ID of the media
+    name: media_id
+    type: str
+  - constraints:
+    - length:
         error: search.title.wrong-size
         max: 255
     description: title of the media file, may be used as an alternative to the file
@@ -8688,6 +8841,14 @@ structures:
     name: media_preview
     optional: true
     struct: PublicMediaFileInfo
+  - description: 'Source node of the media attached to the entry that was chosen for
+      the preview (<code>None</code>, if the media is located on the same node as
+      the entry)
+
+      '
+    name: media_preview_node_name
+    optional: true
+    type: str
   - description: ID of the media attached to the entry that was chosen for the preview
     name: media_preview_id
     optional: true
@@ -8917,6 +9078,53 @@ structures:
     name: heading
     type: str
   name: SearchPostingHeadingUpdate
+- fields:
+  - constraints:
+    - length:
+        error: search.posting-id.wrong-size
+        max: 40
+    description: ID of the posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: search.media-id.wrong-size
+        max: 40
+    description: ID of the media
+    name: media_id
+    type: str
+  - constraints:
+    - length:
+        error: search.remote-media-node-name.wrong-size
+        max: 135
+    description: name of the node where the media is originated from
+    name: remote_media_node_name
+    type: str
+  - constraints:
+    - length:
+        error: search.remote-media-id.wrong-size
+        max: 40
+    description: ID of the media on the original node
+    name: remote_media_id
+    type: str
+  - constraints:
+    - length:
+        error: search.title.wrong-size
+        max: 255
+    description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: search.text-content.wrong-size
+        max: 16384
+    description: text content of the media
+    name: text_content
+    optional: true
+    type: str
+  name: SearchPostingMediaUpdate
 - fields:
   - constraints:
     - length:
@@ -10589,6 +10797,41 @@ structures:
     optional: true
     type: str
   name: VerificationInfo
+- fields:
+  - constraints:
+    - notblank:
+        error: visit.posting-id.blank
+    - length:
+        error: visit.posting-id.wrong-size
+        max: 40
+    description: ID of the visited posting
+    name: posting_id
+    type: str
+  - constraints:
+    - length:
+        error: visit.comment-id.wrong-size
+        max: 40
+    description: ID of the visited comment
+    name: comment_id
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: visit.media-id.wrong-size
+        max: 40
+    description: ID of the visited media
+    name: media_id
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: visit.referrer.wrong-size
+        max: 1024
+    description: page referrer
+    name: referrer
+    optional: true
+    type: str
+  name: VisitDetails
 - fields:
   - name: node_name
     optional: true
