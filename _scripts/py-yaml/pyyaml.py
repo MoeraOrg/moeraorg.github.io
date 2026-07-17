@@ -7,6 +7,7 @@ from camel_converter import to_snake
 PY_TYPES = {
     'String': 'str',
     'String[]': 'List[str]',
+    'int[]': 'List[int]',
     'short': 'int',
     'int': 'int',
     'long': 'int',
@@ -91,10 +92,16 @@ def convert_request(request: Any) -> None:
                 print('Unrecognised type "{type}" of the input body of the request "{method} {url}"'
                       .format(type=inp['type'], method=request['type'], url=request['url']))
                 exit(1)
-            params += [
+            body_params = [
                 {'name': 'file', 'type': 'IO'},
                 {'name': 'file_type', 'type': 'str', 'description': 'content-type of <code>file</code>'}
             ]
+            if inp.get('optional', False):
+                for param in body_params:
+                    param['optional'] = True
+                tail_params = body_params + tail_params
+            else:
+                params += body_params
         else:
             if 'name' not in inp:
                 print('Missing name of body of the request "{method} {url}"'
@@ -106,7 +113,11 @@ def convert_request(request: Any) -> None:
             }
             if inp.get('array', False):
                 param['array'] = True
-            params.append(param)
+            if inp.get('optional', False):
+                param['optional'] = True
+                tail_params = [param] + tail_params
+            else:
+                params.append(param)
     params += tail_params
 
     request['function'] = to_snake(request['function']) + '(' + method_params(params) + ')'

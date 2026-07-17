@@ -426,7 +426,7 @@ events:
         optional: true
         description: the remote node avatar
   - type: REMOTE_NODE_FULL_NAME_CHANGED
-    description: Name of a remote node was changed.
+    description: Full name or title of a remote node was changed.
     fields:
       - type: String
         name: name
@@ -435,6 +435,10 @@ events:
         name: fullName
         optional: true
         description: the remote node full name
+      - type: String
+        name: title
+        optional: true
+        description: the remote node title
   - type: REMOTE_POSTING_ADDED
     fields:
       - type: String

@@ -1596,6 +1596,26 @@ objects:
           struct: Result
         auth: admin
         description: Revoke all administrative permissions granted to the node.
+  - name: Link Previews
+    description: Link preview creation.
+    requests:
+      - url: /link-preview
+        type: GET
+        function: createLinkPreview
+        query:
+          - type: String
+            name: url
+        out:
+          struct: LinkPreviewInfo
+        auth: admin
+        description: >
+          Parse the page located at the URL and return the title, the description and the picture that may be used to
+          build a preview of the page.
+        errors:
+          - code: link-preview.request-failed
+            description: request failed
+          - code: link-preview.resource-not-found
+            description: resource is not found
   - name: Media (private)
     description: >
       Media files that are kept private by the node. Private media files cannot be retrieved by their hash, only by
@@ -1606,18 +1626,47 @@ objects:
       - url: /media/private
         type: POST
         function: uploadPrivateMedia
+        query:
+          - type: String
+            name: upload
+            optional: true
+            description: ID of the media upload to be used instead of the request body
+          - type: String
+            name: url
+            optional: true
+            description: URL of the media to be used instead of the request body
+          - type: boolean
+            name: downsize
+            optional: true
+            description: >
+              `true` to scale the uploaded image down to the size recommended by the node, if possible; the default is
+              `false`
         in:
           type: blob
+          optional: true
         out:
           struct: PrivateMediaFileInfo
         auth: admin
         description: >
-          Upload a new private media file. The content of the file is passed in the request body.
+          Upload a new private media file. The content of the file is passed in the request body. Alternatively,
+          the file can be uploaded using <a href="#Media%20upload%20object">Media upload API</a> and its ID passed in
+          the `upload` query parameter. The second alternative is to pass the URL of the media in the `url` query
+          parameter, the media will be downloaded to the node.
         errors:
-          - code: media.image-invalid
-            description: media file is not a readable image
+          - code: media-upload.not-found
+            description: media upload is not found
+          - code: media-upload.not-completed
+            description: media upload is not completed
+          - code: media.url.invalid
+            description: media URL is not valid
+          - code: media.not-found
+            description: media file is not found
+          - code: media.download-failed
+            description: failed to download the media file
           - code: media.wrong-size
             description: media file is too large
+          - code: media.image-invalid
+            description: media file is not a readable image
           - code: media.storage-error
             description: media file cannot be stored
       - url: /media/private/{id}/data
@@ -1853,6 +1902,89 @@ objects:
         errors:
           - code: media-lease.not-found
             description: there is no lease with the given ID
+  - name: Media upload
+    description: >
+      Chunked upload of very large media files. Upload completion only means all chunks are present; creating a
+      private media file is handled by a later operation that consumes the completed upload.
+    requests:
+      - url: /media/upload
+        type: POST
+        function: createMediaUpload
+        in:
+          struct: MediaUploadAttributes
+          name: attributes
+        out:
+          struct: MediaUploadInfo
+        auth: admin
+        description: >
+          Create a new chunked upload of a private media source file.
+        errors:
+          - code: media.wrong-size
+            description: media file is too large
+          - code: media.mime-type.blank
+            description: media MIME type is not set
+          - code: media.title.wrong-size
+            description: media title is too long
+          - code: media-upload.chunk-size.invalid
+            description: chunk size is invalid
+          - code: media.storage-error
+            description: media file cannot be stored
+      - url: /media/upload/{id}
+        type: GET
+        function: getMediaUpload
+        params:
+          - type: String
+            name: id
+            description: upload ID
+        out:
+          struct: MediaUploadInfo
+        auth: admin
+        description: >
+          Get chunked upload details.
+        errors:
+          - code: media-upload.not-found
+            description: media upload is not found
+      - url: /media/upload/{id}/{chunk}
+        type: PUT
+        function: uploadMediaChunk
+        params:
+          - type: String
+            name: id
+            description: upload ID
+          - type: int
+            name: chunk
+            description: zero-based chunk number
+        in:
+          type: blob
+        out:
+          struct: MediaUploadInfo
+        auth: admin
+        description: >
+          Upload one chunk of a private media source file.
+        errors:
+          - code: media-upload.not-found
+            description: media upload is not found
+          - code: media-upload.chunk.invalid
+            description: chunk number is invalid
+          - code: media-upload.chunk.wrong-size
+            description: chunk size is incorrect
+          - code: media.storage-error
+            description: media file cannot be stored
+      - url: /media/upload/{id}
+        type: DELETE
+        function: deleteMediaUpload
+        params:
+          - type: String
+            name: id
+            description: upload ID
+        out:
+          struct: Result
+        auth: admin
+        description: >
+          Delete a chunked media upload and the corresponding source file.
+        errors:
+          - code: media-upload.not-found
+            description: media upload is not found
   - name: Node Name
     description: >
       The name of the node. <a href="/overview/naming.html">Read more</a> about it in the Architecture Overview section.
@@ -2561,45 +2693,6 @@ objects:
           struct: DeleteNodeStatus
         auth: admin
         description: Cancel the request to delete the node.
-  - name: Proxy
-    description: Proxy, that may be used by web clients to workaround CORS restrictions of browsers
-    requests:
-      - url: /proxy/media
-        type: GET
-        function: proxyMedia
-        query:
-          - type: String
-            name: url
-        out:
-          type: blob
-        auth: admin
-        description: Open the URL passed in the parameters and pass to the client the media file returned by the server.
-        errors:
-          - code: proxy.request-failed
-            description: HTTP request failed
-          - code: proxy.resource-not-found
-            description: resource is not found
-          - code: proxy.resource-not-media
-            description: resource is not a media file
-          - code: proxy.error-status
-            description: HTTP request returned an error status
-          - code: proxy.url.invalid
-            description: the URL is not valid
-      - url: /proxy/link-preview
-        type: GET
-        function: proxyLinkPreview
-        query:
-          - type: String
-            name: url
-        out:
-          struct: LinkPreviewInfo
-        auth: admin
-        description: >
-          Parse the page located at the URL and return the title, the description and the picture that may be used to
-          build a preview of the page.
-        errors:
-          - code: proxy.resource-not-found
-            description: resource is not found
   - name: Push Notifications
     description: >
       SSE channels for delivering push notifications from the home node. When a client opens an SSE connection for
@@ -3935,6 +4028,67 @@ objects:
         errors:
           - code: user-list-item.not-found
             description: user list item is not found
+  - name: Visited Nodes
+    description: Local registry of nodes recently visited by the node owner.
+    requests:
+      - url: /people/visited
+        type: GET
+        function: getVisitedNodes
+        query:
+          - type: String
+            name: query
+            optional: true
+            description: the search query
+          - type: int
+            name: limit
+            optional: true
+            description: maximum number of nodes returned
+        out:
+          struct: SearchNodeInfo
+          array: true
+        auth: admin
+        description: >
+          Search for visited nodes matching the search <code>query</code>. Every space-delimited word in the query must
+          match case-insensitively a beginning of the node's name or a beginning of any space-delimited word in
+          the node's full name. The order of words is not significant.
+          <br><br>
+          The node may decide to return fewer nodes than the given <code>limit</code>.
+          <br><br>
+          The nodes are sorted by <i>social distance</i> from the node.
+        errors:
+          - code: limit.invalid
+            description: <code>limit</code> parameter has an invalid value
+      - url: /people/visited
+        type: POST
+        function: recordVisitedNode
+        in:
+          struct: VisitedNodeAttributes
+          name: node
+        out:
+          struct: Result
+        auth: admin
+        description: Record a visit to the node.
+        errors:
+          - code: visited.node-name.blank
+            description: node name is empty
+          - code: visited.node-name.wrong-size
+            description: node name is too long
+      - url: /people/visited/{nodeName}
+        type: DELETE
+        function: deleteVisitedNode
+        params:
+          - type: String
+            name: nodeName
+            description: name of the visited node
+        out:
+          struct: Result
+        auth: admin
+        description: Delete all visits to the node.
+        errors:
+          - code: visited.node-name.blank
+            description: node name is empty
+          - code: visited.node-name.wrong-size
+            description: node name is too long
   - name: Visits
     description: Visits to postings, comments and media.
     requests:
@@ -5133,6 +5287,9 @@ structures:
       - type: String
         name: gender
         optional: true
+      - type: String
+        name: title
+        optional: true
       - struct: AvatarImage
         name: avatar
         optional: true
@@ -5208,6 +5365,17 @@ structures:
         name: blockedBy
         optional: true
         description: information about blocking the node by the contact
+  - name: VisitedNodeAttributes
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the visited node
+        constraints:
+          - notblank:
+              error: visited.node-name.blank
+          - length:
+              max: 135
+              error: visited.node-name.wrong-size
   - name: Credentials
     fields:
       - type: String
@@ -5873,10 +6041,10 @@ structures:
         name: description
         optional: true
         description: description of the page
-      - type: String
-        name: imageUrl
+      - struct: PrivateMediaFileInfo
+        name: image
         optional: true
-        description: URL of the image presenting the page
+        description: image presenting the page
       - type: timestamp
         name: publishedAt
         optional: true
@@ -6017,6 +6185,58 @@ structures:
         name: remoteMedia
         optional: true
         description: remote media to attach
+  - name: MediaUploadAttributes
+    fields:
+      - type: String
+        name: mimeType
+        description: MIME type of the media source file
+        constraints:
+          - notblank:
+              error: media.mime-type.blank
+      - type: String
+        name: title
+        optional: true
+        description: title of the media file, may be used as an alternative to the file name
+        constraints:
+          - length:
+              max: 255
+              error: media.title.wrong-size
+      - type: int
+        name: fileSize
+        description: full file size in bytes
+      - type: int
+        name: chunkSize
+        optional: true
+        description: client-proposed chunk size in bytes
+  - name: MediaUploadInfo
+    fields:
+      - type: String
+        name: id
+        description: upload ID
+      - type: String
+        name: mimeType
+        optional: true
+        description: MIME type of the media source file
+      - type: String
+        name: title
+        optional: true
+        description: title of the media file, may be used as an alternative to the file name
+      - type: int
+        name: fileSize
+        description: full file size in bytes
+      - type: int
+        name: chunkSize
+        description: chunk size in bytes
+      - type: int[]
+        name: uploadedChunks
+        description: zero-based numbers of uploaded chunks, sorted in natural order
+      - type: timestamp
+        name: deadline
+        description: upload expiration timestamp - the real time when the upload may be deleted
+      - type: timestamp
+        name: completedAt
+        optional: true
+        description: upload completion timestamp - the real time when all chunks were uploaded
   - name: NameToRegister
     fields:
       - type: String
@@ -6321,12 +6541,6 @@ structures:
         array: true
         name: sourceFormats
         description: list of source text formats the node understands
-      - type: int
-        name: imageRecommendedSize
-        description: maximal size of a compressed image in a post
-      - type: int
-        name: imageRecommendedPixels
-        description: maximal resolution of a compressed image in a post (in pixels)
       - type: String[]
         name: imageFormats
         description: list of image formats (in MIME type form) the node understands

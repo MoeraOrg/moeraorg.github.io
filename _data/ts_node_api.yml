@@ -2189,6 +2189,25 @@ objects:
     - description: name of the node
       name: nodeName
       type: string
+- description: Link preview creation.
+  name: Link Previews
+  requests:
+  - auth: admin
+    description: 'Parse the page located at the URL and return the title, the description
+      and the picture that may be used to build a preview of the page.
+
+      '
+    errors:
+    - code: link-preview.request-failed
+      description: request failed
+    - code: link-preview.resource-not-found
+      description: resource is not found
+    function: createLinkPreview(url)
+    out:
+      struct: LinkPreviewInfo
+    params:
+    - name: url
+      type: string
 - description: 'Media files that are kept private by the node. Private media files
     cannot be retrieved by their hash, only by their ID. To retrieve the file, the
     client should have administrative permissions or get an access grant from the
@@ -2201,25 +2220,56 @@ objects:
   requests:
   - auth: admin
     description: 'Upload a new private media file. The content of the file is passed
-      in the request body.
+      in the request body. Alternatively, the file can be uploaded using <a href="#Media%20upload%20object">Media
+      upload API</a> and its ID passed in the `upload` query parameter. The second
+      alternative is to pass the URL of the media in the `url` query parameter, the
+      media will be downloaded to the node.
 
       '
     errors:
-    - code: media.image-invalid
-      description: media file is not a readable image
+    - code: media-upload.not-found
+      description: media upload is not found
+    - code: media-upload.not-completed
+      description: media upload is not completed
+    - code: media.url.invalid
+      description: media URL is not valid
+    - code: media.not-found
+      description: media file is not found
+    - code: media.download-failed
+      description: failed to download the media file
     - code: media.wrong-size
       description: media file is too large
+    - code: media.image-invalid
+      description: media file is not a readable image
     - code: media.storage-error
       description: media file cannot be stored
-    function: uploadPrivateMedia(body, contentType)
+    function: uploadPrivateMedia(body=null, contentType=null, upload=null, url=null,
+      downsize=null)
     out:
       struct: PrivateMediaFileInfo
     params:
     - name: body
+      optional: true
       type: Buffer
     - description: content-type of <code>body</code>
       name: contentType
+      optional: true
       type: string
+    - description: ID of the media upload to be used instead of the request body
+      name: upload
+      optional: true
+      type: string
+    - description: URL of the media to be used instead of the request body
+      name: url
+      optional: true
+      type: string
+    - description: '`true` to scale the uploaded image down to the size recommended
+        by the node, if possible; the default is `false`
+
+        '
+      name: downsize
+      optional: true
+      type: boolean
   - auth: optional
     description: 'Get media file content (returned in the response body).
 
@@ -2458,6 +2508,90 @@ objects:
       struct: Result
     params:
     - description: ID of the lease
+      name: id
+      type: string
+- description: 'Chunked upload of very large media files. Upload completion only means
+    all chunks are present; creating a private media file is handled by a later operation
+    that consumes the completed upload.
+
+    '
+  name: Media upload
+  requests:
+  - auth: admin
+    description: 'Create a new chunked upload of a private media source file.
+
+      '
+    errors:
+    - code: media.wrong-size
+      description: media file is too large
+    - code: media.mime-type.blank
+      description: media MIME type is not set
+    - code: media.title.wrong-size
+      description: media title is too long
+    - code: media-upload.chunk-size.invalid
+      description: chunk size is invalid
+    - code: media.storage-error
+      description: media file cannot be stored
+    function: createMediaUpload(attributes)
+    out:
+      struct: MediaUploadInfo
+    params:
+    - name: attributes
+      struct: MediaUploadAttributes
+  - auth: admin
+    description: 'Get chunked upload details.
+
+      '
+    errors:
+    - code: media-upload.not-found
+      description: media upload is not found
+    function: getMediaUpload(id)
+    out:
+      struct: MediaUploadInfo
+    params:
+    - description: upload ID
+      name: id
+      type: string
+  - auth: admin
+    description: 'Upload one chunk of a private media source file.
+
+      '
+    errors:
+    - code: media-upload.not-found
+      description: media upload is not found
+    - code: media-upload.chunk.invalid
+      description: chunk number is invalid
+    - code: media-upload.chunk.wrong-size
+      description: chunk size is incorrect
+    - code: media.storage-error
+      description: media file cannot be stored
+    function: uploadMediaChunk(id, chunk, body, contentType)
+    out:
+      struct: MediaUploadInfo
+    params:
+    - description: upload ID
+      name: id
+      type: string
+    - description: zero-based chunk number
+      name: chunk
+      type: number
+    - name: body
+      type: Buffer
+    - description: content-type of <code>body</code>
+      name: contentType
+      type: string
+  - auth: admin
+    description: 'Delete a chunked media upload and the corresponding source file.
+
+      '
+    errors:
+    - code: media-upload.not-found
+      description: media upload is not found
+    function: deleteMediaUpload(id)
+    out:
+      struct: Result
+    params:
+    - description: upload ID
       name: id
       type: string
 - description: 'The name of the node. <a href="/overview/naming.html">Read more</a>
@@ -3059,44 +3193,6 @@ objects:
     out:
       struct: DeleteNodeStatus
     params: []
-- description: Proxy, that may be used by web clients to workaround CORS restrictions
-    of browsers
-  name: Proxy
-  requests:
-  - auth: admin
-    description: Open the URL passed in the parameters and pass to the client the
-      media file returned by the server.
-    errors:
-    - code: proxy.request-failed
-      description: HTTP request failed
-    - code: proxy.resource-not-found
-      description: resource is not found
-    - code: proxy.resource-not-media
-      description: resource is not a media file
-    - code: proxy.error-status
-      description: HTTP request returned an error status
-    - code: proxy.url.invalid
-      description: the URL is not valid
-    function: proxyMedia(url)
-    out:
-      type: blob
-    params:
-    - name: url
-      type: string
-  - auth: admin
-    description: 'Parse the page located at the URL and return the title, the description
-      and the picture that may be used to build a preview of the page.
-
-      '
-    errors:
-    - code: proxy.resource-not-found
-      description: resource is not found
-    function: proxyLinkPreview(url)
-    out:
-      struct: LinkPreviewInfo
-    params:
-    - name: url
-      type: string
 - description: 'SSE channels for delivering push notifications from the home node.
     When a client opens an SSE connection for the first time, an individual push notifications
     channel for this client is created (every client must generate a unique random
@@ -4311,6 +4407,61 @@ objects:
       name: name
       type: string
     - description: the node name to delete
+      name: nodeName
+      type: string
+- description: Local registry of nodes recently visited by the node owner.
+  name: Visited Nodes
+  requests:
+  - auth: admin
+    description: 'Search for visited nodes matching the search <code>query</code>.
+      Every space-delimited word in the query must match case-insensitively a beginning
+      of the node''s name or a beginning of any space-delimited word in the node''s
+      full name. The order of words is not significant. <br><br> The node may decide
+      to return fewer nodes than the given <code>limit</code>. <br><br> The nodes
+      are sorted by <i>social distance</i> from the node.
+
+      '
+    errors:
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: getVisitedNodes(query=null, limit=null)
+    out:
+      array: true
+      struct: SearchNodeInfo
+    params:
+    - description: the search query
+      name: query
+      optional: true
+      type: string
+    - description: maximum number of nodes returned
+      name: limit
+      optional: true
+      type: number
+  - auth: admin
+    description: Record a visit to the node.
+    errors:
+    - code: visited.node-name.blank
+      description: node name is empty
+    - code: visited.node-name.wrong-size
+      description: node name is too long
+    function: recordVisitedNode(node)
+    out:
+      struct: Result
+    params:
+    - name: node
+      struct: VisitedNodeAttributes
+  - auth: admin
+    description: Delete all visits to the node.
+    errors:
+    - code: visited.node-name.blank
+      description: node name is empty
+    - code: visited.node-name.wrong-size
+      description: node name is too long
+    function: deleteVisitedNode(nodeName)
+    out:
+      struct: Result
+    params:
+    - description: name of the visited node
       name: nodeName
       type: string
 - description: Visits to postings, comments and media.
@@ -5833,6 +5984,9 @@ structures:
   - name: gender
     optional: true
     type: string
+  - name: title
+    optional: true
+    type: string
   - name: avatar
     optional: true
     struct: AvatarImage
@@ -5912,6 +6066,17 @@ structures:
     optional: true
     struct: BlockedByUserInfo
   name: ContactWithRelationships
+- fields:
+  - constraints:
+    - notblank:
+        error: visited.node-name.blank
+    - length:
+        error: visited.node-name.wrong-size
+        max: 135
+    description: name of the visited node
+    name: nodeName
+    type: string
+  name: VisitedNodeAttributes
 - fields:
   - constraints:
     - notblank:
@@ -6596,10 +6761,10 @@ structures:
     name: description
     optional: true
     type: string
-  - description: URL of the image presenting the page
-    name: imageUrl
+  - description: image presenting the page
+    name: image
     optional: true
-    type: string
+    struct: PrivateMediaFileInfo
   - description: timestamp of the page publication time
     name: publishedAt
     optional: true
@@ -6748,6 +6913,62 @@ structures:
     optional: true
     struct: RemoteMedia
   name: MediaToAttach
+- fields:
+  - constraints:
+    - notblank:
+        error: media.mime-type.blank
+    description: MIME type of the media source file
+    name: mimeType
+    type: string
+  - constraints:
+    - length:
+        error: media.title.wrong-size
+        max: 255
+    description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: string
+  - description: full file size in bytes
+    name: fileSize
+    type: number
+  - description: client-proposed chunk size in bytes
+    name: chunkSize
+    optional: true
+    type: number
+  name: MediaUploadAttributes
+- fields:
+  - description: upload ID
+    name: id
+    type: string
+  - description: MIME type of the media source file
+    name: mimeType
+    optional: true
+    type: string
+  - description: title of the media file, may be used as an alternative to the file
+      name
+    name: title
+    optional: true
+    type: string
+  - description: full file size in bytes
+    name: fileSize
+    type: number
+  - description: chunk size in bytes
+    name: chunkSize
+    type: number
+  - description: zero-based numbers of uploaded chunks, sorted in natural order
+    name: uploadedChunks
+    type: number[]
+  - description: upload expiration timestamp - the real time when the upload may be
+      deleted
+    name: deadline
+    type: number
+  - description: upload completion timestamp - the real time when all chunks were
+      uploaded
+    name: completedAt
+    optional: true
+    type: number
+  name: MediaUploadInfo
 - fields:
   - constraints:
     - notblank:
@@ -7073,12 +7294,6 @@ structures:
     description: list of source text formats the node understands
     enum: SourceFormat
     name: sourceFormats
-  - description: maximal size of a compressed image in a post
-    name: imageRecommendedSize
-    type: number
-  - description: maximal resolution of a compressed image in a post (in pixels)
-    name: imageRecommendedPixels
-    type: number
   - description: list of image formats (in MIME type form) the node understands
     name: imageFormats
     type: string[]
