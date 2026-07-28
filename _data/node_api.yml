@@ -4252,8 +4252,8 @@ structures:
         name: directPath
         optional: true
         description: >
-          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem or CDN
+          location of the media file, relative to the <code>/media</code> or an absolute URL; points to a static image
+          served directly from a filesystem or CDN
       - type: timestamp
         name: directPathExpiresAt
         optional: true
@@ -4291,8 +4291,8 @@ structures:
         name: directPath
         optional: true
         description: >
-          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem or CDN
+          location of the media file, relative to the <code>/media</code> or an absolute URL; points to a static image
+          served directly from a filesystem or CDN
       - type: timestamp
         name: directPathExpiresAt
         optional: true
@@ -6119,8 +6119,8 @@ structures:
         name: directPath
         optional: true
         description: >
-          location of the preview, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem or CDN
+          location of the preview, relative to the <code>/media</code> or an absolute URL; points to a static image
+          served directly from a filesystem or CDN
       - type: timestamp
         name: directPathExpiresAt
         optional: true
@@ -7159,12 +7159,24 @@ structures:
         name: directPath
         optional: true
         description: >
-          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem or CDN
+          location of the media file, relative to the <code>/media</code> or an absolute URL; points to the media served
+          directly from a filesystem or CDN
       - type: timestamp
         name: directPathExpiresAt
         optional: true
         description: direct path expiration timestamp - the real time when the direct path will not be valid anymore
+      - type: String
+        name: directDownloadPath
+        optional: true
+        description: >
+          location of the original media file with attachment content disposition, relative to the
+          <code>/media</code> or an absolute URL
+      - type: timestamp
+        name: directDownloadPathExpiresAt
+        optional: true
+        description: >
+          direct download path expiration timestamp - the real time when the direct download path will not be valid
+          anymore
       - type: String
         name: mimeType
         description: MIME type of the media
@@ -7356,8 +7368,8 @@ structures:
         name: directPath
         optional: true
         description: >
-          location of the media file, relative to the <code>/media</code>; points to a static image served directly from
-          a filesystem or CDN
+          location of the media file, relative to the <code>/media</code> or an absolute URL; points to the media served
+          directly from a filesystem or CDN
       - type: timestamp
         name: directPathExpiresAt
         optional: true

@@ -12,6 +12,9 @@ to configure the server to serve images directly from the local file system,
 without accessing the node. As a prerequisite, you need to [configure a web
 server][1] (like NGINX) as a reverse proxy for `moera-node`.
 
+To store media files in a private Amazon S3 bucket instead, follow the
+[Amazon S3 configuration guide][5].
+
 ## Configure the node
 
 To activate direct serving, set `node.media.direct-serve.source` option to
@@ -105,3 +108,4 @@ This configuration uses `/srv/blog.moera.org/media` as a media directory for
 [2]: config.html
 [3]: https://nginx.org/en/docs/http/ngx_http_js_module.html
 [4]: https://github.com/MoeraOrg/moera-node/blob/master/nginx/secure-link.js
+[5]: aws-s3.html

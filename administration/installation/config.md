@@ -121,12 +121,14 @@ A long random sequence of characters that is used to authenticate as a topmost
 administrator (root admin) of the server.
 
 ```yaml
-node.address: <IP address>
+node.addresses:
+  - <IP address>
 ```
 
-IP address of the server visible to the clients. In most cases, there is no need
-to configure it, since the address is detected automatically. But on servers having
-several uplinks, it may be necessary to set the address explicitly. 
+IP addresses of the server visible to the clients. In most cases, there is no need
+to configure them, since the addresses are resolved from the domain name automatically.
+But on servers having several uplinks, it may be necessary to set the addresses
+explicitly.
 
 ```yaml
 node.encryption-key: <key>
@@ -166,21 +168,55 @@ the names of media files. This prefix is then used in NGINX configuration to
 configure serving media files from the media files directory. 
 
 ```yaml
+node.media.cloud-accel-prefix: /mediafile-cloud/
+```
+
+If `node.media.serve` is set to `accel`, this option sets a prefix added to
+the locations of media files stored in the cloud. This prefix is then used in
+NGINX configuration to proxy requests for cloud media files.
+
+```yaml
 node.media.direct-serve.source: none
 ```
 
 If set to any value other than `none`, this option enables
-[serving media files directly][6] from the filesystem or CDN.
+serving media files directly from the [filesystem][6] or [Amazon S3][11].
 The possible values are:
+
 * `none` — direct serving is not available, REST API calls should be used;
-* `filesystem` — the media files are served directly from the filesystem.
+* `filesystem` — the media files are served directly from the filesystem;
+* `aws-s3` — the media files are served from an Amazon S3 bucket using
+  presigned URLs.
 
 ```yaml
 node.media.direct-serve.secret: <secret>
 ```
 
 Defines the secret key. This secret key is used to sign URLs that are used
-to access media files directly from the filesystem or CDN.
+to access media files directly from the filesystem. It is ignored when
+`node.media.direct-serve.source` is set to `aws-s3`.
+
+```yaml
+node.media.direct-serve.bucket: <bucket name>
+```
+
+Name of the Amazon S3 bucket where media files are stored. This option is
+required when `node.media.direct-serve.source` is set to `aws-s3`.
+
+```yaml
+node.media.direct-serve.region: <AWS region>
+```
+
+AWS region containing the Amazon S3 bucket. This option is required when
+`node.media.direct-serve.source` is set to `aws-s3`.
+
+```yaml
+node.media.direct-serve.profile: <AWS profile>
+```
+
+Optional name of a profile in the standard shared AWS configuration and
+credentials files. If it is omitted, the standard AWS credentials provider
+chain is used.
 
 ## OCR service
 
@@ -188,14 +224,15 @@ Configuration of a third-party service that is used to recognize text in images.
 The recognized text may be used in notifications and search.
 
 ```yaml
-media.ocr.service: <service type>
+node.media.ocr-service: <service type>
 ```
 
 Type of the service. The possible values are:
+
 * `ocrspace` — [OCR.space][9] service.
 
 ```yaml
-media.ocr.service-key: <service key>
+node.media.ocr-service-key: <service key>
 ```
 
 The API key of the service.
@@ -445,21 +482,21 @@ Number of old log files that are preserved.
 ## Debugging
 
 ```yaml
-node.mock-network-latency: false
+node.debug.mock-network-latency: false
 ```
 
 If set to `true`, a random delay is added before answering to any request,
 to simulate network latency.
 
 ```yaml
-node.log-slow-requests: false
+node.debug.log-slow-requests: false
 ```
 
 If set to `true`, a special message will be added to the node log if a slow API
 request is detected.
 
 ```yaml
-node.slow-request-duration: 500
+node.debug.slow-request-duration: 500
 ```
 
 The API request execution time threshold (in milliseconds). If a request takes
@@ -475,3 +512,4 @@ more time to execute, it is logged as a slow one (see above).
 [8]: https://www.linkpreview.net/
 [9]: https://ocr.space/
 [10]: https://www.bing.com/indexnow/getstarted#implementation
+[11]: aws-s3.html
