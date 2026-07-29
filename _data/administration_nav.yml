@@ -21,7 +21,7 @@
 - name: installation/direct-serving
   title: Direct Serving
 
-- name: installation/s3
+- name: installation/aws-s3
   title: Amazon S3
 
 - name: installation/watchdog
