@@ -159,9 +159,10 @@ server {
         location /cloudfile/ {
                 internal;
                 proxy_pass https://media-moera-blog.s3.eu-central-1.amazonaws.com/;
+                proxy_http_version 1.1;
                 proxy_set_header Host media-moera-blog.s3.eu-central-1.amazonaws.com;
-                proxy_ssl_server_name on;
-                proxy_ssl_name media-moera-blog.s3.eu-central-1.amazonaws.com;
+                proxy_set_header Authorization "";
+                proxy_set_header Connection "";
         }
 }
 ```
@@ -175,9 +176,10 @@ use the shorter form:
         location /cloudfile/ {
                 internal;
                 proxy_pass https://media-moera-blog.s3.amazonaws.com/;
+                proxy_http_version 1.1;
                 proxy_set_header Host media-moera-blog.s3.amazonaws.com;
-                proxy_ssl_server_name on;
-                proxy_ssl_name media-moera-blog.s3.amazonaws.com;
+                proxy_set_header Authorization "";
+                proxy_set_header Connection "";
         }
 ```
 

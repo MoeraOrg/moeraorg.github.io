@@ -3,3 +3,5 @@
 _site/
 Gemfile.lock
 *.iml
+/_scripts/py-yaml/venv/
+/_scripts/ts-yaml/venv/

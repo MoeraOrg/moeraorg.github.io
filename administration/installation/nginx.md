@@ -30,12 +30,11 @@ server {
 
     location / {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, content-disposition, x-accept-moera, client-id";
-            add_header Access-Control-Expose-Headers "x-moera, retry-after, ratelimit-policy";
-            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE";
-            add_header Access-Control-Allow-Origin "*";
-            add_header Access-Control-Max-Age 86400;
-            add_header Allow "GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH";
+            add_header Access-Control-Allow-Headers "authorization, content-type, content-disposition, range, x-accept-moera, client-id" always;
+            add_header Access-Control-Allow-Methods "GET, HEAD, POST, PUT, DELETE, PATCH" always;
+            add_header Access-Control-Allow-Origin "*" always;
+            add_header Access-Control-Max-Age 86400 always;
+            add_header Allow "GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH" always;
             add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
             return 200;
         }
@@ -45,7 +44,7 @@ server {
 		proxy_set_header X-Forwarded-Port 443;
 		proxy_set_header X-Forwarded-For $remote_addr;
 		proxy_pass http://localhost:8082/;
-		client_max_body_size 5m;
+		client_max_body_size 12m;
 	}
 
 	location /moera/api/push/ {
@@ -66,6 +65,7 @@ server {
 	location /moera/api/events {
 		proxy_pass http://localhost:8082/moera/api/events;
 		proxy_http_version 1.1;
+		proxy_set_header X-Forwarded-For $remote_addr;
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "upgrade";
 		proxy_pass_request_headers on;
@@ -74,6 +74,9 @@ server {
 	location /mediafile/ {
   		internal;
   		alias /srv/moera.blog/media/;
+  		add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Expose-Headers "accept-ranges, content-range, content-length, content-disposition" always;
+        add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
 	}
 
 	location /.well-known {
@@ -103,7 +106,7 @@ server {
 ```
 
 This configuration uses `blog.moera.org` as a domain name and `/srv/blog.moera.org`
-as working directory for `moera-node`. Change this to your domain name and working
+as a working directory for `moera-node`. Change this to your domain name and working
 directory. 
 
 The configuration is ready for [Let's Encrypt][1] SSL certificates. Use [Certbot][2] 

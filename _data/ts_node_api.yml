@@ -520,6 +520,12 @@ enums:
   - description: a remote node has unblocked the user in a posting
     name: unblocked-user-in-posting
     ordinal: 34
+  - description: the user's comment with a video was published after video compression
+    name: video-comment-published
+    ordinal: 48
+  - description: the user's posting with a video was published after video compression
+    name: video-posting-published
+    ordinal: 49
 - name: SubscriptionReason
   values:
   - description: node owner asked to subscribe
@@ -1104,6 +1110,8 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
+    - code: media.video-not-compressed
+      description: video compression is not complete
     function: createComment(postingId, comment)
     out:
       struct: CommentCreated
@@ -1168,6 +1176,8 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
+    - code: media.video-not-compressed
+      description: video compression is not complete
     function: updateComment(postingId, commentId, comment)
     out:
       struct: CommentInfo
@@ -2241,6 +2251,8 @@ objects:
       description: media file is too large
     - code: media.image-invalid
       description: media file is not a readable image
+    - code: media.video-invalid
+      description: media file is not a readable video
     - code: media.storage-error
       description: media file cannot be stored
     function: uploadPrivateMedia(body=null, contentType=null, upload=null, url=null,
@@ -2264,7 +2276,8 @@ objects:
       optional: true
       type: string
     - description: '`true` to scale the uploaded image down to the size recommended
-        by the node, if possible; the default is `false`
+        by the node or asynchronously compress an uploaded video to the recommended
+        playback format and size, if possible; the default is `false`
 
         '
       name: downsize
@@ -2805,6 +2818,8 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
+    - code: media.video-not-compressed
+      description: video compression is not complete
     function: createPosting(posting)
     out:
       struct: PostingInfo
@@ -2835,6 +2850,8 @@ objects:
       description: there is no avatar with the given ID
     - code: media.not-found
       description: there is no media with the given ID
+    - code: media.video-not-compressed
+      description: video compression is not complete
     function: updatePosting(id, posting)
     out:
       struct: PostingInfo
@@ -5734,6 +5751,14 @@ structures:
     type: number
   name: CommentsSliceInfo
 - fields:
+  - constraints:
+    - length:
+        error: comment.owner-full-name.wrong-size
+        max: 96
+    description: full name of the comment's owner
+    name: ownerFullName
+    optional: true
+    type: string
   - description: avatar of the comment's owner
     name: ownerAvatar
     optional: true
@@ -6068,17 +6093,6 @@ structures:
     optional: true
     struct: BlockedByUserInfo
   name: ContactWithRelationships
-- fields:
-  - constraints:
-    - notblank:
-        error: visited.node-name.blank
-    - length:
-        error: visited.node-name.wrong-size
-        max: 135
-    description: name of the visited node
-    name: nodeName
-    type: string
-  name: VisitedNodeAttributes
 - fields:
   - constraints:
     - notblank:
@@ -7300,6 +7314,9 @@ structures:
   - description: list of image formats (in MIME type form) the node understands
     name: imageFormats
     type: string[]
+  - description: list of video formats (in MIME type form) the node understands
+    name: videoFormats
+    type: string[]
   name: PostingFeatures
 - fields:
   - name: id
@@ -7693,6 +7710,14 @@ structures:
     type: number
   name: PostingSourceInfo
 - fields:
+  - constraints:
+    - length:
+        error: posting.owner-full-name.wrong-size
+        max: 96
+    description: full name of the posting's owner
+    name: ownerFullName
+    optional: true
+    type: string
   - description: avatar of the posting's owner
     name: ownerAvatar
     optional: true
@@ -7734,6 +7759,16 @@ structures:
     name: commentRejectedReactions
     optional: true
     struct: RejectedReactions
+  - array: true
+    constraints:
+    - other:
+        description: cannot be modified
+        error: posting.publications.cannot-modify
+    description: list of publications in feeds that must be made after creating the
+      posting (for new postings only)
+    name: publications
+    optional: true
+    struct: StoryAttributes
   - constraints:
     - other:
         description: contain an incorrect principal
@@ -8025,6 +8060,19 @@ structures:
   - description: size of the media file in bytes
     name: size
     type: number
+  - description: duration of the media in seconds (<code>null</code>, if the media
+      file is not an audio or video)
+    name: duration
+    optional: true
+    type: number
+  - description: <code>true</code> if requested video compression is not complete
+    name: uncompressed
+    optional: true
+    type: boolean
+  - description: ID of the compressed media file, if compression is complete
+    name: compressedMediaId
+    optional: true
+    type: string
   - description: title of the media file, may be used as an alternative to the file
       name
     name: title
@@ -8678,6 +8726,11 @@ structures:
   - description: size of the media file in bytes
     name: size
     type: number
+  - description: duration of the media in seconds (<code>null</code>, if the media
+      file is not an audio or video)
+    name: duration
+    optional: true
+    type: number
   - description: title of the media file, may be used as an alternative to the file
       name
     name: title
@@ -8732,9 +8785,18 @@ structures:
     name: size
     optional: true
     type: number
+  - description: duration of the media in seconds (<code>null</code>, if the media
+      file is not an audio or video)
+    name: duration
+    optional: true
+    type: number
   - description: title of the media file, may be used as an alternative to the file
       name
     name: title
+    optional: true
+    type: string
+  - description: the text contained in the image, if any
+    name: textContent
     optional: true
     type: string
   - description: '<code>true</code> if the media cannot be displayed as an image or
@@ -8982,6 +9044,14 @@ structures:
     type: string
   - constraints:
     - length:
+        error: search.media-node-name.wrong-size
+        max: 135
+    description: name of the node where the media is located
+    name: mediaNodeName
+    optional: true
+    type: string
+  - constraints:
+    - length:
         error: search.title.wrong-size
         max: 255
     description: title of the media file, may be used as an alternative to the file
@@ -9074,6 +9144,11 @@ structures:
     type: string
   - description: ID of the media attached to the entry that was chosen for the preview
     name: mediaPreviewId
+    optional: true
+    type: string
+  - description: MIME type of the media attached to the entry that was chosen for
+      the preview
+    name: mediaPreviewMimeType
     optional: true
     type: string
   - description: information about the comment this comment is replying to
@@ -9362,6 +9437,14 @@ structures:
         max: 40
     description: ID of the media
     name: mediaId
+    type: string
+  - constraints:
+    - length:
+        error: search.media-node-name.wrong-size
+        max: 135
+    description: name of the node where the media is located
+    name: mediaNodeName
+    optional: true
     type: string
   - constraints:
     - length:
@@ -11055,6 +11138,17 @@ structures:
     optional: true
     type: string
   name: VisitDetails
+- fields:
+  - constraints:
+    - notblank:
+        error: visited.node-name.blank
+    - length:
+        error: visited.node-name.wrong-size
+        max: 135
+    description: name of the visited node
+    name: nodeName
+    type: string
+  name: VisitedNodeAttributes
 - fields:
   - name: nodeName
     optional: true

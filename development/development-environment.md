@@ -19,9 +19,10 @@ until you plan to make changes to the code. These components are:
    build and run [moera-client-react][5] (see [README.md][6] for details).
 
 For local installation of naming and node servers, you need to have Java
-17+ and PostgreSQL 9.6+ installed. In all major Linux distributions, you
-can install them from the main package repository. For development, you can use
-one PostgreSQL instance for both node and naming servers.
+17+ and PostgreSQL 12+ installed. The node server also requires ffmpeg 6.1+.
+In all major Linux distributions, you can install them from the main package
+repository. For development, you can use one PostgreSQL instance for both node
+and naming servers.
 
 If you install several components on the same host, note to choose
 different port numbers for them. By default, they are 8080, 8081 and

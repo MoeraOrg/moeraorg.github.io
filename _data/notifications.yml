@@ -276,6 +276,35 @@ notifications:
         array: true
         name: scope
         comment: the updated set of permissions
+  - type: LEASED_MEDIA_TEXT_UPDATED
+    ordinal: 43
+    description: Text content of a media file leased by the receiver has been updated.
+    fields:
+      - type: String
+        name: mediaId
+        comment: ID of the media on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: media.media-id.wrong-size
+        log: true
+      - type: String
+        name: leaseId
+        comment: ID of the lease on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: media-lease.lease-id.wrong-size
+        log: true
+      - type: String
+        name: textContent
+        optional: true
+        comment: text content of the media
+        constraints:
+          - length:
+              max: 16384
+              error: media.text-content.wrong-size
+        log: true
   - type: LEASED_MEDIA_TITLE_UPDATED
     ordinal: 42
     description: Title of a media file leased by the receiver has been updated.
@@ -840,6 +869,15 @@ notifications:
           - length:
               max: 40
               error: media.media-id.wrong-size
+        log: true
+      - type: String
+        name: mediaNodeName
+        optional: true
+        comment: name of the node where the media is located
+        constraints:
+          - length:
+              max: 135
+              error: media.node-name.wrong-size
         log: true
       - type: String
         name: title
@@ -1482,8 +1520,6 @@ notifications:
         name: heading
         comment: heading of the posting/comment/media
         constraints:
-          - notblank:
-              error: search.heading.blank
           - length:
               max: 255
               error: search.heading.wrong-size

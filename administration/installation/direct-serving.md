@@ -69,12 +69,11 @@ map $arg_fn $media_filename {
 server {
     location ~ ^/moera/media/([^/]+)\.([^/]+)$ {
         if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Headers "authorization, content-type, content-disposition, x-accept-moera, client-id";
-            add_header Access-Control-Expose-Headers "x-moera";
-            add_header Access-Control-Allow-Methods "GET";
-            add_header Access-Control-Allow-Origin "*";
-            add_header Access-Control-Max-Age 86400;
-            add_header Allow "GET, HEAD, OPTIONS";
+            add_header Access-Control-Allow-Headers "authorization, content-type, content-disposition, range, x-accept-moera, client-id" always;
+            add_header Access-Control-Allow-Methods "GET, HEAD" always;
+            add_header Access-Control-Allow-Origin "*" always;
+            add_header Access-Control-Max-Age 86400 always;
+            add_header Allow "GET, HEAD, OPTIONS" always;
             add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;" always;
             return 200;
         }

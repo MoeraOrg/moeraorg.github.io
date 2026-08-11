@@ -7,6 +7,8 @@ title: Installation
 
 The simplest way to install the Moera server software (`moera-node`) is as follows:
 
+As prerequisites, Java 21+, PostgreSQL 12+, and ffmpeg 6.1+ must be installed.
+
 1. Download a prebuilt WAR file [from the GitHub repository][1].
 2. Place the WAR file in a directory on your server.
 3. Create a subdirectory to store media files. The directory must be

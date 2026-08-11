@@ -454,6 +454,8 @@ objects:
             description: there is no avatar with the given ID
           - code: media.not-found
             description: there is no media with the given ID
+          - code: media.video-not-compressed
+            description: video compression is not complete
       - url: /postings/{postingId}/comments/{commentId}
         type: GET
         function: getComment
@@ -531,6 +533,8 @@ objects:
             description: there is no avatar with the given ID
           - code: media.not-found
             description: there is no media with the given ID
+          - code: media.video-not-compressed
+            description: video compression is not complete
       - url: /postings/{postingId}/comments/{commentId}
         type: DELETE
         function: deleteComment
@@ -1639,8 +1643,8 @@ objects:
             name: downsize
             optional: true
             description: >
-              `true` to scale the uploaded image down to the size recommended by the node, if possible; the default is
-              `false`
+              `true` to scale the uploaded image down to the size recommended by the node or asynchronously compress
+              an uploaded video to the recommended playback format and size, if possible; the default is `false`
         in:
           type: blob
           optional: true
@@ -1667,6 +1671,8 @@ objects:
             description: media file is too large
           - code: media.image-invalid
             description: media file is not a readable image
+          - code: media.video-invalid
+            description: media file is not a readable video
           - code: media.storage-error
             description: media file cannot be stored
       - url: /media/private/{id}/data
@@ -2282,6 +2288,8 @@ objects:
             description: there is no avatar with the given ID
           - code: media.not-found
             description: there is no media with the given ID
+          - code: media.video-not-compressed
+            description: video compression is not complete
       - url: /postings
         type: GET
         function: getPostingsByExternalSource
@@ -2319,6 +2327,8 @@ objects:
             description: there is no avatar with the given ID
           - code: media.not-found
             description: there is no media with the given ID
+          - code: media.video-not-compressed
+            description: video compression is not complete
       - url: /postings/{id}
         type: GET
         function: getPosting
@@ -5050,6 +5060,14 @@ structures:
         description: number of comments after this slice till the far future
   - name: CommentSourceText
     fields:
+      - type: String
+        name: ownerFullName
+        optional: true
+        description: full name of the comment's owner
+        constraints:
+          - length:
+              max: 96
+              error: comment.owner-full-name.wrong-size
       - struct: AvatarDescription
         name: ownerAvatar
         optional: true
@@ -5365,17 +5383,6 @@ structures:
         name: blockedBy
         optional: true
         description: information about blocking the node by the contact
-  - name: VisitedNodeAttributes
-    fields:
-      - type: String
-        name: nodeName
-        description: name of the visited node
-        constraints:
-          - notblank:
-              error: visited.node-name.blank
-          - length:
-              max: 135
-              error: visited.node-name.wrong-size
   - name: Credentials
     fields:
       - type: String
@@ -6544,6 +6551,9 @@ structures:
       - type: String[]
         name: imageFormats
         description: list of image formats (in MIME type form) the node understands
+      - type: String[]
+        name: videoFormats
+        description: list of video formats (in MIME type form) the node understands
   - name: PostingInfo
     java-interfaces:
       - MediaInfo
@@ -6897,6 +6907,14 @@ structures:
         description: timestamp when the posting was received from this source
   - name: PostingSourceText
     fields:
+      - type: String
+        name: ownerFullName
+        optional: true
+        description: full name of the posting's owner
+        constraints:
+          - length:
+              max: 96
+              error: posting.owner-full-name.wrong-size
       - struct: AvatarDescription
         name: ownerAvatar
         optional: true
@@ -6936,6 +6954,15 @@ structures:
         name: commentRejectedReactions
         optional: true
         description: types of reactions that the posting's comments should rejects
+      - struct: StoryAttributes
+        array: true
+        name: publications
+        optional: true
+        description: list of publications in feeds that must be made after creating the posting (for new postings only)
+        constraints:
+          - other:
+              error: posting.publications.cannot-modify
+              description: cannot be modified
       - struct: PostingOperations
         name: operations
         optional: true
@@ -7201,6 +7228,18 @@ structures:
       - type: long
         name: size
         description: size of the media file in bytes
+      - type: float
+        name: duration
+        optional: true
+        description: duration of the media in seconds (<code>null</code>, if the media file is not an audio or video)
+      - type: boolean
+        name: uncompressed
+        optional: true
+        description: <code>true</code> if requested video compression is not complete
+      - type: String
+        name: compressedMediaId
+        optional: true
+        description: ID of the compressed media file, if compression is complete
       - type: String
         name: title
         optional: true
@@ -7813,6 +7852,10 @@ structures:
       - type: long
         name: size
         description: size of the media file in bytes
+      - type: float
+        name: duration
+        optional: true
+        description: duration of the media in seconds (<code>null</code>, if the media file is not an audio or video)
       - type: String
         name: title
         optional: true
@@ -7862,10 +7905,18 @@ structures:
         name: size
         optional: true
         description: size of the media file in bytes
+      - type: float
+        name: duration
+        optional: true
+        description: duration of the media in seconds (<code>null</code>, if the media file is not an audio or video)
       - type: String
         name: title
         optional: true
         description: title of the media file, may be used as an alternative to the file name
+      - type: String
+        name: textContent
+        optional: true
+        description: the text contained in the image, if any
       - type: boolean
         name: attachment
         optional: true
@@ -8106,6 +8157,14 @@ structures:
               max: 40
               error: search.media-id.wrong-size
       - type: String
+        name: mediaNodeName
+        optional: true
+        description: name of the node where the media is located
+        constraints:
+          - length:
+              max: 135
+              error: search.media-node-name.wrong-size
+      - type: String
         name: title
         optional: true
         description: title of the media file, may be used as an alternative to the file name
@@ -8196,6 +8255,10 @@ structures:
         name: mediaPreviewId
         optional: true
         description: ID of the media attached to the entry that was chosen for the preview
+      - type: String
+        name: mediaPreviewMimeType
+        optional: true
+        description: MIME type of the media attached to the entry that was chosen for the preview
       - struct: SearchRepliedTo
         name: repliedTo
         optional: true
@@ -8470,6 +8533,14 @@ structures:
           - length:
               max: 40
               error: search.media-id.wrong-size
+      - type: String
+        name: mediaNodeName
+        optional: true
+        description: name of the node where the media is located
+        constraints:
+          - length:
+              max: 135
+              error: search.media-node-name.wrong-size
       - type: String
         name: title
         optional: true
@@ -10086,6 +10157,17 @@ structures:
           - length:
               max: 1024
               error: visit.referrer.wrong-size
+  - name: VisitedNodeAttributes
+    fields:
+      - type: String
+        name: nodeName
+        description: name of the visited node
+        constraints:
+          - notblank:
+              error: visited.node-name.blank
+          - length:
+              max: 135
+              error: visited.node-name.wrong-size
   - name: WhoAmI
     fields:
       - type: String
@@ -10859,6 +10941,12 @@ enums:
       - name: unblocked-user-in-posting
         description: a remote node has unblocked the user in a posting
         ordinal: 34
+      - name: video-comment-published
+        description: the user's comment with a video was published after video compression
+        ordinal: 48
+      - name: video-posting-published
+        description: the user's posting with a video was published after video compression
+        ordinal: 49
   - name: SubscriptionReason
     values:
       - name: user

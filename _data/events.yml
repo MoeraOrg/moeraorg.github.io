@@ -225,6 +225,18 @@ events:
       - struct: GrantInfo
         name: grant
         description: the updated permissions
+  - type: MEDIA_COMPRESSED
+    description: A private video was successfully compressed.
+    fields:
+      - type: String
+        name: originalMediaId
+        description: ID of the original private media file
+      - type: String
+        name: originalMediaHash
+        description: SHA-1 hash of the original media file
+      - struct: PrivateMediaFileInfo
+        name: media
+        description: information about the compressed replacement media file
   - type: NODE_NAME_CHANGED
     description: The name of the node or one or more of important profile fields were changed.
     fields:
