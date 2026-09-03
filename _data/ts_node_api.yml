@@ -5997,10 +5997,9 @@ structures:
     type: number
   name: CommentTotalInfo
 - fields:
-  - array: true
-    description: list of node names to fetch
+  - description: list of node names to fetch
     name: nodeNames
-    type: string
+    type: string[]
   name: ContactFilter
 - fields:
   - name: nodeName
@@ -7582,14 +7581,14 @@ structures:
     name: recommended
     optional: true
     type: boolean
-  - description: 'URI of the external source the posting was received from; used by
-      software that automatically forwards postings from other social networks (for
-      admin only)
+  - description: 'URIs of the external sources the posting was received from; used
+      by software that automatically forwards postings from other social networks
+      (for admin only)
 
       '
     name: externalSourceUri
     optional: true
-    type: string
+    type: string[]
   java-interfaces:
   - MediaInfo
   name: PostingInfo
@@ -7966,13 +7965,14 @@ structures:
     name: commentReactionOperations
     optional: true
     struct: ReactionOperations
-  - constraints:
+  - array: true
+    constraints:
     - length:
         error: posting.external-source-uri.wrong-size
         max: 1024
-    description: 'URI of the external source the posting was received from; used by
-      software that automatically forwards postings from other social networks (for
-      admin only)
+    description: 'URIs of the external sources the posting was received from; used
+      by software that automatically forwards postings from other social networks
+      (for admin only)
 
       '
     name: externalSourceUri

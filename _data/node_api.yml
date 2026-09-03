@@ -5291,8 +5291,7 @@ structures:
         description: total number of comments in the posting after the operation
   - name: ContactFilter
     fields:
-      - type: String
-        array: true
+      - type: String[]
         name: nodeNames
         description: list of node names to fetch
   - name: ContactInfo
@@ -6792,11 +6791,11 @@ structures:
         description: >
           <code>true</code>, if the posting was recommended by a recommendation service (for cached copies of remote
           postings only), <code>false</code> otherwise
-      - type: String
+      - type: String[]
         name: externalSourceUri
         optional: true
         description: >
-          URI of the external source the posting was received from; used by software that automatically forwards
+          URIs of the external sources the posting was received from; used by software that automatically forwards
           postings from other social networks (for admin only)
   - name: PostingRevisionInfo
     fields:
@@ -7147,10 +7146,11 @@ structures:
               error: posting.comment-reaction-operations.wrong-principal
               description: contain an incorrect principal
       - type: String
+        array: true
         name: externalSourceUri
         optional: true
         description: >
-          URI of the external source the posting was received from; used by software that automatically forwards
+          URIs of the external sources the posting was received from; used by software that automatically forwards
           postings from other social networks (for admin only)
         constraints:
           - length:
