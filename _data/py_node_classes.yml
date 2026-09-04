@@ -120,6 +120,13 @@ objects:
             type: str
         auth: irrelevant
         description: Set node URL.
+      - function: user_agent(agent)
+        params:
+          - name: agent
+            type: str
+            description: User-Agent string
+        auth: irrelevant
+        description: Set the User-Agent string.
       - function: verify_ssl(verify_ssl)
         params:
           - name: verify_ssl
