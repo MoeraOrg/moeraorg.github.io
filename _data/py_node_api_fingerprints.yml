@@ -241,6 +241,22 @@ objects:
       type: str
     - field: full_name
       type: str
+    - field: node_source_uri
+      type: str
+    - field: created_at
+      type: Timestamp
+    - field: type
+      type: str
+    - field: notification
+      type: str
+    version: 2
+  - fingerprint:
+    - field: id
+      type: str
+    - field: node_name
+      type: str
+    - field: full_name
+      type: str
     - field: created_at
       type: Timestamp
     - field: type

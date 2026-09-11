@@ -115,6 +115,14 @@ notifications:
               max: 96
               error: reaction.owner-full-name.wrong-size
       - type: String
+        name: ownerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: reaction.owner-source-uri.wrong-size
+      - type: String
         name: ownerGender
         comment: gender of the reaction owner
         constraints:
@@ -147,6 +155,14 @@ notifications:
           - length:
               max: 96
               error: reaction.posting-full-name.wrong-size
+      - type: String
+        name: postingSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: reaction.posting-source-uri.wrong-size
       - type: String
         name: postingGender
         comment: posting owner's gender
@@ -206,6 +222,14 @@ notifications:
           - length:
               max: 96
               error: reaction.owner-full-name.wrong-size
+      - type: String
+        name: ownerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: reaction.owner-source-uri.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the reaction owner
@@ -369,6 +393,14 @@ notifications:
               max: 96
               error: mention.posting-owner-full-name.wrong-size
       - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: mention.posting-owner-source-uri.wrong-size
+      - type: String
         name: postingOwnerGender
         comment: gender of the posting's owner
         constraints:
@@ -408,6 +440,14 @@ notifications:
           - length:
               max: 96
               error: mention.comment-owner-full-name.wrong-size
+      - type: String
+        name: commentOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: mention.comment-owner-source-uri.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment's owner
@@ -477,6 +517,14 @@ notifications:
           - length:
               max: 96
               error: mention.owner-full-name.wrong-size
+      - type: String
+        name: ownerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: mention.owner-source-uri.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the posting's owner
@@ -552,6 +600,14 @@ notifications:
               max: 96
               error: comment.posting-owner-full-name.wrong-size
       - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.posting-owner-source-uri.wrong-size
+      - type: String
         name: postingOwnerGender
         comment: gender of the posting owner
         constraints:
@@ -599,6 +655,14 @@ notifications:
           - length:
               max: 96
               error: comment.comment-owner-full-name.wrong-size
+      - type: String
+        name: commentOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.comment-owner-source-uri.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
@@ -673,6 +737,14 @@ notifications:
           - length:
               max: 96
               error: comment.comment-owner-full-name.wrong-size
+      - type: String
+        name: commentOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.comment-owner-source-uri.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
@@ -815,6 +887,14 @@ notifications:
               max: 96
               error: posting.posting-owner-full-name.wrong-size
       - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: posting.posting-owner-source-uri.wrong-size
+      - type: String
         name: postingOwnerGender
         comment: gender of the posting owner
         constraints:
@@ -954,6 +1034,14 @@ notifications:
               max: 96
               error: reaction.owner-full-name.wrong-size
       - type: String
+        name: ownerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: reaction.owner-source-uri.wrong-size
+      - type: String
         name: ownerGender
         comment: gender of the reaction owner
         constraints:
@@ -984,6 +1072,14 @@ notifications:
           - length:
               max: 96
               error: reaction.parent-posting-full-name.wrong-size
+      - type: String
+        name: parentPostingSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: reaction.parent-posting-source-uri.wrong-size
       - type: String
         name: parentPostingGender
         comment: parent's owner gender (see <code>parentPostingId</code> and <code>parentCommentId</code> above)
@@ -1067,6 +1163,14 @@ notifications:
           - length:
               max: 96
               error: reaction.owner-full-name.wrong-size
+      - type: String
+        name: ownerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: reaction.owner-source-uri.wrong-size
       - type: String
         name: ownerGender
         comment: gender of the reaction owner
@@ -1200,6 +1304,14 @@ notifications:
               max: 96
               error: comment.posting-owner-full-name.wrong-size
       - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.posting-owner-source-uri.wrong-size
+      - type: String
         name: postingOwnerGender
         comment: gender of the posting's owner
         constraints:
@@ -1291,6 +1403,14 @@ notifications:
               max: 96
               error: comment.posting-owner-full-name.wrong-size
       - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.posting-owner-source-uri.wrong-size
+      - type: String
         name: postingOwnerGender
         comment: gender of the posting owner
         constraints:
@@ -1330,6 +1450,14 @@ notifications:
           - length:
               max: 96
               error: comment.comment-owner-full-name.wrong-size
+      - type: String
+        name: commentOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.comment-owner-source-uri.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
@@ -1403,6 +1531,14 @@ notifications:
           - length:
               max: 96
               error: comment.comment-owner-full-name.wrong-size
+      - type: String
+        name: commentOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: comment.comment-owner-source-uri.wrong-size
       - type: String
         name: commentOwnerGender
         comment: gender of the comment owner
@@ -1570,6 +1706,14 @@ notifications:
               max: 96
               error: sheriff-complaint.posting-owner-full-name.wrong-size
       - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: sheriff-complaint.posting-owner-source-uri.wrong-size
+      - type: String
         name: postingHeading
         comment: heading of the posting
         constraints:
@@ -1600,6 +1744,14 @@ notifications:
           - length:
               max: 96
               error: sheriff-complaint.comment-owner-full-name.wrong-size
+      - type: String
+        name: commentOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: sheriff-complaint.comment-owner-source-uri.wrong-size
       - type: String
         name: commentHeading
         comment: heading of the comment
@@ -1667,6 +1819,14 @@ notifications:
           - length:
               max: 96
               error: sheriff-order.posting-owner-full-name.wrong-size
+      - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: sheriff-order.posting-owner-source-uri.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting
@@ -1754,6 +1914,14 @@ notifications:
           - length:
               max: 96
               error: sheriff-order.posting-owner-full-name.wrong-size
+      - type: String
+        name: postingOwnerSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: sheriff-order.posting-owner-source-uri.wrong-size
       - type: String
         name: postingHeading
         comment: heading of the posting

@@ -63,6 +63,21 @@ const attrs: DomainAttributes = {
 };
 ```
 
+## Node source URIs
+
+`NodeSourceUri` parses and builds [node source URIs][4] and their parameters.
+
+```typescript
+import { NodeSourceUri } from 'moeralib';
+
+const source = NodeSourceUri.parse(
+    'https://example/node;via_email=alice%40example.com;label=%D0%9C%D0%B8%D1%80%20%2B'
+);
+console.log(source.getParameter(NodeSourceUri.VIA_EMAIL));
+source.setParameter('channel', 'social + web');
+console.log(source.toString());
+```
+
 ## Authentication
 
 _[Read more about authentication][3] in the Node API reference._
@@ -168,3 +183,4 @@ console.log(redirectToUrl(
 [1]: https://github.com/MoeraOrg/typescript-moeralib
 [2]: https://www.npmjs.com/package/moeralib
 [3]: /development/node-api/authentication.html
+[4]: /development/node-api/node-source-uri.html

@@ -165,9 +165,6 @@ enums:
   - description: update the name of the node
     name: name
     value: '0x00020000'
-  - description: administrate plugins
-    name: plugins
-    value: '0x00040000'
   - description: view all fields of the profile
     name: view-profile
     value: '0x00080000'
@@ -209,7 +206,7 @@ enums:
     value: '0x00088404'
   - description: all permissions
     name: all
-    value: '0x7ffffffd'
+    value: '0x7ffbfffd'
 - name: SearchContentUpdateType
   values:
   - description: the node was blocked
@@ -577,6 +574,13 @@ objects:
     function: node_url(url)
     params:
     - name: url
+      type: str
+  - auth: irrelevant
+    description: Set the User-Agent string.
+    function: user_agent(agent)
+    params:
+    - description: User-Agent string
+      name: agent
       type: str
   - auth: irrelevant
     description: Enable or disable SSL certificate verification.
@@ -1541,6 +1545,8 @@ objects:
 
       '
     errors:
+    - code: credentials.login-disabled
+      description: login is disabled
     - code: credentials.login-incorrect
       description: login incorrect (the old password is wrong)
     - code: credentials.wrong-reset-token
@@ -1565,6 +1571,8 @@ objects:
 
       '
     errors:
+    - code: credentials.login-disabled
+      description: login is disabled
     - code: credentials.email-not-set
       description: E-mail address is not set for the node
     function: reset_credentials()
@@ -1575,6 +1583,9 @@ objects:
       be used later to change the credentials without knowing the password.
 
       '
+    errors:
+    - code: credentials.login-disabled
+      description: login is disabled
     function: verify_credentials_reset_token(reset_token)
     out:
       struct: VerificationInfo
@@ -2753,61 +2764,6 @@ objects:
     out:
       struct: PeopleGeneralInfo
     params: []
-- description: 'Plugins are web applications that integrate closely with the node
-    or with the server as whole. Authenticating as root admin or node admin, they
-    may perform operations, receive internal events, extend node API with new requests
-    and add their own settings to the list of node settings. Every plugin registers
-    its URL with the node, and the node uses this URL to call it when necessary.
-
-    '
-  name: Plugins
-  requests:
-  - auth: root admin or admin
-    description: 'Register the plugin. If the plugin authenticates as root admin,
-      the plugin is registered at the server level. If the plugin authenticates as
-      node admin, the plugin is registered at the node level.
-
-      '
-    errors:
-    - code: plugin.already-exists
-      description: plugin with this name is already registered
-    function: register_plugin(plugin)
-    out:
-      struct: PluginInfo
-    params:
-    - name: plugin
-      struct: PluginDescription
-  - auth: optional
-    description: Get information about all plugins registered for the node and server.
-    function: get_plugins()
-    out:
-      array: true
-      struct: PluginInfo
-    params: []
-  - auth: optional
-    description: Get information about the plugin.
-    errors:
-    - code: plugin.unknown
-      description: unknown plugin
-    function: get_plugin(plugin_name)
-    out:
-      struct: PluginInfo
-    params:
-    - description: name of the plugin
-      name: plugin_name
-      type: str
-  - auth: root admin or admin
-    description: Unregister the plugin.
-    errors:
-    - code: plugin.unknown
-      description: unknown plugin
-    function: unregister_plugin(plugin_name)
-    out:
-      struct: Result
-    params:
-    - description: name of the plugin
-      name: plugin_name
-      type: str
 - description: 'All postings. Each posting may contain one or more revisions, a new
     revision is created every time the posting is updated. The latest revision is
     the current one, the previous ones are marked as deleted.
@@ -3168,8 +3124,10 @@ objects:
       optional: true
       type: bool
   - auth: admin
-    description: 'Update the profile. Fields that are not set in the request body
-      are left intact. Fields that are set to an empty value are reset to their defaults.
+    description: 'To update a profile attribute, include the field with its new value.
+      For a partial update, include only the fields to be changed; omitted fields
+      remain unchanged. To delete an attribute, include the field with an empty value,
+      which resets it to its default.
 
       '
     errors:
@@ -3943,8 +3901,6 @@ objects:
       description: cannot set value of an internal setting
     - code: setting.unknown
       description: unknown setting
-    - code: setting.plugin
-      description: plugin setting metadata cannot be modified
     function: update_node_settings_metadata(metadata)
     out:
       struct: Result
@@ -4297,6 +4253,8 @@ objects:
     params: []
   - description: Sign in and create a token.
     errors:
+    - code: credentials.login-disabled
+      description: login is disabled
     - code: credentials.not-created
       description: credentials are not created yet
     - code: credentials.login-incorrect
@@ -4746,6 +4704,10 @@ structures:
     type: str
   - description: full name of the remote node
     name: remote_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: remote_source_uri
     optional: true
     type: str
   - description: avatar of the remote node
@@ -5455,6 +5417,10 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: gender of the comment's owner
     name: owner_gender
     optional: true
@@ -5769,6 +5735,14 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - constraints:
+    - length:
+        error: comment.owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: avatar of the comment's owner
     name: owner_avatar
     optional: true
@@ -5860,6 +5834,14 @@ structures:
         max: 96
     description: full name of the comment's owner
     name: owner_full_name
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: comment.owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - constraints:
@@ -6017,6 +5999,10 @@ structures:
   - name: full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: node_source_uri
+    optional: true
+    type: str
   - name: gender
     optional: true
     type: str
@@ -6107,12 +6093,18 @@ structures:
     - notblank:
         error: credentials.login.blank
     name: login
+    optional: true
     type: str
   - constraints:
     - notblank:
         error: credentials.password.blank
     name: password
+    optional: true
     type: str
+  - description: if <code>True</code>, disable login and password reset
+    name: login_disabled
+    optional: true
+    type: bool
   name: Credentials
 - fields:
   - description: credentials reset token
@@ -6138,6 +6130,10 @@ structures:
   - description: <code>True</code> if the credentials are initialized already, <code>False</code>
       otherwise
     name: created
+    type: bool
+  - description: <code>True</code> if login and password reset are disabled
+    name: login_disabled
+    optional: true
     type: bool
   name: CredentialsCreated
 - fields:
@@ -6226,6 +6222,10 @@ structures:
     type: Timestamp
   - description: full name of the posting's/comment's owner
     name: owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - description: avatar of the posting's/comment's owner
@@ -6344,6 +6344,14 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - constraints:
+    - length:
+        error: draft.owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: avatar of the posting's/comment's owner
     name: owner_avatar
     optional: true
@@ -6414,10 +6422,6 @@ structures:
   - description: features of a posting
     name: posting
     struct: PostingFeatures
-  - description: list of names of plugins enabled for the node
-    name: plugins
-    optional: true
-    type: List[str]
   - description: width of the feed in pixels
     name: feed_width
     type: int
@@ -7029,6 +7033,14 @@ structures:
     type: str
   - constraints:
     - length:
+        error: notification.source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: node_source_uri
+    optional: true
+    type: str
+  - constraints:
+    - length:
         error: notification.gender.wrong-size
         max: 31
     description: gender of the sending node
@@ -7170,143 +7182,6 @@ structures:
     struct: PeopleOperations
   name: PeopleGeneralInfo
 - fields:
-  - description: <code>True</code>, if the client has authenticated as root admin,
-      <code>False</code> otherwise
-    name: root_admin
-    type: bool
-  - description: <code>True</code>, if the client has authenticated as node admin,
-      <code>False</code> otherwise
-    name: admin
-    type: bool
-  - description: 'the list of permissions granted to the client, if it has authenticated
-      as node admin; see <code><a href="#TokenInfo">TokenInfo</a>.permissions</code>
-      for the list of possible values
-
-      '
-    name: auth_categories
-    type: List[str]
-  - description: node name of the client
-    name: client_name
-    type: str
-  - description: IP address of the client
-    name: remote_address
-    type: str
-  - description: user agent (browser) used by the client
-    name: user_agent
-    type: str
-  - description: operating system used by the client
-    name: user_agent_os
-    type: str
-  - description: ID of the current node
-    name: node_id
-    type: str
-  - description: node name of the current node
-    name: node_name
-    type: str
-  - description: domain name of the current node
-    name: domain_name
-    type: str
-  - description: full URL of the request
-    name: origin_url
-    type: str
-  name: PluginContext
-- fields:
-  - constraints:
-    - notblank:
-        error: plugin.name.blank
-    - length:
-        error: plugin.name.wrong-size
-        max: 48
-    - other:
-        description: has incorrect format
-        error: plugin.name.invalid
-    description: a unique plugin name; can contain only small latin letters, digits
-      or hyphen
-    name: name
-    type: str
-  - constraints:
-    - length:
-        error: plugin.title.wrong-size
-        max: 80
-    description: user-readable title of the plugin
-    name: title
-    optional: true
-    type: str
-  - constraints:
-    - length:
-        error: plugin.description.wrong-size
-        max: 256
-    description: user-readable description of the purpose of the plugin
-    name: description
-    optional: true
-    type: str
-  - description: URL of the plugin; used by the node to call the plugin API
-    name: location
-    optional: true
-    type: str
-  - description: 'list of types of internal events the plugin wants to receive; <a
-      href="#internal-events">Read more about internal events.</a>
-
-      '
-    name: accepted_events
-    optional: true
-    type: List[str]
-  - array: true
-    constraints:
-    - other:
-        description: contain an option of an unknown type
-        error: plugin.options.unknown-type
-    description: 'plugin settings to be added to the list of node settings, the settings
-      appear in the list with a prefix <code>plugin.&lt;plugin name>.</code>
-
-      '
-    name: options
-    optional: true
-    struct: SettingDescriptor
-  name: PluginDescription
-- fields:
-  - description: ID of the node this plugin is connected to
-    name: node_id
-    type: str
-  - description: '<code>True</code> if the plugin is enabled for a particular node
-      only, <code>False</code>, if it is enabled for the whole server
-
-      '
-    name: local
-    type: bool
-  - description: a unique plugin name
-    name: name
-    type: str
-  - description: user-readable title of the plugin
-    name: title
-    optional: true
-    type: str
-  - description: user-readable description of the purpose of the plugin
-    name: description
-    optional: true
-    type: str
-  - description: URL of the plugin; used by the node to call the plugin API
-    name: location
-    optional: true
-    type: str
-  - description: 'list of types of internal events the plugin wants to receive; <a
-      href="#internal-events">Read more about internal events.</a>
-
-      '
-    name: accepted_events
-    optional: true
-    type: List[str]
-  - array: true
-    description: plugin settings to be added to the list of node settings
-    name: settings
-    optional: true
-    struct: SettingMetaInfo
-  - description: ID of the token used to authenticate the plugin
-    name: token_id
-    optional: true
-    type: str
-  name: PluginInfo
-- fields:
   - description: <code>True</code> if the client is allowed to create postings, <code>False</code>
       otherwise
     name: post
@@ -7351,6 +7226,10 @@ structures:
     name: receiver_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: receiver_source_uri
+    optional: true
+    type: str
   - description: gender of the node where the posting was published (for cached copies
       of remote postings only)
     name: receiver_gender
@@ -7377,6 +7256,10 @@ structures:
     type: str
   - description: full name of the posting's owner
     name: owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - description: gender of the posting's owner
@@ -7704,6 +7587,10 @@ structures:
     name: full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: node_source_uri
+    optional: true
+    type: str
   - description: avatar of the remote node
     name: avatar
     optional: true
@@ -7725,6 +7612,14 @@ structures:
         max: 96
     description: full name of the posting's owner
     name: owner_full_name
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: posting.owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - description: avatar of the posting's owner
@@ -7829,8 +7724,24 @@ structures:
     - length:
         error: posting.owner-full-name.wrong-size
         max: 96
-    description: full name of the posting's owner
+    description: 'full name of the posting''s owner; if omitted, the node profile
+      value is used when creating a posting and the current posting value is preserved
+      when updating it; an explicitly empty string is stored as empty
+
+      '
     name: owner_full_name
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: posting.owner-source-uri.wrong-size
+        max: 1024
+    description: 'source URI of the posting owner''s identity; if omitted, the node
+      profile value is used when creating a posting and the current posting value
+      is preserved when updating it; an explicitly empty string is stored as empty
+
+      '
+    name: owner_source_uri
     optional: true
     type: str
   - constraints:
@@ -8137,6 +8048,14 @@ structures:
     type: str
   - constraints:
     - length:
+        error: profile.source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: source_uri
+    optional: true
+    type: str
+  - constraints:
+    - length:
         error: profile.gender.wrong-size
         max: 31
     description: node owner's gender
@@ -8197,6 +8116,10 @@ structures:
 - fields:
   - description: node owner's full name
     name: full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: source_uri
     optional: true
     type: str
   - description: node owner's gender
@@ -8365,6 +8288,14 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - constraints:
+    - length:
+        error: reaction-description.owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: reaction owner's gender
     name: owner_gender
     optional: true
@@ -8417,6 +8348,10 @@ structures:
     type: str
   - description: reaction owner's full name
     name: owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - description: reaction owner's gender
@@ -8609,6 +8544,10 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: avatar of the posting's owner
     name: owner_avatar
     optional: true
@@ -8681,6 +8620,10 @@ structures:
     type: str
   - description: node owner's full name
     name: full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: node_source_uri
     optional: true
     type: str
   - description: node title
@@ -8904,6 +8847,10 @@ structures:
     name: full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: source_uri
+    optional: true
+    type: str
   - description: gender of the comment's owner
     name: gender
     optional: true
@@ -9111,6 +9058,10 @@ structures:
     type: str
   - description: full name of the entry's owner
     name: owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - description: avatar of the entry's owner
@@ -9346,6 +9297,10 @@ structures:
     name: full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: node_source_uri
+    optional: true
+    type: str
   - description: node title
     name: title
     optional: true
@@ -9544,6 +9499,10 @@ structures:
     type: str
   - description: full name of the comment's owner
     name: full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: source_uri
     optional: true
     type: str
   - description: avatar of the comment's owner
@@ -9877,6 +9836,10 @@ structures:
     name: remote_node_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: remote_node_source_uri
+    optional: true
+    type: str
   - description: name of the feed the complaints are related to
     name: remote_feed_name
     type: str
@@ -9894,6 +9857,10 @@ structures:
     type: str
   - description: posting owner's full name
     name: remote_posting_owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: remote_posting_owner_source_uri
     optional: true
     type: str
   - description: posting owner's gender
@@ -9918,6 +9885,10 @@ structures:
     type: str
   - description: comment owner's full name
     name: remote_comment_owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: remote_comment_owner_source_uri
     optional: true
     type: str
   - description: comment owner's gender
@@ -9992,6 +9963,10 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: complaint owner's gender
     name: owner_gender
     optional: true
@@ -10030,6 +10005,14 @@ structures:
     type: str
   - constraints:
     - length:
+        error: sheriff-complaint.owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
+  - constraints:
+    - length:
         error: sheriff-complaint.owner-gender.wrong-size
         max: 31
     description: complaint owner's gender
@@ -10051,6 +10034,14 @@ structures:
         max: 96
     description: full name of the node the complaint is related to
     name: full_name
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: sheriff-complaint.source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: node_source_uri
     optional: true
     type: str
   - constraints:
@@ -10084,6 +10075,14 @@ structures:
         max: 96
     description: posting owner's full name
     name: posting_owner_full_name
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: sheriff-complaint.posting-owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: posting_owner_source_uri
     optional: true
     type: str
   - constraints:
@@ -10124,6 +10123,14 @@ structures:
         max: 96
     description: comment owner's full name
     name: comment_owner_full_name
+    optional: true
+    type: str
+  - constraints:
+    - length:
+        error: sheriff-complaint.comment-owner-source-uri.wrong-size
+        max: 1024
+    description: source URI of the node identity
+    name: comment_owner_source_uri
     optional: true
     type: str
   - constraints:
@@ -10302,6 +10309,10 @@ structures:
     name: node_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: node_source_uri
+    optional: true
+    type: str
   - description: name of the feed the order is related to
     name: feed_name
     type: str
@@ -10319,6 +10330,10 @@ structures:
     type: str
   - description: posting owner's full name
     name: posting_owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: posting_owner_source_uri
     optional: true
     type: str
   - description: posting owner's gender
@@ -10343,6 +10358,10 @@ structures:
     type: str
   - description: comment owner's full name
     name: comment_owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: comment_owner_source_uri
     optional: true
     type: str
   - description: comment owner's gender
@@ -10491,6 +10510,10 @@ structures:
     name: summary_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: summary_source_uri
+    optional: true
+    type: str
   - description: avatar of the summary of the story
     name: summary_avatar
     optional: true
@@ -10531,6 +10554,10 @@ structures:
     type: str
   - description: full name of the node this story is about
     name: remote_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: remote_source_uri
     optional: true
     type: str
   - description: ID of the posting at remote node this story is about
@@ -10652,6 +10679,10 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: entry owner's gender
     name: owner_gender
     optional: true
@@ -10679,6 +10710,10 @@ structures:
     name: owner_full_name
     optional: true
     type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
+    optional: true
+    type: str
   - description: node owner's gender
     name: owner_gender
     optional: true
@@ -10703,6 +10738,10 @@ structures:
     type: str
   - description: reaction owner's full name
     name: owner_full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: owner_source_uri
     optional: true
     type: str
   - description: reaction owner's gender
@@ -10988,11 +11027,6 @@ structures:
     js-default: '[]'
     name: permissions
     optional: true
-  - description: a plugin the token belongs to; if set, only this plugin may use the
-      token
-    name: plugin_name
-    optional: true
-    type: str
   - description: token creation timestamp
     name: created_at
     type: Timestamp
@@ -11169,6 +11203,10 @@ structures:
     type: bool
   - description: node owner's full name
     name: full_name
+    optional: true
+    type: str
+  - description: source URI of the node identity
+    name: source_uri
     optional: true
     type: str
   - description: node owner's gender

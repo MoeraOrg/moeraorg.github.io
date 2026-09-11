@@ -53,34 +53,6 @@ version `1.0` is defined.
 Node that usually redirects all non-API requests to a web client should
 disable this behavior when receives this header.
 
-## Plugins
-
-<h4 class="identifier">
-    X-Moera-Auth: [root-admin={true or false}]
-        [admin-scope={comma-separated list}]
-        [auth-scope={comma-separated list}]
-        [client-name={name}]
-        [owner={true or false}]
-        [remote-address={IP address}]
-        [user-agent={browser name}]
-        [user-agent-os={OS name}]
-        [node-id={ID}]
-        [node-name={node name}]
-        [domain-name={domain name}]
-</h4>
-
-This header is sent by the node to a plugin when forwarding a user request to it.
-All fields have the same meaning as corresponding fields of
-<code><a href="requests.html#PluginContext">PluginContext</a></code>
-structure.
-
-<h4 class="identifier">
-    X-Moera-Origin: {url}
-</h4>
-
-This header is sent by the node to a plugin when forwarding a user request to it.
-It contains the full URL of the user request.
-
 [1]: /overview/browsing.html
 [2]: virtual-pages.html
 [3]: client-id.html

@@ -67,18 +67,18 @@ forms.
 
 `-P PROVIDER, --provider PROVIDER`
 
-: Use the provider defined in the [configuration file][1]. It is recommended to use
-  the configuration file to store tokens and secrets instead of passing them through
-  the command line. Command-line options override the defaults set in
-  the configuration file.
+: Use the named profile defined in the [configuration file][1]. It is recommended
+  to use the configuration file to store tokens and secrets instead of passing
+  them through the command line. Command-line options override the defaults set
+  in the configuration file.
 
-: If the provider is not set explicitly, the program uses the node address passed in
-  `-H`/`-N` options to find the first provider that has `domain=` defined and
+: If the profile is not set explicitly, the program uses the node address passed
+  in `-H`/`-N` options to find the first profile that has `domain=` defined and
   the node is located on one of its subdomains. For example, if the node is
-  `lamed.moera.blog`, the provider having `domain = moera.blog` fits the criteria.
+  `lamed.moera.blog`, the profile having `domain = moera.blog` fits the criteria.
 
-: If no provider is found by domain name, the first provider in the configuration
-  file is used.
+: If no profile is found by domain name, the first non-default profile in the
+  configuration file is used.
 
 `OBJECT`
 
@@ -94,6 +94,7 @@ forms.
   * `name (nm)` — manage node name
   * `malware (mal)` — manage malware hashes
   * `token (t)` — manage authentication tokens
+  * `grant (gr)` — manage administrative grants
   * `option (op)` — change settings
 
 : The commands are described in the following sections.
@@ -134,12 +135,19 @@ the node.
 
 : Check and display whether admin credentials are set for the node.
 
+`credentials disable-login`
+
+: Disable creation of authentication tokens and changing or resetting credentials.
+  To enable login again, delete credentials and set a new password.
+
 `credentials set-password PASSWORD`
 
 : Set the admin password for the node. If the node has an admin password defined,
   this operation fails.
 
 `credentials delete-password`
+
+: Alias: `credentials del-password`.
 
 : Delete the admin password of the node. Without a password, the node can be taken
   over by anybody, so a new password should be set as soon as possible.
@@ -167,6 +175,8 @@ needed.
 : Display the status of the last operation on the name.
 
 `name register NAME`
+
+: Alias: `name reg NAME`.
 
 : Register a new name `NAME` and assign it to the node. The command outputs the 24
 secret words that are needed to control the name.
@@ -246,6 +256,50 @@ commands.
 `token delete ID`
 
 : Delete the token.
+
+## Manage administrative grants
+
+These commands manage administrative permissions granted by this node to other
+nodes. All grant commands require admin authentication. A node name passed to
+`show`, `grant`, or `revoke` is expanded to its full form with a generation
+suffix before it is sent to the node API; for example, `alice` becomes
+`alice_0`.
+
+`grant list`
+
+: List all grants issued by the node. Each line contains the full node name,
+  followed by a tab and a comma-separated list of permissions.
+
+`grant show NAME`
+
+: Show the grant issued to `NAME`, using the same format as `grant list`. If no
+  grant exists, print nothing.
+
+`grant grant NAME SCOPES`
+
+: Grant the comma-separated `SCOPES` to `NAME`. Spaces around permission names
+  are ignored, but the whole list must be passed as one command-line argument.
+  For example:
+
+  ```
+  moctl -N mynode grant grant alice view-content,react
+  moctl -N mynode grant grant alice 'view-content, react'
+  ```
+
+: A space-separated list without commas, such as `'view-content react'`, is
+  invalid. An unquoted space after a comma creates an extra command-line
+  argument and is also invalid.
+
+`grant revoke NAME SCOPES`
+
+: Revoke the comma-separated `SCOPES` from `NAME`. The list follows the same
+  syntax as in `grant grant`.
+
+: Use `all` to revoke all administrative permissions issued to the node:
+
+  ```
+  moctl -N mynode grant revoke alice all
+  ```
 
 ## Change settings
 

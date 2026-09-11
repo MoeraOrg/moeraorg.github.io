@@ -32,10 +32,10 @@ Command-line options override values loaded from the file.
 
 ## Sections
 
-Each section of the configuration file corresponds to a particular _provider_ or
-server and contains settings specific to that provider. If you often administer
-several nodes at the same provider, you can create a separate section for each
-node.
+Each non-default section is a named _profile_ selected by `-P/--provider` and
+contains settings for a particular provider, server, or node. If you often
+administer several nodes at the same provider, you can create a separate profile
+for each node. The argument of `-P/--provider` is the section name.
 
 A special section `[default]` contains global defaults. If `-P/--provider` is
 not passed explicitly, `moctl` first tries to pick a section by matching the
@@ -50,14 +50,16 @@ first non-default section in the file.
   main naming server (`naming.moera.org`). A special keyword `development` (or `dev`)
   means Moera development naming server (`naming-dev.moera.org`).
 
-: This is the only variable read from the `[default]` section. In a provider
-  section, it overrides the global default for that provider.
+: This is the only variable read from the `[default]` section. There it is used
+  to resolve a node passed explicitly with `-N/--name` before automatic profile
+  selection. A selected profile does not inherit this value: it uses its own
+  `naming-server`, or the main naming server if the variable is absent.
 
 `domain = <domain name>`
 
 : The domain the provider is located at. Usually each node located at the
   provider gets a subdomain of this domain. `moctl` uses this fact to select a
-  provider automatically by the node URL or the URL resolved from `node-name`.
+  profile automatically by the node URL or the URL resolved from `node-name`.
 
 `node-name = <name>`
 

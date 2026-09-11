@@ -248,6 +248,14 @@ events:
         optional: true
         description: the new full name
       - type: String
+        name: nodeSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: node_name_changed.node-source-uri.wrong-size
+      - type: String
         name: gender
         optional: true
         description: the new node owner's gender
@@ -265,8 +273,6 @@ events:
     description: Some node settings metadata was changed.
   - type: PING
     description: Sent periodically to verify status of WebSockets connection.
-  - type: PLUGINS_UPDATED
-    description: The list of active plugins was updated.
   - type: POSTING_ADDED
     description: A posting was added.
     fields:
@@ -447,6 +453,14 @@ events:
         name: fullName
         optional: true
         description: the remote node full name
+      - type: String
+        name: nodeSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: remote_node_full_name_changed.node-source-uri.wrong-size
       - type: String
         name: title
         optional: true
@@ -684,6 +698,14 @@ events:
         name: summaryFullName
         optional: true
         description: full name of the node related to the summary of the story
+      - type: String
+        name: summarySourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: story_added.summary-source-uri.wrong-size
       - struct: AvatarImage
         name: summaryAvatar
         optional: true
@@ -705,6 +727,14 @@ events:
         name: remoteFullName
         optional: true
         description: full name of the node this story is about
+      - type: String
+        name: remoteSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: story_added.remote-source-uri.wrong-size
       - type: String
         name: remotePostingId
         optional: true
@@ -792,6 +822,14 @@ events:
         name: summaryFullName
         optional: true
         description: full name of the node related to the summary of the story
+      - type: String
+        name: summarySourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: story_updated.summary-source-uri.wrong-size
       - struct: AvatarImage
         name: summaryAvatar
         optional: true
@@ -813,6 +851,14 @@ events:
         name: remoteFullName
         optional: true
         description: full name of the node this story is about
+      - type: String
+        name: remoteSourceUri
+        optional: true
+        description: source URI of the node identity
+        constraints:
+          - length:
+              max: 1024
+              error: story_updated.remote-source-uri.wrong-size
       - type: String
         name: remotePostingId
         optional: true

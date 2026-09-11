@@ -252,6 +252,25 @@ objects:
             comment: 8 random bytes
   - name: NotificationPacket
     versions:
+      - version: 2
+        fingerprint:
+          - type: String
+            field: objectType
+            comment: <code>NOTIFICATION_PACKET</code>
+          - type: String
+            field: id
+          - type: String
+            field: nodeName
+          - type: String
+            field: fullName
+          - type: String
+            field: nodeSourceUri
+          - type: timestamp
+            field: createdAt
+          - type: String
+            field: type
+          - type: String
+            field: notification
       - version: 1
         fingerprint:
           - type: String

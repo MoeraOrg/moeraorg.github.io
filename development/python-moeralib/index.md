@@ -80,6 +80,21 @@ The library automatically parses JSON structures coming from the node and conver
 them to Python objects derived from `Structure` class. If some field is not present
 in JSON, the corresponding field in Python is set to `None`.
 
+## Node source URIs
+
+`NodeSourceUri` parses and builds [node source URIs][4] and their parameters.
+
+```python
+from moeralib import NodeSourceUri
+
+source = NodeSourceUri.parse(
+    'https://example/node;via_email=alice%40example.com;label=%D0%9C%D0%B8%D1%80%20%2B'
+)
+print(source.get_parameter(NodeSourceUri.VIA_EMAIL))
+source.set_parameter('channel', 'social + web')
+print(source)
+```
+
 ## Structures
 
 Inputs and outputs of API calls are represented as plain Python classes derived from
@@ -252,3 +267,4 @@ srv.put(name, generation, None, new_node_uri, None, None, info.digest, signature
 [1]: https://github.com/MoeraOrg/python-moeralib
 [2]: https://pypi.org/project/moeralib/
 [3]: /development/node-api/authentication.html
+[4]: /development/node-api/node-source-uri.html

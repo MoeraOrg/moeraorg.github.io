@@ -74,6 +74,21 @@ attrs.setName("dave.moera.club");
 attrs.setNodeId(DAVE_NODE_ID);
 ```
 
+## Node source URIs
+
+`NodeSourceUri` parses and builds [node source URIs][4] and their parameters.
+
+```java
+import org.moera.lib.node.NodeSourceUri;
+
+NodeSourceUri source = NodeSourceUri.parse(
+    "https://example/node;via_email=alice%40example.com;label=%D0%9C%D0%B8%D1%80%20%2B"
+);
+System.out.println(source.getParameter(NodeSourceUri.VIA_EMAIL));
+source.setParameter("channel", "social + web");
+System.out.println(source);
+```
+
 ## Authentication
 
 _[Read more about authentication][3] in the Node API reference._
@@ -248,3 +263,4 @@ srv.put(name, generation, null, newNodeUri, null, null, info.getDigest(), signat
 [1]: https://github.com/MoeraOrg/java-moeralib
 [2]: https://central.sonatype.com/artifact/org.moera/moeralib
 [3]: /development/node-api/authentication.html
+[4]: /development/node-api/node-source-uri.html

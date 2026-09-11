@@ -9,13 +9,13 @@ subtitle: moname
 
 ## Name
 
-`moname` — get information about names from the Moera naming server
+`moname` — query and manage names on the Moera naming server
 
 ## Synopsis
 
 ```
 moname [--dev | --server SERVER] [--created] [--keys | --all-keys] [--similar] [--at AT] <name>
-moname --list [--dev | --server SERVER] [--created] [--at AT] [--newer NEWER] [<name>]
+moname --list [--dev | --server SERVER] [--created] [--at AT] [--newer NEWER] [--ignore-case] [<name>]
 moname --add [--dev | --server SERVER] <name> <uri>
 moname --update [--dev | --server SERVER] [--uri URI] [--signing-key] [--updating-key] <name>
 moname --help
@@ -87,11 +87,9 @@ networks. If the generation is missing, generation `0` is used by default.
   generation   : 0
   node URI     : https://blog.moera.org/moera
   digest       : b42b9ba69e7e58bba1c2606bafb86eaac8683c6bc3784a3bf20e59c9f8ce2a0e
-  updating key : 1894f11410389a0dc0d37a5b3f8f9b993e5e8da61f38d818cce4f662d1d5ad47
-  28441134dfb660a28155520bf79beae07e95763e52ce9c5d3597e793c8f89737
+  updating key : 1894f11410389a0dc0d37a5b3f8f9b993e5e8da61f38d818cce4f662d1d5ad4728441134dfb660a28155520bf79beae07e95763e52ce9c5d3597e793c8f89737
   created      : 2019-09-22 02:49:15
-  signing key  : 3d6dd81295985291c4727fdbcbacba3349f18876578d633dbff1956364269cab
-  5f3fe4da30f60896d2327ca60df64d54adb154ca34320d2c0ece96f0ccc2bf9c
+  signing key  : 3d6dd81295985291c4727fdbcbacba3349f18876578d633dbff1956364269cab5f3fe4da30f60896d2327ca60df64d54adb154ca34320d2c0ece96f0ccc2bf9c
   valid from   : 2020-08-28 03:22:09
   ```
 
@@ -105,11 +103,9 @@ networks. If the generation is missing, generation `0` is used by default.
   generation   : 0
   node URI     : https://blog.moera.org/moera
   digest       : b42b9ba69e7e58bba1c2606bafb86eaac8683c6bc3784a3bf20e59c9f8ce2a0e
-  updating key : 1894f11410389a0dc0d37a5b3f8f9b993e5e8da61f38d818cce4f662d1d5ad47
-  28441134dfb660a28155520bf79beae07e95763e52ce9c5d3597e793c8f89737
+  updating key : 1894f11410389a0dc0d37a5b3f8f9b993e5e8da61f38d818cce4f662d1d5ad4728441134dfb660a28155520bf79beae07e95763e52ce9c5d3597e793c8f89737
   created      : 2019-09-22 02:49:15
-  signing key  : d2b7f5a2c7578c1ed6a9048f5f9efdd98e7d1955769a926d26bf3210668992a3
-  ff34092755e8b0d8f3da8fc22246d32187b6656e87f675c3fe894258c9248c8e
+  signing key  : d2b7f5a2c7578c1ed6a9048f5f9efdd98e7d1955769a926d26bf3210668992a3ff34092755e8b0d8f3da8fc22246d32187b6656e87f675c3fe894258c9248c8e
   valid from   : 2019-09-22 03:48:18
   ```
 
@@ -123,16 +119,13 @@ networks. If the generation is missing, generation `0` is used by default.
   generation   : 0
   node URI     : https://blog.moera.org/moera
   digest       : b42b9ba69e7e58bba1c2606bafb86eaac8683c6bc3784a3bf20e59c9f8ce2a0e
-  updating key : 1894f11410389a0dc0d37a5b3f8f9b993e5e8da61f38d818cce4f662d1d5ad47
-  28441134dfb660a28155520bf79beae07e95763e52ce9c5d3597e793c8f89737
+  updating key : 1894f11410389a0dc0d37a5b3f8f9b993e5e8da61f38d818cce4f662d1d5ad4728441134dfb660a28155520bf79beae07e95763e52ce9c5d3597e793c8f89737
   created      : 2019-09-22 02:49:15
   
-  signing key  : 3d6dd81295985291c4727fdbcbacba3349f18876578d633dbff1956364269cab
-  5f3fe4da30f60896d2327ca60df64d54adb154ca34320d2c0ece96f0ccc2bf9c
+  signing key  : 3d6dd81295985291c4727fdbcbacba3349f18876578d633dbff1956364269cab5f3fe4da30f60896d2327ca60df64d54adb154ca34320d2c0ece96f0ccc2bf9c
   valid from   : 2020-08-28 03:22:09
   
-  signing key  : d2b7f5a2c7578c1ed6a9048f5f9efdd98e7d1955769a926d26bf3210668992a3
-  ff34092755e8b0d8f3da8fc22246d32187b6656e87f675c3fe894258c9248c8e
+  signing key  : d2b7f5a2c7578c1ed6a9048f5f9efdd98e7d1955769a926d26bf3210668992a3ff34092755e8b0d8f3da8fc22246d32187b6656e87f675c3fe894258c9248c8e
   valid from   : 2019-09-22 03:48:18
   ```
 
@@ -156,6 +149,28 @@ networks. If the generation is missing, generation `0` is used by default.
   akovalenko_0	https://akovalenko.moera.blog/moera
   ```
 
+`<name>`
+
+: Show only entries whose names start with the given prefix. If a generation
+  suffix is omitted, entries from every generation are included. If the suffix
+  is present, only that generation is included. For example, `al` matches
+  `alice_0`, `alice_2`, `alex_0`, and `alla_5`, while `al_0` matches only
+  `alice_0` and `alex_0`.
+
+: Filtering is performed by the client. `moname` still downloads every page of
+  the complete, potentially huge list from the naming server and filters only
+  what it prints. Supplying `<name>` therefore does not reduce network traffic or
+  the time needed to retrieve the list.
+
+`-i, --ignore-case`
+
+: Ignore letter case when comparing the `<name>` prefix. Without this option,
+  prefix matching is case-sensitive.
+
+`-c, --created`
+
+: Prepend the creation date/time to every name in the list when it is available.
+
 `-t AT, --at AT`
 
 : Get the list as it was at some moment in the past.
@@ -170,6 +185,9 @@ networks. If the generation is missing, generation `0` is used by default.
 `-w NEWER, --newer NEWER`
 
 : Get the list of names registered recently.
+
+: If `--newer` and `--at` are both specified, `--newer` takes precedence and
+  `--at` has no effect.
 
   ```
   $ moname -l -w '2023-08-04'
@@ -188,8 +206,10 @@ networks. If the generation is missing, generation `0` is used by default.
 
 : Add a new name to the naming server and set its node URI to `<uri>`.
 The updating and signing keys are generated automatically. Save both outputs:
-the 24 secret words are required for future updates, and the signing key is
-needed by the node that will use the name.
+the 24 secret words are required for future updates, and the raw private signing
+key is needed by the node that will use the name. Keep the private signing key
+secret. The corresponding public signing key becomes valid approximately ten
+minutes after the request is made.
 
   ```
   $ moname -da moname-sample https://moname.moera.social/moera
@@ -223,6 +243,11 @@ needed by the node that will use the name.
   Signing key: af0eee5798fabc78332d945ab0b001ad60409c1343ed34edf927d1b0d1cdb498
   ```
 
+: Status messages and the `Secret words:` and `Signing key:` labels are printed
+  only when standard output is a terminal. When output is redirected, the
+  numbered mnemonic and the raw private signing key are printed without those
+  labels.
+
 ### Update a name
 
 `-u, --update <name>`
@@ -236,13 +261,21 @@ numbers are ignored.
 : The command always reads the current 24 secret words from standard input,
   even if you only change the URI or rotate keys.
 
+: The `Enter 24 secret words:` prompt is printed only when standard input is a
+  terminal. The operation status and the `Secret words:` and `Signing key:`
+  labels are printed only when standard output is a terminal. When output is
+  redirected, a newly generated mnemonic remains numbered, while a generated
+  raw private signing key is printed without a label.
+
 `-U, --uri URI`
 
 : Set a new node URI.
 
 `-g, --signing-key`
 
-: Generate a new signing key and print it after the update completes.
+: Generate a new signing key and print its raw private value after the update
+  completes. Keep this value secret. The corresponding public signing key
+  becomes valid approximately ten minutes after the request is made.
 
 `-G, --updating-key`
 

@@ -271,6 +271,25 @@ objects:
       type: string
     - field: fullName
       type: string
+    - field: nodeSourceUri
+      type: string
+    - field: createdAt
+      type: number
+    - field: type
+      type: string
+    - field: notification
+      type: string
+    version: 2
+  - fingerprint:
+    - comment: <code>NOTIFICATION_PACKET</code>
+      field: objectType
+      type: string
+    - field: id
+      type: string
+    - field: nodeName
+      type: string
+    - field: fullName
+      type: string
     - field: createdAt
       type: number
     - field: type
