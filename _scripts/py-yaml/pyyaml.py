@@ -16,6 +16,7 @@ PY_TYPES = {
     'timestamp': 'Timestamp',
     'byte[]': 'bytes',
     'UUID': 'str',
+    'principal': 'PrincipalValue',
     'String -> int': 'Mapping[str, int]'
 }
 

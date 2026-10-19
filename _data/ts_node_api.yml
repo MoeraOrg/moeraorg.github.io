@@ -352,6 +352,11 @@ enums:
   - description: any other reason
     name: other
     ordinal: 0
+- name: SharingType
+  values:
+  - description: the posting was republished on another node
+    name: republish
+    ordinal: 0
 - name: SourceFormat
   values:
   - description: plain text with newlines and paragraphs delimited by empty line
@@ -451,6 +456,9 @@ enums:
   - description: a failed attempt to post a reaction to a posting
     name: posting-reaction-task-failed
     ordinal: 24
+  - description: the user's posting was shared on another node
+    name: posting-shared
+    ordinal: 50
   - description: a failed attempt to subscribe to a posting
     name: posting-subscribe-task-failed
     ordinal: 23
@@ -2802,14 +2810,14 @@ objects:
       type: string
   - auth: required or signature
     description: 'Update the posting, creating a new revision of it. The text is processed
-      just like in the <code>POST</code> request.
+      just like in the <code>POST</code> request. If the posting is not original (a
+      cached copy of a remote posting), only its permissions can be changed; all other
+      fields are ignored and no new revision is created.
 
       '
     errors:
     - code: posting.not-found
       description: there is no posting with the given ID
-    - code: posting.not-original
-      description: updating a non-original posting is not allowed
     - code: avatar.not-found
       description: there is no avatar with the given ID
     - code: media.not-found
@@ -2857,6 +2865,21 @@ objects:
     - description: ID of the posting
       name: id
       type: string
+  - auth: required
+    description: Update the posting visibility if requested and publish it in the
+      specified feeds.
+    errors:
+    - code: posting.not-found
+      description: there is no posting with the given ID
+    function: republishPosting(id, attributes)
+    out:
+      struct: Result
+    params:
+    - description: ID of the posting
+      name: id
+      type: string
+    - name: attributes
+      struct: PostingRepublishAttributes
   - auth: optional
     description: Get all postings linked to media attached to the given posting.
     errors:
@@ -3107,6 +3130,38 @@ objects:
     params:
     - name: filter
       struct: ReactionTotalsFilter
+- description: Sharings of a posting on other nodes.
+  name: Posting Sharings
+  requests:
+  - auth: optional
+    description: 'Get a slice of the sharings of the posting, delimited by the <code>before</code>
+      moment and the given <code>limit</code>. If <code>before</code> is not provided,
+      the latest sharings are returned. The node may decide to return fewer sharings
+      than the given <code>limit</code>. The sharings are always sorted by moment,
+      descending. The list is empty when viewing sharings is not permitted. The total
+      is zero when viewing the sharing counter is not permitted.
+
+      '
+    errors:
+    - code: posting.not-found
+      description: there is no visible posting with the given ID
+    - code: limit.invalid
+      description: <code>limit</code> parameter has an invalid value
+    function: getPostingSharings(postingId, before=null, limit=null)
+    out:
+      struct: SharingsSliceInfo
+    params:
+    - description: ID of the posting
+      name: postingId
+      type: string
+    - description: filter sharings created at or before this moment
+      name: before
+      optional: true
+      type: number
+    - description: maximum number of sharings returned
+      name: limit
+      optional: true
+      type: number
 - description: The profile - the detailed information about the node's owner, node's
     purpose etc.
   name: Profile
@@ -3608,6 +3663,21 @@ objects:
     - description: ID of the posting on the remote node
       name: postingId
       type: string
+  - auth: required
+    description: Download the posting from the remote node and publish it in the specified
+      feeds.
+    function: republishRemotePosting(nodeName, id, attributes)
+    out:
+      struct: Result
+    params:
+    - description: name of the remote node
+      name: nodeName
+      type: string
+    - description: ID of the posting on the remote node
+      name: id
+      type: string
+    - name: attributes
+      struct: RemotePostingRepublishAttributes
   - auth: admin
     description: Verify the signature of the given posting.
     function: verifyRemotePosting(nodeName, id)
@@ -4034,6 +4104,16 @@ objects:
     '
   name: Stories
   requests:
+  - auth: admin
+    description: Get all stories coming from the given external source.
+    function: getStoriesByExternalSource(external)
+    out:
+      array: true
+      struct: StoryInfo
+    params:
+    - description: URI of the external source of the story
+      name: external
+      type: string
   - auth: optional
     description: Get an individual story.
     errors:
@@ -4478,6 +4558,9 @@ operations:
     description: delete the comment
     name: delete
   - default: public
+    description: view the comment's external source URIs
+    name: viewExternalSource
+  - default: public
     description: view the comment's reactions
     name: viewReactions
   - default: public
@@ -4592,8 +4675,17 @@ operations:
     description: delete the posting
     name: delete
   - default: public
+    description: view the posting's external source URIs
+    name: viewExternalSource
+  - default: public
     description: view the posting's comments
     name: viewComments
+  - default: public
+    description: view the posting's sharings
+    name: viewSharings
+  - default: public
+    description: view the number of the posting's sharings
+    name: viewTotalSharings
   - default: signed
     description: add a comment to the posting
     name: addComment
@@ -5593,6 +5685,13 @@ structures:
     name: reactions
     optional: true
     struct: ReactionTotalsInfo
+  - description: 'URIs of the external sources the comment was received from; used
+      by software that automatically forwards comments from other social networks
+
+      '
+    name: externalSourceUri
+    optional: true
+    type: string[]
   java-interfaces:
   - MediaInfo
   name: CommentInfo
@@ -5980,6 +6079,18 @@ structures:
     name: seniorOperations
     optional: true
     struct: CommentOperations
+  - array: true
+    constraints:
+    - length:
+        error: comment.external-source-uri.wrong-size
+        max: 1024
+    description: 'URIs of the external sources the comment was received from; used
+      by software that automatically forwards comments from other social networks
+
+      '
+    name: externalSourceUri
+    optional: true
+    type: string
   name: CommentText
 - fields:
   - description: total number of comments in the posting after the operation
@@ -7328,6 +7439,10 @@ structures:
     name: deletedAt
     optional: true
     type: number
+  - description: earliest publication timestamp of the posting in the timeline feed
+    name: earliestPublishedAt
+    optional: true
+    type: number
   - description: original posting creation timestamp (for cached copies of remote
       postings only)
     name: receiverCreatedAt
@@ -7341,6 +7456,11 @@ structures:
   - description: original posting deletion timestamp (for cached copies of remote
       postings only)
     name: receiverDeletedAt
+    optional: true
+    type: number
+  - description: earliest timeline publication timestamp of the original posting (for
+      cached copies of remote postings only)
+    name: receiverPublishedAt
     optional: true
     type: number
   - description: creation timestamp of the current revision of the posting
@@ -7461,6 +7581,10 @@ structures:
     name: totalComments
     optional: true
     type: number
+  - description: total number of sharings of the posting; zero if absent
+    name: totalSharings
+    optional: true
+    type: number
   - description: number of posting views (for admin only)
     name: viewCount
     optional: true
@@ -7474,7 +7598,6 @@ structures:
     type: boolean
   - description: 'URIs of the external sources the posting was received from; used
       by software that automatically forwards postings from other social networks
-      (for admin only)
 
       '
     name: externalSourceUri
@@ -7577,6 +7700,19 @@ structures:
     optional: true
     struct: ReactionTotalsInfo
   name: PostingRevisionInfo
+- fields:
+  - description: new visibility of the posting, if it needs to be changed
+    name: postingView
+    optional: true
+    type: PrincipalValue
+  - array: true
+    constraints:
+    - notnull:
+        error: posting.publications.missing
+    description: list of new publications in feeds
+    name: publications
+    struct: StoryAttributes
+  name: PostingRepublishAttributes
 - fields:
   - description: name of the remote node
     name: nodeName
@@ -7891,7 +8027,6 @@ structures:
         max: 1024
     description: 'URIs of the external sources the posting was received from; used
       by software that automatically forwards postings from other social networks
-      (for admin only)
 
       '
     name: externalSourceUri
@@ -8783,6 +8918,26 @@ structures:
   java-equals: true
   name: RemotePostingOrNode
 - fields:
+  - constraints:
+    - notblank:
+        error: posting.remote-feed-name.blank
+    description: name of the feed on the remote node the posting is being republished
+      from
+    name: remoteFeedName
+    type: string
+  - description: visibility of the new posting, overriding the default
+    name: postingView
+    optional: true
+    type: PrincipalValue
+  - array: true
+    constraints:
+    - notnull:
+        error: posting.publications.missing
+    description: list of publications in feeds to be made after downloading the posting
+    name: publications
+    struct: StoryAttributes
+  name: RemotePostingRepublishAttributes
+- fields:
   - description: asynchronous operation ID
     name: id
     type: string
@@ -9116,6 +9271,11 @@ structures:
     struct: SearchRepliedTo
   - description: entry creation timestamp - the real time when the entry was created
     name: createdAt
+    type: number
+  - description: earliest timeline publication timestamp of the posting at its source
+      node (postings only)
+    name: earliestPublishedAt
+    optional: true
     type: number
   - description: the supported operations and the corresponding principals
     name: operations
@@ -9796,6 +9956,80 @@ structures:
     type: string
   name: SettingValueChoice
 - fields:
+  - description: ID of the sharing
+    name: id
+    type: string
+  - description: type of sharing
+    enum: SharingType
+    name: sharingType
+  - description: name of the node that shared the posting
+    name: remoteNodeName
+    type: string
+  - description: full name of the sharing node
+    name: remoteFullName
+    optional: true
+    type: string
+  - description: source URI of the sharing node identity
+    name: remoteSourceUri
+    optional: true
+    type: string
+  - description: gender of the sharing node owner
+    name: remoteGender
+    optional: true
+    type: string
+  - description: avatar of the sharing node
+    name: remoteAvatar
+    optional: true
+    struct: AvatarImage
+  - description: name of the feed containing the shared posting
+    name: remoteFeedName
+    optional: true
+    type: string
+  - description: ID of the story containing the shared posting
+    name: remoteStoryId
+    optional: true
+    type: string
+  - description: moment of the story containing the shared posting
+    name: remoteStoryMoment
+    optional: true
+    type: number
+  - description: ID of the shared posting on the remote node
+    name: remotePostingId
+    optional: true
+    type: string
+  - description: ID of the original posting
+    name: postingId
+    type: string
+  - description: ID of the shared revision of the original posting
+    name: postingRevisionId
+    optional: true
+    type: string
+  - description: moment of the sharing, used for pagination
+    name: moment
+    type: number
+  - description: creation timestamp of the sharing record
+    name: createdAt
+    type: number
+  name: SharingInfo
+- fields:
+  - description: the slice contains all sharings before this moment, inclusive. May
+      be the far future.
+    name: before
+    type: number
+  - description: the slice contains all sharings after this moment, exclusive. May
+      be the far past.
+    name: after
+    type: number
+  - description: total number of sharings in the whole list; zero when viewing the
+      counter is not permitted
+    name: total
+    type: number
+  - array: true
+    description: the sharings
+    name: sharings
+    struct: SharingInfo
+  name: SharingsSliceInfo
+- fields:
   - description: <code>true</code>, if the complaints in the group are to be rejected,
       <code>false</code> otherwise
     name: reject
@@ -10456,6 +10690,21 @@ structures:
     name: satisfied
     optional: true
     type: boolean
+  - array: true
+    constraints:
+    - length:
+        error: story.external-source-uri.wrong-size
+        max: 1024
+    - other:
+        description: contain a null URI
+        error: story.external-source-uri.missing
+    description: 'URIs of the external sources the story was received from; used by
+      software that automatically forwards stories from other social networks
+
+      '
+    name: externalSourceUri
+    optional: true
+    type: string
   name: StoryAttributes
 - fields:
   - name: id
@@ -10558,6 +10807,13 @@ structures:
     name: remoteSourceUri
     optional: true
     type: string
+  - description: 'moment of the story containing the shared posting on the remote
+      node; set only for <code>posting-shared</code> stories associated with a sharing
+
+      '
+    name: remoteStoryMoment
+    optional: true
+    type: number
   - description: ID of the posting at remote node this story is about
     name: remotePostingId
     optional: true
@@ -10574,6 +10830,14 @@ structures:
     name: operations
     optional: true
     struct: StoryOperations
+  - description: 'URIs of the external sources the story was received from; used by
+      software that automatically forwards stories from other social networks; visible
+      only to administrators with <code>view-content</code> scope
+
+      '
+    name: externalSourceUri
+    optional: true
+    type: string[]
   name: StoryInfo
 - fields:
   - description: a node
@@ -10616,6 +10880,15 @@ structures:
     struct: StorySummaryReaction
   - description: total number of reactions
     name: totalReactions
+    optional: true
+    type: number
+  - array: true
+    description: nodes that shared the posting, newest first
+    name: sharings
+    optional: true
+    struct: StorySummaryNode
+  - description: total number of sharings in the instant group
+    name: totalSharings
     optional: true
     type: number
   - description: name of a feed

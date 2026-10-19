@@ -87,10 +87,11 @@ forms.
   and the list of command-specific options for a particular command
   (`moctl domain create -h`).
 
-: The available objects are (you can use a full or short name):
+: The available objects are (short names are shown in parentheses):
   
   * `domain (dom)` — manage domains (nodes located on the same server)
   * `credentials (cr)` — manage credentials
+  * `profile (pr)` — manage profile
   * `name (nm)` — manage node name
   * `malware (mal)` — manage malware hashes
   * `token (t)` — manage authentication tokens
@@ -117,6 +118,11 @@ domain names that are subdomains of the same domain, but this is not required.
 
 : Show the detailed information about the domain. (The domain is defined by
 `-H`/`-N` options.)
+
+`domain available NAME`
+
+: Find and display an available domain name recommended by the server for the
+  given node name.
 
 `domain create DOMAIN`
 
@@ -160,6 +166,18 @@ the node.
 
 : Set node owner's e-mail address.
 
+## Manage profile
+
+These commands manage the node profile.
+
+`profile get-full-name`
+
+: Display node owner's full name, if set.
+
+`profile set-full-name FULL_NAME`
+
+: Set node owner's full name. Enclose `FULL_NAME` in quotes if it contains spaces.
+
 ## Manage node name
 
 These commands manage the node name stored on the node. The commands do not make any
@@ -174,12 +192,26 @@ needed.
 
 : Display the status of the last operation on the name.
 
-`name register NAME`
+`name show-words`
 
-: Alias: `name reg NAME`.
+: Display the secret words stored on the node, one per line, with each word
+  prepended with its number.
+
+`name delete-words`
+
+: Delete the secret words stored on the node.
+
+`name register [-w] NAME`
+
+: Alias: `name reg [-w] NAME`.
 
 : Register a new name `NAME` and assign it to the node. The command outputs the 24
-secret words that are needed to control the name.
+  secret words that are needed to control the name.
+
+: `-w, --store-words`
+
+  : Store the secret words on the node instead of displaying them. If the words
+    cannot be stored, the command displays them before reporting the error.
 
 `name assign NAME`
 

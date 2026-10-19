@@ -102,6 +102,37 @@ events:
       - type: int
         name: moment
         description: moment of the comment
+  - type: COMMENT_REACTION_ADDED
+    description: A reaction to a comment was added or updated.
+    fields:
+      - type: String
+        name: id
+        description: the comment ID
+      - type: String
+        name: postingId
+        description: the posting ID
+      - type: int
+        name: moment
+        description: moment of the comment
+      - struct: ReactionInfo
+        name: reaction
+        description: the added reaction, including its moment
+  - type: COMMENT_REACTION_DELETED
+    description: A reaction to a comment, or all reactions to it, were deleted.
+    fields:
+      - type: String
+        name: id
+        description: the comment ID
+      - type: String
+        name: postingId
+        description: the posting ID
+      - type: int
+        name: moment
+        description: moment of the comment
+      - struct: ReactionInfo
+        name: reaction
+        optional: true
+        description: the deleted reaction; absent if all reactions to the comment were deleted
   - type: COMMENT_UPDATED
     description: A comment was deleted.
     fields:
@@ -300,12 +331,58 @@ events:
       - type: String
         name: id
         description: the posting ID
+  - type: POSTING_REACTION_ADDED
+    description: A reaction to a posting was added or updated.
+    fields:
+      - type: String
+        name: id
+        description: the posting ID
+      - struct: ReactionInfo
+        name: reaction
+        description: the added reaction, including its moment
+  - type: POSTING_REACTION_DELETED
+    description: A reaction to a posting, or all reactions to it, were deleted.
+    fields:
+      - type: String
+        name: id
+        description: the posting ID
+      - struct: ReactionInfo
+        name: reaction
+        optional: true
+        description: the deleted reaction; absent if all reactions to the posting were deleted
   - type: POSTING_RESTORED
     description: A deleted posting was restored.
     fields:
       - type: String
         name: id
         description: the posting ID
+  - type: POSTING_SHARING_ADDED
+    description: A sharing of a posting was added.
+    fields:
+      - type: String
+        name: postingId
+        description: the posting ID
+      - struct: SharingInfo
+        name: sharing
+        description: the added sharing
+  - type: POSTING_SHARING_DELETED
+    description: A sharing of a posting was deleted.
+    fields:
+      - type: String
+        name: postingId
+        description: the posting ID
+      - type: String
+        name: sharingId
+        description: the deleted sharing ID
+  - type: POSTING_TOTAL_SHARINGS_CHANGED
+    description: The number of sharings of a posting changed.
+    fields:
+      - type: String
+        name: id
+        description: the posting ID
+      - type: int
+        name: total
+        description: total number of sharings
   - type: POSTING_UPDATED
     description: A posting was updated.
     fields:
@@ -747,6 +824,12 @@ events:
         name: operations
         optional: true
         description: list of the supported operations and the corresponding principals
+      - type: String[]
+        name: externalSourceUri
+        optional: true
+        description: >
+          URIs of the external sources the story was received from; used by software that automatically forwards
+          stories from other social networks; visible only to administrators with <code>view-content</code> scope
   - type: STORY_DELETED
     description: A story was deleted.
     fields:
@@ -871,6 +954,12 @@ events:
         name: operations
         optional: true
         description: list of the supported operations and the corresponding principals
+      - type: String[]
+        name: externalSourceUri
+        optional: true
+        description: >
+          URIs of the external sources the story was received from; used by software that automatically forwards
+          stories from other social networks; visible only to administrators with <code>view-content</code> scope
   - type: SUBSCRIBED
     description: >
       Sent immediately after subscribing to update the client about the current queue state and its STOMP session ID.

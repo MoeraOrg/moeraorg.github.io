@@ -15,6 +15,7 @@ TS_TYPES = {
     'timestamp': 'number',
     'byte[]': 'string',
     'UUID': 'string',
+    'principal': 'PrincipalValue',
     'String -> int': 'Partial<Record<string, number>>'
 }
 

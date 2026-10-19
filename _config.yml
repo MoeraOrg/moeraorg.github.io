@@ -1,2 +1,4 @@
 title: Moera
 tagline: The Best Decentralized Social Network
+exclude:
+  - _scripts

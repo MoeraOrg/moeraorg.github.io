@@ -1246,6 +1246,146 @@ notifications:
       - struct: ReactionTotalsInfo
         name: totals
         comment: updated reaction totals of the posting
+  - type: POSTING_SHARED
+    ordinal: 44
+    description: >
+      A remote node shared a posting owned by the receiving node. A story is identified by its ID; feed name and
+      story moment do not participate in deduplication.
+    fields:
+      - enum: SharingType
+        name: sharingType
+        comment: type of sharing
+        constraints:
+          - notnull:
+              error: sharing.sharing-type.missing
+      - type: String
+        name: postingId
+        comment: ID of the original posting on the receiving node
+        constraints:
+          - notnull:
+              error: sharing.posting-id.missing
+          - length:
+              max: 40
+              error: sharing.posting-id.wrong-size
+        log: true
+      - type: String
+        name: postingRevisionId
+        optional: true
+        comment: ID of the shared revision on the receiving node
+        constraints:
+          - length:
+              max: 40
+              error: sharing.posting-revision-id.wrong-size
+      - type: String
+        name: remoteFeedName
+        optional: true
+        comment: sharing feed on the sending node; required together with story ID and moment
+        constraints:
+          - length:
+              max: 63
+              error: sharing.feed-name.wrong-size
+      - type: String
+        name: remoteStoryId
+        optional: true
+        comment: sharing story ID on the sending node; required together with feed name and moment
+        constraints:
+          - length:
+              max: 40
+              error: sharing.story-id.wrong-size
+      - type: long
+        name: remoteStoryMoment
+        optional: true
+        comment: sharing story moment on the sending node; required together with feed name and story ID
+      - type: String
+        name: remotePostingId
+        optional: true
+        comment: sharing posting ID on the sending node; required unless a complete story reference is provided
+        constraints:
+          - length:
+              max: 40
+              error: sharing.remote-posting-id.wrong-size
+  - type: POSTING_SHARINGS_UPDATED
+    ordinal: 46
+    java-interfaces:
+      - PostingSubscriberNotification
+    description: The number of sharings of a subscribed posting changed.
+    fields:
+      - type: String
+        name: subscriberId
+        comment: subscriber ID of the receiving node on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: subscriber.subscriber-id.wrong-size
+      - type: String
+        name: postingId
+        comment: ID of the posting on the sending node
+        constraints:
+          - length:
+              max: 40
+              error: posting.posting-id.wrong-size
+      - type: int
+        name: total
+        comment: total number of sharings visible to the subscriber
+  - type: POSTING_UNSHARED
+    ordinal: 45
+    description: >
+      A remote node removed a sharing. Sharing type, posting ID, sender node name, posting revision ID, remote story ID,
+      and remote posting ID must match, including null for omitted fields. A story is identified solely by its ID;
+      remote feed name and story moment do not participate in matching.
+    fields:
+      - enum: SharingType
+        name: sharingType
+        comment: type of sharing
+        constraints:
+          - notnull:
+              error: sharing.sharing-type.missing
+      - type: String
+        name: postingId
+        comment: ID of the original posting on the receiving node
+        constraints:
+          - notnull:
+              error: sharing.posting-id.missing
+          - length:
+              max: 40
+              error: sharing.posting-id.wrong-size
+        log: true
+      - type: String
+        name: postingRevisionId
+        optional: true
+        comment: ID of the shared revision on the receiving node
+        constraints:
+          - length:
+              max: 40
+              error: sharing.posting-revision-id.wrong-size
+      - type: String
+        name: remoteFeedName
+        optional: true
+        comment: sharing feed on the sending node; required together with story ID and moment
+        constraints:
+          - length:
+              max: 63
+              error: sharing.feed-name.wrong-size
+      - type: String
+        name: remoteStoryId
+        optional: true
+        comment: sharing story ID on the sending node; required together with feed name and moment
+        constraints:
+          - length:
+              max: 40
+              error: sharing.story-id.wrong-size
+      - type: long
+        name: remoteStoryMoment
+        optional: true
+        comment: sharing story moment on the sending node; required together with feed name and story ID
+      - type: String
+        name: remotePostingId
+        optional: true
+        comment: sharing posting ID on the sending node; required unless a complete story reference is provided
+        constraints:
+          - length:
+              max: 40
+              error: sharing.remote-posting-id.wrong-size
   - type: POSTING_UPDATED
     ordinal: 3
     java-interfaces:

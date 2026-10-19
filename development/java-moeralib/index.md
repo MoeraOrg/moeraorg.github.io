@@ -8,59 +8,139 @@ title: Java Library
 `moeralib` ([GitHub][1]) is a library that allows Java applications to easily
 interact with the Moera network.
 
-The easiest way to install the library is from [Maven Central repository][2].
-Add the following dependency to your `pom.xml`:
+## Installation
 
-```
-<dependency>
-    <groupId>org.moera</groupId>
-    <artifactId>moeralib</artifactId>
-    <version>VERSION</version>
-</dependency>
+The library is available from [Maven Central][2]. For a JVM application, add both
+`org.moera:moeralib` (the core library) and [org.moera:moeralib-jvm][5] (the OkHttp
+HTTP and JSON-RPC transports).
+
+The core library and the transport bindings are versioned independently. Replace
+`MOERALIB_VERSION` and `JVM_VERSION` below with compatible released versions from
+Maven Central; they do not have to be the same. Declare both dependencies
+explicitly: `moeralib-jvm` declares the core library with Maven scope `provided`,
+so it is not included transitively in your application.
+
+### Maven
+
+Add both dependencies to the `<dependencies>` section of your `pom.xml`:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.moera</groupId>
+        <artifactId>moeralib</artifactId>
+        <version>MOERALIB_VERSION</version>
+    </dependency>
+    <dependency>
+        <groupId>org.moera</groupId>
+        <artifactId>moeralib-jvm</artifactId>
+        <version>JVM_VERSION</version>
+    </dependency>
+</dependencies>
 ```
 
-Or to your `build.gradle`:
+### Gradle
 
+For a Java project using the Groovy DSL (`build.gradle`):
+
+```groovy
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.moera:moeralib:MOERALIB_VERSION'
+    implementation 'org.moera:moeralib-jvm:JVM_VERSION'
+}
 ```
-implementation 'org.moera:moeralib:VERSION'
+
+Or using the Kotlin DSL (`build.gradle.kts`):
+
+```kotlin
+plugins {
+    java
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.moera:moeralib:MOERALIB_VERSION")
+    implementation("org.moera:moeralib-jvm:JVM_VERSION")
+}
 ```
+
+If your project already declares plugins, repositories, or dependencies, merge the
+corresponding entries into the existing blocks. If repositories are configured
+centrally in `settings.gradle` or `settings.gradle.kts`, add `mavenCentral()` there.
+See the Gradle documentation on [declaring dependencies][7] and [repositories][8].
+
+For Android applications, replace `org.moera:moeralib-jvm` with
+[org.moera:moeralib-android][6] and select a compatible version of those bindings.
+Keep the explicit `org.moera:moeralib` dependency. Include only one transport
+artifact: the JVM and Android artifacts provide the same transport class names.
+The examples below use these transports explicitly.
 
 ## Naming API
 
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/naming/package-summary.html" target="_blank">org.moera.lib.naming</a></code>
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/naming/package-summary.html"
+    target="_blank">org.moera.lib.naming</a></code>
 package contains classes for interacting with Moera naming service. To access a naming server,
-create `MoeraNaming` class and pass the naming server URL in the parameters. There are
-constants for two well-known servers: `MoeraNaming.MAIN_NAMING_SERVER` and
-`MoeraNaming.DEV_NAMING_SERVER`. The first one is used by default by `MoeraNaming`.
+create a `MoeraNaming` instance with an `OkHttpJsonRpcFetcher` configured with the
+naming server URL. There are constants for two well-known servers:
+`MoeraNaming.MAIN_NAMING_SERVER` and `MoeraNaming.DEV_NAMING_SERVER`. Choose the
+server explicitly when creating the fetcher.
 
 ```java
+import org.moera.lib.jsonrpc.OkHttpJsonRpcFetcher;
 import org.moera.lib.naming.MoeraNaming;
 import org.moera.lib.naming.types.RegisteredNameInfo;
 
-MoeraNaming naming = new MoeraNaming(MoeraNaming.DEV_NAMING_SERVER);
+MoeraNaming naming = new MoeraNaming(
+    new OkHttpJsonRpcFetcher(MoeraNaming.DEV_NAMING_SERVER)
+);
 RegisteredNameInfo info = naming.getCurrent("balu-dev", 0);
-System.out.println(info.nodeUri);
+System.out.println(info.getNodeUri());
 ```
 
 A static method `MoeraNaming.resolve()` is a shortcut that simplifies resolving of names.
 
 ```java
+import org.moera.lib.jsonrpc.OkHttpJsonRpcFetcher;
 import org.moera.lib.naming.MoeraNaming;
 
-System.out.println(MoeraNaming.resolve("balu-dev_0", MoeraNaming.DEV_NAMING_SERVER));
+System.out.println(MoeraNaming.resolve(
+    "balu-dev_0",
+    new OkHttpJsonRpcFetcher(MoeraNaming.DEV_NAMING_SERVER)
+));
 ```
 
 ## Node API
 
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/package-summary.html" target="_blank">org.moera.lib.node</a></code>
-package contains classes for accessing Moera nodes. Just create `MoeraNode` class with the URL of
-the node, and call the methods you need.
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/package-summary.html"
+    target="_blank">org.moera.lib.node</a></code>
+package contains classes for accessing Moera nodes. Create a `MoeraNode` instance
+with an `OkHttpTransport` and the URL of the node, then call the methods you need.
+Node API calls can throw `MoeraNodeException`; the examples assume the surrounding
+method catches or declares this exception.
 
 ```java
 import static org.moera.lib.naming.MoeraNaming.resolve;
+
+import org.moera.lib.http.OkHttpTransport;
+import org.moera.lib.jsonrpc.OkHttpJsonRpcFetcher;
+import org.moera.lib.naming.MoeraNaming;
 import org.moera.lib.node.MoeraNode;
 
-MoeraNode node = new MoeraNode(resolve("Alice"));
+var fetcher = new OkHttpJsonRpcFetcher(MoeraNaming.MAIN_NAMING_SERVER);
+MoeraNode node = new MoeraNode(new OkHttpTransport(), resolve("Alice", fetcher));
 System.out.println(node.whoAmI().getFullName());
 ```
 
@@ -69,6 +149,8 @@ converts them to Java objects. The corresponding types are defined in
 `org.moera.lib.naming.types` and `org.moera.lib.node.types` subpackages.
 
 ```java
+import org.moera.lib.node.types.DomainAttributes;
+
 DomainAttributes attrs = new DomainAttributes();
 attrs.setName("dave.moera.club");
 attrs.setNodeId(DAVE_NODE_ID);
@@ -103,46 +185,61 @@ the selected method, if needed. You can switch to a different method at any time
 
 ```java
 import static org.moera.lib.naming.MoeraNaming.resolve;
+
+import org.moera.lib.http.OkHttpTransport;
+import org.moera.lib.jsonrpc.OkHttpJsonRpcFetcher;
+import org.moera.lib.naming.MoeraNaming;
 import org.moera.lib.node.MoeraNode;
 
-MoeraNode node = new MoeraNode(resolve("Alice"));
+var fetcher = new OkHttpJsonRpcFetcher(MoeraNaming.MAIN_NAMING_SERVER);
+MoeraNode node = new MoeraNode(new OkHttpTransport(), resolve("Alice", fetcher));
 node.token("putthetokenhere");
 node.authAdmin();
-System.out.println(node.getProfile().getEmail());
+System.out.println(node.getProfile(false).getEmail());
 ```
 
 ## Managing cartes
 
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/carte/MoeraCarteSource.html" target="_blank">MoeraCarteSource</a></code>
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/carte/MoeraCarteSource.html"
+    target="_blank">MoeraCarteSource</a></code>
 class simplifies managing authentication cartes. It obtains cartes from a home node,
 caches them, supplies valid cartes for authentication, and requests new ones
 when old ones expire.
 
 ```java
 import static org.moera.lib.naming.MoeraNaming.resolve;
+
+import org.moera.lib.http.OkHttpTransport;
+import org.moera.lib.jsonrpc.OkHttpJsonRpcFetcher;
+import org.moera.lib.naming.MoeraNaming;
 import org.moera.lib.node.MoeraNode;
 import org.moera.lib.node.carte.MoeraCarteSource;
 import org.moera.lib.node.types.FeedSliceInfo;
 import org.moera.lib.node.types.StoryInfo;
 
-MoeraNode home = new MoeraNode(resolve("Alice"));
+var fetcher = new OkHttpJsonRpcFetcher(MoeraNaming.MAIN_NAMING_SERVER);
+var transport = new OkHttpTransport();
+MoeraNode home = new MoeraNode(transport, resolve("Alice", fetcher));
 home.token("putthetokenhere");
 home.authAdmin();
 
-MoeraNode node = new MoeraNode(resolve("Bob"));
-node.carteSource(new MoeraCarteSource(home));
+MoeraNode node = new MoeraNode(transport, resolve("Bob", fetcher));
+node.carteSource(new MoeraCarteSource(home, null, null, null));
 node.auth();
-FeedSliceInfo slice = node.getFeedSlice("timeline");
+FeedSliceInfo slice = node.getFeedSlice("timeline", null, null, null);
 for (StoryInfo story : slice.getStories()) {
     if (story.getPosting() != null) {
-        System.out.println(story.getPosting().getOperations().getView(), story.getPosting().getHeading());
+        System.out.println(story.getPosting().getHeading());
     }
 }
 ```
 
 ## Generating cartes
 
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/carte/Carte.html" target="_blank">Carte</a>.generate()</code>
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/carte/Carte.html"
+    target="_blank">Carte</a>.generate()</code>
 static method generates a carte with the given parameters and signs it with
 the provided private signing key.
 
@@ -167,13 +264,21 @@ byte[] rawKey = new byte[] {
 
 ECPrivateKey signingKey = CryptoUtil.rawToPrivateKey(rawKey);
 String carte = Carte.generate(
-    "app0_0", null, Instant.now(), signingKey, "Alice", Scope.ALL.getMask(), Scope.NONE.getMask()
+    "app0_0",
+    null,
+    Instant.now(),
+    signingKey,
+    "Alice",
+    Scope.ALL.getMask(),
+    Scope.NONE.getMask()
 );
 ```
 
 ## Universal URLs
 
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/UniversalLocation.html" target="_blank">org.moera.lib.UniversalLocation</a></code>
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/UniversalLocation.html"
+    target="_blank">org.moera.lib.UniversalLocation</a></code>
 class represents a Moera universal URL.
 
 To parse a universal URL, pass it to `UniversalLocation` constructor.
@@ -188,7 +293,7 @@ try {
     UniversalLocation uni = new UniversalLocation(
         "https://moera.page/@Alice/alice.moera.blog/post/69a403ef-b72d-43e0-967e-eab5e8dce9d3"
     );
-    System.out.println(uni.getNodeName(), uni.getAuthority(), uni.getPath(), uni);
+    System.out.printf("%s %s %s %s%n", uni.getNodeName(), uni.getAuthority(), uni.getPath(), uni);
 } catch (URISyntaxException e) {
     // error processing
 }
@@ -222,15 +327,21 @@ System.out.println(UniversalLocation.redirectTo(
 
 ## Cryptography
 
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/crypto/CryptoUtil.html" target="_blank">org.moera.lib.crypto.CryptoUtil</a></code>
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/crypto/CryptoUtil.html"
+    target="_blank">org.moera.lib.crypto.CryptoUtil</a></code>
 is a utility class for generation of cryptographic keys, signing
 <a href="../cryptography/fingerprint.html">fingerprints</a> and validating
 signatures. The class uses the <a href="../cryptography/algorithms.html">algorithms</a>
 defined in the Moera protocol.
 
 Static methods for building fingerprints for various objects are defined in
-<code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/naming/Fingerprints.html" target="_blank">org.moera.lib.naming.Fingerprints</a></code>
-and <code><a href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/Fingerprints.html" target="_blank">org.moera.lib.node.Fingerprints</a></code>
+<code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/naming/Fingerprints.html"
+    target="_blank">org.moera.lib.naming.Fingerprints</a></code>
+and <code><a
+    href="https://www.javadoc.io/doc/org.moera/moeralib/latest/org/moera/lib/node/Fingerprints.html"
+    target="_blank">org.moera.lib.node.Fingerprints</a></code>
 classes. (The methods may have several versions for different versions of
 the fingerprint.)
 
@@ -241,6 +352,7 @@ The following code changes a node URL on the naming server.
 import java.security.interfaces.ECPrivateKey;
 
 import org.moera.lib.crypto.CryptoUtil;
+import org.moera.lib.jsonrpc.OkHttpJsonRpcFetcher;
 import org.moera.lib.naming.Fingerprints;
 import org.moera.lib.naming.MoeraNaming;
 import org.moera.lib.naming.types.RegisteredNameInfo;
@@ -248,12 +360,19 @@ import org.moera.lib.util.Util;
 
 ECPrivateKey privateUpdatingKey = CryptoUtil.mnemonicToPrivateKey(mnemonic);
 
-MoeraNaming srv = new MoeraNaming();
+MoeraNaming srv = new MoeraNaming(
+    new OkHttpJsonRpcFetcher(MoeraNaming.MAIN_NAMING_SERVER)
+);
 RegisteredNameInfo info = srv.getCurrent(name, generation);
 
 byte[] fingerprint = Fingerprints.putCall(
-    name, generation, info.getUpdatingKey(), newNodeUri, info.getSigningKey(),
-    Util.toTimestamp(info.getValidFrom()), info.getDigest()
+    name,
+    generation,
+    info.getUpdatingKey(),
+    newNodeUri,
+    info.getSigningKey(),
+    Util.toTimestamp(info.getValidFrom()),
+    info.getDigest()
 );
 byte[] signature = CryptoUtil.sign(fingerprint, privateUpdatingKey);
 
@@ -264,3 +383,7 @@ srv.put(name, generation, null, newNodeUri, null, null, info.getDigest(), signat
 [2]: https://central.sonatype.com/artifact/org.moera/moeralib
 [3]: /development/node-api/authentication.html
 [4]: /development/node-api/node-source-uri.html
+[5]: https://central.sonatype.com/artifact/org.moera/moeralib-jvm
+[6]: https://central.sonatype.com/artifact/org.moera/moeralib-android
+[7]: https://docs.gradle.org/current/userguide/declaring_dependencies.html
+[8]: https://docs.gradle.org/current/userguide/declaring_repositories.html

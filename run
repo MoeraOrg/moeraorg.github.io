@@ -1,3 +1,4 @@
 #!/bin/sh
 
-bundle exec jekyll serve
+# Use the current Ruby instead of gem wrappers tied to an older Ruby version.
+exec ruby -r bundler/setup -e 'load Gem.bin_path("jekyll", "jekyll")' -- serve

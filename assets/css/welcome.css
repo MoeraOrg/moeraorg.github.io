@@ -331,6 +331,7 @@ A.github-link svg {
 .intro .browser {
     grid-area: browser;
     align-self: center;
+    display: block;
 }
 
 .intro .browser .mockup {

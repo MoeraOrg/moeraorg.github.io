@@ -41,8 +41,7 @@ ProtectSystem=full
 ProtectHome=true
 WorkingDirectory=/srv/moera-node
 Environment=LANG=en_US.UTF-8 \
-            'SPRING_APPLICATION_JSON={"spring.profiles.active":"prod"}' \
-            JAVA_OPTS="-Xmx2G -XX:+UseG1GC -XX:+UseStringDeduplication"
+            'SPRING_APPLICATION_JSON={"spring.profiles.active":"prod"}'
 ExecStart=/usr/bin/java -jar /srv/moera-node/moera-node-0.17.0.jar
 SuccessExitStatus=143
 StandardOutput=syslog
@@ -60,9 +59,6 @@ system.
 The WAR file is located in `/srv/moera-node` directory in the example above. If
 the path on your server is different, put the correct path in `WorkingDirectory=`
 and `ExecStart=`.
-
-You can set any JRE options you want in `JAVA_OPTS` environment variable.
-Explaining them is out of scope of this Guide.
 
 To add the unit file to `systemd`, run
 
