@@ -812,6 +812,12 @@ events:
           - length:
               max: 1024
               error: story_added.remote-source-uri.wrong-size
+      - type: long
+        name: remoteStoryMoment
+        optional: true
+        description: >
+          moment of the story containing the shared posting on the remote node; set only for
+          <code>posting-shared</code> stories associated with a sharing
       - type: String
         name: remotePostingId
         optional: true
@@ -942,6 +948,12 @@ events:
           - length:
               max: 1024
               error: story_updated.remote-source-uri.wrong-size
+      - type: long
+        name: remoteStoryMoment
+        optional: true
+        description: >
+          moment of the story containing the shared posting on the remote node; set only for
+          <code>posting-shared</code> stories associated with a sharing
       - type: String
         name: remotePostingId
         optional: true

@@ -92,6 +92,7 @@ forms.
   * `domain (dom)` — manage domains (nodes located on the same server)
   * `credentials (cr)` — manage credentials
   * `profile (pr)` — manage profile
+  * `avatar (av)` — manage avatars
   * `name (nm)` — manage node name
   * `malware (mal)` — manage malware hashes
   * `token (t)` — manage authentication tokens
@@ -177,6 +178,71 @@ These commands manage the node profile.
 `profile set-full-name FULL_NAME`
 
 : Set node owner's full name. Enclose `FULL_NAME` in quotes if it contains spaces.
+
+`profile get-bio`
+
+: Display the source text of node owner's bio, if set.
+
+`profile set-bio BIO`
+
+: Set node owner's bio using Markdown. Enclose `BIO` in quotes if it contains
+  spaces or line breaks. Pass an empty string (`""`) to clear the bio.
+
+`profile get-avatar`
+
+: Display the ID of the current profile avatar. Print nothing if no avatar is set.
+
+`profile set-avatar ID`
+
+: Set the profile avatar to the avatar with the given `ID`. Use `avatar list` to
+  find available avatar IDs.
+
+## Manage avatars
+
+These commands manage the node owner's avatars. `av` is an alias for `avatar` in
+all commands. Creation and deletion require an admin token (`-T`) or a root admin
+secret (`-S`).
+
+`avatar list`
+
+: List avatars, one per line. Each line contains the avatar ID, dimensions in
+  `WIDTHxHEIGHT` format, and shape, separated by tabs.
+
+`avatar get [-o FILE] ID`
+
+: Download the image of the avatar with the given `ID`. By default, write the
+  image bytes to standard output.
+
+: `-o FILE, --output FILE`
+
+  : Write the image to `FILE`. Use `-` for standard output.
+
+`avatar create [-i FILE] [--size PIXELS] [--shape SHAPE]`
+
+: Create an avatar from an image and print the new avatar ID. By default, read
+  the image from standard input. The MIME type is detected automatically from
+  the image contents.
+
+: The image is cropped to a centered square, taking EXIF orientation into
+  account. Both input dimensions must be at least 100 pixels. Use
+  `profile set-avatar ID` to select the new avatar for the profile.
+
+: `-i FILE, --input FILE`
+
+  : Read the image from `FILE`. Use `-` for standard input.
+
+: `--size PIXELS`
+
+  : Set the avatar size in pixels. The minimum and default value is `200`.
+
+: `--shape SHAPE`
+
+  : Set the avatar shape, for example `circle` or `square`. The default is
+    `circle`.
+
+`avatar delete ID`
+
+: Delete the avatar with the given `ID`. Print nothing on success.
 
 ## Manage node name
 
